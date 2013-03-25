@@ -1,0 +1,68 @@
+@charset "windows-1251";
+/* CSS Document */
+
+.tb_main {
+	width:100%;
+}
+.tb_send_f {
+	width:50%;
+	color:#cccccc;
+	background:#110011;
+	border-radius:12px;
+	border:#777 ridge 1px;
+}
+.send_f {
+	background:#202;
+	width:100%;
+}
+a.sml {
+	color:#cccccc;
+}
+a.sml:hover {
+	color:#ffffff;
+}
+.bt_send {
+	background: #110011 url(../img/bt_rgstr.png) no-repeat center top;
+	display:block;
+	display: inline-block; /*ie*/
+	color:#cccccc;
+	font-weight:bold;
+	font-size:12px;
+	vertical-align:central;
+	margin-top:10px;
+	text-decoration:none;
+	padding-left:5px;
+}
+.bt_send:hover {
+	background: #222 url(../img/bt_rgstr.png) no-repeat center bottom;
+}
+.td_klmess {
+	color:#cccccc;
+	background:#222;
+	width:100%;
+}
+.tb_mess {
+	width:100%;
+	color:#cccccc;
+	background:#202;
+	border-radius:8px;
+	border:#555 ridge 4px;
+	margin-top:20px;
+}
+.td_name {
+	width:100%;
+	background:#111;
+	text-align:center;
+}
+.td_mess_txt {
+	color:#ffffff;
+	background:#111;
+	padding:5px;
+	font-size:16px;
+	text-align:justify;
+}
+.mees_inf {
+	background:#111;
+	font-size:16px;
+	text-align:center;
+}
