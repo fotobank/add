@@ -280,12 +280,12 @@ if (isset($_SESSION['current_album'])):
                                              </script>";
                             $_SESSION['popitka'][$_SESSION['current_album']] = 5;
                         }
+           ?>
+           </div>
+           <?
                 }
-            ?>
 
-        </div>
 
-        <?
 if ($may_view):
 
    ?>
@@ -353,7 +353,7 @@ if ($may_view):
 
 
           <!--/*выводим фотографию - заголовок альбома*/ -->
-                    <div id="alb_opis">
+                    <div id="alb_opis" class="span3">
                         <div class="alb_logo">
                             <div id="fb_alb_fotoP">
                                 <img src="album_id.php?num=<?= substr(($album_data['img']), 2, -4) ?>" width="130px" height="124px" alt="-"/>
@@ -378,7 +378,7 @@ if ($may_view):
                                 </div>
                             </h3>
 
-<!-- 1 --><hr class="style-one"/>
+<!-- 1 --><hr class="style-one" style="margin: 0 0 -20px 0;"/>
 
                             <?
                             $rs = mysql_query('select * from photos where id_album = '.intval($_SESSION['current_album']).' order by votes desc, id desc limit 0, 5');
@@ -399,8 +399,9 @@ if ($may_view):
                                                     $sz_string = 'height="195px"';
                                                 }
                                             ?>
+                                            <div id="foto_top">
+<!--                                            <div  class="span2 offset0" >-->
 
-                                            <div  class="span1 offset1" >
                                                 <figure class="ramka" onClick="JavaScript: preview(<?= $ln['id'] ?>);">
                                                     <span class="top_pos" style="opacity: 0;"><?=$pos_num?></span>
                                                     <img src="dir.php?num=<?= substr(trim($ln['img']), 2, -4) ?>" alt="<?= $ln['nm'] ?>" title="Нажмите для просмотра" <?=$sz_string?> />
@@ -410,16 +411,17 @@ if ($may_view):
                                                         </span></figcaption>
                                                 </figure>
                                             </div>
-                                            </div>
+<!--                                            </div>-->
 
                                             <?
                                             $pos_num++;
                                         }
                                 }
-?><!-- 2 --><div style="clear: both"></div>
-                            <hr class="style-one" style="clear: both; margin-top: 100px; margin-bottom: -20px;"><?
+              ?><div style="clear: both"></div>
+<!-- 2 -->  <!--<hr class="style-one" style="clear: both; margin-top: 0px; margin-bottom: 0px;"> -->
+                     <?
                         }
-                    ?>
+                     ?>
 
 
 
@@ -441,7 +443,7 @@ if ($may_view):
                                 {
                                         ?>
 
-<!-- 3 --><hr class="style-one" style="margin-top: -10px; margin-bottom: -40px;">
+<!-- 3 --><hr class="style-one" style="margin-top: -30px; margin-bottom: -30px;">
                                         <?
 
                                     while ($ln = mysql_fetch_assoc($rs))
@@ -480,7 +482,7 @@ if ($may_view):
 
 
          <!-- тело -->
-<!-- 4 --><hr class="style-one" style="clear: both; margin-bottom: -30px;"/>
+<!-- 4 --><hr class="style-one" style="clear: both; margin-bottom: -20px; margin-top: 0"/>
 
 
         <!--Вывод нумерации страниц -->

@@ -26,6 +26,7 @@
             document.createElement('footer');
             document.createElement('figure');
             document.createElement('figcaption');
+            document.createElement('span');
         </script>
         <![endif]-->
 

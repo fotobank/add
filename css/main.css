@@ -50,6 +50,7 @@ html {
     min-height: 100%;
     margin-left: auto;
     margin-right: auto;
+    /*z-index: -10;*/
 }
 
 #footer {
@@ -191,6 +192,7 @@ h4 {
 
 header, nav, section, article, aside, footer {
     display:block;
+    /*z-index: 0;*/
 }
 
 hfooter {
@@ -229,6 +231,7 @@ hremind {
     height: 300px;
     margin-left: auto;
     margin-right: auto;
+    z-index: 1;
 }
 
 .tb_head {
@@ -375,7 +378,7 @@ a.bt_rgstr:hover {
      margin-top: -20px;
      top: 0;
      background: url(/img/plenka_kass.png) no-repeat left bottom;
-     z-index: 1;
+     /*z-index: 1;*/
  }
 
 #main_menu.affix:before {
@@ -383,7 +386,7 @@ a.bt_rgstr:hover {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: -1;
+    /*z-index: 0;*/
     width: 100%;
     height: 127px;
 
@@ -395,6 +398,7 @@ a.bt_rgstr:hover {
     display: block ;
     min-height: 0 ;
     width: auto;
+    z-index: 3;
 
 }
 
@@ -690,12 +694,12 @@ a.gb_act {
     color: #000000;
     position: relative;
     float: left;
-    width: 188px;
-    height: 200px;
+    width: 178px;
+    height: 280px;
     /* padding:10px; */
     text-align: center;
     /* padding-bottom:50px;*/
-    margin: 10px 0 0px 0;
+    margin: 0 0 0px 0;
 }
 
 .foto_pr {
@@ -1393,6 +1397,7 @@ a.alb_usl {
     width: 1200px;
     clear: both;
     margin: auto;
+    z-index: -10;
 }
 
 .end_content_gost {
@@ -2130,6 +2135,7 @@ div.pagination {
     padding:3px;
     margin: 10px 0 -40px 0;
     text-align:center;
+    z-index: 10;
 
 }
 
@@ -2202,9 +2208,18 @@ hr.style-one:before {
 }
 
 
-foto-ajax {
+#foto-ajax {
+    position: relative;
+    bottom: 30px;
+}
+
+/*
+div{
+   behavior:expression(onmouseover=function(){this.className +=" zindex"},onmouseout=function() this.className=this.className.replace("zindex","")},style.behavior=null);
 
 }
 
-
-
+.zindex {
+   z-index:1000;
+}
+*/
