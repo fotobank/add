@@ -53,7 +53,7 @@
         <script src="/js/bootstrap-modal.js"></script>
 
 
-        <script type="text/javascript">$.ie6no({runonload:true});</script>
+
 
         <? if (strstr($_SERVER['PHP_SELF'], 'folder_for_prototype')): ?>
             <script type="text/javascript" src="/js/prototype.js"></script>
@@ -279,7 +279,7 @@
     if (isset($_SESSION['err_msg']))
         {
             ?>
-            <div id="error" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div id="error" class="modal hide fade"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="err_msg">
                     <div class="modal-header">
                         <button class="close" data-dismiss="modal">x</button>
@@ -341,9 +341,21 @@
         }
     ?>
 
+     <script language=JavaScript type="text/javascript">
+         $(document).ready(function(){
+         /*$('#fixed_menu').on('mouseenter', function(){
+             alert('Вы нажали на элемент "foo"')});*/
+          $(input ('.affix').on('change', function () {
+             alert('Вы нажали на элемент foo2')}));
+
+        // $('#main_menu').trigger('click');
+         });
+     </script>
 
     <div id="fixed_menu">
     <div id="main_menu"  data-spy="affix" data-offset-top="210">
+
+
 
         <?PHP
         $value = $_SERVER['PHP_SELF'];
@@ -438,7 +450,7 @@
             }
         ?>
 
-        <object width="90" height="90" style="position: absolute; margin-left: 135px; margin-top: 26px; width: 70px; height: 80px;" type="application/x-shockwave-flash" data="img/calendarb.swf">
+        <object width="90" height="90" style="position: absolute; margin-left: 135px; margin-top: 26px; width: 70px; height: 80px; z-index:10;" type="application/x-shockwave-flash" data="/img/calendarb.swf">
             <param name="movie" value="img/calendar2b.swf"/>
             <param name="wmode" value="transparent"/>
         </object>
