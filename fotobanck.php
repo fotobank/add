@@ -455,9 +455,9 @@ if ($may_view):
 
                                                 <figure class="ramka" onClick="preview(<?=$ln['id']?>);">
                                                     <span class="top_pos" style="opacity: 0;"><?=$pos_num?></span>
-                                                    <img src="dir.php?num=<?= substr(trim($ln['img']), 2, -4) ?>" alt="<?= $ln['nm'] ?>" title="Нажмите для просмотра" <?=$sz_string?> />
+                                                    <img id="<?=substr(trim($ln['img']), 2, -4)?>" src="dir.php?num=<?=substr(trim($ln['img']), 2, -4)?>" alt="<?=$ln['nm']?>" title="Нажмите для просмотра" <?=$sz_string?> />
                                                     <figcaption><span style="font-size: x-small; font-family: Times, serif; ">№ <?=$ln['nm']?>
-                                                            Голосов:<span class="badge badge-warning"> <span style="font-size: x-small; font-family: 'Open Sans', sans-serif; "><?=$ln['votes']?></span>
+                                                            Голосов:<span class="badge badge-warning"> <span  id="<?=substr(trim($ln['img']), 2, -4)?>" style="font-size: x-small; font-family: 'Open Sans', sans-serif; "><?=$ln['votes']?></span>
                                                                     </span><br>Рейтинг: <?echo str_repeat('<img src="img/reyt.png"/>', floor($ln['votes'] / 5));?>
                                                         </span></figcaption>
                                                 </figure>
@@ -514,7 +514,7 @@ if ($may_view):
 
                                             <div class="podlogka">
                                                 <figure class="ramka" onClick="preview(<?=$ln['id']?>);">
-                                                    <img src="dir.php?num=<?= substr(trim($ln['img']), 2, -4) ?>"  title="За фотографию проголосовало <?= $ln['votes'] ?> человек. Нажмите для просмотра." <?=$sz_string?> />
+                                                    <img id="<?=substr(trim($ln['img']), 2, -4)?>" src="dir.php?num=<?=substr(trim($ln['img']), 2, -4)?>"  title="За фотографию проголосовало <?= $ln['votes'] ?> человек. Нажмите для просмотра." <?=$sz_string?> />
 
                                                     <figcaption>№ <?=$ln['nm']?></figcaption>
                                                 </figure>
