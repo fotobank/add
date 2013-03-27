@@ -63,8 +63,8 @@ $record_count = intval(mysql_result(mysql_query('SELECT  FOUND_ROWS() as cnt'), 
                 <td style="text-align: center">
                     <div class="controls">
                         <div class="input-append">
-                            <form action="index.php?pg=<?= $pg ?>" method="post" style="margin-bottom: 0px; margin-top: 10px;">
-                                <input id="appendedInputButton" style="height: 18px; padding-top: 2px; padding-bottom: 3px; width: 80px;" class="span1" type="text" name="balans" value="<?= $ln['balans'] ?>"/>
+                            <form action="index.php?pg=<?= $pg ?>" method="post" style="margin-bottom: 0; margin-top: 10px;">
+                                <label for="appendedInputButton"></label><input id="appendedInputButton" style="height: 18px; padding-top: 2px; padding-bottom: 3px; width: 80px;" class="span1" type="text" name="balans" value="<?= $ln['balans'] ?>"/>
                                 <input class="btn btn-primary" type="hidden" name="update_balans" value="<?= $ln['id'] ?>"/>
                                 <input class="btn-small btn-primary" type="submit" value="применить"/>
                             </form>

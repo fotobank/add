@@ -61,7 +61,7 @@ if (isset($_GET['unchenge_cat']))
         </div>
         <br/>
         <form action="fotobanck.php" method="post">
-                <label class="ttext_red" style="float: left; margin-right: 10px;">Ïאנמכü: </label>
+                <label for="inputError" class="ttext_red" style="float: left; margin-right: 10px;">Ïאנמכü: </label>
                 <input id="inputError" type="text" name="album_pass" value="" maxlength="20" />
                 <input class="btn-small btn-primary" type="submit" value="גגמה"/>
         </form>
@@ -479,9 +479,10 @@ if ($may_view):
             <!-- Âûגמה פמעמ ג אכüבמל -->
             <div id=foto-ajax>
                     <?
+                $current_page = isset($_GET['pg']) ? intval($_GET['pg']) : 1;
                     if ($may_view)
                         {
-                            $current_page = isset($_GET['pg']) ? intval($_GET['pg']) : 1;
+
                             if ($current_page < 1)
                                 {
                                     $current_page = 1;
