@@ -96,13 +96,14 @@ $record_count = intval(mysql_result(mysql_query('SELECT  FOUND_ROWS() as cnt'), 
                                 <ul class="dropdown-menu pull-right"><?
                                     if (mysql_num_rows($rez_fakt) > 0)
                                         {
-                                            ?>
-                                            <li class="span11"><?
+                                                ?>
+                                            <li class="span11">
+                                                <?
                                             while ($ln_foto = mysql_fetch_assoc($rez_fakt))
                                                 {
-                                                    ?>
-                                                    <li class="span2" style="margin-left: 10px; width: 126px; height: 240px; ">
-                                                        <a class="thumbnail" style="padding-left: 4px; padding-right: 4px; width: 120px;" href="<?= $ln_foto['foto_folder'].$ln_foto['id_album'].'/'.$ln_foto['img'] ?>">
+                                                ?>
+                                                    <li class="span2" style="margin-left: 10px; width: 126px; height: 240px;">
+                                                        <a class="thumbnail" style="padding-left: 4px; padding-right: 4px; width: 120px;" href="<?= $ln_foto['foto_folder'].$ln_foto['id_album'].'/'.$ln_foto['img']?>">
                                                             <img href="<?=$ln_foto['foto_folder'].$ln_foto['id_album'].'/'.$ln_foto['img']?>" src="<?=$ln_foto['foto_folder'].$ln_foto['id_album'].'/'.$ln_foto['img']?>" alt="<?= $ln_foto['pnm'] ?>" title="<?= $ln_foto['pnm'] ?>" <?=$sz_string?> />
                                                             <h6 style="margin-top: 0; margin-bottom: 0;">Фото
                                                                 № <?=$ln_foto['pnm']?></h6>
@@ -111,7 +112,7 @@ $record_count = intval(mysql_result(mysql_query('SELECT  FOUND_ROWS() as cnt'), 
                                                     </li>
                                                 <?
                                                 }
-                                            ?>
+                                                ?>
                                             </li>
                                         <?
                                         }
@@ -119,7 +120,7 @@ $record_count = intval(mysql_result(mysql_query('SELECT  FOUND_ROWS() as cnt'), 
                                         {
                                             ?>
                                             <li><a><b><?=$udal?> фотографии удаленны с сервера</b></a></li>
-                                        <?
+                                            <?
                                         }
                                     ?>
                                 </ul>
