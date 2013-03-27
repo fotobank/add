@@ -7,7 +7,7 @@
 ?>
 
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//RU" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns:Логин="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=windows-1251"/>
         <meta name="google-site-verification" content="uLdE_lzhCOntN_AaTM1_sQNmIXFk1-Dsi5AWS0bKIgs"/>
@@ -33,7 +33,7 @@
 
 
 
-        <link rel="shortcut icon" type="image/vnd.microsoft.icon" href="favicon.ico"/>
+        <link rel="shortcut icon" type="image/vnd.microsoft.icon" href="/favicon.ico"/>
         <link rel="shortcut icon" href="/img/ico_nmain.gif"/>
         <link href="/css/main.css" rel="stylesheet" type="text/css"/>
         <link href="/css/dynamic-to-top.css" rel="stylesheet" type="text/css"/> <!-- кнопка вверх -->
@@ -42,7 +42,6 @@
 
 
         <script src="/js/jquery.js"></script>
-
         <script src="/js/bootstrap.min.js"></script>
         <script src="/js/main.js"></script>
 
@@ -52,6 +51,17 @@
         <script src="/js/bootstrap-modalmanager.js"></script>
         <script src="/js/bootstrap-modal.js"></script>
 
+
+        <link href="/js/jsmessage/codebase/themes/message_default.css" rel="stylesheet" type="text/css"/> <!--сообщения-->
+        <script type="text/javascript" src="/js/jsmessage/codebase/message.js"></script>
+
+
+
+        <!--сообщения-->
+<!--       <link href="/js/humane/themes/jackedup.css" rel="stylesheet" type="text/css"/>-->
+<!--        <link href="/js/humane/themes/libnotify.css" rel="stylesheet" type="text/css"/>-->
+        <link href="/js/humane/themes/bigbox.css" rel="stylesheet" type="text/css"/>
+        <script type="text/javascript" src="/js/humane/humane.js"></script>
 
 
 
@@ -110,35 +120,19 @@
             }
         </script>
 
-
         <script type="text/javascript">
             $(document).ready(function () {
-                $(".vhod").tooltip();
+                $(".vhod ,.registracia, input, textarea").tooltip();
             });
-        </script>
 
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $("input, textarea").tooltip();
-            });
-        </script>
-
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $("a[rel=popover]")
-                  .popover({
+             $("a[rel=popover]")
+               .popover({
                       offset: 10
                   })
-                  .click(function (e) {
+               .click(function (e) {
                       e.preventDefault()
-                  })
-            });
-        </script>
+                  });
 
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $(".registracia").tooltip({offset: 10});
-            });
             $('body').modalmanager('loading');
         </script>
 
@@ -146,7 +140,7 @@
 </head>
 <body>
 <div id="maket">
-    <div id="photo_preview_bg" class="hidden" onClick="JavaScript: hide_preview();"></div>
+    <div id="photo_preview_bg" class="hidden" onClick="hidePreview();"></div>
     <div id="photo_preview" class="hidden"></div>
 
 
@@ -191,15 +185,7 @@
                                 <param name="wmode" value="transparent">
                                 <param name="flashvars" value="color1=0xFFFFFF&amp;alpha1=.50&amp;framerate1=24&amp;loop=true&amp;wmode=transparent&amp;clip=img/flash.swf&amp;radius=4&amp;clipx=-50&amp;clipy=0&amp;initalclipw=900&amp;initalcliph=200&amp;clipw=1000&amp;cliph=200&amp;width=900&amp;height=200&amp;textblock_width=0&amp;textblock_align=no&amp;hasTopCorners=true&amp;hasBottomCorners=true">
                                 <param name="swfliveconnect" value="true">
-
-                                <!--<![endif]-->
-
-                            <div class="flash-alt">
-                                    <a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player"></a>
-                                </div>
-
-                                <!--[if !IE]>-->
-                            </object>
+                          </object>
                             <!--<![endif]-->
                       </object>
                     </div>
@@ -218,12 +204,12 @@
                 <div id="form_ent">
 
                     <? if (isset($_SESSION['logged'])): ?>
-                        <center>
-  <span style="color:#bb5">Здравствуйте,<br> <b><?=$_SESSION['us_name']?></b><br/>
+                        <div style="text-align: center;">
+  <span style="color:#bb5">Здравствуйте,<br> <span style="font-weight: bold;"><?=$_SESSION['us_name']?></span><br/>
       <?
       $user_balans = floatval(mysql_result(mysql_query('select balans from users where id = '.intval($_SESSION['userid'])), 0));
       ?>
-      Ваш баланс: <b><?=$user_balans?></b> гр.<br/></span></center>
+      Ваш баланс: <span style="font-weight: bold;"><?=$user_balans?></span> гр.<br/></span></div>
 
                         <div style="margin-top: 8px;">
                             <a class="korzina" href="/basket.php">корзина</a>
@@ -234,16 +220,16 @@
                         </div>
 
                     <? else: ?>
-                        <u>Форма входа:</u><br>
+                        <span >Форма входа:</span><br>
                         <form action="/enter.php" method="post">
                             <table>
                                 <tr>
                                     <td> Логин:</td>
-                                    <td><input class="inp_fent" name="login"></td>
+                                    <td><label><input class="inp_fent" name="login"> </label></td>
                                 </tr>
                                 <tr>
                                     <td> Пароль:</td>
-                                    <td><input class="inp_fent" type="password" name="password"></td>
+                                    <td><label> <input class="inp_fent" type="password" name="password"> </label></td>
                                 </tr>
                                 <tr></tr>
                                 <tr>
@@ -267,10 +253,10 @@
             <td></td>
             <td>
     </table>
-    <a href="#x" class="overlay" id="scet_form"></a>
+    <a href="#" class="overlay" id="scet_form"></a>
 
     <div id="popup">
-        Пополнение счета <a class="close2" href="#close"></a>
+        Пополнение счета <a class="close2" href="#"></a>
     </div>
 
 
@@ -279,30 +265,12 @@
     if (isset($_SESSION['err_msg']))
         {
             ?>
-            <div id="error" class="modal hide fade"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="err_msg">
-                    <div class="modal-header">
-                        <button class="close" data-dismiss="modal">x</button>
-                        <h3 style="color:red">Ошибка!</h3>
-                    </div>
-                    <div class="modal-body">
-                        <div style="float:left">
-                            <span class="ttext_red"><?=$_SESSION['err_msg']?></span>
-                        </div>
-                        <a style="float:right" class="btn" data-dismiss="modal" href="#">Закрыть</a>
-                    </div>
-                </div>
-            </div>
+          echo
+            "<script type='text/javascript'>
+                dhtmlx.message({ type:'error', text:'Ошибка!<br><?=$_SESSION['err_msg']?>' });
+            //   humane.error('Ошибка!<br>--><?//=$_SESSION['err_msg']?><!--');
+            </script>"
             <?
-            echo "<script type='text/javascript'>
-         $(document).ready(function(){
-         $('#error').modal('show');
-         });
-		 function gloze() {
-		 $('#error').modal('hide');
-		 };
-	     setTimeout('gloze()', 4000);
-         </script>";
             unset($_SESSION['err_msg']);
         }
     ?>
@@ -312,47 +280,18 @@
     if (isset($_SESSION['ok_msg']))
         {
             ?>
-
-            <div id="ok" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="ok_msg">
-                    <div class="modal-header">
-                        <button class="close" data-dismiss="modal">x</button>
-                        <h3>Добро пожаловать!</h3>
-                    </div>
-                    <div class="modal-body">
-                        <div style="float:left">
-                            <span><?=$_SESSION['ok_msg']?></span>
-                        </div>
-                        <a style="float:right" class="btn" data-dismiss="modal" href="#">Закрыть</a>
-                    </div>
-                </div>
-            </div>
-            <?
-            echo "<script type='text/javascript'>
-         $(document).ready(function(){
-         $('#ok').modal('show');
-         });
-		 function gloze() {
-		 $('#ok').modal('hide');
-		 };
-	     setTimeout('gloze()', 4000);
-         </script>";
+          echo
+            "<script type='text/javascript'>
+                    dhtmlx.message('Добро пожаловать!<br><span>-->--><?////=$_SESSION['ok_msg']?><!--<!--</span>');
+            //  humane.log('Добро пожаловать!<br><span>--><?//=$_SESSION['ok_msg']?><!--</span>');
+            </script>"
+           <?
             unset($_SESSION['ok_msg']);
         }
     ?>
 
-     <script language=JavaScript type="text/javascript">
-         $(document).ready(function(){
-         /*$('#fixed_menu').on('mouseenter', function(){
-             alert('Вы нажали на элемент "foo"')});*/
-          $(input ('.affix').on('change', function () {
-             alert('Вы нажали на элемент foo2')}));
 
-        // $('#main_menu').trigger('click');
-         });
-     </script>
-
-    <div id="fixed_menu">
+    <div id="fixed_menu"  data-spy="affix" data-offset-top="210">
     <div id="main_menu"  data-spy="affix" data-offset-top="210">
 
 
@@ -458,7 +397,60 @@
 
     </div>
     </div>
+
     </div>
+
+
+
+
+    <script language=JavaScript type="text/javascript">
+        /* $(document).ready(function () {
+         *//*$('#fixed_menu').on('mouseenter', function(){
+         $('#main_menu').show();
+         });*//*
+         *//*$(input('.affix').on('change', function () {
+         alert('Вы нажали на элемент foo2')
+         }));*//*
+         });*/
+
+       /* idleTimer = null;
+        idleState = false; // состояние отсутствия
+        idleWait = 2000; // время ожидания в мс. (1/1000 секунды)
+
+        $(document).ready( function(){
+            $('#show_menu').on('mouseenter', function(){
+                clearTimeout(idleTimer); // отменяем прежний временной отрезок
+                if(idleState == true){
+                    // Действия на возвращение пользователя
+                     $("#fixed_menu").animate({height: "show"}, 1000);
+                }
+
+                idleState = false;
+                idleTimer = setTimeout(function(){
+                    // Действия на отсутствие пользователя
+                     $("#fixed_menu").animate({height: "hide"}, 1000);
+                    idleState = true;
+                }, idleWait);
+            });
+
+            $("#fixed_menu").trigger("mouseenter"); // сгенерируем ложное событие, для запуска скрипта
+        });*/
+
+
+/*(function($){
+    $('#show_menu').mouseleave(function(e) {
+        $('#fixed_menu').fadeIn();
+    });
+    $('#fixed_menu').mouseleave(function(e) {
+        $(this).fadeOut();
+    });
+})(jQuery)*/
+
+
+
+
+    </script>
+
 
     <!--Голова конец-->
 

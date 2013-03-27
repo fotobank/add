@@ -155,7 +155,7 @@ h1 {
 
 
 h2 {
-    font-size: 20px;
+    font-size: 24px;
     color: #ffffff;
     text-shadow: 1px 1px 1px #000000;
     font-family: monospace !important;
@@ -378,7 +378,7 @@ a.bt_rgstr:hover {
      margin-top: -20px;
      top: 0;
      background: url(/img/plenka_kass.png) no-repeat left bottom;
-     /*z-index: 1;*/
+     z-index: 100;
  }
 
 #main_menu.affix:before {
@@ -395,11 +395,68 @@ a.bt_rgstr:hover {
 
 #fixed_menu {
     position: relative;
-    display: block ;
     min-height: 0 ;
     width: auto;
-    z-index: 3;
+    z-index: 300;
+    display: block;
 
+
+}
+
+
+/*акции в фотобанке*/
+#garmon {
+    position: static;
+    display: block ;
+    margin: 12px 0 -10px 10px;
+
+}
+
+/*подложка*/
+.profile {
+    width:80%;
+    height: auto;
+    position: absolute;
+    top: 0;
+    left: 10%;
+    border: 1px solid #fff;
+    background: #6c6c6c;
+    /*-webkit-box-shadow: 0 0 30px #969696;
+    -moz-box-shadow: 0 0 30px #969696;
+    box-shadow: 0 0 30px #969696;*/
+    z-index: 1;
+    display: none;
+
+}
+
+.profile_bitton {
+
+    padding: 2px 5px;
+    background: #345;
+    color: #fff;
+    margin: -13px 0 0 230px ;
+    width: 160px;
+    text-align: center;
+    z-index: 0;
+    position: relative;
+    display: none;
+
+
+}
+
+.profile_bitton2 {
+    display: block;
+    padding: 2px 5px;
+    background: #345;
+    color: #fff;
+    /*margin: -13px 0 0 230px ;*/
+    width: 160px;
+    text-align: center;
+    z-index: 0;
+    position: relative;
+    margin-left: 100px;
+    margin-top: -14px;
+    margin-bottom: 11px;
 }
 
 
@@ -651,7 +708,7 @@ a.gb_act {
 #alb_opis {
     position: relative;
     width: 250px;
-    height: 400px;
+    height: 350px;
     color: #ccc;
     font-family: "Times New Roman", Times, serif;
     font-size: 12px;
@@ -1986,9 +2043,6 @@ a.alb_usl {
     display: none;
 }
 
-img {
-    background: url(img/loader2.gif) no-repeat 50% 50%;
-}
 
 .overlay {
     background-color: rgba(0, 0, 0, 0.6);
@@ -2171,8 +2225,8 @@ div.pagination span.disabled, div.page span.disabled {
 }
 
 .zagol2 {
-    float: left;
-    margin: 20px 0 10px 70px;
+   /* float: left;
+    margin: 10px 0 0px 250px;*/
 }
 
 hr.style-one2 {
@@ -2207,19 +2261,8 @@ hr.style-one:before {
     border-radius: 20px;
 }
 
-
 #foto-ajax {
     position: relative;
     bottom: 30px;
 }
 
-/*
-div{
-   behavior:expression(onmouseover=function(){this.className +=" zindex"},onmouseout=function() this.className=this.className.replace("zindex","")},style.behavior=null);
-
-}
-
-.zindex {
-   z-index:1000;
-}
-*/

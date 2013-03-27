@@ -92,7 +92,7 @@ function inserttags(st_t, en_t){
 
 
 <div id="maket"> 
-<div id="photo_preview_bg" onClick="JavaScript: hide_preview();"></div>
+<div id="photo_preview_bg" onClick="JavaScript: hidePreview();"></div>
 <div id="photo_preview"></div>
 
 

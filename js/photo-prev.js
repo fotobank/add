@@ -1,17 +1,18 @@
 $(document).ready(function () {
     $(function () {
-        $(' .top_pos').each(function (i) {
-            $(this).delay((i++) * 500).fadeTo(300, 1);
+        $('.top_pos').each(function (i) {
+            $(this).delay((i) * 500).fadeTo(300, 1);
+            i++;
         });
 
     });
 });
 
 
-function preview(id_photo) {
+function preview(idPhoto) {
 
     $('#photo_preview').fadeTo('fast', 0.01, function () {
-        $('#photo_preview').load('photo_preview.php?id=' + id_photo, function () {
+        $('#photo_preview').load('photo_preview.php?id=' + idPhoto, function () {
             $('#photo_preview_bg').height($(document).height()).toggleClass('hidden').fadeTo('fast', 0.7, function () {
                 $('#photo_preview').alignCenter().toggleClass('hidden').fadeTo('fast', 1);
             });
@@ -34,40 +35,45 @@ $(document).ready(function () {
 });
 
 
-function hide_preview() {
+function hidePreview() {
     $('#photo_preview').toggleClass('hidden').fadeOut('normal', function () {
         $('#photo_preview_bg').toggleClass('hidden').removeAttr('style').hide();
     });
 }
 
-function basket_add(id_photo) {
-    $.post('add_basket.php', {'id': id_photo}, function (data) {
+function basketAdd(idPhoto) {
+    $.post('add_basket.php', {'id': idPhoto}, function (data) {
         var ans = JSON.parse(data);
         if (ans.status == 'ERR') {
-            alert(ans.msg);
+            humane.timeout = (2500);
+            humane.error(ans.msg);
         }
         else {
-            alert('Файл добавлен в корзину!');
+            humane.success(["Файл добавлен в корзину"]);
         }
     });
 }
 
 
-
-function go_vote(event, id_photo) {
+function goVote(event, idPhoto) {
     var voteprice = document.vote_price.id1.value;
-    if (confirm('Цена одного голоса '+ voteprice +' гр. Проголосовать?')) {
-        $.post('go_vote.php', {'id': id_photo}, function (data) {
-            var ans = JSON.parse(data);
-            if (ans.status == 'ERR') {
-                alert(ans.msg);
-            }
-            else {
-                alert('Ваш голос успешно добавлен!');
-                preview(id_photo);
-                //location.replace("fotobanck.php?1=1");
-            }
-        });
-    }
+
+    dhtmlx.confirm({
+        type: "confirm",
+        text: "Цена одного голоса " + voteprice + " гр.<br> Проголосовать?",
+        callback: function (result) {
+            $.post('go_Vote.php', {'id': idPhoto}, function (data) {
+                var ans = JSON.parse(data);
+                if (ans.status == 'ERR') {
+                    humane.timeout = (6000);
+                    humane.error(ans.msg);
+                }
+                else {
+                    humane.info("Ваш голос успешно добавлен");
+                    preview(idPhoto);
+                }
+            })
+        }
+    })
 }
 

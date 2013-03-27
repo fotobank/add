@@ -14,17 +14,21 @@ if (isset($_GET['num'])) {
     $quality = mysql_result( $rs, 0, quality );
 	$dirname = $foto_folder.mysql_result( $rs, 0, id ).'/';	
 	$file_in = substr(($dirname),1) . $file;
-
+	
+	//var_dump ($dirname);
 	$file_out = $file_in;
   if ($watermark == '1' || $ip_marker == '1') {
 	    $file_out = 'tmp/'.$file;	   	    
       imageresize($file_out,$file_in,600,450,$quality,$watermark,$ip_marker,$sharping);
-	if (is_file($file_out)) {
+	if (is_file($file_out)) {		
+		// отключен для защиты
+		header('Content-type: image/jpg');
 		readfile($file_out);		
 		unlink($file_out); 		 			
 	 }	
    }	 	
-
+		// отключен для защиты
+		header('Content-type: image/jpg');
 		readfile($file_out);
 		  
   exit();

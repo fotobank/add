@@ -68,7 +68,7 @@ if (isset($_GET['unchenge_cat']))
     </div>
     <div class="modal-footer">
         <p id="err-modal2" style="float: left;"></p>
-        <button type="button" data-dismiss="modal" class="btn" onClick="JavaScript: window.document.location.href='/fotobanck.php?back_to_albums'">Я не знаю</button>
+        <button type="button" data-dismiss="modal" class="btn" onClick="window.document.location.href='/fotobanck.php?back_to_albums'">Я не знаю</button>
     </div>
 </div>
 </div>
@@ -76,7 +76,7 @@ if (isset($_GET['unchenge_cat']))
 
 
 <!-- ошибка -->
-<div id="error_inf" class="modal hide fade" tabindex="-1" data-replace="true">
+<div id="error_inf" class="modal hide fade"  tabindex="-1" data-replace="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
         <h3 style="color:red">Неправильный пароль.</h3>
@@ -263,7 +263,7 @@ if (isset($_SESSION['current_album'])):
                 <a class="next" href="fotobanck.php?back_to_albums">« назад</a>
                 <a class="next" href="fotobanck.php">« попробовать еще раз</a>
             </div>
-                <img style="margin: 50px 0 0 40px;" src="/img/stop2.jpg" width="615px" height="615px" />
+                <img style="margin: 50px 0 0 40px;" src="/img/stop2.jpg" width="615" height="615" />
                    <!-- <h3><span style="color: #ffa500">Доступ к альбому заблокирован паролем.  <? //check($ip, $ipLog, $timeout);?></span></h3>-->
                     <?
                     if ($_SESSION['popitka'][$_SESSION['current_album']] == -10) // проверка и вывод времени бана
@@ -290,25 +290,16 @@ if ($may_view):
 
    ?>
 
-        <!-- Название альбома  -->
 
-        <div class="zagol2"><h2><span style="color: #ffa500">Фотографии альбома "<?=$album_data['nm']?>"</span></h2></div>
-        <div class="page">
-        <a class="next" href="fotobanck.php?back_to_albums">« назад</a>
-        <a class="next" href="fotobanck.php?unchenge_cat">« раздел "<?=$razdel?>"</a>
-        <a class="next" href="fotobanck.php?back_to_albums">« альбом "<?=$album_data['nm']?>"</a>
-        </div>  <!-- кнопки назад -->
-        <div style="clear: both;"></div>
-        <div class="span13 offset0">
-
-
+<div class="profile">
+        <div id="garmon" class="span12 offset1">
             <div class="accordion" id="accordion2">
                 <div class="accordion-group">
                     <div class="accordion-heading">
                         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">Заказ
                             фотографий:</a>
                     </div>
-                    <div id="collapseOne" class="accordion-body collapse">
+                    <div id="collapseOne" class="accordion-body collapse in">
                         <div class="accordion-inner">
                             <p><span style="font-size:11.0pt;">Фотографии, представленные в альбоме <strong>"<?=$album_data['nm']?>
                                         "</strong>, прошли предварительную ручную обработку и полностью подготовлены к печати в размере 13x18см 300Dpi в городских минилабах с применением стандартного профиля. Внимание! В целях экономии места на сервере и защиты контента превьюшки, представленные на странице, сильно сжаты и предназначены только для общего представления о фотографии (местность, время, кадрировка, закрытые глаза, номер кадра и т.д ). При покупке фотографии на Ваш email,указанный при регистрации, придет ссылка для скачивания файла фотографии в разрешении <code>13x18см
@@ -345,11 +336,72 @@ if ($may_view):
                     </div>
                 </div>
             </div>
+            <a class="profile_bitton2" href="#" >Условия и скидки</a>
         </div> <!-- гармошка -->
+    </div>
+        <a class="profile_bitton" href="#">Условия и скидки</a>
+</div>
+
+
+        <script language=JavaScript type="text/javascript">
+        /*$(function(){
+        $('.profile_bitton , .profile_bitton2').click(function(){
+        $('.profile').slideToggle();
+        });
+        });*/
+
+        idleTimer = null;
+        idleState = false; // состояние отсутствия
+        idleWait = 2000; // время ожидания в мс. (1/1000 секунды)
+        $(document).ready( function(){
+            $('body').on('mouseenter', function(){
+                clearTimeout(idleTimer); // отменяем прежний временной отрезок
+                if(idleState != true){
+                    // Действия на возвращение пользователя
+                    $(".profile_bitton").animate({height: "show"}, 1000);
+                }
+
+                idleState = false;
+                idleTimer = setTimeout(function(){
+                    // Действия на отсутствие пользователя
+                    $(this).animate({height: "hide"}, 1000);
+                    idleState = true;
+                }, idleWait);
+            });
+
+            $("body").trigger("mouseenter"); // сгенерируем ложное событие, для запуска скрипта
+        });
+        </script>
+
+        <!-- Название альбома  -->
+
+
+        <div class="page">
+        <a class="next" href="fotobanck.php?back_to_albums">« назад</a>
+        <a class="next" href="fotobanck.php?unchenge_cat">« раздел "<?=$razdel?>"</a>
+        <a class="next" href="fotobanck.php?back_to_albums">« альбом "<?=$album_data['nm']?>"</a>
+        </div>  <!-- кнопки назад -->
+    <div class="zagol2" class="span5 offset0" ><h2><span style="color: #ffa500; float: left;  margin: 20px 0 0 300px;">Фотографии альбома "<?=$album_data['nm']?>"</span></h2></div>
+        <div style="clear: both;"></div>
 
 
 
+       <!-- <script language=JavaScript type="text/javascript">
+                       (function($){
+                       $('.fb_act, #garmon').mouseenter(function() {
+                       $('#garmon').fadeIn();
+                       });
+                       setTimeout(function() {
+                       $(this).mouseleave(function() {
 
+                       $('#garmon').fadeOut();
+                           })}, 2000);
+                       })(jQuery))
+
+      id="appendedDropdownButton"
+
+
+        </script>-->
 
 
           <!--/*выводим фотографию - заголовок альбома*/ -->
@@ -365,7 +417,6 @@ if ($may_view):
                         <?=$album_data['descr']?>
                     </div>
             <!-- вывод топ 5  -->
-
 
                     <?
                     if ($may_view)
@@ -402,7 +453,7 @@ if ($may_view):
                                             <div id="foto_top">
 <!--                                            <div  class="span2 offset0" >-->
 
-                                                <figure class="ramka" onClick="JavaScript: preview(<?= $ln['id'] ?>);">
+                                                <figure class="ramka" onClick="preview(<?=$ln['id']?>);">
                                                     <span class="top_pos" style="opacity: 0;"><?=$pos_num?></span>
                                                     <img src="dir.php?num=<?= substr(trim($ln['img']), 2, -4) ?>" alt="<?= $ln['nm'] ?>" title="Нажмите для просмотра" <?=$sz_string?> />
                                                     <figcaption><span style="font-size: x-small; font-family: Times, serif; ">№ <?=$ln['nm']?>
@@ -443,7 +494,7 @@ if ($may_view):
                                 {
                                         ?>
 
-<!-- 3 --><hr class="style-one" style="margin-top: -30px; margin-bottom: -30px;">
+<!-- 3 --><hr class="style-one" style="margin-top: 10px; margin-bottom: -20px;">
                                         <?
 
                                     while ($ln = mysql_fetch_assoc($rs))
@@ -462,11 +513,9 @@ if ($may_view):
                                             ?>
 
                                             <div class="podlogka">
-                                                <figure class="ramka" onClick="JavaScript: preview(<?= $ln['id'] ?>);">
-                                                    <img src="dir.php?num=<?= substr(trim($ln['img']), 2, -4) ?>" title="За фотографию проголосовало <?= $ln['votes'] ?> человек. Нажмите для просмотра." <?=$sz_string?> />
+                                                <figure class="ramka" onClick="preview(<?=$ln['id']?>);">
+                                                    <img src="dir.php?num=<?= substr(trim($ln['img']), 2, -4) ?>"  title="За фотографию проголосовало <?= $ln['votes'] ?> человек. Нажмите для просмотра." <?=$sz_string?> />
 
-
-                                                
                                                     <figcaption>№ <?=$ln['nm']?></figcaption>
                                                 </figure>
                                             </div>
@@ -576,6 +625,7 @@ if ($may_view):
     if ($current_cat > 0)
         {
 /* <!--Вывести поле nm из бд в шапку --> */
+            $razdel = '';
           if (isset($_SESSION['current_cat']))  $razdel = mysql_result(mysql_query('select nm from categories where id = '.$_SESSION['current_cat']), 0);
        ?><div class="zagol2"><h2><span style="color: #ffa500">Раздел фотобанка - "<?=$razdel;?>"</span></h2></div>
  <!-- Кнопки назад -->
@@ -694,3 +744,4 @@ endif; ?>
 
 <?php include ('inc/footer.php');
 ?>
+           

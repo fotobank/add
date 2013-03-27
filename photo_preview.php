@@ -38,11 +38,11 @@ if ($id > 0)
                 ?>
 
                 <? if ($left_id): ?>
-                <div class="left_pointer2" onClick="JavaScript: preview(<?= $left_id ?>);"></div>
+                <div class="left_pointer2" onClick="preview(<?=$left_id ?>);"></div>
             <? endif; ?>
 
                 <? if ($right_id): ?>
-                <div class="right_pointer2" onClick="JavaScript: preview(<?= $right_id ?>);"></div>
+                <div class="right_pointer2" onClick="preview(<?=$right_id ?>);"></div>
             <? endif; ?>
 
 
@@ -50,7 +50,7 @@ if ($id > 0)
 
                     <div style="text-align: center; width: 100%;">
 
-                        <img src="dir.php?num=<?= substr(($photo_data['img']), 2, -4) ?>" alt="<?= $photo_data['nm'] ?>" title="Фотография № <?= $photo_data['nm'] ?><?= $right_id ?>. Нажмите,чтобы закрыть." onClick="JavaScript: hide_preview();"/>
+                        <img src="dir.php?num=<?= substr(($photo_data['img']), 2, -4) ?>" alt="<?=$photo_data['nm']?>" title="Фотография № <?=$photo_data['nm']?><?=$right_id?>. Нажмите,чтобы закрыть." onClick="hidePreview();"/>
                     </div>
                     <div>
                         <table border="0" cellspacing="10px" width="100%">
@@ -60,32 +60,32 @@ if ($id > 0)
                                     <br>
                                     <?
             //Вместо * можно подставить тэг <img> с картинкой - печать звездочек
-                                    echo str_repeat('<img src="img/reyt.png"/>', floor($photo_data['votes'] / 5));
+                                    echo str_repeat('<img src="/img/reyt.png"/>', floor($photo_data['votes'] / 5));
                                     ?>
                                 </td>
                             </tr>
                             <tr>
                                 <td align="left">
                                     <? if ($left_id): ?>
-                                        <div class="left_pointer" onClick="JavaScript: preview(<?= $left_id ?>);"></div>
+                                        <div class="left_pointer" onClick="preview(<?=$left_id?>);"></div>
                                     <? else: ?>
-                                        <div class="pointer_hidden" onClick="JavaScript: hide_preview();"></div>
+                                        <div class="pointer_hidden" onClick="hidePreview();"></div>
                                     <? endif; ?>
                                 </td>
                                 <td valign="top" width="33%" align="left">
-                                    <input type="button" value="В корзину" style="cursor: pointer;" onClick="JavaScript: basket_add(<?= $photo_data['id'] ?>);"/><br/>
+                                    <input type="button" value="В корзину" style="cursor: pointer;" onClick="basketAdd(<?=$photo_data['id']?>);"/><br/>
                                     Цена: <?=(floatval($photo_data['price']) > 0 ? $photo_data['price'].'грн.' : 'бесплатно')?>
                                 </td>
                                 <td valign="top" width="33%" align="right">
-                                    <input type="button" value="Голосовать" style="cursor: pointer;" onClick="JavaScript: go_vote(event, <?= $photo_data['id'] ?>);"/><br/>
+                                    <input type="button" value="Голосовать" style="cursor: pointer;" onClick="goVote(event, <?= $photo_data['id'] ?>);"/><br/>
                                     Голосов: (<?=$photo_data['votes']?>)
                                 </td>
 
                                 <td align="right">
                                     <? if ($right_id): ?>
-                                        <div class="right_pointer" onClick="JavaScript: preview(<?= $right_id ?>);"></div>
+                                        <div class="right_pointer" onClick="preview(<?=$right_id?>);">
                                     <? else: ?>
-                                        <div class="pointer_hidden" onClick="JavaScript: hide_preview();"></div>
+                                        <div class="pointer_hidden" onClick="hidePreview();"></div>
                                     <? endif; ?>
 
                                 </td>
