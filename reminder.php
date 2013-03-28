@@ -1,5 +1,6 @@
 <?php
-//include ('inc/head.php');
+include ('inc/head.php');
+
 
 
 ?>
@@ -100,7 +101,7 @@ if(isset($_POST['go_rem']))
 </div>
 
 
-    <div class="end_content"></div>
-</div>
+   <div class="end_content"></div>
+<</div>
 <?php include ('inc/footer.php');
 ?>

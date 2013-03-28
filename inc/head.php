@@ -1,7 +1,7 @@
 <?
     include __DIR__.'./config.php';
     include __DIR__.'./func.php';
-    include '/reminder.php';
+
 
     header('Content-type: text/html; charset=windows-1251');
 
@@ -68,8 +68,10 @@
         <script type="text/javascript" src="/js/humane/humane.js"></script>
 
         <link href="/css/main.css" rel="stylesheet" type="text/css"/>
+        <?
 
-        <? if (strstr($_SERVER['PHP_SELF'], 'folder_for_prototype')): ?>
+
+          if (strstr($_SERVER['PHP_SELF'], 'folder_for_prototype')): ?>
             <script type="text/javascript" src="/js/prototype.js"></script>
             <script type="text/javascript" src="/js/scriptaculous.js?load=effects"></script>
             <script type="text/javascript" src="/js/lightbox.js"></script>
@@ -424,15 +426,12 @@
     });
 })(jQuery)*/
 
-
-
-
     </script>
 
-
     <!--Голова конец-->
-
 <?
+
+
     if ($value == '/gb/index.php'): ?>
         <div id="main">
     <table width=<?= $TABWIDTH ?> border=2 cellspacing=0 cellpadding=2>
