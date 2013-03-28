@@ -52,10 +52,10 @@ function basketAdd(idPhoto) {
             humane.error(ans.msg);
         }
         else {
-            humane.success(["Файл добавлен в корзину"]);
+           // humane.success(["Файл добавлен в корзину"]);
             dhtmlx.message({
-                text: "Файл добавлен",
-                expire:-1,
+                text: "Фотография добавленна в корзину",
+                expire:20000,
                 type:"addfoto" // 'customCss' - css класс
             });
         }
@@ -69,7 +69,7 @@ function goVote(event, idPhoto) {
     dhtmlx.confirm({
         type: "confirm",
         text: "Цена одного голоса " + voteprice + " гр.<br> Проголосовать?",
-        callback: function (result) {
+        callback: function () {
             $.post('go_Vote.php', {'id': idPhoto}, function (data) {
                 var ans = JSON.parse(data);
                 if (ans.status == 'ERR') {
@@ -79,14 +79,11 @@ function goVote(event, idPhoto) {
                 }
                 else {
 
-                    dhtmlx.message({
-                        text:"Ваш голос добавлен",
-                        expire:-1,
-                        type:"addgolos" // 'customCss' - css класс
-                    });
-                    humane.info("Ваш голос успешно добавлен");
+                    dhtmlx.message({ text:"Ваш голос добавлен", expire: 10000, type:"addgolos" });// 'customCss' - css класс
+
+                   // humane.info("Ваш голос успешно добавлен");
                     preview(idPhoto);
-                }
+                     }
             })
         }
     })
