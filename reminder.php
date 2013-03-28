@@ -50,7 +50,7 @@ if(isset($_POST['go_rem']))
       // Отправляем письмо
       if (!mail($user_data['email'], $subject, $letter, $headers))
       {
-        $msg = '<span style="color: #E89339; font-size:18px;">Ошибка: "Не удалось отправить письмо." Пожалуйста, попробуйте позже.</span>';
+        $msg = "Ошибка: Не удалось отправить письмо. Пожалуйста, попробуйте позже.";
       }
     }
     else
@@ -70,10 +70,7 @@ if(isset($_POST['go_rem']))
 
 ?>
 
-
     <!-- восстановление пароля -->
-
-
     <div id="vosst" class="modal hide fade in animated fadeInDown" style="position: absolute; top: 40%; left: 50%; z-index: 1;" data-keyboard="false" data-width="480" data-focus-on="input:first" data-backdrop="static" tabindex="-1" aria-hidden="false">
         <div class="modal-header" style="background: rgba(229,229,229,0.53)">
             <div>
@@ -93,7 +90,8 @@ if(isset($_POST['go_rem']))
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" data-dismiss="modal" class="btn" onClick="window.document.location.href='/index.php'">
+            <button type="button" data-dismiss="modal" class="btn" onClick="history.go(-1);">
+
                 Закрыть
             </button>
         </div>
