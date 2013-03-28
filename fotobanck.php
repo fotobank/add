@@ -32,6 +32,7 @@ if (isset($_GET['unchenge_cat']))
         unset($_SESSION['current_cat']);
     }
 
+
 ?>
 <form name=vote_price>
 <?

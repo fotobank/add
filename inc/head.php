@@ -1,6 +1,7 @@
 <?
     include __DIR__.'./config.php';
     include __DIR__.'./func.php';
+
     header('Content-type: text/html; charset=windows-1251');
 
 
@@ -13,6 +14,8 @@
         <meta name="google-site-verification" content="uLdE_lzhCOntN_AaTM1_sQNmIXFk1-Dsi5AWS0bKIgs"/>
         <link href='http://fonts.googleapis.com/css?family=Lobster|Comfortaa:700|Jura:600&subset=cyrillic,cyrillic-ext' rel='stylesheet' type='text/css'>
         <?
+        include __DIR__.'./lib_errors.php';
+       // include __DIR__.'./using_example.php';
         include __DIR__.'./title.php';
         ?>
 
@@ -44,6 +47,7 @@
         <script src="/js/jquery.js"></script>
         <script src="/js/bootstrap.min.js"></script>
         <script src="/js/main.js"></script>
+        <script src="/js/no-copy.js"></script>
 
 
         <link href="/css/animate.css" rel="stylesheet" type="text/css"/>
@@ -71,29 +75,6 @@
             <script type="text/javascript" src="/js/lightbox.js"></script>
         <? endif; ?>
 
-
-        <script language=JavaScript type="text/javascript">
-            function clickIE4() {
-                if (event.button == 2) {
-                    return false;
-                }
-            }
-            function clickNS4(e) {
-                if (document.layers || document.getElementById && !document.all) {
-                    if (e.which == 2 || e.which == 3) {
-                        return false;
-                    }
-                }
-            }
-            if (document.layers) {
-                document.captureEvents(Event.MOUSEDOWN);
-                document.onmousedown = clickNS4;
-            }
-            else if (document.all && !document.getElementById) {
-                document.onmousedown = clickIE4;
-            }
-            document.oncontextmenu = new Function("return false");
-        </script>
 
 
         <script language=JavaScript type="text/javascript">
@@ -265,11 +246,10 @@
     if (isset($_SESSION['err_msg']))
         {
             ?>
-          echo
-            "<script type='text/javascript'>
-                dhtmlx.message({ type:'error', text:'Ошибка!<br><?=$_SESSION['err_msg']?>' });
-            //   humane.error('Ошибка!<br>--><?//=$_SESSION['err_msg']?><!--');
-            </script>"
+            <script type='text/javascript'>
+                dhtmlx.message({ type:'error', text:'Ошибка!<br><?=$_SESSION['err_msg']?>'});
+                  humane.error('Ошибка!<br><?=$_SESSION['err_msg']?>');
+            </script>
             <?
             unset($_SESSION['err_msg']);
         }
@@ -280,11 +260,10 @@
     if (isset($_SESSION['ok_msg']))
         {
             ?>
-          echo
-            "<script type='text/javascript'>
-                    dhtmlx.message('Добро пожаловать!<br><span>-->--><?////=$_SESSION['ok_msg']?><!--<!--</span>');
-            //  humane.log('Добро пожаловать!<br><span>--><?//=$_SESSION['ok_msg']?><!--</span>');
-            </script>"
+
+            <script type='text/javascript'>
+              humane.success('Добро пожаловать!<br><span><?=$_SESSION['ok_msg']?></span>');
+            </script>
            <?
             unset($_SESSION['ok_msg']);
         }
@@ -469,4 +448,4 @@
         </tr>
         <tr>
             <td>
-    <? endif; ?>
+    <? endif; ?>   

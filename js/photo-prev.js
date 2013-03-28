@@ -41,11 +41,14 @@ function hidePreview() {
     });
 }
 
+humane.clickToClose = (true);
+humane.timeout = (2500);
+
 function basketAdd(idPhoto) {
     $.post('add_basket.php', {'id': idPhoto}, function (data) {
         var ans = JSON.parse(data);
         if (ans.status == 'ERR') {
-            humane.timeout = (2500);
+
             humane.error(ans.msg);
         }
         else {
@@ -65,6 +68,7 @@ function goVote(event, idPhoto) {
             $.post('go_Vote.php', {'id': idPhoto}, function (data) {
                 var ans = JSON.parse(data);
                 if (ans.status == 'ERR') {
+
                     humane.timeout = (6000);
                     humane.error(ans.msg);
                 }
