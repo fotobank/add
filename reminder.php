@@ -4,9 +4,12 @@ include ('inc/head.php');
 
 ?>
 
-
-
-
+echo "
+<script type='text/javascript'>
+    $(document).ready(function load() {
+        $('#vosst').modal('show');
+    });
+</script>";
 
 <div id="main">
 <?
@@ -57,6 +60,8 @@ if(isset($_POST['go_rem']))
 	if($msg != '')
 	{
 		?>
+
+        dhtmlx.message({ type:"error", text:"Вы нажали кнопку <br>сообщения об ошибке!" })
 		<div style="color: #E89339; font-size:18px;"><?=$msg?></div>
 		<?
 	}
@@ -69,40 +74,24 @@ if(isset($_POST['go_rem']))
     <!-- восстановление пароля -->
 
 
-    <div id="static" class="modal hide fade in animated fadeInDown" data-keyboard="false" data-backdrop="static" tabindex="-1" aria-hidden="false">
-        <div class="modal-header">
-            <div style="text-align: center;">
-                <div>
-                    <h2>
-                        <hremind><b>Восстановление пароля:</b></hremind>
-                    </h2>
-                </div>
+    <div id="vosst" class="modal hide fade in animated fadeInDown" data-keyboard="false" data-backdrop="static" tabindex="-1" aria-hidden="false">
+        <div class="modal-header" style="background: rgba(229,229,229,0.53)">
+            <div>
+                <h3>
+                    <b>Восстановление пароля захода на сайт:</b>
+                </h3>
             </div>
         </div>
         <div class="modal-body">
-            <div class="form_reg" style="padding: -10px; color:#ccc; font-size:18px;">
-                <br>
-                <form action="reminder.php" method="post">
-                    <table border="0" cellspacing="5">
-                        <tr>
-                            <td>E-mail:</td>
-                            <td><label> <input class="inp_f_reg" type="text" name="email" value=""/> </label></td>
-                        </tr>
-                        <tr>
-                            <td>или логин:</td>
-                            <td><label> <input class="inp_f_reg" type="text" name="login" value=""/> </label></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" align="center">
-                                <input type="hidden" name="go_rem" value="1"/>
-                                <input class="metall_knopka" type="submit" value="Напомнить" style="margin-top: 20px;"/>
-                            </td>
-                        </tr>
-                    </table>
+            <div class="form_reg" style="color:#000; font-size:16px;">
+                <form action="/reminder.php" method="post">
+                   <label> Введите E-mail:  <input class="inp_f_reg" style="margin-left: 8px; width: 200px" type="text" name="email" value=""/> </label>
+                    <label style="float: left">или логин:  <input class="inp_f_reg" style="margin-left: 35px; width: 200px" type="text" name="login" value=""/> </label>
+                    <input type="hidden" name="go_rem" value="1"/>
+                    <input class="btn" type="submit" value="Напомнить" style="float: right; margin: -10px 0 0 0 "/>
                 </form>
             </div>
         </div>
-
         <div class="modal-footer">
             <button type="button" data-dismiss="modal" class="btn" onClick="window.document.location.href='/index.php'">
                 Закрыть
