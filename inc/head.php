@@ -1,6 +1,7 @@
 <?
     include __DIR__.'./config.php';
     include __DIR__.'./func.php';
+    include '/reminder.php';
 
     header('Content-type: text/html; charset=windows-1251');
 
@@ -38,7 +39,6 @@
 
         <link rel="shortcut icon" type="image/vnd.microsoft.icon" href="/favicon.ico"/>
         <link rel="shortcut icon" href="/img/ico_nmain.gif"/>
-        <link href="/css/main.css" rel="stylesheet" type="text/css"/>
         <link href="/css/dynamic-to-top.css" rel="stylesheet" type="text/css"/> <!-- кнопка вверх -->
         <link href="/css/bootstrap.css" rel="stylesheet"/>
         <link rel="stylesheet" href="/css/lightbox.css" type="text/css" media="screen"/>
@@ -67,7 +67,7 @@
         <link href="/js/humane/themes/bigbox.css" rel="stylesheet" type="text/css"/>
         <script type="text/javascript" src="/js/humane/humane.js"></script>
 
-
+        <link href="/css/main.css" rel="stylesheet" type="text/css"/>
 
         <? if (strstr($_SERVER['PHP_SELF'], 'folder_for_prototype')): ?>
             <script type="text/javascript" src="/js/prototype.js"></script>

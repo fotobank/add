@@ -2265,3 +2265,7 @@ hr.style-one:before {
     position: relative;
     bottom: 30px;
 }
+
+.dhtmlx_message_area{
+    z-index:2000;
+}
