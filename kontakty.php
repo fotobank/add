@@ -42,12 +42,12 @@
 
     #form_wrap:before {content:"";
         position:absolute;
-        bottom:128px;left:0px;
+        bottom:128px;left:0;
         background:url('img/before.png');
         width:530px;height: 316px;}
 
     #form_wrap:after {content:"";position:absolute;
-        bottom:0px;left:0;
+        bottom:0;left:0;
         background:url('img/after.png');
         width:530px;height: 260px; }
 

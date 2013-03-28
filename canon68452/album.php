@@ -319,6 +319,7 @@ if (isset($_POST['go_ftp_upload']))
 if (isset($_POST['go_updown']))
     {
         $swap_id = 0;
+        $swap_order = 0;
         $id = intval($_POST['go_updown']);
         $current_order = intval(mysql_result(mysql_query('select order_field from albums where id = '.$id), 0));
         if ($current_order > 0)
@@ -466,7 +467,7 @@ if (mysql_num_rows($rs_cat) > 0)
                             }
                         ?>
                     </select> <input class="btn btn-success" type="hidden" name="chenge_cat" value="1"/>
-                    <!--<input class="btn btn-success" type="submit" value="открыть" />-->
+                    <input class="btn btn-success" type="submit" value="открыть" />
                 </form>
             </div>
         </div>
@@ -508,7 +509,7 @@ if (mysql_num_rows($rs) > 0)
                         }
                     ?>
                 </select> <input class="btn btn-success" type="hidden" name="chenge_album" value="1"/>
-                <!--<input class="btn  btn-success" type="submit" value="открыть" />-->
+                <input class="btn  btn-success" type="submit" value="открыть" />
             </form>
 
         </div>

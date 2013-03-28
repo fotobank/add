@@ -2,9 +2,7 @@
 include ('inc/head.php');
 
 
-
 ?>
-
 echo "
 <script type='text/javascript'>
     $(document).ready(function load() {
@@ -82,8 +80,8 @@ if(isset($_POST['go_rem']))
         <div class="modal-body">
             <div class="form_reg" style="color:#000; font-size:16px;">
                 <form action="/reminder.php" method="post">
-                   <label> Введите E-mail:  <input data-tabindex="1" class="inp_f_reg" style="margin-left: 8px; width: 200px" type="text" name="email" value=""/> </label>
-                    <label style="float: left">или логин:  <input data-tabindex="2" class="inp_f_reg" style="margin-left: 35px; width: 200px" type="text" name="login" value=""/> </label>
+                   <label> Введите E-mail:  <input data-tabindex="1" maxlength="20" class="inp_f_reg" style="margin-left: 8px; width: 200px" type="text" name="email" value=""/> </label>
+                    <label style="float: left">или логин:  <input data-tabindex="2" maxlength="20" class="inp_f_reg" style="margin-left: 35px; width: 200px" type="text" name="login" value=""/> </label>
                     <input type="hidden" name="go_rem" value="1"/>
                     <input class="btn" type="submit" value="Напомнить" style="float: right; margin: -10px 0 0 0 "/>
                 </form>
