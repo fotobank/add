@@ -27,7 +27,7 @@ if(isset($_POST['go_rem']))
   }
   else
   {
-    $msg = '<span style="color: #E89339; font-size:18px;">Ошибка: "Ни одно из полей не заполнено". Пожалуйста, будьте внимательны.</span>';
+    $msg = "Ошибка: <br>Ни одно из полей не заполнено. Пожалуйста, будьте внимательны.";
 	}
 	if($where != '')
 	{
@@ -54,21 +54,20 @@ if(isset($_POST['go_rem']))
     }
     else
     {
-      $msg = '<span style="color: #E89339; font-size:18px;">Ошибка: "Пользователь не найден."</span>';
+      $msg = "Ошибка:<br> Пользователь не найден.";
     }
 	}
 	if($msg != '')
 	{
-		?>
+		echo
+        "<script type='text/javascript'>
+        dhtmlx.message({ type:'error', text:'$msg'})
+        </script>";
 
-        dhtmlx.message({ type:"error", text:"Вы нажали кнопку <br>сообщения об ошибке!" })
-		<div style="color: #E89339; font-size:18px;"><?=$msg?></div>
-		<?
 	}
 }
 
 ?>
-
 
 
     <!-- восстановление пароля -->
