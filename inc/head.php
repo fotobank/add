@@ -247,7 +247,7 @@
         {
             ?>
             <script type='text/javascript'>
-                dhtmlx.message({ type:'error', text:'Ошибка!<br><?=$_SESSION['err_msg']?>'});
+              //  dhtmlx.message({ type:'error', text:'Ошибка!<br><?=$_SESSION['err_msg']?>'});
                   humane.error('Ошибка!<br><?=$_SESSION['err_msg']?>');
             </script>
             <?
@@ -260,9 +260,8 @@
     if (isset($_SESSION['ok_msg']))
         {
             ?>
-
             <script type='text/javascript'>
-              humane.success('Добро пожаловать!<br><span><?=$_SESSION['ok_msg']?></span>');
+              humane.success("Добро пожаловать, <?=$_SESSION['us_name']?>!<br><span><?=$_SESSION['ok_msg']?></span>");
             </script>
            <?
             unset($_SESSION['ok_msg']);
