@@ -47,7 +47,7 @@
         <script src="/js/jquery.js"></script>
         <script src="/js/bootstrap.min.js"></script>
         <script src="/js/main.js"></script>
-        <script src="/js/no-copy.js"></script>
+<!--        <script src="/js/no-copy.js"></script>-->
 
 
         <link href="/css/animate.css" rel="stylesheet" type="text/css"/>
@@ -55,8 +55,8 @@
         <script src="/js/bootstrap-modalmanager.js"></script>
         <script src="/js/bootstrap-modal.js"></script>
 
-
-        <link href="/js/jsmessage/codebase/themes/message_default.css" rel="stylesheet" type="text/css"/> <!--сообщения-->
+        <!--сообщения-->
+        <link href="/js/jsmessage/codebase/themes/message_default.css" rel="stylesheet" type="text/css"/>
         <script type="text/javascript" src="/js/jsmessage/codebase/message.js"></script>
 
 

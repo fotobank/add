@@ -3,9 +3,12 @@ include ('inc/head.php');
 
 
 ?>
-<div id="main">
 
-<center>
+
+
+
+
+<div id="main">
 <?
 if(isset($_POST['go_rem']))
 {
@@ -60,31 +63,56 @@ if(isset($_POST['go_rem']))
 }
 
 ?>
-</center>
 
-<div class="form_reg" style="padding: -10px; color:#ccc; font-size:18px;">
-    <center><div><h2><hremind><b>Восстановление пароля:</b></hremind></h2></div></centerp><br>
-    <form action="reminder.php" method="post">
-      <table border="0" cellspacing="5">
-        <tr>
-          <td>E-mail:</td>
-          <td><input class="inp_f_reg" type="text" name="email" value="" /></td>
-        </tr>
-        <tr>
-          <td>или логин:</td>
-          <td><input class="inp_f_reg" type="text" name="login" value="" /></td>
-        </tr>
-        <tr>
-          <td colspan="2" align="center">
-            <input type="hidden" name="go_rem" value="1" />
-            <input class="metall_knopka" type="submit" value="Напомнить"style="margin-top: 20px;"  />
-          </td>
-        </tr>
-      </table>
-    </form>
-  </div>
+
+
+    <!-- восстановление пароля -->
+
+
+    <div id="static" class="modal hide fade in animated fadeInDown" data-keyboard="false" data-backdrop="static" tabindex="-1" aria-hidden="false">
+        <div class="modal-header">
+            <div style="text-align: center;">
+                <div>
+                    <h2>
+                        <hremind><b>Восстановление пароля:</b></hremind>
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="form_reg" style="padding: -10px; color:#ccc; font-size:18px;">
+                <br>
+                <form action="reminder.php" method="post">
+                    <table border="0" cellspacing="5">
+                        <tr>
+                            <td>E-mail:</td>
+                            <td><label> <input class="inp_f_reg" type="text" name="email" value=""/> </label></td>
+                        </tr>
+                        <tr>
+                            <td>или логин:</td>
+                            <td><label> <input class="inp_f_reg" type="text" name="login" value=""/> </label></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="center">
+                                <input type="hidden" name="go_rem" value="1"/>
+                                <input class="metall_knopka" type="submit" value="Напомнить" style="margin-top: 20px;"/>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" data-dismiss="modal" class="btn" onClick="window.document.location.href='/index.php">
+                Закрыть
+            </button>
+        </div>
+    </div>
 </div>
-<div class="end_content"></div>
+
+
+    <div class="end_content"></div>
 </div>
 <?php include ('inc/footer.php');
 ?>
