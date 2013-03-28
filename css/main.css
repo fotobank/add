@@ -2266,3 +2266,16 @@ hr.style-one:before {
     bottom: 30px;
 }
 
+.dhtmlx-addfoto{
+
+    font-weight:bold !important;
+    color: #222222 !important;
+    background-color: #a165ff !important;
+}
+
+.dhtmlx-addgolos {
+
+    font-weight:bold !important;
+    color: #222222 !important;
+    background-color: #fff748 !important;
+}

@@ -53,6 +53,11 @@ function basketAdd(idPhoto) {
         }
         else {
             humane.success(["Файл добавлен в корзину"]);
+            dhtmlx.message({
+                text: "Файл добавлен",
+                expire:-1,
+                type:"addfoto" // 'customCss' - css класс
+            });
         }
     });
 }
@@ -73,6 +78,12 @@ function goVote(event, idPhoto) {
                     humane.error(ans.msg);
                 }
                 else {
+
+                    dhtmlx.message({
+                        text:"Ваш голос добавлен",
+                        expire:-1,
+                        type:"addgolos" // 'customCss' - css класс
+                    });
                     humane.info("Ваш голос успешно добавлен");
                     preview(idPhoto);
                 }
