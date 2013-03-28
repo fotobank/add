@@ -104,7 +104,7 @@ if(isset($_POST['go_rem']))
         </div>
 
         <div class="modal-footer">
-            <button type="button" data-dismiss="modal" class="btn" onClick="window.document.location.href='/index.php">
+            <button type="button" data-dismiss="modal" class="btn" onClick="window.document.location.href='/index.php'">
                 Закрыть
             </button>
         </div>
