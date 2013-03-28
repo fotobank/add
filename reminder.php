@@ -27,7 +27,7 @@ if(isset($_POST['go_rem']))
   }
   else
   {
-    $msg = "Ошибка: <br>Ни одно из полей не заполнено. Пожалуйста, будьте внимательны.";
+    $msg = "Ошибка: <br>Необходимо заполнить одно из полей.";
 	}
 	if($where != '')
 	{
@@ -73,7 +73,7 @@ if(isset($_POST['go_rem']))
     <!-- восстановление пароля -->
 
 
-    <div id="vosst" class="modal hide fade in animated fadeInDown" data-keyboard="false" data-backdrop="static" tabindex="-1" aria-hidden="false">
+    <div id="vosst" class="modal hide fade in animated fadeInDown" style="position: absolute; top: 40%; left: 50%; z-index: 1;" data-keyboard="false" data-width="480" data-focus-on="input:first" data-backdrop="static" tabindex="-1" aria-hidden="false">
         <div class="modal-header" style="background: rgba(229,229,229,0.53)">
             <div>
                 <h3>
@@ -84,8 +84,8 @@ if(isset($_POST['go_rem']))
         <div class="modal-body">
             <div class="form_reg" style="color:#000; font-size:16px;">
                 <form action="/reminder.php" method="post">
-                   <label> Введите E-mail:  <input class="inp_f_reg" style="margin-left: 8px; width: 200px" type="text" name="email" value=""/> </label>
-                    <label style="float: left">или логин:  <input class="inp_f_reg" style="margin-left: 35px; width: 200px" type="text" name="login" value=""/> </label>
+                   <label> Введите E-mail:  <input data-tabindex="1" class="inp_f_reg" style="margin-left: 8px; width: 200px" type="text" name="email" value=""/> </label>
+                    <label style="float: left">или логин:  <input data-tabindex="2" class="inp_f_reg" style="margin-left: 35px; width: 200px" type="text" name="login" value=""/> </label>
                     <input type="hidden" name="go_rem" value="1"/>
                     <input class="btn" type="submit" value="Напомнить" style="float: right; margin: -10px 0 0 0 "/>
                 </form>
