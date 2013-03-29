@@ -2,7 +2,7 @@ $(document).ready(function () {
     $(function () {
         $('.top_pos').each(function (i) {
             $(this).delay((i) * 500).fadeTo(300, 1);
-            i++;
+
         });
 
     });

@@ -44,7 +44,7 @@ if (isset($_GET['unchenge_cat']))
 
 
 <div id="main">
-<script type="text/javascript" src="js/photo-prev.js"></script>
+<script type="text/javascript" src="/js/photo-prev.js"></script>
 
 
 <!-- ввод пароля -->
@@ -161,10 +161,10 @@ if (isset($_SESSION['current_album'])):
                                         */
                                         ?>
                                         echo "<script type='text/javascript'>
-                                        var InfDok = document.getElementById('err-modal1');
-                                        if(InfDok)
+                                        var infdok = document.getElementById('err-modal1');
+                                        if(infdok)
                                         {
-                                        InfDok.style.display = 'block';
+                                        infdok.style.display = 'block';
                                         }
                                         </script>";
                                         <?
@@ -244,9 +244,9 @@ if (isset($_SESSION['current_album'])):
                     }
 
                     echo "<script type='text/javascript'>
-                        var InfDok = document.getElementById('err-modal2');
+                        var infdok = document.getElementById('err-modal2');
                         var SummDok = '$popitka';
-                        InfDok.innerHTML = SummDok;
+                        infdok.innerHTML = SummDok;
                         </script>";
             }
 
@@ -265,7 +265,7 @@ if (isset($_SESSION['current_album'])):
                 <a class="next" href="fotobanck.php?back_to_albums">« назад</a>
                 <a class="next" href="fotobanck.php">« попробовать еще раз</a>
             </div>
-                <img style="margin: 20px 0 0 40px;" src="/img/anti.png" width="300" height="300" />
+                <img style="margin: 20px 0 0 40px;" src="/img/anti.png" width="347" height="346" />
                    <!-- <h3><span style="color: #ffa500">Доступ к альбому заблокирован паролем.  <? //check($ip, $ipLog, $timeout);?></span></h3>-->
                     <?
                     if ($_SESSION['popitka'][$_SESSION['current_album']] == -10) // проверка и вывод времени бана
