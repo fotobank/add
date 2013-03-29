@@ -430,16 +430,19 @@ a.bt_rgstr:hover {
 }
 
 .profile_bitton {
-
+    display: block;
     padding: 2px 5px;
     background: #345;
     color: #fff;
     margin: -13px 0 0 230px ;
     width: 160px;
+    height: 22px;
     text-align: center;
     z-index: 0;
-    position: relative;
-    display: none;
+    position: absolute;
+
+    /*display: none;*/
+
 
 
 }
@@ -451,8 +454,9 @@ a.bt_rgstr:hover {
     color: #fff;
     /*margin: -13px 0 0 230px ;*/
     width: 160px;
+    height: 100px;
     text-align: center;
-    z-index: 0;
+    z-index: 1;
     position: relative;
     margin-left: 100px;
     margin-top: -14px;
@@ -2266,6 +2270,40 @@ hr.style-one:before {
     bottom: 30px;
 }
 
+/* костыль для сообщений*/
 .dhtmlx_message_area{
     z-index:2000;
+}
+
+.four-block .box {
+    margin: 0 1.5% 0 0;
+    width: 48.5%;
+}
+.box {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border-radius: 4px 4px 4px 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    float: left;
+    height: 100%;
+    overflow: hidden;
+}
+
+.single .box {
+    width: 100%;
+}
+.box {
+    background: none repeat scroll 0 0 #a7a7a7;
+    border-radius: 4px 4px 4px 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    float: left;
+    height: 100%;
+    overflow: hidden;
+}
+
+.left-small .box:first-child {
+    margin: 0 1.5% 0 0;
+    width: 33.5%;
+}
+.left-small .box, .left-big .box {
+
 }

@@ -10,7 +10,8 @@ $ip = getip(); // Ip пользователя
 
 //Количество фоток на странице
 
-define('PHOTOS_ON_PAGE', 21);
+define('PHOTOS_ON_PAGE', 6);
+
 
 if (isset($_GET['album_id']))
     {
@@ -43,7 +44,7 @@ if (isset($_GET['unchenge_cat']))
 
 
 <div id="main">
-<script type="text/javascript" src="/js/photo-prev.js"></script>
+<script type="text/javascript" src="js/photo-prev.js"></script>
 
 
 <!-- ввод пароля -->
@@ -264,7 +265,7 @@ if (isset($_SESSION['current_album'])):
                 <a class="next" href="fotobanck.php?back_to_albums">« назад</a>
                 <a class="next" href="fotobanck.php">« попробовать еще раз</a>
             </div>
-                <img style="margin: 50px 0 0 40px;" src="/img/stop2.jpg" width="615" height="615" />
+                <img style="margin: 20px 0 0 40px;" src="/img/anti.png" width="300" height="300" />
                    <!-- <h3><span style="color: #ffa500">Доступ к альбому заблокирован паролем.  <? //check($ip, $ipLog, $timeout);?></span></h3>-->
                     <?
                     if ($_SESSION['popitka'][$_SESSION['current_album']] == -10) // проверка и вывод времени бана
@@ -340,38 +341,56 @@ if ($may_view):
             <a class="profile_bitton2" href="#" >Условия и скидки</a>
         </div> <!-- гармошка -->
     </div>
-        <a class="profile_bitton" href="#">Условия и скидки</a>
+        <div><a class="profile_bitton" href="#">Условия и скидки</a></div>
 </div>
 
 
-        <script language=JavaScript type="text/javascript">
+    <script language="JavaScript" type="text/javascript">
+        <!--
+        function findPos(){
+            var div_o = document.getElementById("main_menu");
+            var div_i = document.getElementById("profile_bitton");
+            div_i.style.left = (div_o.offsetWidth - 1) - div_i.offsetWidth + "px";
+            div_i.style.top = "-1px";
+        }
+        //-->
+    </script>
+
+    <script language=JavaScript type="text/javascript">
         /*$(function(){
         $('.profile_bitton , .profile_bitton2').click(function(){
         $('.profile').slideToggle();
         });
         });*/
-
+/*
         idleTimer = null;
-        idleState = false; // состояние отсутствия
+        idleState = true; // состояние отсутствия
         idleWait = 2000; // время ожидания в мс. (1/1000 секунды)
         $(document).ready( function(){
-            $('body').on('mouseenter', function(){
-                clearTimeout(idleTimer); // отменяем прежний временной отрезок
-                if(idleState != true){
-                    // Действия на возвращение пользователя
-                    $(".profile_bitton").animate({height: "show"}, 1000);
-                }
 
-                idleState = false;
-                idleTimer = setTimeout(function(){
-                    // Действия на отсутствие пользователя
-                    $(this).animate({height: "hide"}, 1000);
-                    idleState = true;
-                }, idleWait);
-            });
+            $("profile_bitton").animate({height: "hide"}, 1);
 
-            $("body").trigger("mouseenter"); // сгенерируем ложное событие, для запуска скрипта
-        });
+
+                $('body').on('mouseenter', function () {
+
+                    clearTimeout(idleTimer); // отменяем прежний временной отрезок
+                    if (idleState == true) {
+                        // Действия на возвращение пользователя
+                         idleTimer = setTimeout(function () {
+                        $(".profile_bitton").animate({height: "show"}, 1000);
+                      })
+                    }
+                });
+                    idleState = false;
+                    idleTimer = setTimeout(function () {
+                        // Действия на отсутствие пользователя
+                        $(this).animate({height: "hide"}, 1000);
+                        idleState = true;
+                    }, idleWait);
+                });
+
+                $("body").trigger("mouseenter"); // сгенерируем ложное событие, для запуска скрипта-->
+*/
         </script>
 
         <!-- Название альбома  -->
@@ -464,7 +483,6 @@ if ($may_view):
                                                 </figure>
                                             </div>
 <!--                                            </div>-->
-
                                             <?
                                             $pos_num++;
                                         }
@@ -476,14 +494,12 @@ if ($may_view):
                      ?>
 
 
-
             <!-- Вывод фото в альбом -->
             <div id=foto-ajax>
                     <?
                 $current_page = isset($_GET['pg']) ? intval($_GET['pg']) : 1;
                     if ($may_view)
                         {
-
                             if ($current_page < 1)
                                 {
                                     $current_page = 1;
@@ -495,10 +511,8 @@ if ($may_view):
                             if (mysql_num_rows($rs) > 0)
                                 {
                                         ?>
-
 <!-- 3 --><hr class="style-one" style="margin-top: 10px; margin-bottom: -20px;">
                                         <?
-
                                     while ($ln = mysql_fetch_assoc($rs))
                                         {
                                             $source = ($_SERVER['DOCUMENT_ROOT'].$foto_folder.$ln['id_album'].'/'.$ln['img']);
@@ -513,28 +527,22 @@ if ($may_view):
                                                     $sz_string = 'height="170px"';
                                                 }
                                             ?>
-
                                             <div class="podlogka">
                                                 <figure class="ramka" onClick="preview(<?=$ln['id']?>);">
-                                                    <img id="<?=substr(trim($ln['img']), 2, -4)?>" src="dir.php?num=<?=substr(trim($ln['img']), 2, -4)?>"  title="За фотографию проголосовало <?= $ln['votes'] ?> человек. Нажмите для просмотра." <?=$sz_string?> />
+                                                    <img id="<?=substr(trim($ln['img']), 2, -4)?>" src="dir.php?num=<?=substr(trim($ln['img']),2, -4)?>"  title="За фотографию проголосовало <?=$ln['votes']?> человек. Нажмите для просмотра." <?=$sz_string?> />
 
                                                     <figcaption>№ <?=$ln['nm']?></figcaption>
                                                 </figure>
                                             </div>
-
                                         <?
                                         }
                                 }
                         }
                     ?>
-
           </div>
-
-
 
          <!-- тело -->
 <!-- 4 --><hr class="style-one" style="clear: both; margin-bottom: -20px; margin-top: 0"/>
-
 
         <!--Вывод нумерации страниц -->
         <?
@@ -548,7 +556,6 @@ if ($may_view):
                         <!-- ПОСТРАНИЧНАЯ РАЗБИВКА -->
                         <h4><a id="home"  style="float: left">Страница <?=$current_page?></a></h4>
                         <div class="pagination" align="center">
-
                         <?
                     if ($current_page == 1)
                     {
@@ -556,42 +563,35 @@ if ($may_view):
                         <span class="disabled">« </span>
                         <span class="disabled">« Предыдущая</span>
                         <?
-
                     } else {
-
                         ?>
-                         <a class="next" href="fotobanck.php?album_id=<?= intval($_SESSION['current_album'])?>&amp;pg=1#home">« </a>
-                         <a class="next" href="fotobanck.php?album_id=<?= intval($_SESSION['current_album'])?>&amp;pg=<?=($current_page-1)?>#home">« Предыдущая</a>
+                         <a class="next" href="fotobanck.php?album_id=<?=intval($_SESSION['current_album'])?>&amp;pg=1#home">« </a>
+                         <a class="next" href="fotobanck.php?album_id=<?=intval($_SESSION['current_album'])?>&amp;pg=<?=($current_page-1)?>#home">« Предыдущая</a>
                         <?
                     }
-
                             for ($i = 1; $i <= $page_count; $i++)
                                 {
-
                                     if ($i == $current_page)
                                         {
                                             //Текущая страница
                                             ?>
                                             <span class="current"><?=$i?></span>
-
                                         <?
                                         }
                                     else
                                         {
                                             //Ссылка на другую страницу
                                             ?>
-                                            <a href="fotobanck.php? album_id=<?= intval($_SESSION['current_album']) ?> &amp; pg=<?= $i ?>#home"><?=$i?></a>
+                                            <a href="fotobanck.php?album_id=<?=intval($_SESSION['current_album'])?>&amp;pg=<?=$i?>#home"><?=$i?></a>
                                         <?
                                         }
                                 }
-
                                     if ($current_page == $page_count)
                                         {
                                             ?>
                                             <span class="disabled">Следующая »</span>
                                             <span class="disabled">Посл. »</span>
                                         <?
-
                                         }
                                     if ($current_page < $page_count)
                                         {
@@ -601,7 +601,6 @@ if ($may_view):
                                         <?
                                          }
                             ?>
-
                         </div>
                         <h4><a id="home" style="float: right">всего - <?=$record_count?> шт.</a></h4><div style="clear: both;"></div>
                     <?
@@ -609,6 +608,37 @@ if ($may_view):
             }
 
         //<!--И добавлять такие блоки по мере добавления фотографий-->
+
+
+
+
+    $PageVarName = "fotobanck.php?album_id=".intval($_SESSION['current_album'])."&amp;pg";
+    $CurPage = $current_page;
+    $SLCountRowsToShowing = 2;
+    if ($CurPage ){
+        $CurPage = ($CurPage-1)*$SLCountRowsToShowing;
+    }else $CurPage = 0;
+
+
+    $SqlShowAll = "SELECT * FROM `*` ORDER BY `*` DESC LIMIT ".$CurPage.", ".$SLCountRowsToShowing;
+
+    $SqlPagesMessage = "SELECT `*` FROM `*`;";
+
+
+
+    $CountToShow =  PHOTOS_ON_PAGE;
+
+
+
+    //include 'pages.php';
+
+
+
+
+
+
+
+
 
     endif;
 
@@ -698,7 +728,6 @@ if ($may_view):
                                     </td>
                                 </tr>
                             </table>
-
                         <?
                         }
                 }
