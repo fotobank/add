@@ -5,60 +5,59 @@ require ('../inc/delete_dir.php');
 // Функция, подсчитывающая количество файлов $dir
 function get_ftp_size($ftp_handle, $dir, $global_size = 0)
     {
-        $file_list = ftp_rawlist($ftp_handle, $dir);
-        if (!empty($file_list))
-            {
-                foreach ($file_list as $file)
-                    {
-                        // Разбиваем строку по пробельным символам
-                        list($acc, $bloks, $group, $user, $size, $month, $day, $year, $file) = preg_split("/[\s]+/", $file);
+    $file_list = ftp_rawlist($ftp_handle, $dir);
+    if (!empty($file_list))
+        {
+            foreach ($file_list as $file)
+                {
+                    // Разбиваем строку по пробельным символам
+                    list($acc, $bloks, $group, $user, $size, $month, $day, $year, $file) = preg_split("/[\s]+/", $file);
+                    // Если перед нами файл, подсчитываем его
+                    $global_size++;
+                }
+        }
 
-                        // Если перед нами файл, подсчитываем его
-                        $global_size++;
-                    }
-            }
-
-        return $global_size;
+    return $global_size;
     }
 
 
 function hardFlush($proc, $id, $remote_file)
     {
-        echo '<script type="text/javascript">';
-        echo 'window.parent.document.getElementById("'.$id.'bar").innerHTML="<div class=\'progress progress-danger\'><div class=\'bar\' style=\'width: '.$proc.'%;\'>'.$proc.'%</div></div>";';
-        echo 'window.parent.document.getElementById("'.$id.'").innerHTML="файл: '.$remote_file.'";';
-        echo '</script>';
-        flush();
-        ob_flush();
+    echo '<script type="text/javascript">';
+    echo 'window.parent.document.getElementById("'.$id.'bar").innerHTML="<div class=\'progress progress-danger\'><div class=\'bar\' style=\'width: '.$proc.'%;\'>'.$proc.'%</div></div>";';
+    echo 'window.parent.document.getElementById("'.$id.'").innerHTML="файл: '.$remote_file.'";';
+    echo '</script>';
+    flush();
+    ob_flush();
     }
 
 function sendtext($out, $id, $bar)
     {
-        echo '<script type="text/javascript">';
-        echo 'window.parent.document.getElementById("'.$id.$bar.'").innerHTML="'.$out.'";';
-        echo '</script>';
+    echo '<script type="text/javascript">';
+    echo 'window.parent.document.getElementById("'.$id.$bar.'").innerHTML="'.$out.'";';
+    echo '</script>';
     }
 
 function senderror($out, $id, $err)
     {
-        echo '<script type="text/javascript">';
-        echo 'window.parent.document.getElementById("'.$id.'err").innerHTML="'.$out.'";';
-        echo '</script>';
+    echo '<script type="text/javascript">';
+    echo 'window.parent.document.getElementById("'.$id.'err").innerHTML="'.$out.'";';
+    echo '</script>';
     }
 
 // Функция для отбрасывания каталогов и ненужных расширений:
 function ftp_is_dir($folder)
     {
-        $file_parts = explode('.', $folder); //разделить имя файла и поместить его в массив
-        $ext = strtolower(array_pop($file_parts)); //последний элеменет - это расширение
-        if ($ext == 'jpg' || $ext == 'jpeg' || $ext == 'png' || $ext == 'gif')
-            {
-                return 'true';
-            }
-        else
-            {
-                return 'false';
-            }
+    $file_parts = explode('.', $folder); //разделить имя файла и поместить его в массив
+    $ext = strtolower(array_pop($file_parts)); //последний элеменет - это расширение
+    if ($ext == 'jpg' || $ext == 'jpeg' || $ext == 'png' || $ext == 'gif')
+        {
+            return 'true';
+        }
+    else
+        {
+            return 'false';
+        }
     }
 
 
@@ -221,6 +220,7 @@ if (isset($_POST['go_ftp_upload']))
                             }
                         //Получаем список файлов в папке
                         $file_list = ftp_nlist($ftp, $album_data['ftp_folder']);
+                        $file_list = array_multisort ($file_list);
                         //var_dump($file_list);
                         //echo 'Ответ ftp: <br><pre>', print_r($file_list,1), '</pre>';
                         if ($file_list === false)
@@ -346,7 +346,7 @@ if (isset($_POST['go_updown']))
             }
     }
 ?>
-<div id="long" class="modal hide fade in animated fadeInDown" tabindex="-1" data-replace="true" data-keyboard="false" data-backdrop="static" tabindex="-1" aria-hidden="false" >
+<div id="long" class="modal hide fade in animated fadeInDown" tabindex="-1" data-replace="true" data-keyboard="false" data-backdrop="static" tabindex="-1" aria-hidden="false">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
         <h3>Создать альбом:</h3>
@@ -467,7 +467,7 @@ if (mysql_num_rows($rs_cat) > 0)
                             }
                         ?>
                     </select> <input class="btn btn-success" type="hidden" name="chenge_cat" value="1"/>
-                    <input class="btn btn-success" type="submit" value="открыть" />
+                    <input class="btn btn-success" type="submit" value="открыть"/>
                 </form>
             </div>
         </div>
@@ -509,7 +509,7 @@ if (mysql_num_rows($rs) > 0)
                         }
                     ?>
                 </select> <input class="btn btn-success" type="hidden" name="chenge_album" value="1"/>
-                <input class="btn  btn-success" type="submit" value="открыть" />
+                <input class="btn  btn-success" type="submit" value="открыть"/>
             </form>
 
         </div>
@@ -564,7 +564,10 @@ if (mysql_num_rows($rs) > 0)
                                                                                     <td>
 
                                                                                         <div class="slideThree">
-                                                                                            <input id="slideThree1" type='checkbox' NAME='watermark' VALUE='yes' <?if ($ln['watermark']) {echo 'checked="checked"';}?> />
+                                                                                            <input id="slideThree1" type='checkbox' NAME='watermark' VALUE='yes' <?if ($ln['watermark'])
+                                                                                                {
+                                                                                                    echo 'checked="checked"';
+                                                                                                }?> />
                                                                                             <label for="slideThree1"></label>
                                                                                         </div>
                                                                                         Водяной знак
@@ -578,7 +581,10 @@ if (mysql_num_rows($rs) > 0)
                                                                                     </td>
                                                                                     <td>
                                                                                         <div class="slideThree">
-                                                                                            <input id="slideThree2" type='checkbox' NAME='ip_marker' VALUE='yes' <?if ($ln['ip_marker']) {echo 'checked="checked"';}?> />
+                                                                                            <input id="slideThree2" type='checkbox' NAME='ip_marker' VALUE='yes' <?if ($ln['ip_marker'])
+                                                                                                {
+                                                                                                    echo 'checked="checked"';
+                                                                                                }?> />
                                                                                             <label for="slideThree2"></label>
                                                                                         </div>
                                                                                         IP надпись
@@ -626,7 +632,10 @@ if (mysql_num_rows($rs) > 0)
                                                                                     </td>
                                                                                     <td>
                                                                                         <div class="slideThree">
-                                                                                            <input id="slideThree3" type='checkbox' NAME='sharping' VALUE='yes' <?if ($ln['sharping']) {echo 'checked="checked"';}?> />
+                                                                                            <input id="slideThree3" type='checkbox' NAME='sharping' VALUE='yes' <?if ($ln['sharping'])
+                                                                                                {
+                                                                                                    echo 'checked="checked"';
+                                                                                                }?> />
                                                                                             <label for="slideThree3"></label>
                                                                                         </div>
                                                                                         Добавить резкость
@@ -643,12 +652,13 @@ if (mysql_num_rows($rs) > 0)
                                                                 </tr>
                                                                 <tr>
                                                                     <td align="center">
-                                                                        <form action="index.php" name="go_ftp_upload" method="post" style="margin-bottom: 0px;" target="hiddenframe" onsubmit="document.getElementById('<?= $ln['order_field'] ?>').innerHTML='Подождите, идёт загрузка...'; return true;">
-                                                                            <input class="btn btn-success" type="hidden" name="go_ftp_upload" value="<?= $ln['id'] ?>"/>
+                                                                        <form action="index.php" name="go_ftp_upload" method="post" style="margin-bottom: 0px;" target="hiddenframe"
+                                                                          onsubmit="document.getElementById('<?=$ln['order_field']?>').innerHTML='Подождите, идёт загрузка...'; return true;">
+                                                                            <input class="btn btn-success" type="hidden" name="go_ftp_upload" value="<?=$ln['id']?>"/>
 
-                                                                            <div id="<?= $ln['order_field'] ?>"></div>
-                                                                            <div id="<?= $ln['order_field'] ?>bar"></div>
-                                                                            <div id="<?= $ln['order_field'] ?>err"></div>
+                                                                            <div id="<?=$ln['order_field']?>"></div>
+                                                                            <div id="<?=$ln['order_field']?>bar"></div>
+                                                                            <div id="<?=$ln['order_field']?>err"></div>
                                                                             <input class="btn-small btn-success" type="submit" value="Добавить с FTP"/><br/>
                                                                         </form>
                                                                         <iframe id="hiddenframe" name="hiddenframe" style="width:0; height:0; border:0"></iframe>

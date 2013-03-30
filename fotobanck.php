@@ -348,10 +348,10 @@ if ($may_view):
     <script language="JavaScript" type="text/javascript">
         <!--
         function findPos(){
-            var div_o = document.getElementById("main_menu");
-            var div_i = document.getElementById("profile_bitton");
-            div_i.style.left = (div_o.offsetWidth - 1) - div_i.offsetWidth + "px";
-            div_i.style.top = "-1px";
+            var divout = document.getElementById("main_menu");
+            var divinner = document.getElementById("profile_bitton");
+            divinner.style.left = (divout.offsetWidth - 1) - divinner.offsetWidth + "px";
+            divinner.style.top = "-1px";
         }
         //-->
     </script>
