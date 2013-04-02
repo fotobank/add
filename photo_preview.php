@@ -40,11 +40,11 @@ if ($id > 0)
                 ?>
 
                 <? if ($left_id): ?>
-                <div class="left_pointer2" onClick="preview(<?=$left_id ?>);"></div>
+                <div class="left_pointer2" onClick="preview(<?=$left_id?>);"></div>
             <? endif; ?>
 
                 <? if ($right_id): ?>
-                <div class="right_pointer2" onClick="preview(<?=$right_id ?>);"></div>
+                <div class="right_pointer2" onClick="preview(<?=$right_id?>);"></div>
             <? endif; ?>
 
 
@@ -79,7 +79,7 @@ if ($id > 0)
                                     Цена: <?=(floatval($photo_data['price']) > 0 ? $photo_data['price'].'грн.' : 'бесплатно')?>
                                 </td>
                                 <td valign="top" width="33%" align="right">
-                                    <input type="button" value="Голосовать" style="cursor: pointer;" onClick="goVote(event, <?= $photo_data['id'] ?>);"/><br/>
+                                    <input type="button" value="Голосовать" style="cursor: pointer;" onClick="goVote(event, <?=$photo_data['id']?>);"/><br/>
                                     Голосов: (<?=$photo_data['votes']?>)
                                 </td>
 

@@ -15,8 +15,8 @@
        <!-- <meta name="google-site-verification" content="uLdE_lzhCOntN_AaTM1_sQNmIXFk1-Dsi5AWS0bKIgs"/>
         <link href='http://fonts.googleapis.com/css?family=Lobster|Comfortaa:700|Jura:600&subset=cyrillic,cyrillic-ext' rel='stylesheet' type='text/css'>-->
         <?
-        include __DIR__.'./lib_errors.php';
-       // include __DIR__.'./using_example.php';
+       require __DIR__.'./lib_errors.php';
+//        include __DIR__.'./using_example.php';
         include __DIR__.'./title.php';
         ?>
 

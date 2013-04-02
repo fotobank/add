@@ -142,7 +142,7 @@ if(isset($_POST['chenge_album']))
    <?
    }  
  if(isset($_SESSION['current_album'])): 
-   $rs = mysql_query('select * from photos where id_album = '.intval($_SESSION['current_album']));
+   $rs = mysql_query('select * from photos where id_album = '.intval($_SESSION['current_album']).' order by id asc');
  if(mysql_num_rows($rs) > 0)
    {
    $foto_folder = mysql_result(mysql_query('select foto_folder from albums where id = '.intval($_SESSION['current_album']).'  '), 0);

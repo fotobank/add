@@ -3,6 +3,7 @@ set_time_limit(0);
 include '../inc/config.php';
 include '../inc/func.php';
 
+
 //Логин
 if(isset($_POST['op']))
 {
