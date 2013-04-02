@@ -192,7 +192,6 @@ if (isset($_SESSION['current_album'])):
                              $(document).ready(function load() {
                              $('#static').modal('show');
                              });
-
                              </script>";
                     }
                 if ($_SESSION['popitka'][$_SESSION['current_album']] <= 0 && $_SESSION['popitka'][$_SESSION['current_album']] != -10
@@ -775,4 +774,4 @@ endif; ?>
 
 <?php include ('inc/footer.php');
 ?>
-           
+            

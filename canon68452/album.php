@@ -1,6 +1,7 @@
 <?php
 include ('../inc/i_resize.php');
 require ('../inc/delete_dir.php');
+require ('../inc/lib_ouf.php');
 
 // Функция, подсчитывающая количество файлов $dir
 function get_ftp_size($ftp_handle, $dir, $global_size = 0)
@@ -132,13 +133,52 @@ if (isset($_POST['go_delete']))
    $id = intval($_POST['go_delete']);
    $album_folder = mysql_result(mysql_query('select order_field from albums where id = '.$id), 0);
    $foto_folder = mysql_result(mysql_query('select foto_folder from albums where id = '.$id), 0);
-   echo  ($_SERVER['DOCUMENT_ROOT'].$foto_folder.$album_folder);
-   /*deleteDir($_SERVER['DOCUMENT_ROOT'].$foto_folder.$album_folder);
-   mysql_query('delete from photos where id_album = '.$id);
-   $album_foto = mysql_result(mysql_query('select img from albums where id = '.$id), 0);
-   @unlink("../images/$album_foto");
-   mysql_query('delete from albums where id = '.$id);*/
+   echo "<script type='text/javascript'>
+                             $(document).ready(function load() {
+                             $('#static').modal('show');
+                             });
+                             </script>";
+?>
+      <div id="static" class="modal hide fade in animated fadeInDown" data-keyboard="false" data-backdrop="static" tabindex="-1" aria-hidden="false">
+         <div class="modal-header">
+               Удаление
+         </div>
+         <div class="modal-body">
+            <?
+            echo  'Удалить '.($_SERVER['DOCUMENT_ROOT'].$foto_folder.$album_folder).'?';
+            ?>
+            <form action="index.php" method="post">
+               <button type="submit" name="confirm_del" value="<?=$id?>">ДА</button>
+               <button type="submit" name="confirm_del" value="0">НЕТ</button>
+               <input type="hidden" name="del" value="<?= $_POST['confirm_del'] ?>"/>
+            </form>
+         </div>
+      </div>
+   <?
    }
+if (isset($_POST['confirm_del']))
+   {
+   if ($_POST['confirm_del'] != '0')
+      {
+
+      $id = intval($_POST['confirm_del']);
+      $album_folder = mysql_result(mysql_query('select order_field from albums where id = '.$id), 0);
+      $foto_folder = mysql_result(mysql_query('select foto_folder from albums where id = '.$id), 0);
+     // echo  'Удалить '.$_SERVER['DOCUMENT_ROOT'].$foto_folder.$album_folder.'?';
+   deleteDir($_SERVER['DOCUMENT_ROOT'].$foto_folder.$album_folder);
+      /*
+      mysql_query('delete from photos where id_album = '.$id);
+      $album_foto = mysql_result(mysql_query('select img from albums where id = '.$id), 0);
+      @unlink("../images/$album_foto");
+      mysql_query('delete from albums where id = '.$id);*/
+
+      }
+   else
+      {
+      print 'отмена ';
+      }
+   }
+
 
 if (isset($_POST['go_edit_name']))
    {
@@ -465,7 +505,7 @@ if (mysql_num_rows($rs_cat) > 0)
       <div class="controls" style="float:left;">
          <div>
             <form id="myForm1" action="index.php" method="post">
-               <select id="appendedInputButton" class="span3" name="id" style="height: 28px;" onClick="$('#myForm1').trigger('submit');">
+               <select id="appendedInputButton" class="span3" name="id" style="height: 28px;">
                   <?
                   while ($ln_cat = mysql_fetch_assoc($rs_cat))
                      {
@@ -507,7 +547,7 @@ if (mysql_num_rows($rs) > 0)
       <div class="controls">
 
          <form id="myForm2" action="index.php" method="post">
-            <select id="appendedInputButton" class="span3" style="height: 28px; margin-left: 100px;" name="id" onClick="$('#myForm2').trigger('submit');">
+            <select id="appendedInputButton" class="span3" style="height: 28px; margin-left: 100px;" name="id">
                <?
                while ($ln = mysql_fetch_assoc($rs))
                   {

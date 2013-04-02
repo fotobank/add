@@ -3,8 +3,9 @@
   // Удаление непустых директорий:
 function deleteDir($dir)
 {
-  return is_file($dir)?
+  /*return is_file($dir)?
   @unlink($dir):
-  array_map('deleteDir',glob($dir.'/*'))==@rmdir($dir);
-} 
+  array_map('deleteDir',glob($dir.'/*'))==@rmdir($dir);*/
+   echo  'Удалить '.$$dir.'?';
+}
  ?>
