@@ -156,27 +156,25 @@ if (isset($_POST['go_delete']))
       </div>
    <?
    }
-if (isset($_POST['confirm_del']))
+if (isset($_POST['confirm_del']) && $_POST['confirm_del'] != '0')
    {
-   if ($_POST['confirm_del'] != '0')
-      {
+
 
       $id = intval($_POST['confirm_del']);
       $album_folder = mysql_result(mysql_query('select order_field from albums where id = '.$id), 0);
       $foto_folder = mysql_result(mysql_query('select foto_folder from albums where id = '.$id), 0);
-     // echo  'Удалить '.$_SERVER['DOCUMENT_ROOT'].$foto_folder.$album_folder.'?';
-   deleteDir($_SERVER['DOCUMENT_ROOT'].$foto_folder.$album_folder);
-      /*
+      deleteDir($_SERVER['DOCUMENT_ROOT'].$foto_folder.$album_folder);
       mysql_query('delete from photos where id_album = '.$id);
       $album_foto = mysql_result(mysql_query('select img from albums where id = '.$id), 0);
       @unlink("../images/$album_foto");
-      mysql_query('delete from albums where id = '.$id);*/
+      mysql_query('delete from albums where id = '.$id);
+      echo  'Удалено: '.$_SERVER['DOCUMENT_ROOT'].$foto_folder.$album_folder.'?';
 
-      }
+   }
    else
-      {
+   {
       print 'отмена ';
-      }
+
    }
 
 
