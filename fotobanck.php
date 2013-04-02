@@ -459,10 +459,10 @@ if ($may_view):
                                     while ($ln = mysql_fetch_assoc($rs))
                                         {
                                             $source = $_SERVER['DOCUMENT_ROOT'].$foto_folder.$ln['id_album'].'/'.$ln['img'];
-                                            $sz = getimagesize($source);
+                                            $sz = @getimagesize($source);
                                             if (intval($sz[0]) > intval($sz[1])) /*  размер топ 5 */
                                                 {
-                                                    $sz_string = 'width="170px"';
+                                                    $sz_string = 'width="165px"';
                                                 }
                                             else
                                                 {
@@ -515,7 +515,7 @@ if ($may_view):
                                     while ($ln = mysql_fetch_assoc($rs))
                                         {
                                             $source = ($_SERVER['DOCUMENT_ROOT'].$foto_folder.$ln['id_album'].'/'.$ln['img']);
-                                            $sz = getimagesize($source);
+                                            $sz = @getimagesize($source);
                                             /* размер превьюшек */
                                             if (intval($sz[0]) > intval($sz[1]))
                                                 {
@@ -765,6 +765,15 @@ if ($may_view):
       }
 endif; ?>
 
+
+<script type='text/javascript'>
+/*$("img").error(function(){
+$(this).hide();
+});*/
+$('img').error(function(){
+   $(this).attr('src', 'img/404.png');
+});
+</script>
 
 </div>
 <div class="end_content">

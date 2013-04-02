@@ -87,3 +87,4 @@ function goVote(event, idPhoto) {
     });
 }
 
+

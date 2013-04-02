@@ -35,7 +35,7 @@ if ($id > 0)
                     }
             // $photo_data['nm'] = iconv('cp1251', 'utf-8', $photo_data['nm']);
                 $source = $_SERVER['DOCUMENT_ROOT'].$foto_folder.$photo_data['id_album'].'/'.$photo_data['img'];
-                $sz = getimagesize($source);
+                $sz = @getimagesize($source);
                 $sz_string = 'width: '.($sz[0]).'px;';
                 ?>
 
@@ -119,3 +119,9 @@ else:
 endif;
 
 ?>
+<script type='text/javascript'>
+  $('img').error(function(){
+     $(this).attr('src', 'img/404.png');
+  });
+</script>
+
