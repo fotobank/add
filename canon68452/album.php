@@ -1,7 +1,7 @@
 <?php
-include ('../inc/i_resize.php');
-require ('../inc/delete_dir.php');
-require ('../inc/lib_ouf.php');
+include __DIR__.'/../inc/i_resize.php';
+require __DIR__.'/../inc/delete_dir.php';
+require __DIR__.'/../inc/lib_ouf.php';
 
 // Функция, подсчитывающая количество файлов $dir
 function get_ftp_size($ftp_handle, $dir, $global_size = 0)
@@ -156,10 +156,10 @@ if (isset($_POST['go_delete']))
       </div>
    <?
    }
-if (isset($_POST['confirm_del']) && $_POST['confirm_del'] != '0')
+if (isset($_POST['confirm_del']))
    {
-
-
+      if ($_POST['confirm_del'] != '0')
+         {
       $id = intval($_POST['confirm_del']);
       $album_folder = mysql_result(mysql_query('select order_field from albums where id = '.$id), 0);
       $foto_folder = mysql_result(mysql_query('select foto_folder from albums where id = '.$id), 0);
@@ -168,15 +168,15 @@ if (isset($_POST['confirm_del']) && $_POST['confirm_del'] != '0')
       $album_foto = mysql_result(mysql_query('select img from albums where id = '.$id), 0);
       @unlink("../images/$album_foto");
       mysql_query('delete from albums where id = '.$id);
-      echo  'Удалено: '.$_SERVER['DOCUMENT_ROOT'].$foto_folder.$album_folder.'?';
+      echo  'Удалено: '.$_SERVER['DOCUMENT_ROOT'].$foto_folder.$album_folder;
 
+         }
+         else
+         {
+            print 'отмена ';
+
+         }
    }
-   else
-   {
-      print 'отмена ';
-
-   }
-
 
 if (isset($_POST['go_edit_name']))
    {

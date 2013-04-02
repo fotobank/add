@@ -1,7 +1,7 @@
 <?
 set_time_limit(0);
-include '../inc/config.php';
-include '../inc/func.php';
+include __DIR__.'/../inc/config.php';
+include __DIR__.'/../inc/func.php';
 
 
 //Логин
