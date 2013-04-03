@@ -3,7 +3,7 @@ set_time_limit(0);
 include __DIR__.'/../inc/config.php';
 include __DIR__.'/../inc/func.php';
 
-error_reporting(E_ALL);
+//error_reporting(E_ALL);
 
 
 //Логин

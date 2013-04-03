@@ -2,6 +2,9 @@
     include __DIR__.'./config.php';
     include __DIR__.'./func.php';
 
+ error_reporting(E_ALL);
+
+
 
     header('Content-type: text/html; charset=windows-1251');
 
