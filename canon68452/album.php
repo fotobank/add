@@ -1,6 +1,6 @@
 <?php
 include __DIR__.'/../inc/i_resize.php';
-require __DIR__.'/../inc/delete_dir.php';
+//require __DIR__.'/../inc/delete_dir.php';
 //require __DIR__.'/../inc/lib_ouf.php';
 
 // Функция, подсчитывающая количество файлов $dir
@@ -446,43 +446,19 @@ if (isset($_POST['go_delete']))
             <h3 style="color:red">Внимание!  Удаление каталога!</h3>
          </div>
          <div class="modal-body">
-
             Удалить каталог: "<?=($_SERVER['DOCUMENT_ROOT'].$foto_folder.$album_folder)?>" ?
-
-
          </div>
          <div class="modal-footer">
-            <form action="index.php" method="post">
+            <form action="/inc/delete_dir.php" method="post">
                <input type="hidden" name="confirm_id" value=<?=$id?>/>
                <button type= "submit" name= "confirm_del" value= <?=($_SERVER['DOCUMENT_ROOT'].$foto_folder.$album_folder)?> > ДА </button>
-               <button type="submit" name="confirm_del" value="0">НЕТ</button>
+               <button id="noConfirm" type="submit" name="confirm_del" value="0">НЕТ</button>
             </form>
          </div>
       </div>
    <?
    }
 
-
-if (isset($_POST['confirm_del']))
-   {
-   if ($_POST['confirm_del'] != '0')
-      {
-      $id = intval($_POST['confirm_id']);
-      $patch = $_POST['confirm_del'];
-
-
-      deleteDir($patch);
-      mysql_query('delete from photos where id_album = '.$id);
-      $album_foto = mysql_result(mysql_query('select img from albums where id = '.$id), 0);
-      @unlink("../images/$album_foto");
-      mysql_query('delete from albums where id = '.$id);
-      echo  'Удален каталог: '.$patch;
-      echo "<script type='text/javascript'>
-      $.post('index.php', {type='submit' name='confirm_del' value='0' }
-      });
-        </script>";
-     }
-   }
 
 
 
