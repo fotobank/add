@@ -20,6 +20,17 @@ function preview(idPhoto) {
     })
 }
 
+function previewTop(idPhoto) {
+
+    $('#photo_preview').fadeTo('fast', 0.01, function () {
+        $('#photo_preview').load('photo_top_preview.php?id=' + idPhoto, function () {
+            $('#photo_preview_bg').height($(document).height()).toggleClass('hidden').fadeTo('fast', 0.7, function () {
+                $('#photo_preview').alignCenter().toggleClass('hidden').fadeTo('fast', 1);
+            });
+        });
+    })
+}
+
 
 //additional properties for jQuery object
 $(document).ready(function () {
@@ -41,6 +52,7 @@ function hidePreview() {
     });
 }
 
+humane.forceNew = (true);
 humane.clickToClose = (true);
 humane.timeout = (2500);
 

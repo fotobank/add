@@ -35,4 +35,13 @@ function get_param($param_name)
 	return $value;
 }
 
+/**
+ * @return string
+ */
+function fotoFolder()
+   {
+      $foto_folder = mysql_result(mysql_query('select foto_folder from albums where id = '.intval($_SESSION['current_album']).'  '), 0);
+      return $foto_folder;
+   }
+
 ?>

@@ -268,7 +268,7 @@ function top5($may_view, &$rs, &$ln, &$source, &$sz, &$sz_string)
                ?>
                   <div id="foto_top">
                      <!--  <div  class="span2 offset0" >-->
-                     <figure class="ramka" onClick="preview(<?= $ln['id'] ?>);">
+                     <figure class="ramka" onClick="previewTop(<?= $ln['id'] ?>);">
                         <span class="top_pos" style="opacity: 0;"><?=$pos_num?></span>
                         <img id="<?= substr(trim($ln['img']), 2, -4) ?>" src="dir.php?num=<?= substr(trim($ln['img']), 2, -4) ?>" alt="<?= $ln['nm'] ?>" title="Нажмите для просмотра" <?=$sz_string?> />
                         <figcaption><span style="font-size: x-small; font-family: Times, serif; ">№ <?=$ln['nm']?>
@@ -286,16 +286,6 @@ function top5($may_view, &$rs, &$ln, &$source, &$sz, &$sz_string)
             <div style="clear: both"></div>
          <?
          }
-   }
-
-
- /**
- * @return string
- */
- function fotoFolder()
-   {
-      $foto_folder = mysql_result(mysql_query('select foto_folder from albums where id = '.intval($_SESSION['current_album']).'  '), 0);
-      return $foto_folder;
    }
 
 
