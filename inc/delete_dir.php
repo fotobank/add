@@ -15,7 +15,6 @@ function deleteDir($dir)
    else
       {
          die  ('Неверный каталог '.$dir);
-        // return false;
       }
 }
 
@@ -32,8 +31,8 @@ function deleteDir($dir)
          $album_foto = mysql_result(mysql_query('select img from albums where id = '.$id), 0);
          unlink("../images/$album_foto");
          mysql_query('delete from albums where id = '.$id);
-         //echo  'Удален каталог: '.$patch;
-
          }
-      main_redir('../canon68452/index.php');
+      ok_exit('Удален каталог: ' .$_POST['confirm_del'], '../canon68452/index.php');
       }
+
+   session_destroy();

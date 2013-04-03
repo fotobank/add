@@ -1,7 +1,6 @@
 <?php
 include __DIR__.'/../inc/i_resize.php';
-//require __DIR__.'/../inc/delete_dir.php';
-//require __DIR__.'/../inc/lib_ouf.php';
+
 
 // Функция, подсчитывающая количество файлов $dir
 function get_ftp_size($ftp_handle, $dir, $global_size = 0)
@@ -440,6 +439,7 @@ if (isset($_POST['go_delete']))
                              $('#static').modal('show');
                              });
                              </script>";
+
    ?>
       <div id="static" class="modal hide fade in animated fadeInDown" data-keyboard="false" data-backdrop="static" tabindex="-1" aria-hidden="false">
          <div class="modal-header">
@@ -460,6 +460,11 @@ if (isset($_POST['go_delete']))
    }
 
 
+if(isset($_SESSION['ok_msg']) && $_SESSION['ok_msg'] != "")
+   {
+    echo  $_SESSION['ok_msg'];
+    $_SESSION['ok_msg'] = "";
+   }
 
 
 if (isset($_POST['chenge_cat']))
@@ -470,6 +475,7 @@ $rs_cat = mysql_query('select DISTINCT c.nm, c.id
   		      from categories c, albums a 
   		    	where  c.id = a.id_category							      
   		      order by a.order_field asc   ');
+
 
 if (mysql_num_rows($rs_cat) > 0)
    {
