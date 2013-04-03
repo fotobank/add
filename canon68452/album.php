@@ -128,57 +128,7 @@ if (isset($_POST['go_add']))
    // }
    }
 
-if (isset($_POST['go_delete']))
-   {
-   $id = intval($_POST['go_delete']);
-   $album_folder = mysql_result(mysql_query('select order_field from albums where id = '.$id), 0);
-   $foto_folder = mysql_result(mysql_query('select foto_folder from albums where id = '.$id), 0);
-   echo "<script type='text/javascript'>
-                             $(document).ready(function load() {
-                             $('#static').modal('show');
-                             });
-                             </script>";
-?>
-      <div id="static" class="modal hide fade in animated fadeInDown" data-keyboard="false" data-backdrop="static" tabindex="-1" aria-hidden="false">
-         <div class="modal-header">
-               Удаление
-         </div>
-         <div class="modal-body">
-            <?
-            echo  'Удалить '.($_SERVER['DOCUMENT_ROOT'].$foto_folder.$album_folder).'?';
-            ?>
-            <form action="index.php" method="post">
-               <button type="submit" name="confirm_del" value="<?=$id?>">ДА</button>
-               <button type="submit" name="confirm_del" value="0">НЕТ</button>
-               <input type="hidden" name="del" value="<?= $_POST['confirm_del'] ?>"/>
-            </form>
-         </div>
-      </div>
-   <?
-   }
-if (isset($_POST['confirm_del']))
-   {
-      if ($_POST['confirm_del'] === '0')
-         {
 
-         print 'отмена ';
-
-         }
-         else
-         {
-
-         $id = intval($_POST['confirm_del']);
-         $album_folder = mysql_result(mysql_query('select order_field from albums where id = '.$id), 0);
-         $foto_folder = mysql_result(mysql_query('select foto_folder from albums where id = '.$id), 0);
-         deleteDir($_SERVER['DOCUMENT_ROOT'].$foto_folder.$album_folder);
-         mysql_query('delete from photos where id_album = '.$id);
-         $album_foto = mysql_result(mysql_query('select img from albums where id = '.$id), 0);
-         @unlink("../images/$album_foto");
-         mysql_query('delete from albums where id = '.$id);
-         echo  'Удалено: '.$_SERVER['DOCUMENT_ROOT'].$foto_folder.$album_folder;
-
-         }
-   }
 
 if (isset($_POST['go_edit_name']))
    {
@@ -393,6 +343,8 @@ if (isset($_POST['go_updown']))
       mysql_query('update albums set order_field = '.$swap_order.' where id = '.$id);
       }
    }
+
+
 ?>
 <div id="long" class="modal hide fade in animated fadeInDown" tabindex="-1" data-replace="true" data-keyboard="false" data-backdrop="static" tabindex="-1" aria-hidden="false">
    <div class="modal-header">
@@ -476,6 +428,74 @@ if (isset($_POST['go_updown']))
       </div>
    </div>
 </div><?
+
+
+if (isset($_POST['go_delete']))
+   {
+   $id = intval($_POST['go_delete']);
+   $album_folder = mysql_result(mysql_query('select order_field from albums where id = '.$id), 0);
+   $foto_folder = mysql_result(mysql_query('select foto_folder from albums where id = '.$id), 0);
+   //$patch = array($id,$foto_folder.$album_folder);
+   echo "<script type='text/javascript'>
+                             $(document).ready(function load() {
+                             $('#static').modal('show');
+                             });
+                             </script>";
+   ?>
+      <div id="static" class="modal hide fade in animated fadeInDown" data-keyboard="false" data-backdrop="static" tabindex="-1" aria-hidden="false">
+         <div class="modal-header">
+            <h3 style="color:red">Удаление</h3>
+         </div>
+         <div class="modal-body">
+            <?
+            echo  'Удалить '.($_SERVER['DOCUMENT_ROOT'].$foto_folder.$album_folder).'?';
+            ?>
+
+         </div>
+         <div class="modal-footer">
+            <form action="index.php" method="post">
+               <input type="hidden" name="confirm_id" value=<?=$id?>/>
+               <button type= "submit" name= "confirm_del" value= <?=($_SERVER['DOCUMENT_ROOT'].$foto_folder.$album_folder)?> > ДА </button>
+               <button type="submit" name="confirm_del" value="0">НЕТ</button>
+              <!-- <input type="hidden" name="del" value="confirm_del"/> -->
+            </form>
+         </div>
+      </div>
+   <?
+   }
+
+
+if (isset($_POST['confirm_del']))
+   {
+   if ($_POST['confirm_del'] != '0')
+      {
+      $id = $_POST['confirm_del'];
+      //$album_folder = mysql_result(mysql_query('select order_field from albums where id = '.$id), 0);
+      //$foto_folder = mysql_result(mysql_query('select foto_folder from albums where id = '.$id), 0);
+      // $_POST['confirm_del'] = '0';
+      // if ($album_folder == true && $foto_folder == true)
+      //  {
+      var_dump($id);
+      var_dump($_REQUEST['confirm_id']);
+
+
+
+
+      /*deleteDir($_SERVER['DOCUMENT_ROOT'].$id[1]);
+      mysql_query('delete from photos where id_album = '.$id[0]);
+      $album_foto = mysql_result(mysql_query('select img from albums where id = '.$id[0]), 0);
+      @unlink("../images/$album_foto");
+      mysql_query('delete from albums where id = '.$id[0]);*/
+      echo  'Удалено: '.$id;
+      //   } else {
+      // echo  'Ошибка! Удалять нечего!';
+      // }
+
+      }
+   }
+
+
+
 if (isset($_POST['chenge_cat']))
    {
    $_SESSION['current_cat'] = intval($_POST['id']);
@@ -527,6 +547,8 @@ if (isset($_POST['chenge_album']))
    $_SESSION['current_album'] = intval($_POST['id']);
    }
 
+if (isset($_SESSION['current_cat']))
+   {
 $rs = mysql_query('select c.nm, a.*
   		      from categories c, albums a 
   		      where  c.id = a.id_category
@@ -742,5 +764,6 @@ if (mysql_num_rows($rs) > 0)
             }
          }
    endif;
+   }
    }
 ?>
