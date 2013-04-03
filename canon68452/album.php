@@ -498,9 +498,9 @@ if (mysql_num_rows($rs_cat) > 0)
       <div><strong>Выбрать категорию:</strong> <strong style="margin-left: 216px;">Выбрать альбом:</strong>
       </div>
       <div class="controls" style="float:left;">
-         <div>
+         <div class="input-append">
             <form id="myForm1" action="index.php" method="post">
-               <select id="appendedInputButton" class="span3" name="id" >
+               <select id="appendedInputButton" class="span3" name="id" style="height: 28px;" >
                   <?
                   while ($ln_cat = mysql_fetch_assoc($rs_cat))
                      {
@@ -509,10 +509,12 @@ if (mysql_num_rows($rs_cat) > 0)
                      <?
                      }
                   ?>
-               </select> <input class="btn btn-success" type="hidden" name="chenge_cat" value="1"/>
+               </select>
+               <input class="btn btn-success" type="hidden" name="chenge_cat" value="1"/>
                <input class="btn btn-success" type="submit" value="открыть"/>
             </form>
          </div>
+      </div>
       </div>
    <?
    }
@@ -542,9 +544,9 @@ if (mysql_num_rows($rs) > 0)
       }
    ?>
       <div class="controls">
-
+      <div class="input-append">
          <form id="myForm2" action="index.php" method="post">
-            <select id="appendedInputButton" class="span3" style="height: 28px; margin-left: 100px;" name="id">
+            <select id="appendedInputButton" class="span3" style=" margin-left: 100px; height: 28px;" name="id">
                <?
                while ($ln = mysql_fetch_assoc($rs))
                   {
@@ -556,7 +558,7 @@ if (mysql_num_rows($rs) > 0)
             </select> <input class="btn btn-success" type="hidden" name="chenge_album" value="1"/>
             <input class="btn  btn-success" type="submit" value="открыть"/>
          </form>
-
+      </div>
       </div>
 
    <?
@@ -579,16 +581,16 @@ if (mysql_num_rows($rs) > 0)
 
                                     <div class="controls">
                                        <div class="input-append">
-                                          <form action="index.php" method="post" style="margin: 5px;">
-                                             <input id="appendedInputButton" type="text" name="nm" value="<?= $ln['nm'] ?>" style="height: 17px;"/>
+                                          <form action="index.php" method="post" >
+                                             <input id="appendedInputButton" type="text" name="nm" value="<?= $ln['nm'] ?>" style="height: 22px; margin-top: 20px;"/>
                                              <input class="btn btn-primary" type="hidden" name="go_edit_name" value="<?= $ln['id'] ?>"/>
-                                             <input class="btn-small btn-primary" type="submit" value="переименовать"/>
+                                             <input class="btn btn-primary" type="submit" value="переименовать" style="margin-top: 20px;"/>
                                           </form>
                                        </div>
                                     </div>
                                  </td>
                                  <td rowspan="3" align="center">
-                                    <form action="index.php" method="post" style="margin: 0px 0px -20px;">
+                                    <form action="index.php" method="post" style="margin: 0 0 -20px;">
                                        <textarea rows="12" cols="35" name="descr" style="width: 346px; height: 210px;"><?=$ln['descr']?></textarea><br/>
                                        <input class="btn btn-primary" type="hidden" name="go_edit_descr" value="<?= $ln['id'] ?>"/>
                                        <input class="btn-small btn-primary" type="submit" value="сохранить" style="margin-bottom: 10px;">
@@ -604,7 +606,7 @@ if (mysql_num_rows($rs) > 0)
                                                       <td>
                                                          <div class="input-prepend">
                                                             <span class="add-on" style="padding-bottom: 0px; padding-top: 0px; margin-top: 5px;">Цена за фото (гр.):</span>
-                                                            <input id="prependedInput" class="span2" type="text" NAME="price" VALUE="<?= $ln['price'] ?>" style="margin-bottom: 0px; width: 152px; margin-top: 5px;"/>
+                                                            <input id="prependedInput" class="span2" type="text" NAME="price" VALUE="<?= $ln['price'] ?>" style="margin-bottom: 0; width: 152px; margin-top: 5px;"/>
                                                          </div>
                                                       </td>
                                                       <td>
@@ -620,8 +622,8 @@ if (mysql_num_rows($rs) > 0)
                                                    <tr>
                                                       <td>
                                                          <div class="input-prepend">
-                                                            <span class="add-on" style="padding-bottom: 0px; padding-top: 0px; ; margin-top: 5px;">Качество .jpg (%):</span>
-                                                            <input id="prependedInput" class="span2" type="text" NAME="quality" VALUE="<?= $ln['quality'] ?>" style="margin-bottom: 0px; width: 154px; margin-top: 5px;"/>
+                                                            <span class="add-on" style="padding-bottom: 0; padding-top: 0; ; margin-top: 5px;">Качество .jpg (%):</span>
+                                                            <input id="prependedInput" class="span2" type="text" NAME="quality" VALUE="<?= $ln['quality'] ?>" style="margin-bottom: 0; width: 154px; margin-top: 5px;"/>
                                                          </div>
                                                       </td>
                                                       <td>
@@ -637,7 +639,7 @@ if (mysql_num_rows($rs) > 0)
                                                       <td>
                                                          <div class="input-prepend">
                                                             <span class="add-on">Категория:</span>
-                                                            <select id="prependedInput" class="span2" name="id_category" style="margin-bottom: 0px; width: 211px;">
+                                                            <select id="prependedInput" class="span2" name="id_category" style="margin-bottom: 0px; width: 203px;">
                                                                <?
                                                                $tmp = mysql_query('select * from categories order by id asc');
                                                                while ($tmp2 = mysql_fetch_assoc($tmp))
@@ -710,9 +712,9 @@ if (mysql_num_rows($rs) > 0)
                                  </td>
                               </tr>
                               <tr>
-                                 <td align="center" style="height: 40px;">Папка альбома:
+                                 <td align="center" style="margin: 10px;">Папка альбома:
                                     "..<?=$ln['foto_folder']?><?=$ln['order_field']?>"
-                                    <form action="index.php" method="post" style="margin: 0;">
+                                    <form action="index.php" method="post" style="margin: 10px;">
                                        <input class="btn btn-primary" type="hidden" name="go_delete" value="<?= $ln['id'] ?>"/>
                                        <input class="btn-small btn-danger dropdown-toggle" type="submit" value="удалить  альбом"/>
                                     </form>
