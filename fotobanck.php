@@ -191,6 +191,61 @@ function paginator($record_count, $may_view, $current_page)
 
 /**
  * @param $may_view
+ * @param $current_page
+ * @param $record_count
+ */
+
+function fotoPage($may_view, &$current_page, &$record_count)
+{
+    $current_page = isset($_GET['pg']) ? intval($_GET['pg']) : 1;
+    if ($may_view)
+    {
+        if ($current_page < 1)
+        {
+            $current_page = 1;
+        }
+        $start = ($current_page - 1) * PHOTOS_ON_PAGE;
+        $rs = mysql_query('select SQL_CALC_FOUND_ROWS p.* from photos p where id_album = '.intval($_SESSION['current_album']).' order by img ASC, id asc limit '.$start.','.PHOTOS_ON_PAGE);
+        $record_count = intval(mysql_result(mysql_query('select FOUND_ROWS() as cnt'), 0));   // количество записей
+        if (mysql_num_rows($rs) > 0)
+        {
+            ?>
+            <!-- 3 -->
+            <hr class="style-one" style="margin-top: 10px; margin-bottom: -20px;">
+            <?
+            while ($ln = mysql_fetch_assoc($rs))
+            {
+                $source = ($_SERVER['DOCUMENT_ROOT'].fotoFolder().$ln['id_album'].'/'.$ln['img']);
+                $sz = @getimagesize($source);
+                /* размер превьюшек */
+                if (intval($sz[0]) > intval($sz[1]))
+                {
+                    $sz_string = 'width="155px"';
+                }
+                else
+                {
+                    $sz_string = 'height="170px"';
+                }
+                ?>
+                <div class="podlogka">
+                    <figure class="ramka" onClick="preview(<?= $ln['id'] ?>);">
+                        <img id="<?= substr(trim($ln['img']), 2, -4) ?>" src="dir.php?num=<?= substr(trim($ln['img']), 2, -4) ?>" title="За фотографию проголосовало <?= $ln['votes'] ?> человек. Нажмите для просмотра." <?=$sz_string?> />
+
+                        <figcaption>№ <?=$ln['nm']?></figcaption>
+                    </figure>
+                </div>
+            <?
+            }
+        }
+    }
+}
+
+
+
+
+
+/**
+ * @param $may_view
  */
 
 function verifyParol($may_view)
@@ -248,7 +303,7 @@ function top5($may_view, &$rs, &$ln, &$source, &$sz, &$sz_string)
             <!-- 1 -->
             <hr class="style-one" style="margin: 0 0 -20px 0;"/>
          <?
-         $rs = mysql_query('select * from photos where id_album = '.intval($_SESSION['current_album']).' order by votes desc, id desc limit 0, 5');
+         $rs = mysql_query('select * from photos where id_album = '.intval($_SESSION['current_album']).' order by votes desc, id asc limit 0, 5');
          if (mysql_num_rows($rs) > 0)
             {
             $pos_num = 1;
@@ -285,58 +340,6 @@ function top5($may_view, &$rs, &$ln, &$source, &$sz, &$sz_string)
          ?>
             <div style="clear: both"></div>
          <?
-         }
-   }
-
-
-/**
- * @param $may_view
- * @param $current_page
- * @param $record_count
- */
-
-function fotoPage($may_view, &$current_page, &$record_count)
-   {
-      $current_page = isset($_GET['pg']) ? intval($_GET['pg']) : 1;
-      if ($may_view)
-         {
-         if ($current_page < 1)
-            {
-            $current_page = 1;
-            }
-         $start = ($current_page - 1) * PHOTOS_ON_PAGE;
-         $rs = mysql_query('select SQL_CALC_FOUND_ROWS p.* from photos p where id_album = '.intval($_SESSION['current_album']).' order by img ASC, id asc limit '.$start.','.PHOTOS_ON_PAGE);
-         $record_count = intval(mysql_result(mysql_query('select FOUND_ROWS() as cnt'), 0));
-         if (mysql_num_rows($rs) > 0)
-            {
-            ?>
-               <!-- 3 -->
-               <hr class="style-one" style="margin-top: 10px; margin-bottom: -20px;">
-            <?
-            while ($ln = mysql_fetch_assoc($rs))
-               {
-               $source = ($_SERVER['DOCUMENT_ROOT'].fotoFolder().$ln['id_album'].'/'.$ln['img']);
-               $sz = @getimagesize($source);
-               /* размер превьюшек */
-               if (intval($sz[0]) > intval($sz[1]))
-                  {
-                  $sz_string = 'width="155px"';
-                  }
-               else
-                  {
-                  $sz_string = 'height="170px"';
-                  }
-               ?>
-                  <div class="podlogka">
-                     <figure class="ramka" onClick="preview(<?= $ln['id'] ?>);">
-                        <img id="<?= substr(trim($ln['img']), 2, -4) ?>" src="dir.php?num=<?= substr(trim($ln['img']), 2, -4) ?>" title="За фотографию проголосовало <?= $ln['votes'] ?> человек. Нажмите для просмотра." <?=$sz_string?> />
-
-                        <figcaption>№ <?=$ln['nm']?></figcaption>
-                     </figure>
-                  </div>
-               <?
-               }
-            }
          }
    }
 
