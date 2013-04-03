@@ -12,8 +12,7 @@ if ($id > 0)
         if (mysql_num_rows($rs) > 0)
             {
                 $photo_data = mysql_fetch_assoc($rs);
-                $rs = mysql_query('select id from photos where id_album = '.intval($photo_data['id_album']).' and (votes > '.$photo_data['votes'].'
-                or (votes = '.$photo_data['votes'].' and id > '.$id.')) order by votes asc, id asc limit 0, 1');
+                $rs = mysql_query('select id from photos where id_album = '.intval($photo_data['id_album']).' and id > '.$id.' order by id asc limit 0, 1');
                 if (mysql_num_rows($rs) > 0)
                     {
                         $right_id = intval(mysql_result($rs, 0));
@@ -22,8 +21,7 @@ if ($id > 0)
                     {
                         $right_id = false;
                     }
-                $rs = mysql_query('select id from photos where id_album = '.intval($photo_data['id_album']).' and (votes < '.$photo_data['votes'].'
-                or (votes = '.$photo_data['votes'].' and id < '.$id.')) order by votes desc, id desc limit 0, 1');
+                $rs = mysql_query('select id from photos where id_album = '.intval($photo_data['id_album']).' and id < '.$id.' order by id desc limit 0, 1');
                 if (mysql_num_rows($rs) > 0)
                     {
                         $left_id = intval(mysql_result($rs, 0));
