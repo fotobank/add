@@ -360,26 +360,27 @@ if (isset($_POST['go_updown']))
                      <td>
                         <div class="controls">
                            <div class="input-append">
-                              <input id="appendedInputButton" class="span3" type="file" name="preview" style="width: 303px; margin-bottom: 0px;"/>
+                              <input id="appendedInputButton" class="span3" type="file" name="preview" style="width: 303px;"/>
                            </div>
                         </div>
                      </td>
                   </tr>
                   <tr>
                      <td><strong>Название:</strong></td>
-                     <td><input type="text" name="nm" value="" style="width: 203px; margin-bottom: 5px;"/></td>
+                     <td><label> <input type="text" name="nm" value="" style="width: 203px; margin-bottom: 0;"/>
+                        </label></td>
                   </tr>
                   <tr>
                      <td><strong>Категория:</strong></td>
                      <td>
                         <div>
-                           <select id="prependedInput" class="span2" name="id_category" style="margin-bottom: 0px; width: 211px;">
+                           <label for="prependedInput"></label><select id="prependedInput" class="span2" name="id_category" style="margin-bottom: 0; width: 207px;">
                               <?
                               $tmp = mysql_query('select * from categories order by id asc');
                               while ($tmp2 = mysql_fetch_assoc($tmp))
                                  {
                                  ?>
-                                    <option value="<?= $tmp2['id'] ?>" <?=($tmp2['id'] == $ln['id_category'] ? 'selected="selected"' : '')?>><?=$tmp2['nm']?></option>
+                                    <option value="<?= $tmp2['id'] ?>" <?=($tmp2['id'] == $_SESSION['id_category'] ? 'selected="selected"' : '')?>><?=$tmp2['nm']?></option>
                                  <?
                                  }
                               ?>
@@ -390,13 +391,15 @@ if (isset($_POST['go_updown']))
                   <tr>
                      <td><strong>Папка фотобанка:</strong></td>
                      <td>
-                        <input type="text" name="foto_folder" value="/images2/" style="width: 203px; margin-bottom: 5px;"/>
+                        <label>
+                           <input type="text" name="foto_folder" value="/images2/" style="width: 203px; margin-top: 5px;"/>
+                        </label>
                      </td>
                   </tr>
 
                   <tr>
                      <td><strong>Описание:</strong></td>
-                     <td><textarea style="width: 400px; height: 100px;" name="descr"></textarea></td>
+                     <td><label> <textarea style="width: 400px; height: 100px;" name="descr"></textarea> </label></td>
                   </tr>
                   <tr>
                      <td align="center" colspan="2">
@@ -443,7 +446,7 @@ if (isset($_POST['go_delete']))
    ?>
       <div id="static" class="modal hide fade in animated fadeInDown" data-keyboard="false" data-backdrop="static" tabindex="-1" aria-hidden="false">
          <div class="modal-header">
-            <h3 style="color:red">Внимание!  Удаление каталога!</h3>
+            <h3 style="color:red">Внимание!  Удаление альбома!</h3>
          </div>
          <div class="modal-body">
             Удалить каталог: "<?=($_SERVER['DOCUMENT_ROOT'].$foto_folder.$album_folder)?>" ?
@@ -451,8 +454,8 @@ if (isset($_POST['go_delete']))
          <div class="modal-footer">
             <form action="/inc/delete_dir.php" method="post">
                <input type="hidden" name="confirm_id" value=<?=$id?>/>
-               <button type= "submit" name= "confirm_del" value= <?=($_SERVER['DOCUMENT_ROOT'].$foto_folder.$album_folder)?> > ДА </button>
-               <button id="noConfirm" type="submit" name="confirm_del" value="0">НЕТ</button>
+               <button type= "submit" name= "confirm_del" value= <?=($_SERVER['DOCUMENT_ROOT'].$foto_folder.$album_folder)?> >< ДА ></button>
+               <button id="noConfirm" type="submit" name="confirm_del" value="0">< НЕТ ></button>
             </form>
          </div>
       </div>
@@ -497,7 +500,7 @@ if (mysql_num_rows($rs_cat) > 0)
       <div class="controls" style="float:left;">
          <div>
             <form id="myForm1" action="index.php" method="post">
-               <select id="appendedInputButton" class="span3" name="id" style="height: 28px;">
+               <select id="appendedInputButton" class="span3" name="id" >
                   <?
                   while ($ln_cat = mysql_fetch_assoc($rs_cat))
                      {
@@ -563,8 +566,9 @@ if (mysql_num_rows($rs) > 0)
          {
          while ($ln = mysql_fetch_assoc($rs))
             {
+            $_SESSION['id_category'] = $ln['id_category'];
             ?>
-               <div style="border-bottom: 0px #000;">
+               <div style="border-bottom: 0 #000;">
                   <table border="0">
                      <tr>
                         <td valign="top">
