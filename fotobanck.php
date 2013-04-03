@@ -203,7 +203,7 @@ function verifyParol($may_view)
                   <a class="next" href="fotobanck.php?back_to_albums">« назад</a> <a class="next" href="fotobanck.php">«
                      попробовать еще раз</a>
                </div>
-               <img style="margin: 20px 0 0 40px;" src="/img/anti.png" width="347" height="346"/>
+               <img style="margin: 20px 0 0 40px;" src="/img/Stop Photo Camera.png" width="348" height="350"/>
                <!-- <h3><span style="color: #ffa500">Доступ к альбому заблокирован паролем.  <? //check($ip, $ipLog, $timeout);?></span></h3>-->
                <?
                if ($_SESSION['popitka'][$_SESSION['current_album']] == -10) // проверка и вывод времени бана
@@ -230,38 +230,34 @@ function verifyParol($may_view)
 /**
  * @param $may_view
  * @param $rs
- * @param $foto_folder
  * @param $ln
  * @param $source
  * @param $sz
  * @param $sz_string
  */
-function top5($may_view, &$rs, &$foto_folder, &$ln, &$source, &$sz, &$sz_string)
+function top5($may_view, &$rs, &$ln, &$source, &$sz, &$sz_string)
    {
       if ($may_view)
          {
          ?>
-
             <h3>
                <div style="text-align: center;">
                   <span> Топ 5 альбома:</span>
                </div>
             </h3>
-
             <!-- 1 -->
             <hr class="style-one" style="margin: 0 0 -20px 0;"/>
-
          <?
          $rs = mysql_query('select * from photos where id_album = '.intval($_SESSION['current_album']).' order by votes desc, id desc limit 0, 5');
-         $foto_folder = mysql_result(mysql_query('select foto_folder from albums where id = '.intval($_SESSION['current_album']).'  '), 0);
          if (mysql_num_rows($rs) > 0)
             {
             $pos_num = 1;
             while ($ln = mysql_fetch_assoc($rs))
                {
-               $source = $_SERVER['DOCUMENT_ROOT'].$foto_folder.$ln['id_album'].'/'.$ln['img'];
+               $source = $_SERVER['DOCUMENT_ROOT'].fotoFolder().$ln['id_album'].'/'.$ln['img'];
                $sz = @getimagesize($source);
-               if (intval($sz[0]) > intval($sz[1])) /*  размер топ 5 */
+               /*  размер топ 5 */
+               if (intval($sz[0]) > intval($sz[1]))
                   {
                   $sz_string = 'width="165px"';
                   }
@@ -272,7 +268,6 @@ function top5($may_view, &$rs, &$foto_folder, &$ln, &$source, &$sz, &$sz_string)
                ?>
                   <div id="foto_top">
                      <!--  <div  class="span2 offset0" >-->
-
                      <figure class="ramka" onClick="preview(<?= $ln['id'] ?>);">
                         <span class="top_pos" style="opacity: 0;"><?=$pos_num?></span>
                         <img id="<?= substr(trim($ln['img']), 2, -4) ?>" src="dir.php?num=<?= substr(trim($ln['img']), 2, -4) ?>" alt="<?= $ln['nm'] ?>" title="Нажмите для просмотра" <?=$sz_string?> />
@@ -282,7 +277,7 @@ function top5($may_view, &$rs, &$foto_folder, &$ln, &$source, &$sz, &$sz_string)
                                                         </span></figcaption>
                      </figure>
                   </div>
-                  <!--                                            </div>-->
+                  <!-- </div>-->
                <?
                $pos_num++;
                }
@@ -291,6 +286,16 @@ function top5($may_view, &$rs, &$foto_folder, &$ln, &$source, &$sz, &$sz_string)
             <div style="clear: both"></div>
          <?
          }
+   }
+
+
+ /**
+ * @return string
+ */
+ function fotoFolder()
+   {
+      $foto_folder = mysql_result(mysql_query('select foto_folder from albums where id = '.intval($_SESSION['current_album']).'  '), 0);
+      return $foto_folder;
    }
 
 
@@ -312,7 +317,6 @@ function fotoPage($may_view, &$current_page, &$record_count)
          $start = ($current_page - 1) * PHOTOS_ON_PAGE;
          $rs = mysql_query('select SQL_CALC_FOUND_ROWS p.* from photos p where id_album = '.intval($_SESSION['current_album']).' order by img ASC, id asc limit '.$start.','.PHOTOS_ON_PAGE);
          $record_count = intval(mysql_result(mysql_query('select FOUND_ROWS() as cnt'), 0));
-         $foto_folder = mysql_result(mysql_query('select foto_folder from albums where id = '.intval($_SESSION['current_album']).'  '), 0);
          if (mysql_num_rows($rs) > 0)
             {
             ?>
@@ -321,7 +325,7 @@ function fotoPage($may_view, &$current_page, &$record_count)
             <?
             while ($ln = mysql_fetch_assoc($rs))
                {
-               $source = ($_SERVER['DOCUMENT_ROOT'].$foto_folder.$ln['id_album'].'/'.$ln['img']);
+               $source = ($_SERVER['DOCUMENT_ROOT'].fotoFolder().$ln['id_album'].'/'.$ln['img']);
                $sz = @getimagesize($source);
                /* размер превьюшек */
                if (intval($sz[0]) > intval($sz[1]))
@@ -663,7 +667,7 @@ if ($may_view):
 
    <!-- вывод топ 5  -->
    <?
-   top5($may_view, $rs, $foto_folder, $ln, $source, $sz, $sz_string);
+   top5($may_view, $rs, $ln, $source, $sz, $sz_string);
    ?>
 
 
@@ -836,7 +840,7 @@ endif; ?>
 $(this).hide();
 });*/
 $('img').error(function(){
-   $(this).attr('src', 'img/404.png');
+   $(this).attr('src', 'img/not_foto.png');
 });
 </script>
 
