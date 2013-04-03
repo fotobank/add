@@ -11,7 +11,7 @@ function deleteDir($dir)
       }
    else
       {
-         echo  'Неверный каталог '.$dir;
-         return false;
+         die  ('Неверный каталог '.$dir);
+        // return false;
       }
 }
