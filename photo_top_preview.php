@@ -136,11 +136,17 @@ endif;
 		$(this).attr('src', 'img/404.png');
 	});
 
-		if ($("img").attr("src") == "dir.php?num=5621") {
+		$('#5621').click(function(){
 
-			$('#photo_preview, img').css('box-shadow','0 0 0 2px #000,0 0 2px 6px #fa0, 0 0 0 11px #fd0, 0 0 0 13px #000');
+			$('#photo_preview').css('box-shadow','0 0 0 2px #000,0 0 2px 6px #fa0, 0 0 0 11px #fd0, 0 0 0 13px #000');
 
-			    }
+			    });
+
+		$('#5555').click(function(){
+
+			$('#photo_preview').css('box-shadow','0 0 0 0px #000,0 0 0 0 #000, 0 0 0 0 #000, 0 0 0 0 #000');
+
+		});
 
 
 
