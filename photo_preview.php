@@ -49,7 +49,7 @@ if ($id > 0)
 
                     <div style="text-align: center; width: 100%;">
 
-                        <img src="dir.php?num=<?= substr(($photo_data['img']), 2, -4) ?>" alt="<?=$photo_data['nm']?>" title="Фотография № <?=$photo_data['nm']?><?=$right_id?>. Нажмите,чтобы закрыть." onClick="hidePreview(); $('#photo_preview').css('box-shadow','0 0 0 0px #000,0 0 0 0 #000, 0 0 0 0 #000, 0 0 0 0 #000');"/>
+                        <img src="dir.php?num=<?= substr(($photo_data['img']), 2, -4) ?>" alt="<?=$photo_data['nm']?>" title="Фотография № <?=$photo_data['nm']?><?=$right_id?>. Нажмите,чтобы закрыть." onClick="hidePreview();"/>
                     </div>
                     <div>
                         <table border="0" cellspacing="10px" width="100%">

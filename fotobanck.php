@@ -326,9 +326,11 @@ function top5($may_view, &$rs, &$ln, &$source, &$sz, &$sz_string)
                ?>
                   <div id="foto_top">
                      <!--  <div  class="span2 offset0" >-->
-                     <figure class="ramka" onClick="previewTop(<?= $ln['id'] ?>);">
+                     <figure class="ramka" onClick="$('#photo_preview').css('box-shadow','0 0 0 2px #000,0 0 2px 6px #fa0, 0 0 0 11px #fd0, 0 0 0 13px #000'); previewTop(<?= $ln['id'] ?>);">
+
                         <span class="top_pos" style="opacity: 0;"><?=$pos_num?></span>
-                        <img id="<?= substr(trim($ln['img']), 2, -4) ?>" src="dir.php?num=<?= substr(trim($ln['img']), 2, -4) ?>" alt="<?= $ln['nm'] ?>" title="Нажмите для просмотра" <?=$sz_string?> />
+                        <img id="<?= substr(trim($ln['img']), 2, -4) ?>" src="dir.php?num=<?= substr(trim($ln['img']), 2, -4) ?>"
+									alt="<?= $ln['nm'] ?>" title="Нажмите для просмотра" <?=$sz_string?> />
                         <figcaption><span style="font-size: x-small; font-family: Times, serif; ">№ <?=$ln['nm']?>
                               Голосов:<span class="badge badge-warning"> <span id="<?= substr(trim($ln['img']), 2, -4) ?>" style="font-size: x-small; font-family: 'Open Sans', sans-serif; "><?=$ln['votes']?></span>
                                                                     </span><br>Рейтинг: <?echo str_repeat('<img src="img/reyt.png"/>', floor($ln['votes'] / 5));?>
