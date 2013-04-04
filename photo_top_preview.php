@@ -5,46 +5,45 @@ include ('inc/func.php');
 header('Content-type: text/html; charset=windows-1251');
 
 if (isset($_SESSION['current_album'])):
-		$id=intval($_GET['id']);
+		$id = intval($_GET['id']);
 		if ($id > 0)
 			{
-				$rs=mysql_query('select * from photos where id = '.$id);
+				$rs = mysql_query('select * from photos where id = '.$id);
 				if (mysql_num_rows($rs) > 0)
 					{
-						$photo_data=mysql_fetch_assoc($rs);
-						$rs        =mysql_query('select id from photos where id_album = '.intval($photo_data['id_album'])
+						$photo_data = mysql_fetch_assoc($rs);
+						$rs = mysql_query('select id from photos where id_album = '.intval($photo_data['id_album'])
 							.' order by votes desc, id asc limit 0, 5');
 						if (mysql_num_rows($rs) > 0)
 							{
-								$index  =0;
-								$id_foto=array();
-								while ($ln=mysql_fetch_assoc($rs))
+								$index = 0;
+								$id_foto = array();
+								while ($ln = mysql_fetch_assoc($rs))
 									{
-										$id_foto[$index]=($ln['id']);
+										$id_foto[$index] = ($ln['id']);
 										$index++;
 									}
-								$right_id=0;
-								$left_id =0;
-								foreach ($id_foto as $key=>$val)
+								$right_id = 0;
+								$left_id = 0;
+								foreach ($id_foto as $key => $val)
 									{
 										if ($id == intval($val))
 											{
-												$right_id=intval($id_foto[$key + 1]);
-												$left_id =intval($id_foto[$key - 1]);
+												$right_id = intval($id_foto[$key + 1]);
+												$left_id = intval($id_foto[$key - 1]);
 											}
 									}
 								if ($id == $id_foto[0])
 									{
-										$left_id=intval($id_foto[4]);
+										$left_id = intval($id_foto[4]);
 									}
 								if ($id == $id_foto[4])
 									{
-										$right_id=intval($id_foto[0]);
+										$right_id = intval($id_foto[0]);
 									}
-								$source   =
-									$_SERVER['DOCUMENT_ROOT'].fotoFolder().$photo_data['id_album'].'/'.$photo_data['img'];
-								$sz       =@getimagesize($source);
-								$sz_string='width: '.($sz[0]).'px;';
+								$source = $_SERVER['DOCUMENT_ROOT'].fotoFolder().$photo_data['id_album'].'/'.$photo_data['img'];
+								$sz = @getimagesize($source);
+								$sz_string = 'width: '.($sz[0]).'px;';
 								?>
 
 								<? if ($left_id): ?>
