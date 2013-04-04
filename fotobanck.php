@@ -10,13 +10,12 @@ $ip = getip(); // Ip пользователя
 
 //Количество фоток на странице
 
-define('PHOTOS_ON_PAGE', 6);
+define('PHOTOS_ON_PAGE', 7);
 
 
 if (isset($_GET['album_id']))
     {
         $_SESSION['current_album'] = intval($_GET['album_id']);
-       // check($ip, $ipLog, $timeout);
     }
 if (isset($_GET['back_to_albums']))
     {
@@ -205,7 +204,7 @@ function fotoPage($may_view, &$current_page, &$record_count)
             $current_page = 1;
         }
         $start = ($current_page - 1) * PHOTOS_ON_PAGE;
-        $rs = mysql_query('select SQL_CALC_FOUND_ROWS p.* from photos p where id_album = '.intval($_SESSION['current_album']).' order by img ASC, id asc limit '.$start.','.PHOTOS_ON_PAGE);
+        $rs = mysql_query('select SQL_CALC_FOUND_ROWS p.* from photos p where id_album = '.intval($_SESSION['current_album']).' order by img ASC, id ASC limit '.$start.','.PHOTOS_ON_PAGE);
         $record_count = intval(mysql_result(mysql_query('select FOUND_ROWS() as cnt'), 0));   // количество записей
         if (mysql_num_rows($rs) > 0)
         {
@@ -282,6 +281,7 @@ function verifyParol($may_view)
    }
 
 
+
 /**
  * @param $may_view
  * @param $rs
@@ -290,6 +290,7 @@ function verifyParol($may_view)
  * @param $sz
  * @param $sz_string
  */
+
 function top5($may_view, &$rs, &$ln, &$source, &$sz, &$sz_string)
    {
       if ($may_view)
