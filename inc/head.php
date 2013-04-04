@@ -50,7 +50,7 @@
         <script src="/js/jquery.js"></script>
         <script src="/js/bootstrap.min.js"></script>
         <script src="/js/main.js"></script>
-		 <script src="/js/box-shadow.min.js"></script>
+
 <!--        <script src="/js/no-copy.js"></script>-->
 
 

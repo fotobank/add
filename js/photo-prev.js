@@ -14,21 +14,26 @@ function preview(idPhoto) {
     $('#photo_preview').fadeTo('fast', 0.01, function () {
         $('#photo_preview').load('photo_preview.php?id=' + idPhoto, function () {
             $('#photo_preview_bg').height($(document).height()).toggleClass('hidden').fadeTo('fast', 0.7, function () {
-                $('#photo_preview').alignCenter().toggleClass('hidden').fadeTo('fast', 1);
+                $('#photo_preview').alignCenter().toggleClass('hidden').fadeTo('fast', 1, function () {
+                    $('#photo_preview').attr('class', idPhoto)
+                });
             });
         });
     })
 }
+
 
 function previewTop(idPhoto) {
 
     $('#photo_preview').fadeTo('fast', 0.01, function () {
         $('#photo_preview').load('photo_top_preview.php?id=' + idPhoto, function () {
             $('#photo_preview_bg').height($(document).height()).toggleClass('hidden').fadeTo('fast', 0.7, function () {
-                $('#photo_preview').alignCenter().toggleClass('hidden').fadeTo('fast', 1);
+                $('#photo_preview').alignCenter().toggleClass('hidden').fadeTo('fast', 1, function () {
+                  $('#photo_preview').attr('class', idPhoto)
             });
         });
-    })
+     });
+  })
 }
 
 
