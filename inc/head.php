@@ -275,7 +275,7 @@
     ?>
 
 
-    <div id="fixed_menu"  data-spy="affix" data-offset-top="210">
+    <div id="fixed_menu" >
     <div id="main_menu"  data-spy="affix" data-offset-top="210">
 
 

@@ -79,6 +79,8 @@ body {
 
 }
 
+
+
 .block {
     background: #fff url(/img/bg_left.gif) repeat-y; /* ÷вет фона блока,
                                                           путь к фону с границей слева,
@@ -381,6 +383,7 @@ a.bt_rgstr:hover {
      z-index: 100;
  }
 
+
 #main_menu.affix:before {
     content: "";
     position: absolute;
@@ -417,15 +420,16 @@ a.bt_rgstr:hover {
     width:80%;
     height: auto;
     position: absolute;
-    top: 0;
+    top: -12px;
     left: 10%;
     border: 1px solid #fff;
     background: #6c6c6c;
-    /*-webkit-box-shadow: 0 0 30px #969696;
+    -webkit-box-shadow: 0 0 30px #969696;
     -moz-box-shadow: 0 0 30px #969696;
-    box-shadow: 0 0 30px #969696;*/
+    box-shadow: 0 0 30px #969696;
     z-index: 1;
     display: none;
+
 
 }
 
@@ -454,7 +458,7 @@ a.bt_rgstr:hover {
     color: #fff;
     /*margin: -13px 0 0 230px ;*/
     width: 160px;
-    height: 100px;
+    height: 22px;
     text-align: center;
     z-index: 1;
     position: relative;
@@ -1987,10 +1991,47 @@ a.alb_usl {
 
 }
 
+
 figure.ramka {
-box-shadow:#a3a3a3 8px 8px 15px;
-    -moz-box-shadow:#a3a3a3 8px 8px 15px;
-    -webkit-box-shadow:#a3a3a3 8px 8px 15px;
+    position: relative;
+    background: #fff;
+    -moz-border-radius: 4px;
+    color: rgba(0,0,0, 1);
+    text-shadow: 0 1px 0 #fff;
+    box-shadow:#a3a3a3 2px 2px 2px;
+    -moz-box-shadow:#a3a3a3 2px 2px 2px;
+    -webkit-box-shadow:#a3a3a3 2px 2px 2px;
+}
+
+figure.ramka:before,
+figure.ramka:after {
+    z-index: -1;
+    position: absolute;
+    content: "";
+    bottom: 15px;
+    left: 10px;
+    width: 50%;
+    top: 80%;
+    max-width:300px;
+    background: rgba(0, 0, 0, 0.7);
+    -webkit-box-shadow: 0 15px 10px rgba(0,0,0, 0.7);
+    -moz-box-shadow: 0 15px 10px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 15px 10px rgba(0, 0, 0, 0.7);
+    -webkit-transform: rotate(-3deg);
+    -moz-transform: rotate(-3deg);
+    -o-transform: rotate(-3deg);
+    -ms-transform: rotate(-3deg);
+    transform: rotate(-3deg);
+}
+
+figure.ramka:after {
+    -webkit-transform: rotate(3deg);
+    -moz-transform: rotate(3deg);
+    -o-transform: rotate(3deg);
+    -ms-transform: rotate(3deg);
+    transform: rotate(3deg);
+    right: 10px;
+    left: auto;
 }
 
 
@@ -2311,3 +2352,4 @@ hr.style-one:before {
 .left-small .box, .left-big .box {
 
 }
+

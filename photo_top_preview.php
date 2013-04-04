@@ -76,11 +76,9 @@ if (isset($_SESSION['current_album'])):
 											</tr>
 											<tr>
 												<td align="left">
-													<? if ($left_id): ?>
-														<div class="left_pointer" onClick="previewTop(<?= $left_id ?>);"></div>
-													<? else: ?>
-														<div class="pointer_hidden" onClick="hidePreview();"></div>
-													<? endif; ?>
+
+													<div class="left_pointer" onClick="previewTop(<?= $left_id ?>);"></div>
+
 												</td>
 												<td valign="top" width="33%" align="left">
 													<input type="button" value="В корзину" style="cursor: pointer;" onClick="basketAdd(<?= $photo_data['id'] ?>);"/><br/>
@@ -93,11 +91,9 @@ if (isset($_SESSION['current_album'])):
 												</td>
 
 												<td align="right">
-													<? if ($right_id): ?>
+
 													<div class="right_pointer" onClick="previewTop(<?= $right_id ?>);">
-														<? else: ?>
-															<div class="pointer_hidden" onClick="hidePreview();"></div>
-														<? endif; ?>
+
 
 												</td>
 
@@ -130,27 +126,11 @@ endif;
 ?>
 <script type='text/javascript'>
 
-	$(document).ready(function(){
+	$(document).ready(function () {
 
-	$('img').error(function () {
-		$(this).attr('src', 'img/404.png');
-	});
-
-		$('#5621').click(function(){
-
-			$('#photo_preview').css('box-shadow','0 0 0 2px #000,0 0 2px 6px #fa0, 0 0 0 11px #fd0, 0 0 0 13px #000');
-
-			    });
-
-		$('#5555').click(function(){
-
-			$('#photo_preview').css('box-shadow','0 0 0 0px #000,0 0 0 0 #000, 0 0 0 0 #000, 0 0 0 0 #000');
-
+		$('img').error(function () {
+			$(this).attr('src', 'img/404.png');
 		});
-
-
-
-
 
 	})
 </script>
