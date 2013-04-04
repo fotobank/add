@@ -129,8 +129,18 @@ endif;
 
 ?>
 <script type='text/javascript'>
+
+	$(document).ready(function(){
+
 	$('img').error(function () {
 		$(this).attr('src', 'img/404.png');
 	});
+
+	$('#<?=intval($id_foto[2])?>').(function () {
+
+		$('#photo_preview').css('box-shadow','0 0 0 2px #000,0 0 2px 6px #fa0, 0 0 0 11px #fd0, 0 0 0 13px #000');
+
+	});
+	})
 </script>
 

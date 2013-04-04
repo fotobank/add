@@ -312,6 +312,8 @@ function top5($may_view, &$rs, &$ln, &$source, &$sz, &$sz_string)
                {
                $source = $_SERVER['DOCUMENT_ROOT'].fotoFolder().$ln['id_album'].'/'.$ln['img'];
                $sz = @getimagesize($source);
+
+
                /*  размер топ 5 */
                if (intval($sz[0]) > intval($sz[1]))
                   {
