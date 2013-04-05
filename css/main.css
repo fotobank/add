@@ -424,9 +424,9 @@ a.bt_rgstr:hover {
     left: 10%;
     border: 1px solid #fff;
     background: #6c6c6c;
-    -webkit-box-shadow: 0 0 30px #969696;
+   /* -webkit-box-shadow: 0 0 30px #969696;
     -moz-box-shadow: 0 0 30px #969696;
-    box-shadow: 0 0 30px #969696;
+    box-shadow: 0 0 30px #969696;*/
     z-index: 1;
     display: none;
 

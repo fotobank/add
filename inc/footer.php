@@ -67,6 +67,8 @@
 </div>
 
     </body>
-    </html><?
+    </html>
+<?
+$err->err_proc('Test message ¹1','wld', __FILE__ , __LINE__ );
 mysql_close();
 ?>

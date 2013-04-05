@@ -2,7 +2,10 @@
     include __DIR__.'./config.php';
     include __DIR__.'./func.php';
 
- error_reporting(E_ALL);
+
+
+// error_reporting(E_ALL);
+//ini_set('display_errors', 1);
 
 
 
@@ -18,9 +21,13 @@
        <!-- <meta name="google-site-verification" content="uLdE_lzhCOntN_AaTM1_sQNmIXFk1-Dsi5AWS0bKIgs"/>
         <link href='http://fonts.googleapis.com/css?family=Lobster|Comfortaa:700|Jura:600&subset=cyrillic,cyrillic-ext' rel='stylesheet' type='text/css'>-->
         <?
-       require __DIR__.'./lib_errors.php';
-//        include __DIR__.'./using_example.php';
-        include __DIR__.'./title.php';
+
+		 include __DIR__.'./lib_mail.php';
+		 include __DIR__.'./lib_errors.php';
+		 include __DIR__.'./lib_ouf.php';
+		 $err = new Error_Processor;
+       include __DIR__.'./title.php';
+		 include __DIR__.'./../reminder.php';
         ?>
 
         <!--[if lt IE 9]>
@@ -66,9 +73,9 @@
 
 
         <!--сообщения-->
-<!--       <link href="/js/humane/themes/jackedup.css" rel="stylesheet" type="text/css"/>-->
+       <link href="/js/humane/themes/jackedup.css" rel="stylesheet" type="text/css"/>
 <!--        <link href="/js/humane/themes/libnotify.css" rel="stylesheet" type="text/css"/>-->
-        <link href="/js/humane/themes/bigbox.css" rel="stylesheet" type="text/css"/>
+<!--        <link href="/js/humane/themes/bigbox.css" rel="stylesheet" type="text/css"/>-->
         <script type="text/javascript" src="/js/humane/humane.js"></script>
 
         <link href="/css/main.css" rel="stylesheet" type="text/css"/>
@@ -120,7 +127,7 @@
                       e.preventDefault()
                   });
 
-            $('body').modalmanager('loading');
+//            $('body').modalmanager('loading');
         </script>
 
 
@@ -229,7 +236,9 @@
                                     </td>
                                 </tr>
                             </table>
-                            <a href="/reminder.php" style="color: #fff; text-decoration: none;">Забыли пароль?</a>
+                            <a href="#" style="color: #fff; text-decoration: none;" onclick="$(document).ready(function load() {
+                                                                          $('#vosst').modal('show');
+                                                                              });">Забыли пароль?</a>
                         </form>
                     <? endif; ?>
 

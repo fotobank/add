@@ -170,7 +170,7 @@ tinyMCE.init({
 </script>
 -->
 
-<script src="/ckeditor/ckeditor.js"></script>
+<script src="/ckfinde/ckeditor.js"></script>
 <script src="/ckfinder/ckfinder.js"></script>
 
 
@@ -333,6 +333,12 @@ input[type=checkbox] {
     <input type="hidden" name="page" value="7">
     </form>
   </td>
+	<td>
+		<form action="index.php" method="get">
+			<input type="submit" value="eXtplorer" class="<? echo $_SESSION['page'] == 8 ? 'btn btn-success' : 'btn btn-primary';?>">
+			<input type="hidden" name="page" value="8">
+		</form>
+	</td>
 </tr>
 </table>
 <hr>
@@ -359,7 +365,10 @@ switch($_SESSION['page'])
     include 'nastr.php';
 	break;
 	case 7:
-    include 'content.php';
+   include 'content.php';
+	break;
+	case 8:
+	include 'manager.php';
 	break;
 }
 ?>

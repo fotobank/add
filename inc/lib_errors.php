@@ -6,23 +6,25 @@ Additional information: http://wpdom.com, richter@wpdom.com
 
 class Error_Processor {
   var $EP_tmpl_err_item		= '[ERR_MSG]';		// Error messages template: one item of list of a messages
-  var $EP_log_fullname		= 'errors.log';		// Path and filename of error log
+  var $EP_log_fullname		=  'errors.log';		// Path and filename of error log
   var $EP_mail_period		= 5;			// Minimal period for sending an error message (in minutes)
   var $EP_from_addr;
   var $EP_from_name;
   var $EP_to_addr;
   var $EP_log_max_size		= 500;			// Max size of a log before it will sended and cleared (in kb)
-
   var $event_log_fullname	= 'events.log';		// Path and filename of event log
 
-  // Processes an error
-  // $actions - String with actions: '' - adding in error list of errors,
-  // 'w' - additionally writes an error message to screen, 'a' - additionally
-  // writes list of all messages to screen, 'd' - additionally cleans errors
-  // stack, 's' - additionally stop an execution,  'l' - additionally writes to
-  // log, 'm' - additionally sends by E-mail (values can be combined, for instance: 'ws')
-  // $err_file, $err_line - filename and line in it with error (typically constants
-  // __FILE__ and __LINE__)
+
+		// Процессор ошибок
+		// $actions - переменная String с действиями: '' - добавление ошибок в список ошибок,
+		// 'w' - дополнительно пишет сообщение об ошибке на экран, 'а' - дополнительно
+		// выводит список всех сообщений на экран, "d" - дополнительно очищает стек ошибки,
+		// 's' - дополнительно остановить исполнение, 'l' - дополнительно пишет log,
+		// 'm' - дополнительно отправляет по электронной почте (значения могут быть объединены, например: 'ws')
+		// $err_file, $err_line - имя файла и строки с ошибкой (как правило, константы
+		// __FILE__ and __LINE__)
+
+
   function err_proc($err_msg, $actions = '', $err_file = '', $err_line = '')
   {
     $this->log_send(0);
@@ -34,7 +36,7 @@ class Error_Processor {
     if (substr_count($actions, 'l')) {
       @touch($this->EP_log_fullname);
       @chmod($this->EP_log_fullname, 0777);
-      error_log(str_replace(array("\n", "\r"), ' ', $err_msg)."\t".$_SERVER[REQUEST_URI]."\t".date('r')."\t".Get_IP()."\n", 3, $this->EP_log_fullname);
+      error_log(str_replace(array("\n", "\r"), ' ', $err_msg)."\t".$_SERVER['REQUEST_URI']."\t". $_SERVER['HTTP_USER_AGENT']."\t".date('r')."\t".Get_IP()."\n", 3, $this->EP_log_fullname);
     }
 
     // Sending mail
@@ -100,7 +102,7 @@ class Error_Processor {
   {
     if (is_array($this->err_list))
       foreach ($this->err_list as $err_msg) {
-        $messages .= str_replace('[ERR_MSG]',$err_msg,$this->EP_tmpl_err_item);
+        @$messages .= str_replace('[ERR_MSG]',$err_msg,$this->EP_tmpl_err_item);
       }
     if ($messages != '') return $messages;
     else return FALSE;

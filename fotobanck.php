@@ -1,7 +1,5 @@
 <?php
 
-//ini_set('display_errors', 1);
-//error_reporting(E_ALL);
 include  ('inc/head.php');
 include  ('inc/get-ip.php');
 include  ('inc/ip-ban.php');
@@ -521,6 +519,7 @@ if ($album_data)
 			}
 	}
 
+$may_view = true;
 
 // <!-- ¬вод и блокировка парол€ -->
 
