@@ -6,10 +6,12 @@
 
 // error_reporting(E_ALL);
 //ini_set('display_errors', 1);
+//error_reporting(0);
 
 
 
-    header('Content-type: text/html; charset=windows-1251');
+
+   header('Content-type: text/html; charset=windows-1251');
 
 
 ?>
@@ -26,7 +28,11 @@
 		 include __DIR__.'./lib_errors.php';
 		 include __DIR__.'./lib_ouf.php';
 		 $err = new Error_Processor;
-       include __DIR__.'./title.php';
+		 include __DIR__.'./errorReport.php';
+
+
+
+		 include __DIR__.'./title.php';
 		 include __DIR__.'./../reminder.php';
         ?>
 
@@ -44,7 +50,7 @@
         </script>
         <![endif]-->
 
-
+		 $t = NOT_DEFINED;
 
 
         <link rel="shortcut icon" type="image/vnd.microsoft.icon" href="/favicon.ico"/>

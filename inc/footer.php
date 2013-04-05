@@ -69,6 +69,9 @@
     </body>
     </html>
 <?
-$err->err_proc('Test message ¹1','wld', __FILE__ , __LINE__ );
+if(isset($php_errormsg) && $php_errormsg != "")
+	{
+$err->err_proc('Îøèáêà: '.$php_errormsg,'wld', __FILE__ , __LINE__ );
+	}
 mysql_close();
 ?>
