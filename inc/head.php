@@ -39,26 +39,27 @@ header('Content-type: text/html; charset=windows-1251');
 		}
 
 	include __DIR__.'./lib_errors.php';
-	// определяем режим вывода ошибок
-	ini_set('display_errors', 'On');
-	// включаем буфферизацию вывода (вывод скрипта сохраняется во внутреннем буфере)
-	ob_start();
-	// устанавливаем пользовательский обработчик ошибок
-	set_error_handler( array( 'Error_Processor', 'userErrorHandler' ) );
-	set_exception_handler( array( 'Error_Processor', 'captureException' ) );
-	register_shutdown_function( array( 'Error_Processor', 'captureShutdown' ) );
 
-	//	$error_pr = new Error_Processor;
-	//$error_pr->err_proc('Ошибка: '.$php_errormsg,'wld', __FILE__ , __LINE__ );
+
+
+	// устанавливаем пользовательский обработчик ошибок
+	//set_error_handler( array( 'Error_Processor', 'userErrorHandler' ) );
+	//set_exception_handler( array( 'Error_Processor', 'captureException' ) );
+	//register_shutdown_function( array( 'Error_Processor', 'captureShutdown' ) );
+
+	$Error_Processor = new Error_Processor;
+	//$Error_Processor->err_proc('Ошибка: '.$php_errormsg,'wld', __FILE__ , __LINE__ );
+
+
 
 	// PHP set_error_handler TEST
-	IMAGINE_CONSTANT;
+//  	IMAGINE_CONSTANT;
 
 	// PHP set_exception_handler TEST
-	//	throw new Exception( 'Imagine Exception' );
+//		throw new Exception( 'Imagine Exception' );
 
 	// PHP register_shutdown_function TEST ( IF YOU WANT TEST THIS, DELETE PREVIOUS LINE )
-	//	imagine_function( );
+//		imagine_function( );
 
 
 	include __DIR__.'./title.php';

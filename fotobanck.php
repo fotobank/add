@@ -1,7 +1,7 @@
 <?php
 
 include  ('inc/head.php');
-include  ('inc/get-ip.php');
+// include  ('inc/get-ip.php');
 include  ('inc/ip-ban.php');
 $ip = Get_IP(); // Ip пользователя
 //Количество фоток на странице
@@ -93,7 +93,7 @@ if (isset($_GET['unchenge_cat']))
 <div id="zapret" class="modal hide fade" tabindex="-1" data-replace="true" style=" margin-top: -180px;">
 	<div class="err_msg">
 		<div class="modal-header">
-			<h3 style="color:#fd0001">Доступ к альбому "<?=$_SESSION['album_name'][$_SESSION['current_album']]?>"
+			<h3 style="color:#fd0001">Доступ к альбому "<? if (isset($_SESSION['current_album']) && isset($_SESSION['album_name'])) { echo $_SESSION['album_name'][$_SESSION['current_album']];} ?>"
 				заблокирован!</h3>
 		</div>
 		<div class="modal-body">

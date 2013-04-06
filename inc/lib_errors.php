@@ -14,7 +14,7 @@
 	      var $EP_to_addr;
 	      var $EP_log_max_size = 500; // Max size of a log before it will sended and cleared (in kb)
 	      var $event_log_fullname = 'events.log'; // Path and filename of event log
-	      var $errors;
+	      var $err;
 
 		// Процессор ошибок
 		// $actions - переменная String с действиями: '' - добавление ошибок в список ошибок,
@@ -208,17 +208,33 @@
 			      $this->log_send(1);
 		      }
 
+
+	      public function __construct()
+		      {
+
+			      // определяем режим вывода ошибок
+			      ini_set('display_errors', 'On');
+			      // определеяем уровень протоколирования ошибок
+			      error_reporting(E_ALL | E_STRICT);
+			      set_error_handler(array('Error_Processor', 'userErrorHandler'));
+			      set_exception_handler(array('Error_Processor', 'captureException'));
+			      register_shutdown_function(array('Error_Processor', 'captureShutdown'));
+		      }
+
+
 		/**
 		 * Обработчик ошибок
 		 */
 // определяемая пользователем функция обработки ошибок
 	      public static function userErrorHandler($errno, $errmsg, $filename, $linenum, $vars)
+		    //    function userErrorHandler($errno, $errmsg, $filename, $linenum, $vars)
 		      {
-// определеяем уровень протоколирования ошибок
-			  error_reporting(E_ALL | E_STRICT);
 
-								if (error_reporting() & $errno)
-									{
+			      if (error_reporting() & $errno)
+				      {
+					      // включаем буфферизацию вывода (вывод скрипта сохраняется во внутреннем буфере)
+					   //    ob_start();
+					   //    ob_end_clean();
 					      // timestamp для входа ошибки
 					      $dt = date("Y-m-d H:i:s (T)");
 					      // определяем ассоциативный массив строки ошибки
@@ -226,10 +242,10 @@
 					      // мы должны рассмотреть - это E_WARNING, E_NOTICE, E_USER_ERROR,
 					      // E_USER_WARNING и E_USER_NOTICE
 					      // если ошибка попадает в отчет (при использовании оператора "@" error_reporting() вернет 0)
-					      $errortype = array(E_ERROR             => 'E_ERROR',
-					                         E_WARNING           => 'E_WARNING',
+					      $errortype = array(E_ERROR             => 'E_ERROR (Фатальная ошибка)',
+					                         E_WARNING           => 'E_WARNING (Предупреждение) ',
 					                         E_PARSE             => 'E_PARSE',
-					                         E_NOTICE            => 'E_NOTICE',
+					                         E_NOTICE            => 'E_NOTICE (Уведомление) ',
 					                         E_CORE_ERROR        => 'E_CORE_ERROR',
 					                         E_CORE_WARNING      => 'E_CORE_WARNING',
 					                         E_COMPILE_ERROR     => 'E_COMPILE_ERROR',
@@ -262,11 +278,13 @@
 					      $err .= "</CATCHABLE ERRORS>\n\n";
 					      // сохранить в файл регистрации ошибок, и послать мне по электронной почте,
 					      // если есть критическая пользовательская ошибка
+                 //    $this -> log_send(0);
 					      error_log($err, 3, "error.log");
 					      if ($errno == E_USER_ERROR)
 						      {
 							      mail("aleksjurii@gmail.com.com", "Critical User Error", $err);
 						      }
+                     return $err;
 				      }
 
 			      return true;
@@ -294,7 +312,7 @@
 			      if ($error)
 				      {
 					      ## IF YOU WANT TO CLEAR ALL BUFFER, UNCOMMENT NEXT LINE:
-					      ob_end_clean();
+					      //  ob_end_clean();
 					      // Display content $error variable
 					      echo '<pre>';
 					      print_r($error);
@@ -310,7 +328,6 @@
 		}
 
 	// Примеры
-
 	/*function distance($vect1, $vect2)
 	{
 		if (!is_array($vect1) || !is_array($vect2)) {
@@ -352,5 +369,4 @@
 //$t2 = distance($b, "i am not an array") . "\n";
 // generate a warning
 //$t3 = distance($a, $b) . "\n";
-
 ?>
