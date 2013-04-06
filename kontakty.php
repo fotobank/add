@@ -245,22 +245,22 @@ print "<script language='Javascript' type='text/javascript'>
                                         <tr>
                                             <td class="td_formL" style="width: 100px;">Ваш E-mail*:</td>
                                             <td class="td_formR"><input rel="tooltip" data-placement="bottom" data-original-title="Указывайте реально существующий почтовый ящик. На него Вам прийдет ответ." class="inp_f_reg" type="text" name="umail" style="margin-bottom: 15px; margin-left: 0px; width: 200px;" maxlength="50" value="<?=$umail;?>"/></td>
-                                            <td style="padding-bottom: 17px;"><span class="label label-important" style="margin-top: 7px; margin-left: 10px;"><?=@$e3;?></span></td>
+                                            <td style="padding-bottom: 17px;"><span class="label label-important" style="margin-top: 7px; margin-left: 10px;"><?=$e3;?></span></td>
                                         </tr>
                                     </table>
 
                                     <table class="tb_m_form">
                                         <tr>
                                             <td class="td_formL2">Текст сообщения:</td>
-                                            <td class="td_formR2"><textarea  rel="tooltip" data-placement="top" data-original-title="Краткость - сестра таланта! :)" name="utext"><?=@$utext;?></textarea></td>
-                                            <span class="label label-important" style="margin-top: 3px; margin-left: 180px; position:absolute"><?=@$e2;?></span>
+                                            <td class="td_formR2"><textarea  rel="tooltip" data-placement="top" data-original-title="Краткость - сестра таланта! :)" name="utext"><?=$utext;?></textarea></td>
+                                            <span class="label label-important" style="margin-top: 3px; margin-left: 180px; position:absolute"><?=$e2;?></span>
                                         </tr>
                                         <tr>
                                             <td class="td_formL" style="width: 100px;"><div  style="position:relative; margin-top: -18px;">Введите результат 24*2=?:</div></td>
                                             <td class="td_formR2">
 
                                                 <input rel="tooltip" data-placement="right" data-original-title="Защита от спама." class="td_formR" type="text" name="umath" value="" style="margin-left: 10px; width: 200px;" />
-                                                <span class="label label-important" style="margin-top: 3px; margin-left: 20px;"><?=@$e5;?></span>
+                                                <span class="label label-important" style="margin-top: 3px; margin-left: 20px;"><?=$e5;?></span>
                                                 <input type="hidden" name="go" value="5"/><br>
                                                 <input type="submit" name="submit" value="Готово. Отправить!" data-original-title="" style="margin-top: 3px; width: 300px;">
                                             </td>
