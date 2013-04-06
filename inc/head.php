@@ -20,14 +20,46 @@ header('Content-type: text/html; charset=windows-1251');
 	  <link href='http://fonts.googleapis.com/css?family=Lobster|Comfortaa:700|Jura:600&subset=cyrillic,cyrillic-ext' rel='stylesheet' type='text/css'>-->
 	<?
 
-	//include __DIR__.'./lib_mail.php';
-	//include __DIR__.'./lib_errors.php';
-	//include __DIR__.'./lib_ouf.php';
-	//$error_pr = new Error_Processor;
-	include __DIR__.'./errorReport.php';
-	// $old_error_handler = set_error_handler("userErrorHandler");
-	$error_sait = new User_Error_Handler;
-	$error_script = set_error_handler("$this->userErrorHandler");
+	include __DIR__.'./lib_mail.php';
+	include __DIR__.'./lib_errors.php';
+	include __DIR__.'./lib_ouf.php';
+//	$error_pr = new Error_Processor;
+//	$error_pr->startErrorHandler();
+//	$error_sait = set_error_handler($error_pr->startErrorHandler());
+
+//	include __DIR__.'./errorReport.php';
+//	$error_sait = set_error_handler("userErrorHandler");
+
+
+
+
+	ini_set( 'display_errors', 1 );
+	error_reporting( -1 );
+
+	set_error_handler( array( 'Error_Processor', 'userErrorHandler' ) );
+
+//	set_error_handler( array( 'Error', 'captureNormal' ) );
+//	set_exception_handler( array( 'Error', 'captureException' ) );
+//	register_shutdown_function( array( 'Error', 'captureShutdown' ) );
+
+
+
+
+	// PHP set_error_handler TEST
+	IMAGINE_CONSTANT;
+
+	// PHP set_exception_handler TEST
+//	throw new Exception( 'Imagine Exception' );
+
+	// PHP register_shutdown_function TEST ( IF YOU WANT TEST THIS, DELETE PREVIOUS LINE )
+//	imagine_function( );
+
+
+
+
+
+
+
 
 
 
@@ -48,8 +80,8 @@ header('Content-type: text/html; charset=windows-1251');
 		document.createElement('span');
 	</script><![endif]-->
 	<?
-	$t = NOT_DEFINED;
-	echo $error_script->getError();
+//	$t = NOT_DEFINED;
+	//echo $error_sait->getError();
 	?>
 
 	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="/favicon.ico"/>

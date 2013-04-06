@@ -28,9 +28,9 @@ function get_f($text,$tag)
 // Return IP-address of user
 function Get_IP()
 {
-  $ip = getenv(HTTP_X_FORWARDED_FOR);
+  $ip = @getenv(HTTP_X_FORWARDED_FOR);
   if (!$ip) {
-    $ip = getenv(REMOTE_ADDR);
+    $ip = @getenv(REMOTE_ADDR);
   } else {
     $tmp = ",";
     if (strlen(strstr($ip,$tmp)) != 0) {

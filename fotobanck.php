@@ -519,7 +519,7 @@ if ($album_data)
 			}
 	}
 
-$may_view = true;
+//$may_view = true;
 
 // <!-- ¬вод и блокировка парол€ -->
 

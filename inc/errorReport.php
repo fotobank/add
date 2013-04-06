@@ -8,17 +8,11 @@
 	 */
 // мы сделаем нашу собственную обработку ошибок
 	//error_reporting(0);
-	class User_Error_Handler
-		{
-	      var $errno;
-	      var $errmsg;
-	      var $filename;
-	      var $linenum;
-	      var $vars;
-	      var $err;
 
 // определяемая пользователем функция обработки ошибок
-	      function userErrorHandler($errno, $errmsg, $filename, $linenum, $vars)
+
+		   function userErrorHandler( $errno, $errmsg, $filename, $linenum, $vars)
+
 		      {
 
 			      // timestamp для входа ошибки
@@ -42,34 +36,28 @@
 			      );
 			      // набор ошибок, на которые переменный след будет сохранен
 			      $user_errors = array(E_USER_ERROR, E_USER_WARNING, E_USER_NOTICE);
-			      $this->err   = "<errorentry>\n";
-			      $this->err .= "\t<datetime>".$dt."</datetime>\n";
-			      $this->err .= "\t<errornum>".$errno."</errornum>\n";
-			      $this->err .= "\t<errortype>".$errortype[$errno]."</errortype>\n";
-			      $this->err .= "\t<errormsg>".$errmsg."</errormsg>\n";
-			      $this->err .= "\t<scriptname>".$filename."</scriptname>\n";
-			      $this->err .= "\t<scriptlinenum>".$linenum."</scriptlinenum>\n";
+			      $err   = "<errorentry>\n";
+			      $err .= "\t<datetime>".$dt."</datetime>\n";
+			      $err .= "\t<errornum>". $errno."</errornum>\n";
+			      $err .= "\t<errortype>".$errortype[$errno]."</errortype>\n";
+			      $err .= "\t<errormsg>".$errmsg."</errormsg>\n";
+			      $err .= "\t<scriptname>".$filename."</scriptname>\n";
+			      $err .= "\t<scriptlinenum>".$linenum."</scriptlinenum>\n";
 			      if (in_array($errno, $user_errors))
 				      {
-					      $this->err .= "\t<vartrace>".wddx_serialize_value($vars, "Variables")."</vartrace>\n";
+					      $err .= "\t<vartrace>".wddx_serialize_value($vars, "Variables")."</vartrace>\n";
 				      }
-			      $this->err .= "</errorentry>\n\n";
+			      $err .= "</errorentry>\n\n";
 			      // для проверки:
-			      echo $this->err;
+			      echo $err;
 			      // сохранить в файл регистрации ошибок, и послать мне по электронной почте,
 			      // если есть критическая пользовательская ошибка
-			      error_log($this->err, 3, "error.log");
+			      error_log($err, 3, "error.log");
 			      if ($errno == E_USER_ERROR)
 				      {
-					      mail("aleksjurii@gmail.com.com", "Critical User Error", $this->err);
+					      mail("aleksjurii@gmail.com.com", "Critical User Error", $err);
 				      }
-		      }
 
-	      function getError()
-		      {
-
-			      echo $this->err;
-		      }
 		}
 
 	/*function distance($vect1, $vect2)
