@@ -3,7 +3,7 @@
 include  ('inc/head.php');
 include  ('inc/get-ip.php');
 include  ('inc/ip-ban.php');
-$ip = getip(); // Ip пользователя
+$ip = Get_IP(); // Ip пользователя
 //Количество фоток на странице
 define('PHOTOS_ON_PAGE', 27);
 

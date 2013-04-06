@@ -23,9 +23,10 @@
     {
     ?>
     <div class="ttext_orange" style="position:absolute; margin-top: -55px;">
-        <?
-        echo "ѕам€ть в конце: ".memory_get_usage()." байт; \n";
-        echo " ѕик: ".memory_get_peak_usage()." байт; \n";
+
+        ѕам€ть в конце: <?=intval(memory_get_usage()/1024)?>  байт;
+        ѕик: <?=intval(memory_get_peak_usage()/1024)?>  байт;
+	    <?
         $time = microtime();
         $time = explode(' ', $time);
         $time = $time[1] + $time[0];
@@ -69,9 +70,6 @@
     </body>
     </html>
 <?
-if(isset($php_errormsg) && $php_errormsg != "")
-	{
-//$error_pr->err_proc('ќшибка: '.$php_errormsg,'wld', __FILE__ , __LINE__ );
-	}
+
 mysql_close();
 ?>

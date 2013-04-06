@@ -26,11 +26,11 @@ function get_f($text,$tag)
 }
 
 // Return IP-address of user
-function Get_IP()
+/*function Get_IP()
 {
-  $ip = @getenv(HTTP_X_FORWARDED_FOR);
+  $ip = getenv("HTTP_X_FORWARDED_FOR");
   if (!$ip) {
-    $ip = @getenv(REMOTE_ADDR);
+    $ip = getenv("REMOTE_ADDR");
   } else {
     $tmp = ",";
     if (strlen(strstr($ip,$tmp)) != 0) {
@@ -39,7 +39,35 @@ function Get_IP()
     }
   }
   return trim($ip);
-}
+}*/
+
+
+	function Get_IP()
+		{
+			if (getenv("HTTP_CLIENT_IP") && strcasecmp(getenv("HTTP_CLIENT_IP"), "unknown"))
+				{
+					$ip = getenv("HTTP_CLIENT_IP");
+				}
+			elseif (getenv("HTTP_X_FORWARDED_FOR") && strcasecmp(getenv("HTTP_X_FORWARDED_FOR"), "unknown"))
+				{
+					$ip = getenv("HTTP_X_FORWARDED_FOR");
+				}
+			elseif (getenv("REMOTE_ADDR") && strcasecmp(getenv("REMOTE_ADDR"), "unknown"))
+				{
+					$ip = getenv("REMOTE_ADDR");
+				}
+			elseif (!empty($_SERVER['REMOTE_ADDR']) && strcasecmp($_SERVER['REMOTE_ADDR'], "unknown"))
+				{
+					$ip = $_SERVER['REMOTE_ADDR'];
+				}
+			else
+				{
+					$ip = "unknown";
+				}
+
+			return ($ip);
+		}
+
 
 // Return Whois-information (uses database of RIPE NCC)
 // $address can be IP-address or hostname

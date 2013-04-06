@@ -21,46 +21,44 @@ header('Content-type: text/html; charset=windows-1251');
 	<?
 
 	include __DIR__.'./lib_mail.php';
-	include __DIR__.'./lib_errors.php';
 	include __DIR__.'./lib_ouf.php';
-//	$error_pr = new Error_Processor;
-//	$error_pr->startErrorHandler();
-//	$error_sait = set_error_handler($error_pr->startErrorHandler());
 
-//	include __DIR__.'./errorReport.php';
-//	$error_sait = set_error_handler("userErrorHandler");
+	// обработка ошибок
+	if (isset($_SESSION['us_name']) && $_SESSION['us_name'] == 'test')
+		{
+			$time  = microtime();
+			$time  = explode(' ', $time);
+			$time  = $time[1] + $time[0];
+			$start = $time;
+			?>
+			<h2><< DEBUG >> </h2>
+			<div class="ttext_orange" style="position:relative">
+				 Используемая память в начале: <?=intval(memory_get_usage()/1024)?> Кбайт.
+			</div>
+		<?
+		}
 
-
-
-
-	ini_set( 'display_errors', 1 );
-	error_reporting( -1 );
-
+	include __DIR__.'./lib_errors.php';
+	// определяем режим вывода ошибок
+	ini_set('display_errors', 'On');
+	// включаем буфферизацию вывода (вывод скрипта сохраняется во внутреннем буфере)
+	ob_start();
+	// устанавливаем пользовательский обработчик ошибок
 	set_error_handler( array( 'Error_Processor', 'userErrorHandler' ) );
+	set_exception_handler( array( 'Error_Processor', 'captureException' ) );
+	register_shutdown_function( array( 'Error_Processor', 'captureShutdown' ) );
 
-//	set_error_handler( array( 'Error', 'captureNormal' ) );
-//	set_exception_handler( array( 'Error', 'captureException' ) );
-//	register_shutdown_function( array( 'Error', 'captureShutdown' ) );
-
-
-
+	//	$error_pr = new Error_Processor;
+	//$error_pr->err_proc('Ошибка: '.$php_errormsg,'wld', __FILE__ , __LINE__ );
 
 	// PHP set_error_handler TEST
 	IMAGINE_CONSTANT;
 
 	// PHP set_exception_handler TEST
-//	throw new Exception( 'Imagine Exception' );
+	//	throw new Exception( 'Imagine Exception' );
 
 	// PHP register_shutdown_function TEST ( IF YOU WANT TEST THIS, DELETE PREVIOUS LINE )
-//	imagine_function( );
-
-
-
-
-
-
-
-
+	//	imagine_function( );
 
 
 	include __DIR__.'./title.php';
@@ -79,10 +77,7 @@ header('Content-type: text/html; charset=windows-1251');
 		document.createElement('figcaption');
 		document.createElement('span');
 	</script><![endif]-->
-	<?
-//	$t = NOT_DEFINED;
-	//echo $error_sait->getError();
-	?>
+
 
 	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="/favicon.ico"/>
 	<link rel="shortcut icon" href="/img/ico_nmain.gif"/>
@@ -180,25 +175,6 @@ header('Content-type: text/html; charset=windows-1251');
 <table class="tb_head">
 	<tr>
 		<td>
-			<?
-			if (isset($_SESSION['us_name']) && $_SESSION['us_name'] == 'test')
-				{
-					$time  = microtime();
-					$time  = explode(' ', $time);
-					$time  = $time[1] + $time[0];
-					$start = $time;
-					?>
-					<div class="ttext_orange" style="position:absolute">
-						<?
-						echo "Память в начале: ".memory_get_usage()." байт \n";
-
-						?>
-					</div>
-				<?
-				}
-			?>
-
-
 			<div class="td_head_logo">
 
 				<div id="flash-container">
