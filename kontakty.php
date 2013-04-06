@@ -127,6 +127,14 @@
 <div id="cont_fb">
 <?php
 
+	$uname = "";
+	$uphone = "";
+	$skype = "";
+	$utext = "";
+	$umail = "";
+	$umail = "";
+	$e1 = $e2 = $e3 = $e4 = $e5 = "";
+
 	if (isset($_POST["go"]))
 	{
 		$e1 = null;
@@ -222,21 +230,21 @@ print "<script language='Javascript' type='text/javascript'>
                                     <table style="font-weight:bold">
                                         <tr>
                                             <td class="td_formL" style="width: 100px;">Ваше имя*:</td>
-                                            <td class="td_formR"><input rel="tooltip" data-placement="top" data-original-title="Имя или ник на сайте." class="inp_f_reg" type="text" name="uname" style="margin-bottom: 5px; margin-left: 0px; width: 200px;" maxlength="20" value="<?=@$uname;?>"/></td>
-                                            <td><span class="label label-important" style="margin-left: 10px;"><?=@$e1;?></span></td>
+                                            <td class="td_formR"><input rel="tooltip" data-placement="top" data-original-title="Имя или ник на сайте." class="inp_f_reg" type="text" name="uname" style="margin-bottom: 5px; margin-left: 0px; width: 200px;" maxlength="20" value="<?=$uname;?>"/></td>
+                                            <td><span class="label label-important" style="margin-left: 10px;"><?=$e1;?></span></td>
                                         </tr>
                                         <tr>
                                             <td class="td_formL" style="width: 100px;">Телефон*:</td>
-                                            <td class="td_formR"><input rel="tooltip" data-placement="right" data-original-title="Не меньше 6 цифр." class="inp_f_reg" type="text" name="uphone" style="margin-bottom: 4px; margin-left: 0px; width: 200px;" maxlength="20" value="<?=@$uphone;?>"/></td>
-                                            <td><span class="label label-important" style=" margin-left: 10px;"><?=@$e4;?></span></td>
+                                            <td class="td_formR"><input rel="tooltip" data-placement="right" data-original-title="Не меньше 6 цифр." class="inp_f_reg" type="text" name="uphone" style="margin-bottom: 4px; margin-left: 0px; width: 200px;" maxlength="20" value="<?=$uphone;?>"/></td>
+                                            <td><span class="label label-important" style=" margin-left: 10px;"><?=$e4;?></span></td>
                                         </tr>
                                         <tr>
                                             <td class="td_formL" style="width: 100px;">Skype:</td>
-                                            <td class="td_formR"><input rel="tooltip" data-placement="right" data-original-title="Для быстрой связи." class="inp_f_reg" type="text" name="skype" style="margin-bottom: 5px; margin-left: 0px; width: 200px;" maxlength="20" value="<?=@$skype;?>"/></td>
+                                            <td class="td_formR"><input rel="tooltip" data-placement="right" data-original-title="Для быстрой связи." class="inp_f_reg" type="text" name="skype" style="margin-bottom: 5px; margin-left: 0px; width: 200px;" maxlength="20" value="<?=$skype;?>"/></td>
                                         </tr>
                                         <tr>
                                             <td class="td_formL" style="width: 100px;">Ваш E-mail*:</td>
-                                            <td class="td_formR"><input rel="tooltip" data-placement="bottom" data-original-title="Указывайте реально существующий почтовый ящик. На него Вам прийдет ответ." class="inp_f_reg" type="text" name="umail" style="margin-bottom: 15px; margin-left: 0px; width: 200px;" maxlength="50" value="<?=@$umail;?>"/></td>
+                                            <td class="td_formR"><input rel="tooltip" data-placement="bottom" data-original-title="Указывайте реально существующий почтовый ящик. На него Вам прийдет ответ." class="inp_f_reg" type="text" name="umail" style="margin-bottom: 15px; margin-left: 0px; width: 200px;" maxlength="50" value="<?=$umail;?>"/></td>
                                             <td style="padding-bottom: 17px;"><span class="label label-important" style="margin-top: 7px; margin-left: 10px;"><?=@$e3;?></span></td>
                                         </tr>
                                     </table>
