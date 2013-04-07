@@ -44,10 +44,8 @@
 			{
 				// определяем режим вывода ошибок
 				ini_set('display_errors', 'On');
-
 				// определеяем уровень протоколирования ошибок
 				error_reporting(E_ALL | E_STRICT);
-
 				set_error_handler(array('Error_Processor', 'userErrorHandler'));
 				set_exception_handler(array('Error_Processor', 'captureException'));
 				register_shutdown_function(array('Error_Processor', 'captureShutdown'));
@@ -109,7 +107,7 @@
 						                   E_DEPRECATED        => 'E_DEPRECATED',
 						                   E_USER_DEPRECATED   => 'E_USER_DEPRECATED',);
 						// выводим свое сообщение об ошибке
-						echo "<b>{$errortype[$errno]}</b>[$errno] $errmsg ($filename на $linenum строке)<br />\n";
+					//	echo "<b>{$errortype[$errno]}</b>[$errno] $errmsg ($filename на $linenum строке)<br />\n";
 						// набор ошибок, на которые переменный след будет сохранен
 						$user_errors = array(E_USER_ERROR, E_USER_WARNING, E_USER_NOTICE);
 						$err         = "<CATCHABLE ERRORS>\n";
@@ -117,6 +115,7 @@
 						$err .= "\t Сообщение:       ".$errmsg."\n";
 						$err .= "\t Номер ошибки:    ".$errno."\n";
 						$err .= "\t Файл скрипта:    ".$filename."\n";
+						$err .= "\t Страница:        ".$_SERVER['REQUEST_URI']."\n";
 						$err .= "\t Номер линии:     ".$linenum."\n";
 						$err .= "\t Дата:            ".$dt."\n";
 						$err .= "\t Ip пользователя: ".Get_IP()."\n";
@@ -131,26 +130,21 @@
 						 * сохранить в файл регистрации ошибок, и послать мне по электронной почте,
 						 * если есть критическая пользовательская ошибка
 						 */
-						//    $this -> log_send(0);
+						/*error_log($err, 3, "error.log");
+						if (filesize("error.log") > 500 * 1024)
+						{
+							$fp = fopen("error.log", 'a'); //Открываем файл в режиме записи
+							ftruncate($fp, 0); // очищаем файл
+							fclose ($fp);
+						}
 
-						$error_processor = Error_Processor::getInstance();
-
-					   if (method_exists( $error_processor,'log_send'))
-						   {
-							   $error_processor->log_send(0);
-							  // var_dump($err, $error_processor );
-						   }
-
-
-
-							// 	$err = $error_processor->log_send();
-					// 	error_log($prov, 3, "error.log");
-
-						error_log($err, 3, "error.log");
 						if ($errno == E_USER_ERROR)
 							{
 								mail("aleksjurii@gmail.com.com", "Critical User Error", $err);
-							}
+							}*/
+
+						$error_processor = Error_Processor::getInstance();
+						// $error_processor->err_proc($err,'wl');
 					}
 
 				return true;
@@ -224,8 +218,8 @@
 					{
 						@touch($this->EP_log_fullname);
 						@chmod($this->EP_log_fullname, 0777);
-						error_log(str_replace(array("\n","\r"), ' ', $err_msg)."\t".$_SERVER['REQUEST_URI']."\t".$_SERVER['HTTP_USER_AGENT'].
-							"\t".date('r')."\t".Get_IP()."\n", 3, $this->EP_log_fullname);
+						error_log($err_msg, 3, $this->EP_log_fullname);
+
 					}
 
 
@@ -352,7 +346,12 @@
 						$title    = 'Report of events log';
 						$log_file = $this->event_log_fullname;
 					}
-				$dump = @file($log_file);
+				if (!file_exists($log_file))
+				{
+					$fh = fopen ($log_file, "w+");
+					fclose ($fh);
+				}
+				$dump = file($log_file);
 				if ($dump && filesize($log_file) > $this->EP_log_max_size * 1024)
 					{
 						$mail_mes = '<html><body>
@@ -390,7 +389,6 @@
 		 */
 		function log_event($message, $user_id)
 			{
-
 				@touch($this->event_log_fullname);
 				@chmod($this->event_log_fullname, 0777);
 				error_log(str_replace(array("\n",

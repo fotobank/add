@@ -24,8 +24,23 @@ header('Content-type: text/html; charset=windows-1251');
 	include __DIR__.'./lib_ouf.php';
 
 	// обработка ошибок
+	include __DIR__.'./lib_errors.php';
+	$error_processor = Error_Processor::getInstance();
+	//$error_processor->err_proc('Ошибка: '.$php_errormsg,'wld', __FILE__ , __LINE__ );
+
+	// PHP set_error_handler TEST
+	IMAGINE_CONSTANT;
+
+	// PHP set_exception_handler TEST
+	//   throw new Exception( 'Imagine Exception' );
+
+	// PHP register_shutdown_function TEST ( IF YOU WANT TEST THIS, DELETE PREVIOUS LINE )
+	// 	imagine_function( );
+
+
 	if (isset($_SESSION['us_name']) && $_SESSION['us_name'] == 'test')
 		{
+			$error_processor->err_proc($err,'wl');
 			$time  = microtime();
 			$time  = explode(' ', $time);
 			$time  = $time[1] + $time[0];
@@ -38,28 +53,6 @@ header('Content-type: text/html; charset=windows-1251');
 		<?
 		}
 
-	include __DIR__.'./lib_errors.php';
-	$error_processor = Error_Processor::getInstance();
-	//$error_processor->err_proc('Ошибка: '.$php_errormsg,'wld', __FILE__ , __LINE__ );
-
-
-	// устанавливаем пользовательский обработчик ошибок
-	//set_error_handler( array( 'Error_Processor', 'userErrorHandler' ) );
-	//set_exception_handler( array( 'Error_Processor', 'captureException' ) );
-	//register_shutdown_function( array( 'Error_Processor', 'captureShutdown' ) );
-
-
-
-
-
-	// PHP set_error_handler TEST
-    IMAGINE_CONSTANT;
-
-	// PHP set_exception_handler TEST
- //  throw new Exception( 'Imagine Exception' );
-
-	// PHP register_shutdown_function TEST ( IF YOU WANT TEST THIS, DELETE PREVIOUS LINE )
- //	imagine_function( );
 
 
 	include __DIR__.'./title.php';
