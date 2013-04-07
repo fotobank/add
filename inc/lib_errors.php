@@ -1,7 +1,7 @@
 <?php
 
 	/**
-	 * Class Error_Processor
+	 * @todo Class Error_Processor
 	 * Library for processing of errors and events.
 	 */
 	class Error_Processor
@@ -66,7 +66,7 @@
 
 		/**
 		 * Обработчик ошибок
-		 * определяемая пользователем функция обработки ошибок
+		 * @todo определяемая пользователем функция обработки ошибок
 		 */
 
 		public static function userErrorHandler($errno, $errmsg, $filename, $linenum, $vars)
@@ -144,7 +144,7 @@
 							}*/
 
 						$error_processor = Error_Processor::getInstance();
-						// $error_processor->err_proc($err,'wl');
+						 $error_processor->err_proc($err,'wl');
 					}
 
 				return true;
