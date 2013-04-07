@@ -47,13 +47,13 @@ header('Content-type: text/html; charset=windows-1251');
 	//set_exception_handler( array( 'Error_Processor', 'captureException' ) );
 	//register_shutdown_function( array( 'Error_Processor', 'captureShutdown' ) );
 
-	  $Error_Processor = Error_Processor::getInstance();
-	//$Error_Processor->err_proc('Ошибка: '.$php_errormsg,'wld', __FILE__ , __LINE__ );
+//	  $error_processor = Error_Processor::getInstance();
+	//$error_processor->err_proc('Ошибка: '.$php_errormsg,'wld', __FILE__ , __LINE__ );
 
 
 
 	// PHP set_error_handler TEST
-  IMAGINE_CONSTANT;
+//    IMAGINE_CONSTANT;
 
 	// PHP set_exception_handler TEST
 // throw new Exception( 'Imagine Exception' );

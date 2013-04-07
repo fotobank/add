@@ -1,8 +1,8 @@
 <?php
 
 include  ('inc/head.php');
-// include  ('inc/get-ip.php');
 include  ('inc/ip-ban.php');
+include  ('inc/dirPatc.php');
 $ip = Get_IP(); // Ip пользовател€
 // оличество фоток на странице
 define('PHOTOS_ON_PAGE', 27);
@@ -11,6 +11,12 @@ define('PHOTOS_ON_PAGE', 27);
 if (isset($_GET['album_id']))
 	{
 		$_SESSION['current_album'] = intval($_GET['album_id']);
+
+		$setDirPatc = set_Dir_Patc::getInstance1();
+
+		$setDirPatc-> currentAlbum ();
+
+
 	}
 if (isset($_GET['back_to_albums']))
 	{

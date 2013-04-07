@@ -133,11 +133,14 @@
 						//    $this -> log_send(0);
 
 						$error_processor = Error_Processor::getInstance();
-						// $error_processor = new  Error_Processor;
-				//	$prov = method_exists( $error_processor,'log_send');
+
+					   if (method_exists( $error_processor,'log_send'))
+						   {
+							   $error_processor->log_send(0);
+							   var_dump($err, $error_processor );
+						   }
 
 
-					//  	$error_processor->log_send();
 
 							// 	$err = $error_processor->log_send();
 					// 	error_log($prov, 3, "error.log");
@@ -335,7 +338,7 @@
 		 * @param int $type
 		 *  $type: 0 - errors, 1 - events
 		 */
-		function log_send($type = 0)
+		 function log_send($type = 0)
 			{
 
 				if ($type == 0)
