@@ -2,7 +2,8 @@
 
 include  ('inc/head.php');
 include  ('inc/ip-ban.php');
-include  ('inc/dirPatc.php');
+//include  ('inc/dirPatc.php');
+
 $ip = Get_IP(); // Ip пользователя
 //Количество фоток на странице
 define('PHOTOS_ON_PAGE', 27);
@@ -12,25 +13,34 @@ if (isset($_GET['album_id']))
 	{
 		$_SESSION['current_album'] = intval($_GET['album_id']);
 
-		$setDirPatc = set_Dir_Patc::getInstance1();
-
-		$setDirPatc-> currentAlbum ();
+		/*$Dir = SetDirPatc::getInstance();
+	      	var_dump($Dir);
+		$Dir -> setCurrentAlbum ($_GET['album_id']);
+		$album = $Dir -> getCurrentAlbum();
+			var_dump($_GET['album_id'], $album);*/
 
 
 	}
 if (isset($_GET['back_to_albums']))
 	{
 		unset($_SESSION['current_album']);
+
+
+		unset($setDirPatc);
 	}
 if (isset($_GET['chenge_cat']))
 	{
 		unset($_SESSION['current_album']);
 		$_SESSION['current_cat'] = intval($_GET['chenge_cat']);
+
+		unset($setDirPatc);
 	}
 if (isset($_GET['unchenge_cat']))
 	{
 		unset($_SESSION['current_album']);
 		unset($_SESSION['current_cat']);
+
+		unset($setDirPatc);
 	}
 
 
@@ -99,7 +109,8 @@ if (isset($_GET['unchenge_cat']))
 <div id="zapret" class="modal hide fade" tabindex="-1" data-replace="true" style=" margin-top: -180px;">
 	<div class="err_msg">
 		<div class="modal-header">
-			<h3 style="color:#fd0001">Доступ к альбому "<? if (isset($_SESSION['current_album']) && isset($_SESSION['album_name'])) { echo $_SESSION['album_name'][$_SESSION['current_album']];} ?>"
+			<h3 style="color:#fd0001">Доступ к альбому "<? if (isset($_SESSION['current_album']) && isset($_SESSION['album_name']))
+					{ echo $_SESSION['album_name'][$_SESSION['current_album']];} ?>"
 				заблокирован!</h3>
 		</div>
 		<div class="modal-body">

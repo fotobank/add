@@ -4,8 +4,8 @@ include __DIR__.'./func.php';
 
 
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+//error_reporting(E_ALL);
+//ini_set('display_errors', 1);
 //error_reporting(0);
 header('Content-type: text/html; charset=windows-1251');
 
@@ -39,7 +39,8 @@ header('Content-type: text/html; charset=windows-1251');
 		}
 
 	include __DIR__.'./lib_errors.php';
-
+	$error_processor = Error_Processor::getInstance();
+	//$error_processor->err_proc('Ошибка: '.$php_errormsg,'wld', __FILE__ , __LINE__ );
 
 
 	// устанавливаем пользовательский обработчик ошибок
@@ -47,19 +48,18 @@ header('Content-type: text/html; charset=windows-1251');
 	//set_exception_handler( array( 'Error_Processor', 'captureException' ) );
 	//register_shutdown_function( array( 'Error_Processor', 'captureShutdown' ) );
 
-//	  $error_processor = Error_Processor::getInstance();
-	//$error_processor->err_proc('Ошибка: '.$php_errormsg,'wld', __FILE__ , __LINE__ );
+
 
 
 
 	// PHP set_error_handler TEST
-//    IMAGINE_CONSTANT;
+    IMAGINE_CONSTANT;
 
 	// PHP set_exception_handler TEST
-// throw new Exception( 'Imagine Exception' );
+ //  throw new Exception( 'Imagine Exception' );
 
 	// PHP register_shutdown_function TEST ( IF YOU WANT TEST THIS, DELETE PREVIOUS LINE )
-// 	imagine_function( );
+ //	imagine_function( );
 
 
 	include __DIR__.'./title.php';

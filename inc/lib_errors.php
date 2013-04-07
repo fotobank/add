@@ -42,11 +42,12 @@
  		 */
 		protected  function __construct()
 			{
-
 				// определяем режим вывода ошибок
 				ini_set('display_errors', 'On');
+
 				// определеяем уровень протоколирования ошибок
 				error_reporting(E_ALL | E_STRICT);
+
 				set_error_handler(array('Error_Processor', 'userErrorHandler'));
 				set_exception_handler(array('Error_Processor', 'captureException'));
 				register_shutdown_function(array('Error_Processor', 'captureShutdown'));
@@ -137,7 +138,7 @@
 					   if (method_exists( $error_processor,'log_send'))
 						   {
 							   $error_processor->log_send(0);
-							   var_dump($err, $error_processor );
+							  // var_dump($err, $error_processor );
 						   }
 
 
