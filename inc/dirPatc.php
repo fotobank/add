@@ -86,3 +86,4 @@ class SetDirPatc {
 	$anotherMember = new Member( "mary", Member::ADMINISTRATOR );
 	echo $aMember->getUsername() . " is " . $aMember->getLevel() . "<br>";  // отобразит "fred is a member"
 	echo $anotherMember->getUsername() . " is " . $anotherMember->getLevel() . "<br>";  // отобразит "mary is an administrator"
+

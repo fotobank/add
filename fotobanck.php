@@ -334,7 +334,9 @@ function top5($may_view, &$rs, &$ln, &$source, &$sz, &$sz_string)
 				$source = $_SERVER['DOCUMENT_ROOT'].fotoFolder().$ln['id_album'].'/'.$ln['img'];
 				$sz = @getimagesize($source);
 				$id_foto[$pos_num] = ($ln['id']);
-				/*  размер топ 5 */
+				/**
+				 * @todo  размер топ 5
+				 */
 				if (intval($sz[0]) > intval($sz[1]))
 					{
 						$sz_string = 'width="165px"';
@@ -638,7 +640,7 @@ if ($may_view):
 				"</span></h2></div>
 	<div style="clear: both;"></div>
 
-	<!--/*выводим фотографию - заголовок альбома*/ -->
+	<!--/**	выводим фотографию - заголовок альбома*/ -->
 	<div id="alb_opis" class="span3">
 		<div class="alb_logo">
 			<div id="fb_alb_fotoP">
@@ -650,7 +652,8 @@ if ($may_view):
 	</div>
 
 
-	<!-- вывод топ 5  --><?
+	<!-- вывод топ 5  -->
+	<?
 	top5($may_view, $rs, $ln, $source, $sz, $sz_string);
 	?>
 
@@ -668,6 +671,9 @@ if ($may_view):
 
 
 	<!--Вывод нумерации страниц -->	<?
+  /**
+   * @todo Вывод нумерации страниц
+  */
 	paginator($record_count, $may_view, $current_page);
 
 
@@ -693,7 +699,9 @@ if ($may_view):
 
 	//include 'pages.php';
 	endif;
-//<!-- Вывод альбомов в разделах -->
+		/**
+		 *@todo <!-- Вывод альбомов в разделах -->
+		 */
 else:
 
 		if (isset($_SESSION['current_cat']))
@@ -706,7 +714,9 @@ else:
 			}
 		if ($current_cat > 0)
 			{
-				/* <!--Вывести поле nm из бд в шапку --> */
+				/**
+				 * @todo<!--Вывести поле nm из бд в шапку -->
+				 */
 				$razdel = '';
 				if (isset($_SESSION['current_cat']))
 					{
@@ -727,9 +737,13 @@ else:
 				<!-- Подготовка вывода альбомов на страницы разделов   -->
 				<?
 				$rs = mysql_query('select * from albums where id_category = '.$current_cat.' order by order_field asc');
-				/*  Вывод текстовой информации на страницы разделов  */
+				/**
+				 * @todo  Вывод текстовой информации на страницы разделов
+				 */
 				echo mysql_result(mysql_query('select txt from categories where id = '.$current_cat.'  '), 0);
-				// Печать альбомов
+				/**
+				 * @todo Печать альбомов
+				 */
 				if (mysql_num_rows($rs) > 0)
 					{
 						$i = 0;
@@ -799,7 +813,9 @@ else:
 							$rs = mysql_query('select * from categories order by id asc');
 							while ($ln = mysql_fetch_assoc($rs))
 								{
-									// кнопки разделов
+									/**
+									 *@todo кнопки разделов
+									 */
 									?>
 									<a class="button gray" href="fotobanck.php?chenge_cat=<?= $ln['id'] ?>"><?=$ln['nm']?> </a>
 								<?

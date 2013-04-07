@@ -16,8 +16,8 @@
 		var $EP_log_max_size = 500; // Max size of a log before it will sended and cleared (in kb)
 		var $event_log_fullname = 'events.log'; // Path and filename of event log
 		static private $instance = NULL;
-      var $error;
-		var $err_list = array();
+      public $error;
+		//var $err_list = array();
 
 
 		/**
@@ -32,7 +32,7 @@
 			{
 				if (self::$instance == NULL)
 					{
-						self::$instance = new Error_Processor();
+						self::$instance = new Error_Processor("");
 					}
 				return self::$instance;
 			}
@@ -40,7 +40,7 @@
 		/**
 		 *   __construct()
  		 */
-		protected  function __construct()
+		protected  function __construct($error)
 			{
 				// определяем режим вывода ошибок
 				ini_set('display_errors', 'On');
@@ -49,6 +49,7 @@
 				set_error_handler(array('Error_Processor', 'userErrorHandler'));
 				set_exception_handler(array('Error_Processor', 'captureException'));
 				register_shutdown_function(array('Error_Processor', 'captureShutdown'));
+				$this->error = $error;
 			}
 
 		/**
@@ -78,8 +79,8 @@
 						/**
 						 * включаем буфферизацию вывода (вывод скрипта сохраняется во внутреннем буфере)
 						 */
-						    ob_start();
-						    ob_end_clean();
+						  //  ob_start();
+						  //  ob_end_clean();
 						/**
 						 * timestamp для входа ошибки
 						 */
@@ -116,7 +117,7 @@
 						$err .= "\t Номер ошибки:    ".$errno."\n";
 						$err .= "\t Файл скрипта:    ".$filename."\n";
 						$err .= "\t Страница:        ".$_SERVER['REQUEST_URI']."\n";
-						$err .= "\t Номер линии:     ".$linenum."\n";
+						$err .= "\t Номер строки:    ".$linenum."\n";
 						$err .= "\t Дата:            ".$dt."\n";
 						$err .= "\t Ip пользователя: ".Get_IP()."\n";
 						$err .= "\t Браузер:         ".$_SERVER['HTTP_USER_AGENT']."\n";
@@ -127,24 +128,25 @@
 						$err .= "</CATCHABLE ERRORS>\n\n";
 
 						/**
-						 * сохранить в файл регистрации ошибок, и послать мне по электронной почте,
+						 * @todo Cохранить в файл регистрации ошибок, и послать мне по электронной почте,
 						 * если есть критическая пользовательская ошибка
 						 */
-						/*error_log($err, 3, "error.log");
+						/*error_log($err, 3, "errors.log");
 						if (filesize("error.log") > 500 * 1024)
 						{
 							$fp = fopen("error.log", 'a'); //Открываем файл в режиме записи
 							ftruncate($fp, 0); // очищаем файл
 							fclose ($fp);
-						}
+						}*/
 
 						if ($errno == E_USER_ERROR)
 							{
 								mail("aleksjurii@gmail.com.com", "Critical User Error", $err);
-							}*/
+							}
 
 						$error_processor = Error_Processor::getInstance();
-						 $error_processor->err_proc($err,'wl');
+						$error_processor->error = $err;
+
 					}
 
 				return true;
@@ -219,7 +221,6 @@
 						@touch($this->EP_log_fullname);
 						@chmod($this->EP_log_fullname, 0777);
 						error_log($err_msg, 3, $this->EP_log_fullname);
-
 					}
 
 
@@ -391,9 +392,8 @@
 			{
 				@touch($this->event_log_fullname);
 				@chmod($this->event_log_fullname, 0777);
-				error_log(str_replace(array("\n",
-				                            "\r"), ' ', $message)."\t".$_SERVER['REQUEST_URI']."\t$user_id\t".date('r').
-					                                  "\t".Get_IP()."\n", 3, $this->event_log_fullname);
+				error_log(str_replace(array("\n", "\r"), ' ', $message)."\t".$_SERVER['REQUEST_URI'].
+					       "\t$user_id\t".date('r')."\t".Get_IP()."\n", 3, $this->event_log_fullname);
 				$this->log_send(1);
 			}
 

@@ -26,21 +26,24 @@ header('Content-type: text/html; charset=windows-1251');
 	// обработка ошибок
 	include __DIR__.'./lib_errors.php';
 	$error_processor = Error_Processor::getInstance();
-	//$error_processor->err_proc('Ошибка: '.$php_errormsg,'wld', __FILE__ , __LINE__ );
 
-	// PHP set_error_handler TEST
+	/**
+	 *  Тесты для проверки Error_Processor
+	 * PHP set_error_handler TEST
+	 */
 	IMAGINE_CONSTANT;
-
-	// PHP set_exception_handler TEST
-	//   throw new Exception( 'Imagine Exception' );
-
-	// PHP register_shutdown_function TEST ( IF YOU WANT TEST THIS, DELETE PREVIOUS LINE )
-	// 	imagine_function( );
+	/**
+	 * PHP set_exception_handler TEST
+	 */
+//   throw new Exception( 'Imagine Exception' );
+	/**
+	 * PHP register_shutdown_function TEST ( IF YOU WANT TEST THIS, DELETE PREVIOUS LINE )
+	 */
+//	 	imagine_function( );
 
 
 	if (isset($_SESSION['us_name']) && $_SESSION['us_name'] == 'test')
 		{
-			$error_processor->err_proc($err,'wl');
 			$time  = microtime();
 			$time  = explode(' ', $time);
 			$time  = $time[1] + $time[0];
@@ -49,8 +52,18 @@ header('Content-type: text/html; charset=windows-1251');
 			<h2><< DEBUG >> </h2>
 			<div class="ttext_orange" style="position:relative">
 				 Используемая память в начале: <?=intval(memory_get_usage()/1024)?> Кбайт.
+				<hr class="style-one" style=" margin-bottom: -20px; margin-top: 10px"/>
 			</div>
+			<bt
 		<?
+			/**
+			 * $actions - переменная String с действиями: '' - добавление ошибок в список ошибок,
+			 * 'w' - дополнительно пишет сообщение об ошибке на экран, 'а' - дополнительно
+			 * выводит список всех сообщений на экран, "d" - дополнительно очищает стек ошибки,
+			 * 's' - дополнительно остановить исполнение, 'l' - дополнительно пишет log,
+			 * 'm' - дополнительно отправляет по электронной почте (значения могут быть объединены, например: 'ws')
+			 */
+			$error_processor->err_proc($error_processor->error,'wl');
 		}
 
 
