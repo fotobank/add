@@ -4,8 +4,8 @@ include __DIR__.'./func.php';
 
 
 
-// error_reporting(E_ALL);
-//ini_set('display_errors', 1);
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 //error_reporting(0);
 header('Content-type: text/html; charset=windows-1251');
 
@@ -47,19 +47,19 @@ header('Content-type: text/html; charset=windows-1251');
 	//set_exception_handler( array( 'Error_Processor', 'captureException' ) );
 	//register_shutdown_function( array( 'Error_Processor', 'captureShutdown' ) );
 
-	$Error_Processor = new Error_Processor;
+	  $Error_Processor = Error_Processor::getInstance();
 	//$Error_Processor->err_proc('Œ¯Ë·Í‡: '.$php_errormsg,'wld', __FILE__ , __LINE__ );
 
 
 
 	// PHP set_error_handler TEST
-//  	IMAGINE_CONSTANT;
+  IMAGINE_CONSTANT;
 
 	// PHP set_exception_handler TEST
-//		throw new Exception( 'Imagine Exception' );
+// throw new Exception( 'Imagine Exception' );
 
 	// PHP register_shutdown_function TEST ( IF YOU WANT TEST THIS, DELETE PREVIOUS LINE )
-//		imagine_function( );
+// 	imagine_function( );
 
 
 	include __DIR__.'./title.php';
@@ -274,17 +274,16 @@ header('Content-type: text/html; charset=windows-1251');
 
 <!-- —ŒŒ¡Ÿ≈Õ»≈ Œ¡ Œÿ»¡ ≈-->
 <?
-/*if (isset($_SESSION['err_msg']))
+if (isset($_SESSION['err_msg']))
 	{
-		*/?><!--
+		?>
 		<script type='text/javascript'>
-			//  dhtmlx.message({ type:'error', text:'Œ¯Ë·Í‡!<br>
-			<?/*=$_SESSION['err_msg']*/?>'});
-			humane.error('Œ¯Ë·Í‡!<br><?/*=$_SESSION['err_msg']*/?>');
+			dhtmlx.message({ type:'error', text:'Œ¯Ë·Í‡!<br><?=$_SESSION['err_msg']?>'});
+<!--			humane.error('Œ¯Ë·Í‡!<br>--><?//=$_SESSION['err_msg']?><!--')-->
 		</script>
-		--><?/*
+		<?
 		unset($_SESSION['err_msg']);
-	}*/
+	}
 ?>
 
 <!-- —ŒŒ¡Ÿ≈Õ»≈ Œ ”œ≈ÿÕŒÃ «¿¬≈–ÿ≈Õ»»-->
