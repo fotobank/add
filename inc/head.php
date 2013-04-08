@@ -6,7 +6,7 @@ include __DIR__.'./func.php';
 
 //error_reporting(E_ALL);
 //ini_set('display_errors', 1);
-//error_reporting(0);
+error_reporting(0);
 header('Content-type: text/html; charset=windows-1251');
 
 
@@ -63,7 +63,9 @@ header('Content-type: text/html; charset=windows-1251');
 			 * 's' - дополнительно остановить исполнение, 'l' - дополнительно пишет log,
 			 * 'm' - дополнительно отправляет по электронной почте (значения могут быть объединены, например: 'ws')
 			 */
-			$error_processor->err_proc($error_processor->error,'wl');
+			$actions = "w";
+			$err_msg = $error_processor->error;
+			$error_processor->err_proc($err_msg, $actions);
 		}
 
 

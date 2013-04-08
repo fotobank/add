@@ -7,7 +7,7 @@
 	class Error_Processor
 	{
 
-		var $EP_tmpl_err_item = '[ERR_MSG]'; // Error messages template: one item of list of a messages
+		var $EP_tmpl_err_item = '<br><br>[ERR_MSG]'; // Error messages template: one item of list of a messages
 		var $EP_log_fullname = 'errors.log'; // Path and filename of error log
 		var $EP_mail_period = 5; // Minimal period for sending an error message (in minutes)
 		var $EP_from_addr;
@@ -17,7 +17,7 @@
 		var $event_log_fullname = 'events.log'; // Path and filename of event log
 		static private $instance = NULL;
       public $error;
-		//var $err_list = array();
+		var $err_list = array();
 
 
 		/**
@@ -32,7 +32,7 @@
 			{
 				if (self::$instance == NULL)
 					{
-						self::$instance = new Error_Processor("");
+						self::$instance = new Error_Processor();
 					}
 				return self::$instance;
 			}
@@ -40,7 +40,7 @@
 		/**
 		 *   __construct()
  		 */
-		protected  function __construct($error)
+		protected  function __construct()
 			{
 				// определяем режим вывода ошибок
 				ini_set('display_errors', 'On');
@@ -49,7 +49,7 @@
 				set_error_handler(array('Error_Processor', 'userErrorHandler'));
 				set_exception_handler(array('Error_Processor', 'captureException'));
 				register_shutdown_function(array('Error_Processor', 'captureShutdown'));
-				$this->error = $error;
+
 			}
 
 		/**
@@ -108,7 +108,8 @@
 						                   E_DEPRECATED        => 'E_DEPRECATED',
 						                   E_USER_DEPRECATED   => 'E_USER_DEPRECATED',);
 						// выводим свое сообщение об ошибке
-					//	echo "<b>{$errortype[$errno]}</b>[$errno] $errmsg ($filename на $linenum строке)<br />\n";
+				//		echo "<b>{$errortype[$errno]}</b>[$errno] $errmsg ($filename на $linenum строке)<br />\n";
+
 						// набор ошибок, на которые переменный след будет сохранен
 						$user_errors = array(E_USER_ERROR, E_USER_WARNING, E_USER_NOTICE);
 						$err         = "<CATCHABLE ERRORS>\n";
@@ -145,7 +146,8 @@
 							}
 
 						$error_processor = Error_Processor::getInstance();
-						$error_processor->error = $err;
+						$error_processor->error = "<b>{$errortype[$errno]}</b>[$errno] $errmsg ($filename на $linenum строке)<br />\n";
+						$error_processor->err_proc($err,'lm');
 
 					}
 
@@ -236,11 +238,11 @@
 						for ($I = count($dump) - 1; $I > 0; $I--)
 							{
 								$str = explode("\t", $dump[count($dump) - 1]);
-								if (strtotime($str[2]) > strtotime("-".$this->EP_mail_period." minutes"))
+								/*if (strtotime($str[2]) > strtotime("-".$this->EP_mail_period." minutes"))
 									{
 										$too_often = true;
 										break;
-									}
+									}*/
 							}
 						if ($too_often == false)
 							{
@@ -315,6 +317,7 @@
 						foreach ($this->err_list as $err_msg)
 							{
 								$messages .= str_replace('[ERR_MSG]', $err_msg, $this->EP_tmpl_err_item);
+
 							}
 					}
 				if ($messages != '')
