@@ -146,7 +146,13 @@
 							}
 
 						$error_processor = Error_Processor::getInstance();
+						/**
+						 * @todo Формирование сообщения об ошибке для вывода на экран
+						 */
 						$error_processor->error = "<b>{$errortype[$errno]}</b>[$errno] $errmsg ($filename на $linenum строке)<br />\n";
+						/**
+						 * @todo Отправка ошибок в  лог файл и email
+						 */
 						$error_processor->err_proc($err,'lm');
 
 					}
