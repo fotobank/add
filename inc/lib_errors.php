@@ -152,7 +152,7 @@
 						/**
 						 * @todo Отправка ошибок в  лог файл и email
 						 */
-						$error_processor->err_proc($err,'l',$err_led);
+						$error_processor->err_proc($err,'lwm',$err_led);
 
 					}
 
@@ -238,10 +238,13 @@
 						$log_file = $this->EP_log_fullname;
 						$dump     = @file($log_file);
 						$too_often = false;
-						for ($I = count($dump) - 1; $I > 0; $I--)
+						for ($I = count($dump) - 5; $I > 0; $I--)
 							{
-								$str = explode("\t", $dump[count($dump) - 1]);
-								if (strtotime($str[2]) > strtotime("-".$this->EP_mail_period." minutes"))
+								$str = explode("\t", $dump[count($dump) - 5]);
+								$a = strtotime($str[1]);
+								$b = strtotime("-".$this->EP_mail_period." minutes");
+								//if (strtotime($str[0]) > strtotime("-".$this->EP_mail_period." minutes"))
+								if ($a > $b)
 									{
 										$too_often = true;
 										break;
