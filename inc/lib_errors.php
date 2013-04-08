@@ -16,7 +16,7 @@
 		var $EP_log_max_size = 500; // Max size of a log before it will sended and cleared (in kb)
 		var $event_log_fullname = 'events.log'; // Path and filename of event log
 		static private $instance = NULL;
-      var $error;
+      var $err_led;
 		var $err_list = array();
 
 
@@ -170,6 +170,7 @@
 				echo '<pre>';
 				print_r($exception);
 				echo '</pre>';
+				return true;
 			}
 
 		/**
@@ -190,12 +191,9 @@
 						print_r($error);
 						echo '</pre>';
 
-						return false;
 					}
-				else
-					{
+
 						return true;
-					}
 			}
 
 
@@ -204,7 +202,7 @@
 		 *
 		 * @param        $err_msg
 		 * @param string $actions
-		 * @param string $error
+		 * @param string $err_led
 		 *
 		 * $actions - переменная String с действиями: '' - добавление ошибок в список ошибок,
 		 * 'w' - дополнительно пишет сообщение об ошибке на экран, 'а' - дополнительно
@@ -215,13 +213,13 @@
 		 * __FILE__ and __LINE__)
 		 *
 		 */
-		function err_proc($err_msg, $actions = '', $error)
+		function err_proc($err_msg, $actions = '', $err_led)
 			{
 
 				$this->log_send(0);
 				// Adding in list of errors
 				$this->err_list[] = $err_msg;
-				$this->error = $error;
+				$this->err_led .= $err_led;
 				// Writing log
 				if (substr_count($actions, 'l'))
 					{
@@ -291,7 +289,7 @@
 					}
 				if (substr_count($actions, 'w'))
 					{
-						echo $error;
+						echo $this->err_led;
 					}
 				if (substr_count($actions, 'a'))
 					{
