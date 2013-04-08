@@ -107,8 +107,7 @@
 						                   E_RECOVERABLE_ERROR => 'E_RECOVERABLE_ERROR',
 						                   E_DEPRECATED        => 'E_DEPRECATED',
 						                   E_USER_DEPRECATED   => 'E_USER_DEPRECATED',);
-						// выводим свое сообщение об ошибке
-				//		echo "<b>{$errortype[$errno]}</b>[$errno] $errmsg ($filename на $linenum строке)<br />\n";
+
 
 						// набор ошибок, на которые переменный след будет сохранен
 						$user_errors = array(E_USER_ERROR, E_USER_WARNING, E_USER_NOTICE);
@@ -149,11 +148,11 @@
 						/**
 						 * @todo Формирование сообщения об ошибке для вывода на экран
 						 */
-						$error_processor->error = "<b>{$errortype[$errno]}</b>[$errno] $errmsg ($filename на $linenum строке)<br />\n";
+						$error_processor->error = "<span><b>$errortype[$errno]</b></span>[$errno] $errmsg (<span><b>$filename на  $linenum  строке)<br /></b></span>\n";
 						/**
 						 * @todo Отправка ошибок в  лог файл и email
 						 */
-						$error_processor->err_proc($err,'lm');
+						$error_processor->err_proc($err,'l');
 
 					}
 
@@ -244,11 +243,11 @@
 						for ($I = count($dump) - 1; $I > 0; $I--)
 							{
 								$str = explode("\t", $dump[count($dump) - 1]);
-								/*if (strtotime($str[2]) > strtotime("-".$this->EP_mail_period." minutes"))
+								if (strtotime($str[2]) > strtotime("-".$this->EP_mail_period." minutes"))
 									{
 										$too_often = true;
 										break;
-									}*/
+									}
 							}
 						if ($too_often == false)
 							{
@@ -295,6 +294,7 @@
 				if (substr_count($actions, 'w'))
 					{
 						echo $err_msg;
+						echo $this->error;
 					}
 				if (substr_count($actions, 'a'))
 					{
@@ -339,13 +339,11 @@
 
 		/**
 		 * Sends a log to administrator by e-mail and clears a log
-		 *
 		 * @param int $type
 		 *  $type: 0 - errors, 1 - events
 		 */
 		 function log_send($type = 0)
 			{
-
 				if ($type == 0)
 					{
 						$title    = 'Report of errors log';
