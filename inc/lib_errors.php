@@ -16,7 +16,7 @@
 		var $EP_log_max_size = 500; // Max size of a log before it will sended and cleared (in kb)
 		var $event_log_fullname = 'events.log'; // Path and filename of event log
 		static private $instance = NULL;
-      public $error;
+      var $error;
 		var $err_list = array();
 
 
@@ -148,11 +148,11 @@
 						/**
 						 * @todo Формирование сообщения об ошибке для вывода на экран
 						 */
-						$error_processor->error = "<span><b>$errortype[$errno]</b></span>[$errno] $errmsg (<span><b>$filename на  $linenum  строке)<br /></b></span>\n";
+						$err_led = "<span><b>$errortype[$errno]</b></span>[$errno] $errmsg (<span><b>$filename на  $linenum  строке)<br /></b></span>\n";
 						/**
 						 * @todo Отправка ошибок в  лог файл и email
 						 */
-						$error_processor->err_proc($err,'l');
+						$error_processor->err_proc($err,'l',$err_led);
 
 					}
 
@@ -204,8 +204,7 @@
 		 *
 		 * @param        $err_msg
 		 * @param string $actions
-		 * @param string $err_file
-		 * @param string $err_line
+		 * @param string $error
 		 *
 		 * $actions - переменная String с действиями: '' - добавление ошибок в список ошибок,
 		 * 'w' - дополнительно пишет сообщение об ошибке на экран, 'а' - дополнительно
@@ -216,12 +215,13 @@
 		 * __FILE__ and __LINE__)
 		 *
 		 */
-		function err_proc($err_msg, $actions = '', $err_file = '', $err_line = '')
+		function err_proc($err_msg, $actions = '', $error)
 			{
 
 				$this->log_send(0);
 				// Adding in list of errors
 				$this->err_list[] = $err_msg;
+				$this->error = $error;
 				// Writing log
 				if (substr_count($actions, 'l'))
 					{
@@ -253,8 +253,6 @@
 							{
 								$mail_mes = "
 										Error: $err_msg\n\n
-										File: $err_file\n
-										Line: $err_line\n
 										Date/time: ".date('r')."\n
 										\$SERVER_NAME = ".$_SERVER['SERVER_NAME']."\n
 										\$REQUEST_URI: ".$_SERVER['REQUEST_URI']."\n
@@ -293,8 +291,7 @@
 					}
 				if (substr_count($actions, 'w'))
 					{
-						echo $err_msg;
-						echo $this->error;
+						echo $error;
 					}
 				if (substr_count($actions, 'a'))
 					{
@@ -322,12 +319,12 @@
 					{
 						foreach ($this->err_list as $err_msg)
 							{
-								$messages .= str_replace('[ERR_MSG]', $err_msg, $this->EP_tmpl_err_item);
-
+								 $messages .= str_replace('[ERR_MSG]', $err_msg, $this->EP_tmpl_err_item);
 							}
 					}
 				if ($messages != '')
 					{
+
 						return $messages;
 					}
 				else
