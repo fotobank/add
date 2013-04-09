@@ -65,7 +65,7 @@ class Mail_sender {
   {
     $mime = '';
 
-    // In some cases, when there is several addresses
+    // В некоторых случаях, когда есть несколько адресов
     if (is_array($this->from_addr)) $this->from_addr = $this->from_addr[0];
 
     if (!empty($this->from_addr)) {
@@ -76,18 +76,21 @@ class Mail_sender {
     }
     $mime .= "X-Priority: ".$this->priority."\nMIME-Version: 1.0\n";
     if (count($this->headers) > 0) {	// Multipart letter
-      // Main body as part of letter
+      // Главное тело как часть письма
       $this->attach_content('', $this->body, $this->body_type);
-      // Compiling a parts
-      $boundary = 'b'.md5(uniqid(time())); // Boundary
+      // Сборка частей
+      $boundary = 'b'.md5(uniqid(time())); // граница
       $multipart = "Content-Type: multipart/mixed; boundary =$boundary\n\nThis is a MIME encoded letter\n\n--$boundary";
       for ($I = sizeof($this->headers)-1; $I >= 0; $I--) {
-        $multipart .= "\n".$this->build_part($this->headers[$I])."--$boundary"; // Inserting part of letter
+        $multipart .= "\n".$this->build_part($this->headers[$I])."--$boundary"; // Вставка части письма
       }
       $multipart .= "--\n";
       $mime .= $multipart;
-    } elseif ($this->body != '') {	// Simple letter
-      $this->body = chunk_split(base64_encode($this->body));
+    } elseif ($this->body != '') {	// Простое письмо
+	    /**
+	     * @todo Закодировать тело письма в base64
+	     */
+	   $this->body = chunk_split(base64_encode($this->body));
       $mime .= "Content-Type: ".$this->body_type."; charset=\"UTF-8\"\nContent-Transfer-Encoding: base64\n\n".$this->body;
     }
 

@@ -10,9 +10,9 @@
 		var $EP_tmpl_err_item = '<br><br>[ERR_MSG]'; // Error messages template: one item of list of a messages
 		var $EP_log_fullname = 'errors.log'; // Path and filename of error log
 		var $EP_mail_period = 5; // Minimal period for sending an error message (in minutes)
-		var $EP_from_addr;
-		var $EP_from_name;
-		var $EP_to_addr;
+		var $EP_from_addr = "webmaster@aleks.od.ua";
+		var $EP_from_name = "Ошибки в скриптах";
+		var $EP_to_addr = "aleksjurii@gmail.com";
 		var $EP_log_max_size = 500; // Max size of a log before it will sended and cleared (in kb)
 		var $event_log_fullname = 'events.log'; // Path and filename of event log
 		static private $instance = NULL;
@@ -220,7 +220,10 @@
 				// Adding in list of errors
 				$this->err_list[] = $err_msg;
 				$this->err_led .= $err_led;
-				// Writing log
+
+				/**
+				 * Writing log
+				 */
 				if (substr_count($actions, 'l'))
 					{
 						@touch($this->EP_log_fullname);
@@ -238,17 +241,28 @@
 						$log_file = $this->EP_log_fullname;
 						$dump     = @file($log_file);
 						$too_often = false;
-						for ($I = count($dump) - 5; $I > 0; $I--)
+						for ($I = count($dump) - 17; $I > 0; $I--)
 							{
-								$str = explode("\t", $dump[count($dump) - 5]);
-								$a = strtotime($str[1]);
-								$b = strtotime("-".$this->EP_mail_period." minutes");
-								//if (strtotime($str[0]) > strtotime("-".$this->EP_mail_period." minutes"))
-								if ($a > $b)
-									{
-										$too_often = true;
-										break;
-									}
+								$str = rtrim($dump[$I]);
+														/*$aa =   strval(substr($str,19,-6));
+					 	 		         $Ii = count($dump) - 17;
+
+											$a = strtotime(substr($str,19,-6));
+											$b = strtotime("-".$this->EP_mail_period." minutes");
+											$c = strtotime("now");
+								         $d = $a -$b;*/
+								//$a = strtotime(substr($str,19,-6));
+                         if (($timestamp = strtotime(substr($str,19,-6))) !== false)
+								    {
+
+						          	if (strtotime(substr($str,19,-6)) > strtotime("-".$this->EP_mail_period." minutes"))
+											{
+														$too_often = true;
+														break;
+											} else {
+								                  break;
+						               }
+								    }
 							}
 						if ($too_often == false)
 							{

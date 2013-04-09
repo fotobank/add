@@ -66,7 +66,7 @@ header('Content-type: text/html; charset=windows-1251');
 			 * 'm' - отправляет по электронной почте (значения могут быть объединены, например: 'ws')
 			 */
 		//	$error_processor->err_proc("" , "w", $error_processor->error);
-			$error_processor->err_proc("", "w", "");
+		 	$error_processor->err_proc("", "w", "");
 		//	$error_processor->err_proc("", "a", "");
 		}
 
