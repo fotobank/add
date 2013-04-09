@@ -152,7 +152,7 @@
 						/**
 						 * @todo Отправка ошибок в  лог файл и email
 						 */
-						$error_processor->err_proc($err,'lwm',$err_led);
+						$error_processor->err_proc($err,'l',$err_led);
 
 					}
 

@@ -31,7 +31,7 @@ header('Content-type: text/html; charset=windows-1251');
 	 *  Тесты для проверки Error_Processor
 	 * PHP set_error_handler TEST
 	 */
-	IMAGINE_CONSTANT;
+//	IMAGINE_CONSTANT;
 	/**
 	 * PHP set_exception_handler TEST
 	 */
@@ -66,8 +66,8 @@ header('Content-type: text/html; charset=windows-1251');
 			 * 'm' - отправляет по электронной почте (значения могут быть объединены, например: 'ws')
 			 */
 		//	$error_processor->err_proc("" , "w", $error_processor->error);
-		 	$error_processor->err_proc("", "w", "");
-		//	$error_processor->err_proc("", "a", "");
+		 	$error_processor->err_proc("", "wm", "");
+		//	$error_processor->err_proc("", "am", "");
 		}
 
 
