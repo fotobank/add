@@ -7,38 +7,37 @@ include  ('inc/dirPatc.php');
 $ip = Get_IP(); // Ip пользователя
 //Количество фоток на странице
 define('PHOTOS_ON_PAGE', 7);
-$Dir = DirPatc::getInstance();
+$Dir = DirPatc::getInst();
+
 
 if (isset($_GET['album_id']))
 	{
 		$_SESSION['current_album'] = intval($_GET['album_id']);
 
-		$Dir -> current_album  = $_GET['album_id'];
-		$album = $Dir -> current_album;
+		DirPatc::$current_album = intval($_GET['album_id']);
 
 	}
 if (isset($_GET['back_to_albums']))
 	{
 		unset($_SESSION['current_album']);
 
-
-		unset($Dir);
+ //  	$Dir -> destory('current_album');
 	}
 if (isset($_GET['chenge_cat']))
 	{
 		unset($_SESSION['current_album']);
 		$_SESSION['current_cat'] = intval($_GET['chenge_cat']);
 
-
-		unset($Dir);
+//		$Dir -> destory('current_album');
+		DirPatc::$current_cat = intval($_GET['chenge_cat']);
 	}
 if (isset($_GET['unchenge_cat']))
 	{
 		unset($_SESSION['current_album']);
 		unset($_SESSION['current_cat']);
 
-
-		unset($Dir);
+		$Dir -> destory('current_album');
+		$Dir -> destory('current_cat');
 	}
 
 
@@ -132,7 +131,6 @@ if (isset($_GET['unchenge_cat']))
 
 function paginator($record_count, $may_view, $current_page)
 	{
-		$Dir = DirPatc::getInstance();
 		/** @var $record_count  Количество фотографий в альбоме */
 		if (isset($record_count))
 			{
@@ -155,8 +153,8 @@ function paginator($record_count, $may_view, $current_page)
 							else
 								{
 									?>
-									<a class="next" href="fotobanck.php?album_id=<?= $Dir->current_album ?>&amp;pg=1#home">« </a>
-									<a class="next" href="fotobanck.php?album_id=<?= $Dir->current_album ?>&amp;pg=<?= (
+									<a class="next" href="fotobanck.php?album_id=<?= $_SESSION['current_album'] ?>&amp;pg=1#home">« </a>
+									<a class="next" href="fotobanck.php?album_id=<?= $_SESSION['current_album'] ?>&amp;pg=<?= (
 										$current_page - 1) ?>#home">« Предыдущая</a>
 								<?
 								}
@@ -173,7 +171,7 @@ function paginator($record_count, $may_view, $current_page)
 										{
 											//Ссылка на другую страницу
 											?>
-											<a href="fotobanck.php?album_id=<?= $Dir->current_album ?>&amp;pg=<?= $i ?>#home"><?=$i?></a>
+											<a href="fotobanck.php?album_id=<?= $_SESSION['current_album'] ?>&amp;pg=<?= $i ?>#home"><?=$i?></a>
 										<?
 										}
 								}
@@ -188,9 +186,9 @@ function paginator($record_count, $may_view, $current_page)
 								{
 
 									?>
-									<a class="next" href="fotobanck.php?album_id=<?= $Dir->current_album ?>&amp;pg=<?= (
+									<a class="next" href="fotobanck.php?album_id=<?= $_SESSION['current_album'] ?>&amp;pg=<?= (
 										$current_page + 1) ?>#home">Следующая »</a>
-									<a class="next" href="fotobanck.php?album_id=<?= $Dir->current_album ?>&amp;pg=<?= ($page_count) ?>#home">
+									<a class="next" href="fotobanck.php?album_id=<?= $_SESSION['current_album'] ?>&amp;pg=<?= ($page_count) ?>#home">
 										»</a>
 								<?
 								}
@@ -214,7 +212,6 @@ function paginator($record_count, $may_view, $current_page)
 
 function fotoPage($may_view, &$current_page, &$record_count)
 	{
-		$Dir = DirPatc::getInstance();
 		$current_page = isset($_GET['pg']) ? intval($_GET['pg']) : 1;
 		if ($may_view)
 			{
@@ -224,7 +221,7 @@ function fotoPage($may_view, &$current_page, &$record_count)
 					}
 				$start = ($current_page - 1) * PHOTOS_ON_PAGE;
 				$rs = mysql_query(
-					'select SQL_CALC_FOUND_ROWS p.* from photos p where id_album = '.$Dir->current_album
+					'select SQL_CALC_FOUND_ROWS p.* from photos p where id_album = '.$_SESSION['current_album']
 						.' order by img ASC, id ASC limit '.$start.','.PHOTOS_ON_PAGE);
 				$record_count = intval(mysql_result(mysql_query('select FOUND_ROWS() as cnt'), 0)); // количество записей
 				if (mysql_num_rows($rs) > 0)
@@ -314,7 +311,6 @@ function verifyParol($may_view)
 
 function top5($may_view, &$rs, &$ln, &$source, &$sz, &$sz_string)
 	{
-		$Dir = DirPatc::getInstance();
 		if ($may_view)
 			{
 				?>
@@ -326,7 +322,7 @@ function top5($may_view, &$rs, &$ln, &$source, &$sz, &$sz_string)
 				<!-- 1 -->
 				<hr class="style-one" style="margin: 0 0 -20px 0;"/>
 				<?
-				$rs = mysql_query('select * from photos where id_album = '.$Dir->current_album
+				$rs = mysql_query('select * from photos where id_album = '.$_SESSION['current_album']
 					.' order by votes desc, id asc limit 0, 5');
 				$id_foto = array();
 			if (mysql_num_rows($rs) > 0)
@@ -467,7 +463,7 @@ function parol($may_view, $ip, $ipLog, $goHere)
 
 if (isset($_SESSION['current_album'])):
 
-$rs = mysql_query('select * from albums where id = '.$Dir->current_album);
+$rs = mysql_query('select * from albums where id = '.$_SESSION['current_album']);
 $may_view = false;
 $album_data = false;
 if (mysql_num_rows($rs) == 0)
@@ -541,7 +537,7 @@ if ($album_data)
 			}
 	}
 
-//$may_view = true;
+$may_view = true;
 
 // <!-- Ввод и блокировка пароля -->
 
@@ -683,7 +679,7 @@ if ($may_view):
 
 
 
-	$PageVarName = "fotobanck.php?album_id=".$Dir->current_album."&amp;pg";
+	$PageVarName = "fotobanck.php?album_id=".$_SESSION['current_album']."&amp;pg";
 	$CurPage = $current_page;
 	$SLCountRowsToShowing = 2;
 	if ($CurPage)
@@ -702,6 +698,7 @@ if ($may_view):
 
 	//include 'pages.php';
 	endif;
+
 		/**
 		 *@todo <!-- Вывод альбомов в разделах -->
 		 */
@@ -715,6 +712,7 @@ else:
 			{
 				$current_cat = -1;
 			}
+
 		if ($current_cat > 0)
 			{
 				/**

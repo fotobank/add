@@ -24,8 +24,8 @@ header('Content-type: text/html; charset=windows-1251');
 	include __DIR__.'./lib_ouf.php';
 
 	// обработка ошибок
-	include __DIR__.'./lib_errors.php';
-	$error_processor = Error_Processor::getInstance();
+	  include __DIR__.'./lib_errors.php';
+	  $error_processor = Error_Processor::getInstance();
 
 	/**
 	 *  Тесты для проверки Error_Processor
