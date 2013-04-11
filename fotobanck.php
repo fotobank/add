@@ -21,14 +21,14 @@ if (isset($_GET['back_to_albums']))
 	{
 		unset($_SESSION['current_album']);
 
- //  	$Dir -> destory('current_album');
+   	$Dir -> destory('current_album');
 	}
 if (isset($_GET['chenge_cat']))
 	{
 		unset($_SESSION['current_album']);
 		$_SESSION['current_cat'] = intval($_GET['chenge_cat']);
 
-//		$Dir -> destory('current_album');
+		$Dir -> destory('current_album');
 		DirPatc::$current_cat = intval($_GET['chenge_cat']);
 	}
 if (isset($_GET['unchenge_cat']))
@@ -62,12 +62,9 @@ if (isset($_GET['unchenge_cat']))
 			<h3 style="color: #444444">Ввод пароля:</h3>
 		</div>
 		<div class="modal-body">
-			<div id="err-modal1" class="err_msg" style="display: none; float: left; margin-left: 90px; margin-bottom: 10px;">
-				Пароль неправильный, будьте внимательны!
-			</div>
-			<div style="clear: both;"></div>
+
 			<div style="ttext_white">
-				На данный альбом установлен пароль. Если Вы забыли пароль для входа, пожалуйста свяжитесь с фотографом через
+				На данный альбом установлен пароль. Если у Вас нет пароля для входа или он утерян , пожалуйста свяжитесь с фотографом через
 				email в разделе <a href="kontakty.php"><span class="ttext_blue">"Контакты"</span>.</a>
 			</div>
 			<br/>
@@ -79,7 +76,7 @@ if (isset($_GET['unchenge_cat']))
 			</form>
 		</div>
 		<div class="modal-footer">
-			<p id="err-modal2" style="float: left;"></p>
+			<p id="err-modal" style="float: left;"></p>
 			<button type="button" data-dismiss="modal" class="btn" onClick="window.document.location.href='/fotobanck.php?back_to_albums'">
 				Я не знаю
 			</button>
@@ -106,9 +103,8 @@ if (isset($_GET['unchenge_cat']))
 <div id="zapret" class="modal hide fade" tabindex="-1" data-replace="true" style=" margin-top: -180px;">
 	<div class="err_msg">
 		<div class="modal-header">
-			<h3 style="color:#fd0001">Доступ к альбому "<? if (isset($_SESSION['current_album']) && isset($_SESSION['album_name']))
-					{ echo $_SESSION['album_name'][$_SESSION['current_album']];} ?>"
-				заблокирован!</h3>
+			<h3 style="color:#fd0001">Доступ к альбому "<? if (isset($_SESSION['current_album']) and isset($_SESSION['album_name']))
+					{ echo $_SESSION['album_name'][$_SESSION['current_album']];} ?>"	заблокирован!</h3>
 		</div>
 		<div class="modal-body">
 			<div style="color:black">Вы использовали 5 попыток ввода пароля.В целях защиты, Ваш IP заблокирован на 30
@@ -127,6 +123,7 @@ if (isset($_GET['unchenge_cat']))
  * @param $record_count
  * @param $may_view
  * @param $current_page
+ * @todo paginator
  */
 
 function paginator($record_count, $may_view, $current_page)
@@ -208,6 +205,7 @@ function paginator($record_count, $may_view, $current_page)
  * @param $may_view
  * @param $current_page
  * @param $record_count
+ * @todo function fotoPage
  */
 
 function fotoPage($may_view, &$current_page, &$record_count)
@@ -246,7 +244,8 @@ function fotoPage($may_view, &$current_page, &$record_count)
 								?>
 								<div class="podlogka">
 									<figure class="ramka" onClick="preview(<?= $ln['id'] ?>);">
-										<img id="<?= substr(trim($ln['img']), 2, -4) ?>" src="dir.php?num=<?= substr(trim($ln['img']), 2, -4) ?>" title="За фотографию проголосовало <?= $ln['votes'] ?> человек. Нажмите для просмотра." <?=$sz_string?> />
+										<img id="<?= substr(trim($ln['img']), 2, -4) ?>" src="dir.php?num=<?= substr(trim($ln['img']), 2, -4) ?>"
+											title="За фотографию проголосовало <?= $ln['votes'] ?> человек. Нажмите для просмотра." <?=$sz_string?> />
 
 										<figcaption>№ <?=$ln['nm']?></figcaption>
 									</figure>
@@ -263,6 +262,7 @@ function fotoPage($may_view, &$current_page, &$record_count)
 
 /**
  * @param $may_view
+ * @todo function verifyParol
  */
 
 function verifyParol($may_view)
@@ -307,6 +307,7 @@ function verifyParol($may_view)
  * @param $source
  * @param $sz
  * @param $sz_string
+ * @todo function top5
  */
 
 function top5($may_view, &$rs, &$ln, &$source, &$sz, &$sz_string)
@@ -385,16 +386,16 @@ function top5($may_view, &$rs, &$ln, &$source, &$sz, &$sz_string)
  * @param $may_view
  * @param $ip
  * @param $ipLog
- * @param $goHere
+ * @param $timeout
+ * @todo function parol
  */
 
-function parol($may_view, $ip, $ipLog, $goHere)
+function parol($may_view, $ip, $ipLog, $timeout)
 	{
 		if (!$may_view)
 			{
 				if ($_SESSION['popitka'][$_SESSION['current_album']] > 0
-					&& $_SESSION['popitka'][$_SESSION['current_album']] <= 5
-				)
+					&& $_SESSION['popitka'][$_SESSION['current_album']] <= 5)
 					{
 						echo "<script type='text/javascript'>
                              $(document).ready(function load() {
@@ -403,8 +404,7 @@ function parol($may_view, $ip, $ipLog, $goHere)
                              </script>";
 					}
 				if ($_SESSION['popitka'][$_SESSION['current_album']] <= 0
-					&& $_SESSION['popitka'][$_SESSION['current_album']] != -10
-				)
+					&& $_SESSION['popitka'][$_SESSION['current_album']] != -10)
 					{
 						echo "<script type='text/javascript'>
                              $(document).ready(function(){
@@ -417,14 +417,13 @@ function parol($may_view, $ip, $ipLog, $goHere)
                              setTimeout('gloze()', 10000);
                              </script>";
 						$_SESSION['popitka'][$_SESSION['current_album']] = 5;
-						record($ip, $ipLog, $goHere); //бан по Ip
+						record($ip, $ipLog, $timeout); //бан по Ip
 					}
 				$ostal = '';
 				if ($_SESSION['popitka'][$_SESSION['current_album']] >= 0 && isset($_POST['album_pass'])
 					&& $_POST['album_pass'] != ""
 					|| $_SESSION['popitka'][$_SESSION['current_album']] >= 0 && isset($_POST['album_pass'])
-						&& $_POST['album_pass'] == NULL
-				)
+						&& $_POST['album_pass'] == NULL)
 					{
 						$_SESSION['popitka'][$_SESSION['current_album']]--;
 					}
@@ -432,10 +431,6 @@ function parol($may_view, $ip, $ipLog, $goHere)
 					{
 						$ostal = 'У Вас осталось ';
 						$popitka = 'попыток';
-					}
-				elseif ($_SESSION['popitka'][$_SESSION['current_album']] == 5)
-					{
-						$popitka = '';
 					}
 				elseif ($_SESSION['popitka'][$_SESSION['current_album']] == 0)
 					{
@@ -451,12 +446,14 @@ function parol($may_view, $ip, $ipLog, $goHere)
 				)
 					{
 						$popitka = ($ostal.' '.($_SESSION['popitka'][$_SESSION['current_album']] + 1).' '.$popitka);
-					}
-				echo "<script type='text/javascript'>
-                        var infdok = document.getElementById('err-modal2');
+
+			      	echo "<script type='text/javascript'>
+                        var infdok = document.getElementById('err-modal');
                         var SummDok = '$popitka';
                         infdok.innerHTML = SummDok;
+								dhtmlx.message({ type:'warning', text:'$popitka'});
                         </script>";
+				   }
 			}
 	}
 
@@ -512,20 +509,21 @@ if ($album_data)
 								 setTimeout('gloze()', 3000);
 								 </script>";
 								 */
-								?>
+
 								echo "
 								<script type='text/javascript'>
-									var infdok = document.getElementById('err-modal1');
-									if (infdok) {
-										infdok.style.display = 'block';
-									}
+								dhtmlx.message({ type:'error', text:'Пароль неправильный,<br> будьте внимательны!'});
 								</script>";
-							<?
-							}
-						if ($_SESSION['popitka'][$_SESSION['current_album']] > -5)
-							{
-								//  $_SESSION['popitka'][$_SESSION['current_album']]--;
-							}
+
+							} else {
+
+							echo "
+								<script type='text/javascript'>
+								dhtmlx.message({ type:'addfoto', text:'Вход выполнен'});
+								</script>";
+						}
+
+
 					}
 				$may_view = (isset($_SESSION['album_pass']) && is_array($_SESSION['album_pass'])
 					&& isset($_SESSION['album_pass'][$album_data['id']])
@@ -536,19 +534,24 @@ if ($album_data)
 				unset($_SESSION['popitka'][$_SESSION['current_album']]);
 			}
 	}
-
-$may_view = true;
+// @todo Отключить проверку пароля
+// $may_view = true;
 
 // <!-- Ввод и блокировка пароля -->
 
-parol($may_view, $ip, $ipLog, $goHere);
+parol($may_view, $ip, $ipLog, $timeout);
 
 if (!isset($_SESSION['current_cat']))
 	{
 		echo "<script>window.document.location.href='/fotobanck.php?back_to_albums'</script>";
 	}
 
-$razdel = mysql_result(mysql_query('select nm from categories where id = '.$_SESSION['current_cat']), 0);
+$data =	mysql_query('select nm from categories where id = '.intval($_SESSION['current_cat']));
+if (mysql_num_rows($data) > 0)
+	{
+$razdel = mysql_result($data, 0);
+	}
+
 
 
 
@@ -674,8 +677,6 @@ if ($may_view):
    * @todo Вывод нумерации страниц
   */
 	paginator($record_count, $may_view, $current_page);
-
-
 
 
 

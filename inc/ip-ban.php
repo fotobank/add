@@ -9,21 +9,21 @@
 	// бан
 	$ipLog   = 'ipLogFile.txt'; // logfiles name
 	$timeout = '30'; // количество минут to block Ip
-	$goHere  = 'index.php'; // Allowed pages name here
-	function record($ip, $ipLog) // запись бана
+	function record($ip, $ipLog, $timeout) // запись бана
 		{
 
 			$log = fopen("$ipLog", "a+");
 			fputs($log, $ip."][".time()."][".$_SESSION['current_album']."\n");
 			fclose($log);
-			//exit(0);
+			$user = isset($_SESSION['us_name']) ? $_SESSION['us_name'] : "" ;
+			trigger_error("Зафиксированн подбор пароля для альбома \"".$_SESSION['current_album'].
+			"\", пользователь - \"".$user."\" c Ip:".$ip." забанен на ".$timeout." минут!" , E_USER_ERROR);
 		}
 
 	// chek
 	function check($ip, $ipLog, $timeout) // проверка бана
 		{
 
-			//global $valid;
 			$data = file("$ipLog");
 			$now  = time();
 			if (!isset($_SESSION['popitka']) || !is_array($_SESSION['popitka']))
@@ -33,12 +33,13 @@
 			if (isset($_SESSION['current_album']))
 				{
 					if (!isset($_SESSION['popitka'][$_SESSION['current_album']]) || $_SESSION['popitka'][$_SESSION['current_album']] < 0
-						|| $_SESSION['popitka'][$_SESSION['current_album']] > 5 && $_SESSION['popitka'][$_SESSION['current_album']] != -10)
+						|| $_SESSION['popitka'][$_SESSION['current_album']] > 5 && $_SESSION['popitka'][$_SESSION['current_album']] != -10
+					)
 						{
 							$_SESSION['popitka'][$_SESSION['current_album']] = 5;
 						}
 				}
-			if ($data) //если есть запись
+			if ($data) //если есть хоть одна запись
 				{
 					foreach ($data as $key => $record)
 						{
@@ -69,7 +70,8 @@
 								{
 									if ($ip == $subdata[0] && $now > ($subdata[1] + 60 * $timeout) && $_SESSION['current_album'] == $subdata[2]
 										&& $_SESSION['popitka'][$_SESSION['current_album']] <= 0
-										&& $_SESSION['popitka'][$_SESSION['current_album']] > 5) // время бана закончилось
+										&& $_SESSION['popitka'][$_SESSION['current_album']] > 5
+									) // время бана закончилось
 										{
 											$_SESSION['popitka'][$_SESSION['current_album']] = 5;
 										}

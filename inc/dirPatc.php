@@ -18,7 +18,7 @@
 
 
 
-		public static function __set($property, $value)
+		public function __set($property, $value)
 			{
 
 				if ($property == "current_album")
@@ -36,7 +36,7 @@
 			}
 
 
-		public static function __get($property)
+		public function __get($property)
 			{
 
 				if ($property == "current_album")

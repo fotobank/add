@@ -73,7 +73,7 @@ header('Content-type: text/html; charset=windows-1251');
 
 
 	include __DIR__.'./title.php';
-	include __DIR__.'./../reminder.php';
+	// include __DIR__.'./../reminder.php';
 	?>
 
 	<!--[if lt IE 9]>
@@ -87,7 +87,8 @@ header('Content-type: text/html; charset=windows-1251');
 		document.createElement('figure');
 		document.createElement('figcaption');
 		document.createElement('span');
-	</script><![endif]-->
+	</script>
+	<![endif]-->
 
 
 	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="/favicon.ico"/>
@@ -169,8 +170,6 @@ header('Content-type: text/html; charset=windows-1251');
 			.click(function (e) {
 				e.preventDefault()
 			});
-
-		//            $('body').modalmanager('loading');
 	</script>
 
 
@@ -262,9 +261,8 @@ header('Content-type: text/html; charset=windows-1251');
 								</td>
 							</tr>
 						</table>
-						<a href="#" style="color: #fff; text-decoration: none;" onclick="$(document).ready(function load() {
-                                                                          $('#vosst').modal('show');
-                                                                              });">Забыли пароль?</a>
+						<a href="/reminder.php" style="color: #fff; text-decoration: none;" >Забыли пароль?</a>
+						<!-- <a href="#" style="color: #fff; text-decoration: none;" onclick="$(document).ready(function load() { $('#vosst').modal('show'); }); ">Забыли пароль?</a> -->
 					</form>
 				<? endif; ?>
 
