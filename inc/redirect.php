@@ -13,6 +13,7 @@
 
 	if (isset($_POST['redirect']))
 		{
+
 			main_redir($_POST['redirect']);
-			 // ok_exit('Удален каталог: ' .'redirect', $_POST['redirect']);
+
 		}

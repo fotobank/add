@@ -73,7 +73,7 @@ header('Content-type: text/html; charset=windows-1251');
 
 
 	include __DIR__.'./title.php';
-	// include __DIR__.'./../reminder.php';
+	//include __DIR__.'./../reminder.php';
 	?>
 
 	<!--[if lt IE 9]>
@@ -261,8 +261,8 @@ header('Content-type: text/html; charset=windows-1251');
 								</td>
 							</tr>
 						</table>
-						<a href="/reminder.php" style="color: #fff; text-decoration: none;" >Забыли пароль?</a>
-						<!-- <a href="#" style="color: #fff; text-decoration: none;" onclick="$(document).ready(function load() { $('#vosst').modal('show'); }); ">Забыли пароль?</a> -->
+<!--						<a href="/reminder.php" style="color: #fff; text-decoration: none;" >Забыли пароль?</a>-->
+						 <a href="#" style="color: #fff; text-decoration: none;" onclick="$(document).ready(function load() { $('#vosst').modal('show'); }); ">Забыли пароль?</a>
 					</form>
 				<? endif; ?>
 
@@ -280,22 +280,130 @@ header('Content-type: text/html; charset=windows-1251');
 </div>
 
 
-<!-- СООБЩЕНИЕ ОБ ОШИБКЕ-->
+<!-- восстановление пароля -->
+<div id="vosst" class="modal hide fade in animated fadeInDown" style="position: absolute; top: 40%; left: 50%; z-index: 1;
+	" data-keyboard="false" data-width="460" data-focus-on="input:first" data-backdrop="static" tabindex="-1" aria-hidden="false">
+	<div class="modal-header" style="background: rgba(229,229,229,0.53)">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+		<div>
+			<h3>
+				<span style="font-weight: bold;">Восстановление пароля захода на сайт:</span>
+			</h3>
+		</div>
+	</div>
+	<div class="modal-body">
+		<div class="form_reg" style="color:#000; font-size:16px;">
+			<form action="/index.php" method="post">
+				<label>Введите Ваш логин:
+					<input data-tabindex="2" maxlength="20" class="inp_f_reg" style="margin-left: 8px; width: 150px" type="text" name="login" value=""/>
+				</label> <label style="float: left"> или E-mail:
+					<input data-tabindex="1" maxlength="20" class="inp_f_reg" style="margin-left: 60px; width: 150px" type="text" name="email" value=""/>
+				</label> <input type="hidden" name="go_rem" value="1"/>
+				<input class="btn" type="submit" value="Напомнить" style="float: right; margin: -10px 0 0 0 "/>
+			</form>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" data-dismiss="modal" class="btn"> Закрыть </button>
+	</div>
+</div>
+
+
+
 <?
+
+if (isset($_POST['go_rem']))
+			{
+				$_SESSION["back"] = $_SERVER["HTTP_REFERER"];
+				$modal = 1;
+				$where = '';
+				if (!empty($_POST['email']))
+					{
+						$where = ' email = \''.mysql_escape_string($_POST['email']).'\'';
+					}
+				elseif (!empty($_POST['login']))
+					{
+						$where = ' login = \''.mysql_escape_string($_POST['login']).'\'';
+					}
+				else
+					{
+						$_SESSION['err_msg'] = "Необходимо заполнить<br> одно из полей.";
+					}
+				if ($where != '')
+					{
+						$rs = mysql_query('select * from users where '.$where);
+						if (mysql_errno() == 0 && mysql_num_rows($rs) > 0)
+							{
+								$user_data = mysql_fetch_assoc($rs);
+								$title     = 'Восстановление пароля на сайте Creative line studio';
+								$headers   = "Content-type: text/plain; charset=windows-1251\r\n";
+								$headers .= "From: Администрация Creative line studio \r\n";
+								$subject = '=?koi8-r?B?'.base64_encode(convert_cyr_string($title, "w", "k")).'?=';
+								$letter  = "Здравствуйте, $user_data[us_name]!\r\n";
+								$letter .= "Кто-то (возможно, Вы) запросил восстановление пароля на сайте Creative line studio.\r\n";
+								$letter .= "Данные для входа на сайт:\r\n";
+								$letter .= "   логин: $user_data[login]\r\n";
+								$letter .= "   пароль: $user_data[pass]\r\n";
+								$letter .= "Если вы не запрашивали восстановление пароля, пожалуйста, немедленно свяжитесь с администрацией сайта!\r\n";
+								// Отправляем письмо
+								if (!mail($user_data['email'], $subject, $letter, $headers))
+									{
+										$_SESSION['err_msg'] = "Не удалось отправить письмо. Пожалуйста, попробуйте позже.";
+									}
+								else
+									{
+
+										$_SESSION['ok_msg2'] = "Запрос выполнен.<br>Новый пароль отправлен<br> на Ваш email.";
+										$modal = 0;
+									}
+							}
+						else
+							{
+								$_SESSION['err_msg'] = "Пользователь не найден.";
+							}
+					}
+
+
+			 if (isset($modal) and $modal == 0)
+				{
+					$back = $_SESSION["back"];
+					unset($_SESSION["back"]);
+					?>
+					<script type='text/javascript'>
+						window.document.location.href = '<?=$back?>'
+					</script>
+				<?
+				}
+         unset($_POST['go_rem']);
+	      }
+
+if (isset($modal) and $modal == 1)
+	{
+		?>
+		<script type='text/javascript'>
+			$('#vosst').modal('show');
+		</script>
+	<?
+	}
+
+
+
+// <!-- СООБЩЕНИЕ ОБ ОШИБКЕ-->
+
 if (isset($_SESSION['err_msg']))
 	{
 		?>
 		<script type='text/javascript'>
 			dhtmlx.message({ type:'error', text:'Ошибка!<br><?=$_SESSION['err_msg']?>'});
-<!--			humane.error('Ошибка!<br>--><?//=$_SESSION['err_msg']?><!--')-->
+			<!--			humane.error('Ошибка!<br>--><?//=$_SESSION['err_msg']?><!--')-->
 		</script>
 		<?
 		unset($_SESSION['err_msg']);
 	}
-?>
 
-<!-- СООБЩЕНИЕ О УПЕШНОМ ЗАВЕРШЕНИИ-->
-<?
+
+// <!-- СООБЩЕНИЕ О УПЕШНОМ ЗАВЕРШЕНИИ-->
+
 if (isset($_SESSION['ok_msg']))
 	{
 		?>
@@ -305,14 +413,26 @@ if (isset($_SESSION['ok_msg']))
 		<?
 		unset($_SESSION['ok_msg']);
 	}
+
+if (isset($_SESSION['ok_msg2']))
+	{
+		?>
+		<script type='text/javascript'>
+			dhtmlx.message({ type:'warning', text: <?=$_SESSION['ok_msg2'] ?>});
+		</script>
+		<?
+		unset($_SESSION['ok_msg2']);
+	}
 ?>
+
+
 
 
 <div id="fixed_menu">
 	<div id="main_menu" data-spy="affix" data-offset-top="210">
 
 
-		<?PHP
+		<?
 		$value = $_SERVER['PHP_SELF'];
 		if ($_SERVER['PHP_SELF'] == '/fotobanck.php')
 			{
@@ -405,7 +525,8 @@ if (isset($_SESSION['ok_msg']))
 			}
 		?>
 
-		<object width="90" height="90" style="position: absolute; margin-left: 135px; margin-top: 26px; width: 70px; height: 80px; z-index:10;" type="application/x-shockwave-flash" data="/img/calendarb.swf">
+		<object width="90" height="90" style="position: absolute; margin-left: 135px; margin-top: 26px; width: 70px; height: 80px; z-index:10;"
+			type="application/x-shockwave-flash" data="/img/calendarb.swf">
 			<param name="movie" value="img/calendar2b.swf"/>
 			<param name="wmode" value="transparent"/>
 		</object>
