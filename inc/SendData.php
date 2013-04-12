@@ -1,0 +1,87 @@
+<?php
+	/**
+	 * Created by JetBrains PhpStorm.
+	 * User: Jurii
+	 * Date: 12.04.13
+	 * Time: 12:55
+	 * To change this template use File | Settings | File Templates.
+	 */
+	include __DIR__.'./config.php';
+	include __DIR__.'./func.php';
+	$link = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+	/* Проверить соединение */
+	if (mysqli_connect_errno())
+		{
+			printf("Ошибка соединения: %s\n", mysqli_connect_error());
+			exit();
+		}
+	//Получаем данные
+	$data = $_POST[data];
+	$subdata = explode("][", $data);
+	if (isset($subdata[0]))
+		{
+			$login = $subdata[0];
+		}
+	if (isset($subdata[1]))
+		{
+			$email = $subdata[1];
+		}
+	//Так как все данные приходят в кодировке UTF при необходимости
+	//их можно/нужно конвертировать в нужную, но мы этого делать не будем
+	//$data = iconv("utf-8", "windows-1251", $data);
+	$where = '';
+	if (!empty($email))
+		{
+			$where = ' email = \''.mysqli_escape_string($link, $email).'\'';
+		}
+	elseif (!empty($login))
+		{
+			$where = ' login = \''.mysqli_escape_string($link, $login).'\'';
+		}
+	if ($data == "][")
+		{
+			$_SESSION['err_msg'] = "Необходимо заполнить одно из полей.";
+		}
+	if ($where != '')
+		{
+			$rs = mysqli_query($link, 'select * from users where '.$where);
+			if (mysqli_errno($link) == 0 && mysqli_num_rows($rs) > 0)
+				{
+					$user_data = mysqli_fetch_assoc($rs);
+					$title     = 'Восстановление пароля на сайте Creative line studio';
+					$headers   = "Content-type: text/plain; charset=windows-1251\r\n";
+					$headers .= "From: Администрация Creative line studio \r\n";
+					$subject = '=?koi8-r?B?'.base64_encode(convert_cyr_string($title, "w", "k")).'?=';
+					$letter  = "Здравствуйте, $user_data[us_name]!\r\n";
+					$letter .= "Кто-то (возможно, Вы) запросил восстановление пароля на сайте Creative line studio.\r\n";
+					$letter .= "Данные для входа на сайт:\r\n";
+					$letter .= "   логин: $user_data[login]\r\n";
+
+					$id = $_SESSION['id'];
+					$password = mt_rand(1,10).mt_rand(10,50).mt_rand(50,100).mt_rand(100,1000) * 3;
+					getPassword($password,$_SESSION['id']) or die("Косяк") ;
+
+					$letter .= "   пароль: $user_data[pass]\r\n";
+					$letter .= "Если вы не запрашивали восстановление пароля, пожалуйста, немедленно свяжитесь с администрацией сайта!\r\n";
+					/* закрытие выборки */
+					mysqli_free_result($rs);
+					// Отправляем письмо
+					if (!mail($user_data['email'], $subject, $letter, $headers))
+						{
+							$_SESSION['err_msg'] = "Не удалось отправить письмо. Пожалуйста, попробуйте позже.";
+						}
+					else
+						{
+							$_SESSION['ok_msg2'] = "Запрос выполнен.<br>Новый пароль отправлен на Ваш E-mail.";
+						}
+				}
+			else
+				{
+					$_SESSION['err_msg'] = "Пользователь не найден.";
+				}
+		}
+	echo $_SESSION['err_msg'].$_SESSION['ok_msg2'];
+	unset($_SESSION['err_msg']);
+	unset($_SESSION['ok_msg2']);
+	mysqli_close($link);
+

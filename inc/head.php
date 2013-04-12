@@ -102,6 +102,7 @@ header('Content-type: text/html; charset=windows-1251');
 	<script src="/js/jquery.js"></script>
 	<script src="/js/bootstrap.min.js"></script>
 	<script src="/js/main.js"></script>
+	<script type="text/javascript" src="/js/reminder_ajax.js"></script>
 
 	<!--        <script src="/js/no-copy.js"></script>-->
 
@@ -290,16 +291,18 @@ header('Content-type: text/html; charset=windows-1251');
 				<span style="font-weight: bold;">Восстановление пароля захода на сайт:</span>
 			</h3>
 		</div>
+		<div id="result"></div>
 	</div>
 	<div class="modal-body">
 		<div class="form_reg" style="color:#000; font-size:16px;">
-			<form action="/index.php" method="post">
+			<form action="" id="reminder">
 				<label>Введите Ваш логин:
-					<input data-tabindex="2" maxlength="20" class="inp_f_reg" style="margin-left: 8px; width: 150px" type="text" name="login" value=""/>
-				</label> <label style="float: left"> или E-mail:
-					<input data-tabindex="1" maxlength="20" class="inp_f_reg" style="margin-left: 60px; width: 150px" type="text" name="email" value=""/>
-				</label> <input type="hidden" name="go_rem" value="1"/>
-				<input class="btn" type="submit" value="Напомнить" style="float: right; margin: -10px 0 0 0 "/>
+					<input id="login"  data-tabindex="2" maxlength="20" class="inp_f_reg" style="margin-left: 8px; width: 150px" type="text" name="login"/>
+				</label>
+				<label style="float: left"> или E-mail:
+					<input id="email" data-tabindex="1" maxlength="20" class="inp_f_reg" style="margin-left: 60px; width: 150px" type="text" name="email"/>
+				</label>
+				<input class="btn" type="button" value="Напомнить"  onClick="send();" style="float: right; margin: -10px 0 0 0 "/>
 			</form>
 		</div>
 	</div>
@@ -308,85 +311,7 @@ header('Content-type: text/html; charset=windows-1251');
 	</div>
 </div>
 
-
-
 <?
-
-if (isset($_POST['go_rem']))
-			{
-				$_SESSION["back"] = $_SERVER["HTTP_REFERER"];
-				$modal = 1;
-				$where = '';
-				if (!empty($_POST['email']))
-					{
-						$where = ' email = \''.mysql_escape_string($_POST['email']).'\'';
-					}
-				elseif (!empty($_POST['login']))
-					{
-						$where = ' login = \''.mysql_escape_string($_POST['login']).'\'';
-					}
-				else
-					{
-						$_SESSION['err_msg'] = "Необходимо заполнить<br> одно из полей.";
-					}
-				if ($where != '')
-					{
-						$rs = mysql_query('select * from users where '.$where);
-						if (mysql_errno() == 0 && mysql_num_rows($rs) > 0)
-							{
-								$user_data = mysql_fetch_assoc($rs);
-								$title     = 'Восстановление пароля на сайте Creative line studio';
-								$headers   = "Content-type: text/plain; charset=windows-1251\r\n";
-								$headers .= "From: Администрация Creative line studio \r\n";
-								$subject = '=?koi8-r?B?'.base64_encode(convert_cyr_string($title, "w", "k")).'?=';
-								$letter  = "Здравствуйте, $user_data[us_name]!\r\n";
-								$letter .= "Кто-то (возможно, Вы) запросил восстановление пароля на сайте Creative line studio.\r\n";
-								$letter .= "Данные для входа на сайт:\r\n";
-								$letter .= "   логин: $user_data[login]\r\n";
-								$letter .= "   пароль: $user_data[pass]\r\n";
-								$letter .= "Если вы не запрашивали восстановление пароля, пожалуйста, немедленно свяжитесь с администрацией сайта!\r\n";
-								// Отправляем письмо
-								if (!mail($user_data['email'], $subject, $letter, $headers))
-									{
-										$_SESSION['err_msg'] = "Не удалось отправить письмо. Пожалуйста, попробуйте позже.";
-									}
-								else
-									{
-
-										$_SESSION['ok_msg2'] = "Запрос выполнен.<br>Новый пароль отправлен<br> на Ваш email.";
-										$modal = 0;
-									}
-							}
-						else
-							{
-								$_SESSION['err_msg'] = "Пользователь не найден.";
-							}
-					}
-
-
-			 if (isset($modal) and $modal == 0)
-				{
-					$back = $_SESSION["back"];
-					unset($_SESSION["back"]);
-					?>
-					<script type='text/javascript'>
-						window.document.location.href = '<?=$back?>'
-					</script>
-				<?
-				}
-         unset($_POST['go_rem']);
-	      }
-
-if (isset($modal) and $modal == 1)
-	{
-		?>
-		<script type='text/javascript'>
-			$('#vosst').modal('show');
-		</script>
-	<?
-	}
-
-
 
 // <!-- СООБЩЕНИЕ ОБ ОШИБКЕ-->
 
@@ -414,17 +339,23 @@ if (isset($_SESSION['ok_msg']))
 		unset($_SESSION['ok_msg']);
 	}
 
+
 if (isset($_SESSION['ok_msg2']))
 	{
 		?>
 		<script type='text/javascript'>
+			$(document).ready(function(){
 			dhtmlx.message({ type:'warning', text: <?=$_SESSION['ok_msg2'] ?>});
+			});
+			/*function redirect() {
+				window.document.location.href = '<?=$back?>'
+			}
+			setTimeout('redirect()', 3000);*/
 		</script>
 		<?
-		unset($_SESSION['ok_msg2']);
+	//	unset($_SESSION['ok_msg2']);
 	}
 ?>
-
 
 
 
@@ -433,8 +364,9 @@ if (isset($_SESSION['ok_msg2']))
 
 
 		<?
+
 		$value = $_SERVER['PHP_SELF'];
-		if ($_SERVER['PHP_SELF'] == '/fotobanck.php')
+	   if ($_SERVER['PHP_SELF'] == '/fotobanck.php')
 			{
 				$value = '/fotobanck.php?unchenge_cat';
 			}
@@ -582,6 +514,8 @@ if (isset($_SESSION['ok_msg2']))
 	 })(jQuery)*/
 
 </script>
+
+
 
 <!--Голова конец-->
 <?

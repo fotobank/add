@@ -44,4 +44,12 @@ function fotoFolder()
       return $foto_folder;
    }
 
+function getPassword($password,$id){
+	stripslashes($password);
+	$ipassword = trim(md5($password));
+	$update = mysql_query("UPDATE users SET pass = '$ipassword' WHERE id = '$id'")or die(mysql_error()) ;
+	if($update){return true;}
+	return false;
+}
+
 ?>
