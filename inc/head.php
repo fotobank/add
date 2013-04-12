@@ -281,9 +281,9 @@ header('Content-type: text/html; charset=windows-1251');
 </div>
 
 
-<!-- восстановление пароля -->
+<!-- восстановление пароля data-focus-on="input:first" -->
 <div id="vosst" class="modal hide fade in animated fadeInDown" style="position: absolute; top: 40%; left: 50%; z-index: 1;
-	" data-keyboard="false" data-width="460" data-focus-on="input:first" data-backdrop="static" tabindex="-1" aria-hidden="false">
+	" data-keyboard="false" data-width="460"  data-backdrop="static" tabindex="-1" aria-hidden="false">
 	<div class="modal-header" style="background: rgba(229,229,229,0.53)">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
 		<div>
@@ -293,18 +293,18 @@ header('Content-type: text/html; charset=windows-1251');
 		</div>
 		<div id="result"></div>
 	</div>
-	<div class="modal-body">
-		<div class="form_reg" style="color:#000; font-size:16px;">
+	<div class="modal-body" style="height: 90px;">
+
 			<form action="" id="reminder">
-				<label>Введите Ваш логин:
-					<input id="login"  data-tabindex="2" maxlength="20" class="inp_f_reg" style="margin-left: 8px; width: 150px" type="text" name="login"/>
+				<label>
+					<input id="login" data-tabindex="2" maxlength="20"  style="margin-left: 8px; width: 250px" type="text" value="Введите Ваш логин:" name="login"/>
 				</label>
-				<label style="float: left"> или E-mail:
-					<input id="email" data-tabindex="1" maxlength="20" class="inp_f_reg" style="margin-left: 60px; width: 150px" type="text" name="email"/>
+				<label style="float: left">
+					<input id="email" data-tabindex="1" maxlength="20"  style="margin-left: 8px; width: 250px" type="text" value="или E-mail:" name="email"/>
 				</label>
-				<input class="btn" type="button" value="Напомнить"  onClick="send();" style="float: right; margin: -10px 0 0 0 "/>
+				<input class="btn" type="button" value="Напомнить"  onClick="send();" style="float: right; margin: 9px 0 0 0 "/>
 			</form>
-		</div>
+
 	</div>
 	<div class="modal-footer">
 		<button type="button" data-dismiss="modal" class="btn"> Закрыть </button>

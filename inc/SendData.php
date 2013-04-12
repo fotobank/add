@@ -16,19 +16,34 @@
 			exit();
 		}
 	//Получаем данные
+	if(isset($_POST[data])
+		{
+	if	($_POST[data] != $_SESSION['previos_data'])
+		{
 	$data = $_POST[data];
+	$_SESSION['previos_data'] = $_POST[data];
+	$data = iconv("utf-8", "windows-1251", $data);
 	$subdata = explode("][", $data);
-	if (isset($subdata[0]))
+
+
+	if (isset($subdata[0]) and $subdata[0] != "Введите Ваш логин:")
 		{
-			$login = $subdata[0];
+			$login = trim(htmlspecialchars($subdata[0]));
+			if (strlen($login) == "0")
+				{
+					$_SESSION['err_msg'] .= "Недопустимые символы в поле 'Ваш логин'<br>";
+				}
 		}
-	if (isset($subdata[1]))
+
+	if (isset($subdata[1]) and $subdata[1] != "или E-mail:")
 		{
-			$email = $subdata[1];
+			$email = trim(htmlspecialchars($subdata[1]));
+			if ((strlen($email) == "0") || (!preg_match("/[0-9a-z_]+@[0-9a-z_^\.-]+\.[a-z]{2,3}/i",$email)))
+				{
+					$_SESSION['err_msg'] .= "Неверный E-mail<br>";
+				}
 		}
-	//Так как все данные приходят в кодировке UTF при необходимости
-	//их можно конвертировать в нужную кодировку
-	//$data = iconv("utf-8", "windows-1251", $data);
+
 	$where = '';
 	if (!empty($email))
 		{
@@ -42,7 +57,11 @@
 		{
 			$_SESSION['err_msg'] = "Необходимо заполнить одно из полей.";
 		}
-	if ($where != '')
+	if ($where == '')
+		{
+			$_SESSION['err_msg'] = "Заполните одно из полей!";
+		}
+	else
 		{
 			$rs = mysqli_query($link, 'select * from users where '.$where);
 			if (mysqli_errno($link) == 0 && mysqli_num_rows($rs) > 0)
@@ -78,6 +97,8 @@
 				{
 					$_SESSION['err_msg'] = "Пользователь не найден.";
 				}
+		}
+		} else {$_SESSION['err_msg'] = "Повторный ввод одинаковых данных!"; }
 		}
 	echo $_SESSION['err_msg'].$_SESSION['ok_msg2'];
 	unset($_SESSION['err_msg']);

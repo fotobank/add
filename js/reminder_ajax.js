@@ -35,6 +35,7 @@ function send()
 }
 
 
+
 (function($) {
     $.fn.autoClear = function () {
         // сохраняем во внутреннюю переменную текущее значение
@@ -59,5 +60,6 @@ function send()
 
 $(function(){
     // привязываем плагин ко всем элементам с классом "autoclear"
-    $('.autoclear').autoClear();
+    $('#email, #login').autoClear();
 });
+

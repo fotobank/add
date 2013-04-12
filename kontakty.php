@@ -1,5 +1,5 @@
 <?php
-    include $_SERVER['DOCUMENT_ROOT'].'/inc/head.php';
+    include './inc/head.php';
 ?>
 
 <!--[if IE]><script>
@@ -32,7 +32,7 @@
     body, div,form, fieldset, textarea {
         margin: 0; padding: 0; border: 0; outline: none;
     }
-    #wrap {width:530px; margin:0px 0 0 40px; height:820px;}
+    #wrap {width:530px; margin:0 0 0 40px; height:820px;}
     p {text-shadow:0 1px 0 #fff; font-size:18px; color: #000;}
     #form_wrap { overflow:hidden; height:446px; position:relative; top:0px;
         -webkit-transition: all 1s ease-in-out .3s;
@@ -74,17 +74,6 @@
     #form_wrap:hover form {height:530px;}
 
 
-    input[type=text], textarea {
-        font: 14px normal normal uppercase helvetica, arial, serif;
-        color: #000;background:none;
-        width: 380px; height: 26px; padding: 0px 0px; margin: 0 0 0px 0;
-        border:1px solid #ccc;
-        -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px;
-        -moz-box-shadow: inset 0px 0px 1px #726959;
-        -webkit-box-shadow:  inset 0px 0px 1px #b3a895;
-        box-shadow:  inset 0px 0px 1px #b3a895;
-    }
-
     textarea:focus, input[type=text]:focus {background:rgba(255,255,255,.35);}
 
     #form_wrap input[type=submit] {
@@ -108,17 +97,6 @@
 
     #form_wrap:hover input:hover[type=submit] {color:#000;}
 
-
-    input[type=text], textarea {
-        font: 14px normal normal uppercase helvetica, arial, sans-serif;
-        color: #7c7873;background:none;
-        width: 380px; height: 36px; padding: 0px 10px; margin: 0 0 10px 0;
-        border:1px solid #f8f5f1;
-        -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px;
-        -moz-box-shadow: inset 0px 0px 1px #726959;
-        -webkit-box-shadow:  inset 0px 0px 1px #b3a895;
-        box-shadow:  inset 0px 0px 1px #b3a895;
-    }
     textarea { height: 150px; padding-top:14px;}
 
 </style>
