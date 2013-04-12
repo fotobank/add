@@ -2353,3 +2353,6 @@ hr.style-one:before {
 
 }
 
+
+.autoclear { color: #aaa; }
+.autoclear-normalcolor { color: #000; }

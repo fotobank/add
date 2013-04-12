@@ -27,7 +27,7 @@
 			$email = $subdata[1];
 		}
 	//Так как все данные приходят в кодировке UTF при необходимости
-	//их можно/нужно конвертировать в нужную, но мы этого делать не будем
+	//их можно конвертировать в нужную кодировку
 	//$data = iconv("utf-8", "windows-1251", $data);
 	$where = '';
 	if (!empty($email))
@@ -56,12 +56,11 @@
 					$letter .= "Кто-то (возможно, Вы) запросил восстановление пароля на сайте Creative line studio.\r\n";
 					$letter .= "Данные для входа на сайт:\r\n";
 					$letter .= "   логин: $user_data[login]\r\n";
-
-					$id = $_SESSION['id'];
+					// создание нового пароля
 					$password = mt_rand(1,10).mt_rand(10,50).mt_rand(50,100).mt_rand(100,1000) * 3;
-					getPassword($password,$_SESSION['id']) or die("Косяк") ;
-
-					$letter .= "   пароль: $user_data[pass]\r\n";
+					// шифровка и запись в базу
+					getPassword($password,$user_data['id']) or die("Ошибка!") ;
+					$letter .= "   пароль: $password\r\n";
 					$letter .= "Если вы не запрашивали восстановление пароля, пожалуйста, немедленно свяжитесь с администрацией сайта!\r\n";
 					/* закрытие выборки */
 					mysqli_free_result($rs);
