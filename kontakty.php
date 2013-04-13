@@ -208,21 +208,27 @@ print "<script language='Javascript' type='text/javascript'>
                                     <table style="font-weight:bold">
                                         <tr>
                                             <td class="td_formL" style="width: 100px;">Ваше имя*:</td>
-                                            <td class="td_formR"><input rel="tooltip" data-placement="top" data-original-title="Имя или ник на сайте. Допустимы буквы, цифры, дефисы и подчёркивания. Длина от 3 до 16 символов." class="inp_f_reg" type="text" name="uname" style="margin-bottom: 5px; margin-left: 0px; width: 200px;" maxlength="20" value="<?=$uname;?>"/></td>
+                                            <td class="td_formR"><input rel="tooltip" data-placement="top" data-original-title="Имя или ник на сайте.
+                                             Допустимы буквы, цифры, дефисы и подчёркивания. Длина от 3 до 16 символов."
+		                                            class="inp_f_kont" type="text" name="uname" style="margin-bottom: 5px; margin-left: 0px; width: 200px;" maxlength="20" value="<?=$uname;?>"/></td>
                                             <td><span class="label label-important" style="margin-left: 10px;"><?=$e1;?></span></td>
                                         </tr>
                                         <tr>
                                             <td class="td_formL" style="width: 100px;">Телефон*:</td>
-                                            <td class="td_formR"><input rel="tooltip" data-placement="right" data-original-title="Не меньше 6 цифр." class="inp_f_reg" type="text" name="uphone" style="margin-bottom: 4px; margin-left: 0px; width: 200px;" maxlength="20" value="<?=$uphone;?>"/></td>
+                                            <td class="td_formR"><input rel="tooltip" data-placement="right" data-original-title="Не меньше 6 цифр."
+		                                            class="inp_f_kont" type="text" name="uphone" style="margin-bottom: 4px; margin-left: 0px; width: 200px;" maxlength="20" value="<?=$uphone;?>"/></td>
                                             <td><span class="label label-important" style=" margin-left: 10px;"><?=$e4;?></span></td>
                                         </tr>
                                         <tr>
                                             <td class="td_formL" style="width: 100px;">Skype:</td>
-                                            <td class="td_formR"><input rel="tooltip" data-placement="right" data-original-title="Для быстрой связи." class="inp_f_reg" type="text" name="skype" style="margin-bottom: 5px; margin-left: 0px; width: 200px;" maxlength="20" value="<?=$skype;?>"/></td>
+                                            <td class="td_formR"><input rel="tooltip" data-placement="right" data-original-title="Для быстрой связи."
+		                                            class="inp_f_kont" type="text" name="skype" style="margin-bottom: 5px; margin-left: 0px; width: 200px;" maxlength="20" value="<?=$skype;?>"/></td>
                                         </tr>
                                         <tr>
                                             <td class="td_formL" style="width: 100px;">Ваш E-mail*:</td>
-                                            <td class="td_formR"><input rel="tooltip" data-placement="bottom" data-original-title="Указывайте реально существующий почтовый ящик. На него Вам прийдет ответ." class="inp_f_reg" type="text" name="umail" style="margin-bottom: 15px; margin-left: 0px; width: 200px;" maxlength="50" value="<?=$umail;?>"/></td>
+                                            <td class="td_formR"><input rel="tooltip" data-placement="bottom" data-original-title="Указывайте реально существующий почтовый ящик.
+                                             На него Вам прийдет ответ." class="inp_f_kont" type="text" name="umail"
+		                                            style="margin-bottom: 15px; margin-left: 0px; width: 200px;" maxlength="50" value="<?=$umail;?>"/></td>
                                             <td style="padding-bottom: 17px;"><span class="label label-important" style="margin-top: 7px; margin-left: 10px;"><?=$e3;?></span></td>
                                         </tr>
                                     </table>
@@ -230,17 +236,21 @@ print "<script language='Javascript' type='text/javascript'>
                                     <table class="tb_m_form">
                                         <tr>
                                             <td class="td_formL2">Текст сообщения:</td>
-                                            <td class="td_formR2"><textarea  rel="tooltip" data-placement="top" data-original-title="Краткость - сестра таланта! :)" name="utext"><?=$utext;?></textarea></td>
+                                            <td class="td_formR2"><textarea  style="margin-top: -5px; margin-bottom: 10px; width: 350px; " rel="tooltip"
+		                                            data-placement="top" data-original-title="Краткость - сестра таланта! :)"
+		                                            name="utext"><?=$utext;?></textarea></td>
                                             <span class="label label-important" style="margin-top: 3px; margin-left: 180px; position:absolute"><?=$e2;?></span>
                                         </tr>
                                         <tr>
-                                            <td class="td_formL" style="width: 100px;"><div  style="position:relative; margin-top: -18px;">Введите результат 24*2=?:</div></td>
+                                            <td class="td_formL" style="width: 100px;"><div  style="position:relative; margin-top: -10px;">Введите результат 24*2=?:</div></td>
                                             <td class="td_formR2">
 
-                                                <input rel="tooltip" data-placement="right" data-original-title="Защита от спама." class="td_formR" type="text" name="umath" value="" style="margin-left: 10px; width: 200px;" />
-                                                <span class="label label-important" style="margin-top: 3px; margin-left: 20px;"><?=$e5;?></span>
+                                                <input rel="tooltip" data-placement="right" data-original-title="Защита от спама."
+	                                                class="inp_f_kont" type="text" name="umath" value="" style="margin-left: -8px; width: 100px;" />
+                                                <span class="label label-important" style="margin-top: 20px; margin-left: 20px;"><?=$e5;?></span>
                                                 <input type="hidden" name="go" value="5"/><br>
-                                                <input type="submit" name="submit" value="Готово. Отправить!" data-original-title="" style="margin-top: 3px; width: 300px;">
+                                                <input class="inp_f_kont" type="submit" name="submit" value="Готово. Отправить!"
+	                                                data-original-title="" style="margin-top: 3px; margin-left: -8px; width: 300px;">
                                             </td>
                                         </tr>
                                     </table>

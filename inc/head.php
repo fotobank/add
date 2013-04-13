@@ -311,7 +311,7 @@ header('Content-type: text/html; charset=windows-1251');
 			   <div class="loadimg" style="float: right; margin: 5px 0 0 0 "></div>
 				<div id="loadCaptca" style="float: right; margin: 5px 0 0 0 "></div>
 				<div style="clear: both"></div>
-				<input class="btn" type="button" value="Напомнить"  onClick="send();" style="float: left; margin: 0 0 0 90px; "/>
+				<input class="btn"  type="reset" value="Напомнить"  onClick="send();" style="float: left; margin: 0 0 0 90px; "/>
 
 			</form>
 
@@ -330,6 +330,7 @@ if (isset($_SESSION['err_msg']))
 	{
 		?>
 		<script type='text/javascript'>
+			dhtmlx.message.expire = 6000;
 			dhtmlx.message({ type:'error', text:'Ошибка!<br><?=$_SESSION['err_msg']?>'});
 			<!--			humane.error('Ошибка!<br>--><?//=$_SESSION['err_msg']?><!--')-->
 		</script>
@@ -344,6 +345,7 @@ if (isset($_SESSION['ok_msg']))
 	{
 		?>
 		<script type='text/javascript'>
+			dhtmlx.message.expire = 6000;
 			humane.success("Добро пожаловать, <?=$_SESSION['us_name']?>!<br><span><?=$_SESSION['ok_msg']?></span>");
 		</script>
 		<?

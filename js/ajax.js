@@ -26,6 +26,7 @@ function send() {
             //предварительно очищаем нужный элемент страницы
             $("#result").empty().append(html);
             getCaptca();
+
         }
     });
 }
