@@ -263,7 +263,7 @@ header('Content-type: text/html; charset=windows-1251');
 							</tr>
 						</table>
 <!--						<a href="/reminder.php" style="color: #fff; text-decoration: none;" >Забыли пароль?</a>-->
-						 <a href="#" style="color: #fff; text-decoration: none;" onclick="$(document).ready(function load() {clearAjax(); $('#vosst').modal('show'); }); ">Забыли пароль?</a>
+						 <a href="#" style="color: #fff; text-decoration: none;" onclick="$(document).ready(function load() {$('#vosst').modal('show'); }); ">Забыли пароль?</a>
 					</form>
 				<? endif; ?>
 
@@ -285,7 +285,7 @@ header('Content-type: text/html; charset=windows-1251');
 <div id="vosst" class="modal hide fade in animated fadeInDown" style="position: absolute; top: 40%; left: 50%; z-index: 1;
 	" data-keyboard="false" data-width="460"  data-backdrop="static" tabindex="-1" aria-hidden="false">
 	<div class="modal-header" style="background: rgba(229,229,229,0.53)">
-		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true" onClick="$('#result').empty();">x</button>
 		<div>
 			<h3>
 				<span style="font-weight: bold;">Восстановление пароля захода на сайт:</span>
@@ -307,7 +307,7 @@ header('Content-type: text/html; charset=windows-1251');
 
 	</div>
 	<div class="modal-footer">
-		<button type="button" data-dismiss="modal" class="btn"> Закрыть </button>
+		<button type="button" data-dismiss="modal" class="btn" onClick="$('#result').empty();"> Закрыть </button>
 	</div>
 </div>
 

@@ -51,10 +51,15 @@
 						{
 							$where = ' login = \''.mysqli_escape_string($link, $login).'\'';
 						}
+
+
+
 					if ($data == "][")
 						{
 							$_SESSION['err_msg'] .= "Необходимо заполнить одно из полей.<br>";
 						}
+
+
 					if ($where == '')
 						{
 							$_SESSION['err_msg'] .= "Пожалуйста, заполните одно из полей!<br>";

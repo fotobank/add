@@ -16,20 +16,6 @@
 
 function send()
 {
-
-    reminderAjax('');
-}
-
-function clearAjax()
-{
-    $("#login").attr({value: "Введите Ваш логин:"});
-    $("#email").attr({value: "или E-mail:"});
-
-}
-
-function reminderAjax()
-{
-
     //Получаем параметры
     var data = $('#login').val() + '][' + $('#email').val();
 
@@ -47,8 +33,9 @@ function reminderAjax()
             //   dhtmlx.message({ type:'warning', text: data});
         }
     });
-
 }
+
+
 /*
  Todo    - Автоочистка текстового поля при получении фокуса
  @author - Jurii
