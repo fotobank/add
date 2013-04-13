@@ -20,10 +20,11 @@ header('Content-type: text/html; charset=windows-1251');
 	  <link href='http://fonts.googleapis.com/css?family=Lobster|Comfortaa:700|Jura:600&subset=cyrillic,cyrillic-ext' rel='stylesheet' type='text/css'>-->
 	<?
 
-	include __DIR__.'./lib_mail.php';
-	include __DIR__.'./lib_ouf.php';
+
 
 	// обработка ошибок
+	include __DIR__.'./lib_mail.php';
+	include __DIR__.'./lib_ouf.php';
 	  include __DIR__.'./lib_errors.php';
 	  $error_processor = Error_Processor::getInstance();
 
@@ -263,7 +264,7 @@ header('Content-type: text/html; charset=windows-1251');
 							</tr>
 						</table>
 <!--						<a href="/reminder.php" style="color: #fff; text-decoration: none;" >Забыли пароль?</a>-->
-						 <a href="#" style="color: #fff; text-decoration: none;" onclick="$(document).ready(function load() {$('#vosst').modal('show'); }); ">Забыли пароль?</a>
+						 <a href="#" style="color: #fff; text-decoration: none;" onclick="getCaptca(); $(document).ready(function load() {$('#vosst').modal('show'); }); ">Забыли пароль?</a>
 					</form>
 				<? endif; ?>
 
@@ -292,18 +293,28 @@ header('Content-type: text/html; charset=windows-1251');
 			</h3>
 		</div>
 		<div id="result"></div>
+
 	</div>
-	<div class="modal-body" style="height: 90px;">
+	<div class="modal-body" style="height: 180px;">
 
 			<form action="" id="reminder">
 				<label>
-					<input id="login" class="autoclear" data-tabindex="2" maxlength="20"  style="margin-left: 8px; width: 250px" type="text" value="Введите Ваш логин:" name="login"/>
+					<input class="autoclear" data-tabindex="2" maxlength="20"  style="margin-left: 8px; width: 250px" type="text" value="Введите Ваш логин:" name="login"/>
 				</label>
 				<label style="float: left">
-					<input id="email" class="autoclear" data-tabindex="1" maxlength="20"  style="margin-left: 8px; width: 250px" type="text" value="или E-mail:" name="email"/>
+					<input class="autoclear" data-tabindex="1" maxlength="20"  style="margin-left: 8px; width: 250px" type="text" value="или E-mail:" name="email"/>
+				</label >
+				<label style="float: left">
+					<input class="autoclear" data-tabindex="3" maxlength="20" style="margin-left: 8px; width: 250px" type="text" value="Код безопасности:" name="pkey" />
 				</label>
-				<input class="btn" type="button" value="Напомнить"  onClick="send();" style="float: right; margin: 9px 0 0 0 "/>
+
+			   <div class="loadimg" style="float: right; margin: 5px 0 0 0 "></div>
+				<div id="loadCaptca" style="float: right; margin: 5px 0 0 0 "></div>
+				<div style="clear: both"></div>
+				<input class="btn" type="button" value="Напомнить"  onClick="send();" style="float: left; margin: 0 0 0 90px; "/>
+
 			</form>
+
 
 	</div>
 	<div class="modal-footer">

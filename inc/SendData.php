@@ -6,6 +6,11 @@
 	 * Time: 12:55
 	 * To change this template use File | Settings | File Templates.
 	 */
+	// обработка ошибок
+	include __DIR__.'./lib_mail.php';
+	include __DIR__.'./lib_ouf.php';
+	include __DIR__.'./lib_errors.php';
+	$error_processor = Error_Processor::getInstance();
 	include __DIR__.'./config.php';
 	include __DIR__.'./func.php';
 	$link = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
@@ -15,105 +20,146 @@
 			printf("Ошибка соединения: %s\n", mysqli_connect_error());
 			exit();
 		}
-
-	//Получаем данные
-	if (isset($_POST[data]))
+	if ($_SESSION['secret_number'] == "")
 		{
-			$data = $_POST[data];
-			$data = iconv("utf-8", "windows-1251", $data);
-			if ($data != $_SESSION['previos_data'])
+			$_SESSION['secret_number'] = "ABCD";
+		}
+	if (isset($_POST['comtext']))
+		{
+			if ($_SESSION["secret_number"] != $_POST['pkey'])
 				{
-					$_SESSION['previos_data'] = $data;
-					$subdata = explode("][", $data);
-					if (isset($subdata[0]) and $subdata[0] != "Введите Ваш логин:")
-						{
-							$login = trim(htmlspecialchars($subdata[0]));
-							if (!preg_match("/[?a-zA-Zа-яА-Я0-9_-]{3,16}$/", $login))
-								{
-									$_SESSION['err_msg2'] = "Логин может состоять из букв, цифр, дефисов и подчёркиваний. Длина от 3 до 16 символов.<br>";
-								}
-						}
-					if (isset($subdata[1]) and $subdata[1] != "или E-mail:")
-						{
-							$email = trim(htmlspecialchars($subdata[1]));
-							if (!preg_match("/[0-9a-z_]+@[0-9a-z_^\.-]+\.[a-z]{2,3}/i", $email))
-								{
-									$_SESSION['err_msg'] .= "Неправильный 'E-mail'!<br>";
-								}
-						}
+					?><h1>Error</h1><?php
+				}
+			else
+				{
+					echo "Errors 2";
+				}
+		}
+	/**
+	 * @param $link
+	 * @param $where
+	 * @param $type
+	 */
+	function checkData($link, $where, $type)
+		{
 
-					$where = '';
-					if (!empty($email))
+			$rs = mysqli_query($link, 'select * from users where '.$where);
+			if (mysqli_errno($link) == 0 && mysqli_num_rows($rs) > 0)
+				{
+					$user_data = mysqli_fetch_assoc($rs);
+					$title     = 'Восстановление пароля на сайте Creative line studio';
+					$headers   = "Content-type: text/plain; charset=windows-1251\r\n";
+					$headers .= "From: Администрация Creative line studio \r\n";
+					$subject = '=?koi8-r?B?'.base64_encode(convert_cyr_string($title, "w", "k")).'?=';
+					$letter  = "Здравствуйте,".iconv('utf-8', 'windows-1251', $user_data['us_name'])."!\r\n";
+					$letter .= "Кто-то (возможно, Вы) запросил восстановление пароля на сайте Creative line studio.\r\n";
+					$letter .= "Данные для входа на сайт:\r\n";
+					$letter .= "   логин: ".iconv('utf-8', 'windows-1251', $user_data['login'])."\r\n";
+					// создание нового пароля
+					//$password = genpass(10, 3); // пароль с регулируемым уровнем сложности
+					$password = genPassword(10); // легкозапоминающийся пароль
+					// шифровка и запись в базу
+					getPassword($password, $user_data['id']) or die("Ошибка!");
+					$letter .= "   пароль: $password\r\n";
+					$letter .= "Если вы не запрашивали восстановление пароля, пожалуйста, немедленно свяжитесь с администрацией сайта!\r\n";
+					/* закрытие выборки */
+					mysqli_free_result($rs);
+					// Отправляем письмо
+					if (!mail($user_data['email'], $subject, $letter, $headers))
 						{
-							$where = ' email = \''.mysqli_escape_string($link, $email).'\'';
-						}
-					elseif (!empty($login))
-						{
-							$where = ' login = \''.mysqli_escape_string($link, $login).'\'';
-						}
-
-
-
-					if ($data == "][")
-						{
-							$_SESSION['err_msg'] .= "Необходимо заполнить одно из полей.<br>";
-						}
-
-
-					if ($where == '')
-						{
-							$_SESSION['err_msg'] .= "Пожалуйста, заполните одно из полей!<br>";
+							$_SESSION['err_msg'] .= "Не удалось отправить письмо. Пожалуйста, попробуйте позже.<br>";
 						}
 					else
 						{
-							$rs = mysqli_query($link, 'select * from users where '.$where);
-							if (mysqli_errno($link) == 0 && mysqli_num_rows($rs) > 0)
-								{
-									$user_data = mysqli_fetch_assoc($rs);
-									$title     = 'Восстановление пароля на сайте Creative line studio';
-									$headers   = "Content-type: text/plain; charset=windows-1251\r\n";
-									$headers .= "From: Администрация Creative line studio \r\n";
-									$subject = '=?koi8-r?B?'.base64_encode(convert_cyr_string($title, "w", "k")).'?=';
-									$letter  = "Здравствуйте, $user_data[us_name]!\r\n";
-									$letter .= "Кто-то (возможно, Вы) запросил восстановление пароля на сайте Creative line studio.\r\n";
-									$letter .= "Данные для входа на сайт:\r\n";
-									$letter .= "   логин: $user_data[login]\r\n";
-									// создание нового пароля
-									//$password = genpass(10, 3); // пароль с регулируемым уровнем сложности
-									$password = genPassword(10);  // легкозапоминающийся пароль
-									// шифровка и запись в базу
-									getPassword($password, $user_data['id']) or die("Ошибка!");
-									$letter .= "   пароль: $password\r\n";
-									$letter .= "Если вы не запрашивали восстановление пароля, пожалуйста, немедленно свяжитесь с администрацией сайта!\r\n";
-									/* закрытие выборки */
-									mysqli_free_result($rs);
-									// Отправляем письмо
-									if (!mail($user_data['email'], $subject, $letter, $headers))
-										{
-											$_SESSION['err_msg'] .= "Не удалось отправить письмо. Пожалуйста, попробуйте позже.<br>";
-										}
-									else
-										{
-											$_SESSION['ok_msg2'] = "Запрос выполнен.<br>Новый пароль отправлен на Ваш E-mail.<br>";
-										}
-								}
-							else
-								{
-									$_SESSION['err_msg'] .= "Пользователь не найден.<br>";
-								}
+							$_SESSION['ok_msg2'] =
+								"Запрос выполнен.<br>Новый пароль отправлен на E-mail,<br> указанный Вами при регистрации.<br>";
 						}
 				}
 			else
 				{
-					$_SESSION['err_msg'] .= "Повторный ввод одинаковых данных!<br>";
+					$_SESSION['err_msg'] .= "Пользователь с данным '$type' не найден.<br>";
 				}
 		}
-	$_SESSION['err_msg'] = "<p class='ttext_red'>".$_SESSION['err_msg']."</p>";
-   $_SESSION['ok_msg2'] = "<p class='ttext_blue'>".$_SESSION['ok_msg2']."</p>";
-	echo $_SESSION['err_msg2'].$_SESSION['err_msg'].$_SESSION['ok_msg2'];
+
+	//Получаем данные
+	if ($_POST['login'].$_POST['email'].$_POST['pkey'] != $_SESSION['previos_data'])
+		{
+			$_SESSION['previos_data'] = $_POST['login'].$_POST['email'].$_POST['pkey'];
+			if (iconv("utf-8", "windows-1251", $_POST['login'].$_POST['email'].$_POST['pkey']) == "Введите Ваш логин:или E-mail:Код безопасности:")
+				{
+					$_SESSION['err_msg'] .= "Необходимо заполнить одно из полей.<br>";
+				}
+			else
+				{
+					if ($_POST['pkey'] == $_SESSION["secret_number"])
+						{
+							$where = '';
+							if (isset($_POST['login']))
+								{
+									$dataLogin = iconv("utf-8", "windows-1251", $_POST['login']);
+									if ($dataLogin != "Введите Ваш логин:")
+										{
+											$login = trim(htmlspecialchars($dataLogin));
+											if (!preg_match("/[?a-zA-Zа-яА-Я0-9_-]{3,16}$/", $login))
+												{
+													$_SESSION['err_msg2'] .= "Логин может состоять из букв, цифр, дефисов и подчёркиваний. Длина от 3 до 16 символов.<br>";
+													$where = 'false';
+												}
+											else
+												{
+													$where = ' login = \''.mysqli_escape_string($link, $login).'\'';
+													$where = iconv("windows-1251", "utf-8", $where);
+													checkData($link, $where, 'Login');
+												}
+										}
+								}
+							if (isset($_POST['email']))
+								{
+									$dataEmail = iconv("utf-8", "windows-1251", $_POST['email']);
+									if ($dataEmail != "или E-mail:")
+										{
+											$email = trim(htmlspecialchars($dataEmail));
+											if (!preg_match("/[0-9a-z_]+@[0-9a-z_^\.-]+\.[a-z]{2,3}/i", $email))
+												{
+													$_SESSION['err_msg2'] .= "Ошибочный 'E-mail' (пример: a@b.c)!<br>";
+													$where = 'false';
+												}
+											else
+												{
+													$where = ' email = \''.mysqli_escape_string($link, $email).'\'';
+													checkData($link, $where, 'E-mail');
+												}
+										}
+								}
+							if ($where == '')
+								{
+									$_SESSION['err_msg'] .= "Пожалуйста, заполните одно из полей!<br>";
+								}
+						}
+					else
+						{
+							$_SESSION['err_msg'] .= "Неправильный ввод проверочного числа!<br>";
+						}
+				}
+		}
+	else
+		{
+			$_SESSION['err_msg'] .= "Повторный ввод одинаковых данных!<br>";
+		}
+	if (isset($_SESSION['ok_msg2']))
+		{
+			$_SESSION['ok_msg2'] = "<p class='ttext_blue'>".$_SESSION['ok_msg2']."</p>";
+			echo $_SESSION['ok_msg2'];
+			unset($_SESSION['ok_msg2']);
+		}
+	else
+		{
+			$_SESSION['err_msg'] = "<p class='ttext_red'>".$_SESSION['err_msg']."</p>";
+			echo $_SESSION['err_msg2'].$_SESSION['err_msg'];
+		}
 	unset($_SESSION['err_msg']);
 	unset($_SESSION['err_msg2']);
-	unset($_SESSION['ok_msg2']);
+	unset($_SESSION['secret_number']);
 	mysqli_close($link);
 
 

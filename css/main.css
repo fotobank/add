@@ -71,11 +71,13 @@ html {
 }
 
 body {
-    background: #d1cfc7; /* ÷вет фона веб-страницы */
+    /*background: #d1cfc7; *//* ÷вет фона веб-страницы */
     /*background: url(/img/debut_dark.png) center top;*/
-    /*background: #333333 transparent url("http://imgub.ru/wp-content/themes/Avonne/images/logo.png") no-repeat scroll center top;
-    height: 200px;
-    padding: 11px 0;*/
+    /*background: #333333 transparent url("http://imgub.ru/wp-content/themes/Avonne/images/logo.png") no-repeat scroll center top;*/
+    /*height: 200px;*/
+    /*padding: 11px 0;*/
+    /*background: #474747 url(/img/back.jpg);*/
+    background: #474747 url(/img/bg3.jpg);
 
 }
 

@@ -14,25 +14,25 @@
  @time   - 8:54
  */
 
-function send()
-{
-    //ѕолучаем параметры
-    var data = $('#login').val() + '][' + $('#email').val();
-
-    // ќтсылаем паметры
+function send() {
     $.ajax({
         type: "POST",
         url: "/inc/SendData.php",
-        data: "data="+data,
+        // data: "data="+data,
+        data: $('#reminder').serialize(),
 
         // ¬ыводим то что вернул PHP
-        success: function(html) {
+        success: function (html) {
             //предварительно очищаем нужный элемент страницы
             $("#result").empty().append(html);
-
-            //   dhtmlx.message({ type:'warning', text: data});
+            getCaptca();
         }
     });
+}
+
+
+function getCaptca() {
+    $(' .loadimg ').load('/inc/captcha/captcha.html');
 }
 
 
@@ -42,19 +42,18 @@ function send()
  @date   - 13.04.13
  @time   - 8:56
  */
-
-(function($) {
+(function ($) {
     $.fn.autoClear = function () {
         // сохран€ем во внутреннюю переменную текущее значение
-        $(this).each(function() {
+        $(this).each(function () {
             $(this).data("autoclear", $(this).attr("value"));
         });
-        $(this).bind('focus', function() {   // обработка фокуса
-                if ($(this).attr("value") == $(this).data("autoclear")) {
-                    $(this).attr("value", "").addClass('autoclear-normalcolor');
-                }
-            })
-            .bind('blur', function() {    // обработка потери фокуса
+        $(this).bind('focus', function () {   // обработка фокуса
+            if ($(this).attr("value") == $(this).data("autoclear")) {
+                $(this).attr("value", "").addClass('autoclear-normalcolor');
+            }
+        })
+            .bind('blur', function () {    // обработка потери фокуса
                 if ($(this).attr("value") == "") {
                     $(this).attr("value", $(this).data("autoclear")).removeClass('autoclear-normalcolor');
                 }
@@ -63,9 +62,9 @@ function send()
     }
 })(jQuery);
 
-$(function(){
+$(function () {
     // прив€зываем плагин ко всем элементам с id "#email, #login"
-     $(' #email, #login ').autoClear();
+    $(' .autoclear ').autoClear();
 });
 
 
