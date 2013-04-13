@@ -263,7 +263,7 @@ header('Content-type: text/html; charset=windows-1251');
 							</tr>
 						</table>
 <!--						<a href="/reminder.php" style="color: #fff; text-decoration: none;" >Забыли пароль?</a>-->
-						 <a href="#" style="color: #fff; text-decoration: none;" onclick="$(document).ready(function load() { $('#vosst').modal('show'); }); ">Забыли пароль?</a>
+						 <a href="#" style="color: #fff; text-decoration: none;" onclick="$(document).ready(function load() {clearAjax(); $('#vosst').modal('show'); }); ">Забыли пароль?</a>
 					</form>
 				<? endif; ?>
 
@@ -297,10 +297,10 @@ header('Content-type: text/html; charset=windows-1251');
 
 			<form action="" id="reminder">
 				<label>
-					<input id="login" data-tabindex="2" maxlength="20"  style="margin-left: 8px; width: 250px" type="text" value="Введите Ваш логин:" name="login"/>
+					<input id="login" class="autoclear" data-tabindex="2" maxlength="20"  style="margin-left: 8px; width: 250px" type="text" value="Введите Ваш логин:" name="login"/>
 				</label>
 				<label style="float: left">
-					<input id="email" data-tabindex="1" maxlength="20"  style="margin-left: 8px; width: 250px" type="text" value="или E-mail:" name="email"/>
+					<input id="email" class="autoclear" data-tabindex="1" maxlength="20"  style="margin-left: 8px; width: 250px" type="text" value="или E-mail:" name="email"/>
 				</label>
 				<input class="btn" type="button" value="Напомнить"  onClick="send();" style="float: right; margin: 9px 0 0 0 "/>
 			</form>

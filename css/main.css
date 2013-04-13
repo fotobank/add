@@ -614,16 +614,11 @@ a.gb_act {
     padding-right: 5px;
     margin-top: 2px;
     border-radius: 7px 7px 7px 7px;
-    color: #aaa;
 
 }
 
 .inp_f_reg:hover {
     background: #ffffff;
-}
-
-.inp_f_reg-normalcolor {
-    color: #000;
 }
 
 .bt_go_reg {
@@ -2381,4 +2376,12 @@ input[type=text], textarea {
     -moz-box-shadow: inset 0px 0px 1px #726959;
     -webkit-box-shadow:  inset 0px 0px 1px #b3a895;
     box-shadow:  inset 0px 0px 1px #b3a895;
+}
+
+.autoclear {
+    color: #aaa;
+}
+
+.autoclear-normalcolor {
+    color: #000;
 }

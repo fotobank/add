@@ -30,7 +30,7 @@
 							$login = trim(htmlspecialchars($subdata[0]));
 							if (!preg_match("/[?a-zA-Zа-яА-Я0-9_-]{3,16}$/", $login))
 								{
-									$_SESSION['err_msg'] .= "Логин может состоять из букв, цифр, дефисов и подчёркиваний. Длина от 3 до 16 символов.<br>";
+									$_SESSION['err_msg2'] = "Логин может состоять из букв, цифр, дефисов и подчёркиваний. Длина от 3 до 16 символов.<br>";
 								}
 						}
 					if (isset($subdata[1]) and $subdata[1] != "или E-mail:")
@@ -41,6 +41,7 @@
 									$_SESSION['err_msg'] .= "Неправильный 'E-mail'!<br>";
 								}
 						}
+
 					$where = '';
 					if (!empty($email))
 						{
@@ -102,8 +103,12 @@
 					$_SESSION['err_msg'] .= "Повторный ввод одинаковых данных!<br>";
 				}
 		}
-	echo $_SESSION['err_msg'].$_SESSION['ok_msg2'];
+	$_SESSION['err_msg'] = "<p class='ttext_red'>".$_SESSION['err_msg']."</p>";
+   $_SESSION['ok_msg2'] = "<p class='ttext_blue'>".$_SESSION['ok_msg2']."</p>";
+	echo $_SESSION['err_msg2'].$_SESSION['err_msg'].$_SESSION['ok_msg2'];
 	unset($_SESSION['err_msg']);
+	unset($_SESSION['err_msg2']);
 	unset($_SESSION['ok_msg2']);
 	mysqli_close($link);
+
 

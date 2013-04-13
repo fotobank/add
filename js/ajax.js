@@ -6,17 +6,33 @@
  * To change this template use File | Settings | File Templates.
  */
 
-/**
- * Напоминание пароля
- */
 
+/*
+ Todo    - ajax - Напоминание пароля
+ @author - Jurii
+ @date   - 13.04.13
+ @time   - 8:54
+ */
 
 function send()
 {
-//Получаем параметры
+
+    reminderAjax('');
+}
+
+function clearAjax()
+{
+    $("#login").attr({value: "Введите Ваш логин:"});
+    $("#email").attr({value: "или E-mail:"});
+
+}
+
+function reminderAjax()
+{
+
+    //Получаем параметры
     var data = $('#login').val() + '][' + $('#email').val();
-    $("#login").empty();
-    $("#email").empty();
+
     // Отсылаем паметры
     $.ajax({
         type: "POST",
@@ -28,13 +44,17 @@ function send()
             //предварительно очищаем нужный элемент страницы
             $("#result").empty().append(html);
 
-         //   dhtmlx.message({ type:'warning', text: data});
+            //   dhtmlx.message({ type:'warning', text: data});
         }
     });
 
 }
-
-
+/*
+ Todo    - Автоочистка текстового поля при получении фокуса
+ @author - Jurii
+ @date   - 13.04.13
+ @time   - 8:56
+ */
 
 (function($) {
     $.fn.autoClear = function () {
@@ -42,8 +62,7 @@ function send()
         $(this).each(function() {
             $(this).data("autoclear", $(this).attr("value"));
         });
-        $(this)
-            .bind('focus', function() {   // обработка фокуса
+        $(this).bind('focus', function() {   // обработка фокуса
                 if ($(this).attr("value") == $(this).data("autoclear")) {
                     $(this).attr("value", "").addClass('autoclear-normalcolor');
                 }
@@ -57,9 +76,9 @@ function send()
     }
 })(jQuery);
 
-
 $(function(){
-    // привязываем плагин ко всем элементам с классом "autoclear"
-    $('#email, #login').autoClear();
+    // привязываем плагин ко всем элементам с id "#email, #login"
+     $(' #email, #login ').autoClear();
 });
+
 
