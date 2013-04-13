@@ -102,7 +102,7 @@ header('Content-type: text/html; charset=windows-1251');
 	<script src="/js/jquery.js"></script>
 	<script src="/js/bootstrap.min.js"></script>
 	<script src="/js/main.js"></script>
-	<script type="text/javascript" src="/js/reminder_ajax.js"></script>
+	<script type="text/javascript" src="/js/ajax.js"></script>
 
 	<!--        <script src="/js/no-copy.js"></script>-->
 

@@ -117,9 +117,9 @@
 	{
 		$e1 = null;
 		$uname = trim(htmlspecialchars($_POST["uname"]));
-		if (strlen($uname) == "0")
+		if (strlen($uname) == "0" || (!preg_match("/[?a-zA-Zа-яА-Я0-9_-]{3,16}$/", $uname)))
 		{
-			$e1 .= "Заполните поле 'Ваше имя'<br>";
+			$e1 .= "Недопустимые символы!<br>";
 		}
 		$e2 = null;
 		$utext = trim(htmlspecialchars($_POST["utext"]));
@@ -139,7 +139,7 @@
 		if ((strlen($uphone) < 5) || (preg_match("/[%a-z_@.,^=:;а-я\"*()&$#№!?<>\~`|[{}\]]/i",
 			$uphone)))
 		{
-			$e4 .= "Неверный контактный телефон<br>";
+			$e4 .= "Неверный телефон!<br>";
 		}
 		$skype = trim(htmlspecialchars($_POST["skype"]));
 		$e5 = null;
@@ -208,7 +208,7 @@ print "<script language='Javascript' type='text/javascript'>
                                     <table style="font-weight:bold">
                                         <tr>
                                             <td class="td_formL" style="width: 100px;">Ваше имя*:</td>
-                                            <td class="td_formR"><input rel="tooltip" data-placement="top" data-original-title="Имя или ник на сайте." class="inp_f_reg" type="text" name="uname" style="margin-bottom: 5px; margin-left: 0px; width: 200px;" maxlength="20" value="<?=$uname;?>"/></td>
+                                            <td class="td_formR"><input rel="tooltip" data-placement="top" data-original-title="Имя или ник на сайте. Допустимы буквы, цифры, дефисы и подчёркивания. Длина от 3 до 16 символов." class="inp_f_reg" type="text" name="uname" style="margin-bottom: 5px; margin-left: 0px; width: 200px;" maxlength="20" value="<?=$uname;?>"/></td>
                                             <td><span class="label label-important" style="margin-left: 10px;"><?=$e1;?></span></td>
                                         </tr>
                                         <tr>
