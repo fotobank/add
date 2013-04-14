@@ -3,7 +3,57 @@ set_time_limit(0);
 include __DIR__.'/../inc/config.php';
 include __DIR__.'/../inc/func.php';
 
-//error_reporting(E_ALL);
+error_reporting(E_ALL);
+
+	// обработка ошибок
+	include __DIR__.'/../inc/lib_mail.php';
+	include __DIR__.'/../inc/lib_ouf.php';
+	include __DIR__.'/../inc/lib_errors.php';
+	$error_processor = Error_Processor::getInstance();
+
+
+	/**
+	 *  Тесты для проверки Error_Processor
+	 * PHP set_error_handler TEST
+	 */
+	//	IMAGINE_CONSTANT;
+	/**
+	 * PHP set_exception_handler TEST
+	 */
+	//   throw new Exception( 'Imagine Exception' );
+	/**
+	 * PHP register_shutdown_function TEST ( IF YOU WANT TEST THIS, DELETE PREVIOUS LINE )
+	 */
+	//	 	imagine_function( );
+
+
+	/*if (isset($_SESSION['us_name']) && $_SESSION['us_name'] == 'test')
+		{*/
+			$time = microtime();
+			$time = explode(' ', $time);
+			$time = $time[1] + $time[0];
+			$start = $time;
+			?>
+			<h2><< DEBUG >> </h2>
+			<div class="ttext_orange" style="position:relative">
+				Используемая память в начале: <?=intval(memory_get_usage() / 1024)?> Кбайт.
+				<hr class="style-one" style=" margin-bottom: 0px; margin-top: 10px"/>
+			</div>
+			<?
+			/**
+			 * $actions - переменная String с действиями:
+			 * '' - добавление ошибок в список ошибок,
+			 * 'w' - пишет сообщение об ошибке на экран,
+			 * 'а' - выводит список всех сообщений на экран,
+			 * "d" - очищает стек ошибки,
+			 * 's' - остановить исполнение,
+			 * 'l' - пишет log,
+			 * 'm' - отправляет по электронной почте (значения могут быть объединены, например: 'ws')
+			 */
+			//	$error_processor->err_proc("" , "w", $error_processor->error);
+			$error_processor->err_proc("", "w", "");
+			//	$error_processor->err_proc("", "am", "");
+//		}
 
 
 //Логин
@@ -34,13 +84,13 @@ if(isset($_GET['page']))
 }
 if(!isset($_SESSION['page']) || $_SESSION['page'] < 1 || $_SESSION['page'] > 8) $_SESSION['page'] = 1;
 
-header('Content-type: text/html; charset=windows-1251');
+/*header('Content-type: text/html; charset=windows-1251');
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
  header("Last-Modified: Mon, 26 Jul 2997 05:00:00 GMT");
  header("Cache-Control: no-cache, must-revalidate");
  header("Cache-Control: post-check=0,pre-check=0");
  header("Cache-Control: max-age=0");
- header("Pragma: no-cache");
+ header("Pragma: no-cache");*/
 ?>
 <!DOCTYPE html>
 <html>

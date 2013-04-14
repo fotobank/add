@@ -1,5 +1,8 @@
 <?php
 include __DIR__.'/../inc/i_resize.php';
+?>
+<script type="text/javascript" src="js/ajaxAdmin.js"></script>
+<?
 
 
 // Функция, подсчитывающая количество файлов $dir
@@ -129,6 +132,10 @@ if (isset($_POST['go_add']))
 
 
 
+ /*
+Todo    - go_edit_name
+ */
+
 if (isset($_POST['go_edit_name']))
    {
    $id = intval($_POST['go_edit_name']);
@@ -138,12 +145,18 @@ if (isset($_POST['go_edit_name']))
    mysql_query('update albums set nm = \''.$nm.'\' where id = '.$id);
    }
 
+
+
+
 if (isset($_POST['go_edit_descr']))
    {
    $id = intval($_POST['go_edit_descr']);
    $descr = mysql_escape_string($_POST['descr']);
    mysql_query('update albums set descr = \''.$descr.'\' where id = '.$id);
    }
+
+
+
 
 if (isset($_POST['go_edit_nastr']))
    {
@@ -164,6 +177,15 @@ if (isset($_POST['go_edit_nastr']))
    $_SESSION['current_album'] = $id;
    $_SESSION['current_cat'] = $id_category;
    }
+
+
+
+/*
+  Todo    go_ftp_upload
+  @author - Jurii
+  @date   - 14.04.13
+  @time   - 14:29
+*/
 
 if (isset($_POST['go_ftp_upload']))
    {
@@ -390,6 +412,7 @@ if (isset($_POST['go_updown']))
                   </tr>
                   <tr>
                      <td><strong>Папка фотобанка:</strong></td>
+
                      <td>
                         <label>
                            <input type="text" name="foto_folder" value="/images2/" style="width: 203px; margin-top: 5px;"/>
@@ -657,7 +680,8 @@ if (mysql_num_rows($rs) > 0)
                                                       <td>
                                                          <div class="input-prepend">
                                                             <span class="add-on" style="padding-bottom: 0px; padding-top: 0px; margin-top: 5px;">Пароль на альбом:</span>
-                                                            <input id="prependedInput" class="span2" type="text" NAME="pass" VALUE="<?= $ln['pass'] ?>" style="margin-bottom: 0px; width: 152px; margin-top: 5px;"/>
+                                                            <input id="prependedInput" class="span2" type="text" NAME="pass" VALUE="<?= $ln['pass'] ?>"
+	                                                            style="margin-bottom: 0px; width: 152px; margin-top: 5px;"/>
                                                          </div>
                                                       </td>
                                                    </tr>
@@ -665,15 +689,18 @@ if (mysql_num_rows($rs) > 0)
                                                       <td>
                                                          <div class="input-prepend">
                                                             <span class="add-on" style="padding-bottom: 0px; padding-top: 0px; margin-top: 5px;">Папка фотобанка:</span>
-                                                            <input id="prependedInput" class="span2" type="text" NAME="foto_folder" VALUE="<?= $ln['foto_folder'] ?>" style="margin-bottom: 0px; margin-top: 5px;"/>
+                                                            <input id="prependedInput" class="span2" type="text" NAME="foto_folder" VALUE="<?= $ln['foto_folder'] ?>"
+	                                                            style="margin-bottom: 0px; margin-top: 5px;"/>
                                                          </div>
+
                                                       </td>
                                                    </tr>
                                                    <tr>
                                                       <td>
                                                          <div class="input-prepend">
                                                             <span class="add-on" style="padding-bottom: 0px; padding-top: 0px; margin-top: 5px;">Папка uploada FTP:</span>
-                                                            <input id="prependedInput" class="span2" type="text" NAME="ftp_folder" VALUE="<?= $ln['ftp_folder'] ?>" style="margin-bottom: 0px; width: 147px; margin-top: 5px;"/>
+                                                            <input id="prependedInput" class="span2" type="text" NAME="ftp_folder" VALUE="<?= $ln['ftp_folder'] ?>"
+	                                                            style="margin-bottom: 0px; width: 147px; margin-top: 5px;"/>
                                                          </div>
                                                       </td>
                                                       <td>
@@ -705,6 +732,10 @@ if (mysql_num_rows($rs) > 0)
                                                 <div id="<?= $ln['order_field'] ?>err"></div>
                                                 <input class="btn-small btn-success" type="submit" value="Добавить с FTP"/><br/>
                                              </form>
+	                                          <div id="result"></div>
+                                          </td><td>
+<!--		                                       <button class="btn-small btn-primary" onClick="sendFtp();">Папка Ftp</button>-->
+		                                       <a href="#" style="color: #fff; text-decoration: none;" onclick="sendFtp();">Папка Ftp</a>
                                              <iframe id="hiddenframe" name="hiddenframe" style="width:0; height:0; border:0"></iframe>
                                           </td>
                                        </tr>
@@ -744,4 +775,22 @@ if (mysql_num_rows($rs) > 0)
    endif;
    }
    }
+
+/*if (isset($_SESSION['us_name']) && $_SESSION['us_name'] == 'test')
+{*/
 ?>
+<div class="ttext_orange" style="position:relative; margin-top: 50px;">
+<br>
+	Память в конце: <?=intval(memory_get_usage()/1024)?> Кбайт;
+	Пик: <?=intval(memory_get_peak_usage()/1024)?> Кбайт;
+	<?
+	$time = microtime();
+	$time = explode(' ', $time);
+	$time = $time[1] + $time[0];
+	$finish = $time;
+	$total_time = round(($finish - $start), 4);
+	echo ' Страница сгенерированна за: '.$total_time.' секунд.'."\n";
+//	}
+	?>
+</div>
+

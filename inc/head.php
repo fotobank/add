@@ -25,37 +25,37 @@ header('Content-type: text/html; charset=windows-1251');
 	// обработка ошибок
 	include __DIR__.'./lib_mail.php';
 	include __DIR__.'./lib_ouf.php';
-	  include __DIR__.'./lib_errors.php';
-	  $error_processor = Error_Processor::getInstance();
+	include __DIR__.'./lib_errors.php';
+	$error_processor = Error_Processor::getInstance();
 
 	/**
 	 *  Тесты для проверки Error_Processor
 	 * PHP set_error_handler TEST
 	 */
-//	IMAGINE_CONSTANT;
+	//	IMAGINE_CONSTANT;
 	/**
 	 * PHP set_exception_handler TEST
 	 */
-//   throw new Exception( 'Imagine Exception' );
+	//   throw new Exception( 'Imagine Exception' );
 	/**
 	 * PHP register_shutdown_function TEST ( IF YOU WANT TEST THIS, DELETE PREVIOUS LINE )
 	 */
-//	 	imagine_function( );
+	//	 	imagine_function( );
 
 
 	if (isset($_SESSION['us_name']) && $_SESSION['us_name'] == 'test')
 		{
-			$time  = microtime();
-			$time  = explode(' ', $time);
-			$time  = $time[1] + $time[0];
+			$time = microtime();
+			$time = explode(' ', $time);
+			$time = $time[1] + $time[0];
 			$start = $time;
 			?>
 			<h2><< DEBUG >> </h2>
 			<div class="ttext_orange" style="position:relative">
-				 Используемая память в начале: <?=intval(memory_get_usage()/1024)?> Кбайт.
+				Используемая память в начале: <?=intval(memory_get_usage() / 1024)?> Кбайт.
 				<hr class="style-one" style=" margin-bottom: -20px; margin-top: 10px"/>
 			</div>
-		<?
+			<?
 			/**
 			 * $actions - переменная String с действиями:
 			 * '' - добавление ошибок в список ошибок,
@@ -66,9 +66,9 @@ header('Content-type: text/html; charset=windows-1251');
 			 * 'l' - пишет log,
 			 * 'm' - отправляет по электронной почте (значения могут быть объединены, например: 'ws')
 			 */
-		//	$error_processor->err_proc("" , "w", $error_processor->error);
-		 	$error_processor->err_proc("", "wm", "");
-		//	$error_processor->err_proc("", "am", "");
+			//	$error_processor->err_proc("" , "w", $error_processor->error);
+			$error_processor->err_proc("", "wm", "");
+			//	$error_processor->err_proc("", "am", "");
 		}
 
 
@@ -88,8 +88,7 @@ header('Content-type: text/html; charset=windows-1251');
 		document.createElement('figure');
 		document.createElement('figcaption');
 		document.createElement('span');
-	</script>
-	<![endif]-->
+	</script>	<![endif]-->
 
 
 	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="/favicon.ico"/>
@@ -134,7 +133,35 @@ header('Content-type: text/html; charset=windows-1251');
 		<script type="text/javascript" src="/js/lightbox.js"></script>
 	<? endif; ?>
 
-
+	<!--- шифровка E-mail -->
+	<script language="javascript">
+		function scrambleVideo() {
+			var p1, p2, p3, p4, p5, p6;
+			p1 = '<a href="mai';
+			p2 = 'video';
+			p3 = '">';
+			p1 += 'lto:';
+			p2 += '@';
+			p5 = '</a>';
+			p6 = 'Заказ видеосъемки';
+			p2 += 'aleks.od.ua';
+			p4 = p6;
+			document.write(p1 + p2 + p3 + p4 + p5)
+		}
+		function scrambleFoto() {
+			var p1, p2, p3, p4, p5, p6;
+			p1 = '<a href="mai';
+			p2 = 'foto';
+			p3 = '">';
+			p1 += 'lto:';
+			p2 += '@';
+			p5 = '</a>';
+			p6 = 'Заказ фотосесии';
+			p2 += 'aleks.od.ua';
+			p4 = p6;
+			document.write(p1 + p2 + p3 + p4 + p5)
+		}
+	</script>
 
 	<script language=JavaScript type="text/javascript">
 
@@ -263,8 +290,9 @@ header('Content-type: text/html; charset=windows-1251');
 								</td>
 							</tr>
 						</table>
-<!--						<a href="/reminder.php" style="color: #fff; text-decoration: none;" >Забыли пароль?</a>-->
-						 <a href="#" style="color: #fff; text-decoration: none;" onclick="getCaptca(); $(document).ready(function load() {$('#vosst').modal('show'); }); ">Забыли пароль?</a>
+						<!--						<a href="/reminder.php" style="color: #fff; text-decoration: none;" >Забыли пароль?</a>-->
+						<a href="#" style="color: #fff; text-decoration: none;" onclick="getCaptca(); $(document).ready(function load() {$('#vosst').modal('show'); }); ">Забыли
+							пароль?</a>
 					</form>
 				<? endif; ?>
 
@@ -284,9 +312,10 @@ header('Content-type: text/html; charset=windows-1251');
 
 <!-- восстановление пароля data-focus-on="input:first" -->
 <div id="vosst" class="modal hide fade in animated fadeInDown" style="position: absolute; top: 40%; left: 50%; z-index: 1;
-	" data-keyboard="false" data-width="460"  data-backdrop="static" tabindex="-1" aria-hidden="false">
+	" data-keyboard="false" data-width="460" data-backdrop="static" tabindex="-1" aria-hidden="false">
 	<div class="modal-header" style="background: rgba(229,229,229,0.53)">
-		<button type="button" class="close" data-dismiss="modal" aria-hidden="true" onClick="$('#result').empty();">x</button>
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true" onClick="$('#result').empty();">x
+		</button>
 		<div>
 			<h3>
 				<span style="font-weight: bold;">Восстановление пароля захода на сайт:</span>
@@ -297,28 +326,26 @@ header('Content-type: text/html; charset=windows-1251');
 	</div>
 	<div class="modal-body" style="height: 180px;">
 
-			<form action="" id="reminder">
-				<label>
-					<input class="autoclear" data-tabindex="2" maxlength="20"  style="margin-left: 8px; width: 250px" type="text" value="Введите Ваш логин:" name="login"/>
-				</label>
-				<label style="float: left">
-					<input class="autoclear" data-tabindex="1" maxlength="20"  style="margin-left: 8px; width: 250px" type="text" value="или E-mail:" name="email"/>
-				</label >
-				<label style="float: left">
-					<input class="autoclear" data-tabindex="3" maxlength="20" style="margin-left: 8px; width: 250px" type="text" value="Код безопасности:" name="pkey" />
-				</label>
+		<form action="" id="reminder">
+			<label>
+				<input class="autoclear" data-tabindex="2" maxlength="20" style="margin-left: 8px; width: 250px" type="text" value="Введите Ваш логин:" name="login"/>
+			</label> <label style="float: left">
+				<input class="autoclear" data-tabindex="1" maxlength="20" style="margin-left: 8px; width: 250px" type="text" value="или E-mail:" name="email"/>
+			</label> <label style="float: left">
+				<input class="autoclear" data-tabindex="3" maxlength="20" style="margin-left: 8px; width: 250px" type="text" value="Код безопасности:" name="pkey"/>
+			</label>
 
-			   <div class="loadimg" style="float: right; margin: 5px 0 0 0 "></div>
-				<div id="loadCaptca" style="float: right; margin: 5px 0 0 0 "></div>
-				<div style="clear: both"></div>
-				<input class="btn"  type="reset" value="Напомнить"  onClick="send();" style="float: left; margin: 0 0 0 90px; "/>
+			<div class="loadimg" style="float: right; margin: 5px 0 0 0 "></div>
+			<div id="loadCaptca" style="float: right; margin: 5px 0 0 0 "></div>
+			<div style="clear: both"></div>
+			<input class="btn" type="reset" value="Напомнить" onClick="send();" style="float: left; margin: 0 0 0 90px; "/>
 
-			</form>
+		</form>
 
 
 	</div>
 	<div class="modal-footer">
-		<button type="button" data-dismiss="modal" class="btn" onClick="$('#result').empty();"> Закрыть </button>
+		<button type="button" data-dismiss="modal" class="btn" onClick="$('#result').empty();"> Закрыть</button>
 	</div>
 </div>
 
@@ -331,7 +358,7 @@ if (isset($_SESSION['err_msg']))
 		?>
 		<script type='text/javascript'>
 			dhtmlx.message.expire = 6000;
-			dhtmlx.message({ type:'error', text:'Ошибка!<br><?=$_SESSION['err_msg']?>'});
+			dhtmlx.message({ type: 'error', text: 'Ошибка!<br><?=$_SESSION['err_msg']?>'});
 			<!--			humane.error('Ошибка!<br>--><?//=$_SESSION['err_msg']?><!--')-->
 		</script>
 		<?
@@ -357,16 +384,16 @@ if (isset($_SESSION['ok_msg2']))
 	{
 		?>
 		<script type='text/javascript'>
-			$(document).ready(function(){
-			dhtmlx.message({ type:'warning', text: <?=$_SESSION['ok_msg2'] ?>});
+			$(document).ready(function () {
+				dhtmlx.message({ type: 'warning', text: <?=$_SESSION['ok_msg2'] ?>});
 			});
 			/*function redirect() {
-				window.document.location.href = '<?=$back?>'
-			}
-			setTimeout('redirect()', 3000);*/
+			 window.document.location.href = '<?=$back?>'
+			 }
+			 setTimeout('redirect()', 3000);*/
 		</script>
 		<?
-	//	unset($_SESSION['ok_msg2']);
+		//	unset($_SESSION['ok_msg2']);
 	}
 ?>
 
@@ -379,7 +406,7 @@ if (isset($_SESSION['ok_msg2']))
 		<?
 
 		$value = $_SERVER['PHP_SELF'];
-	   if ($_SERVER['PHP_SELF'] == '/fotobanck.php')
+		if ($_SERVER['PHP_SELF'] == '/fotobanck.php')
 			{
 				$value = '/fotobanck.php?unchenge_cat';
 			}
@@ -527,7 +554,6 @@ if (isset($_SESSION['ok_msg2']))
 	 })(jQuery)*/
 
 </script>
-
 
 
 <!--Голова конец-->
