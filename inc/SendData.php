@@ -6,6 +6,10 @@
 	 * Time: 12:55
 	 * To change this template use File | Settings | File Templates.
 	 */
+	/*
+	  Todo    - ajax скрипт восстановления пароля
+	*/
+
 	// обработка ошибок
 	include __DIR__.'./lib_mail.php';
 	include __DIR__.'./lib_ouf.php';
