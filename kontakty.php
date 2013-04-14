@@ -209,7 +209,7 @@ print "<script language='Javascript' type='text/javascript'>
                                         <tr>
                                             <td class="td_formL" style="width: 100px;">Ваше имя*:</td>
                                             <td class="td_formR"><input rel="tooltip" data-placement="top" data-original-title="Имя или ник на сайте.
-                                             Допустимы буквы, цифры, дефисы и подчёркивания. Длина от 3 до 16 символов."
+                                              Длина от 3 до 16 символов."
 		                                            class="inp_f_kont" type="text" name="uname" style="margin-bottom: 5px; margin-left: 0px; width: 200px;" maxlength="20" value="<?=$uname;?>"/></td>
                                             <td><span class="label label-important" style="margin-left: 10px;"><?=$e1;?></span></td>
                                         </tr>
@@ -239,7 +239,7 @@ print "<script language='Javascript' type='text/javascript'>
                                             <td class="td_formR2"><textarea  style="margin-top: -5px; margin-bottom: 10px; width: 350px; " rel="tooltip"
 		                                            data-placement="top" data-original-title="Краткость - сестра таланта! :)"
 		                                            name="utext"><?=$utext;?></textarea></td>
-                                            <span class="label label-important" style="margin-top: 3px; margin-left: 180px; position:absolute"><?=$e2;?></span>
+                                            <span class="label label-important" style="margin-top: -13px; margin-left: 180px; position:absolute"><?=$e2;?></span>
                                         </tr>
                                         <tr>
                                             <td class="td_formL" style="width: 100px;"><div  style="position:relative; margin-top: -10px;">Введите результат 24*2=?:</div></td>

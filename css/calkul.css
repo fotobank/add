@@ -18,6 +18,7 @@ p, #calk {
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
     border-radius: 10px;
+    background: rgba(140, 173, 144, 0.61);
 }
 
 #calculate table {
