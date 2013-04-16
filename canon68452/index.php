@@ -338,8 +338,9 @@ hfooter {
 }
 
 div.pagination {
+	float: left;
 	padding:3px;
-	margin: 10px 0 -40px 0;
+	margin: 18px 20px 0 20px;
 	text-align:center;
 	z-index: 10;
 
@@ -395,10 +396,9 @@ function paginator($record_count, $pg)
 						for ($i = 1; $i <= $page_count; $i++)
 							{
 								?>
-
 								<!-- ПОСТРАНИЧНАЯ РАЗБИВКА -->
-								<h4><a id="home" style="float: left">Страница <?=$pg?></a></h4>
-								<div class="pagination" align="center">
+                        <div style="float: left"><h4><a id="home">Страница <?=$pg?></a></h4></div>
+								<div class="pagination">
 									<?
 									if ($pg == 1)
 										{
@@ -448,7 +448,7 @@ function paginator($record_count, $pg)
 										}
 									?>
 								</div>
-								<h4><a id="home" style="float: right">всего - <?=$record_count?> шт.</a></h4>
+								<div style="float: left"><h4><a id="home">всего - <?=$record_count?> шт.</a></h4></div>
 								<div style="clear: both;"></div>
 							<?
 							}
