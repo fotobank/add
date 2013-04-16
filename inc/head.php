@@ -56,19 +56,6 @@ header('Content-type: text/html; charset=windows-1251');
 				<hr class="style-one" style=" margin-bottom: -20px; margin-top: 10px"/>
 			</div>
 			<?
-			/**
-			 * $actions - переменная String с действиями:
-			 * '' - добавление ошибок в список ошибок,
-			 * 'w' - пишет сообщение об ошибке на экран,
-			 * 'а' - выводит список всех сообщений на экран,
-			 * "d" - очищает стек ошибки,
-			 * 's' - остановить исполнение,
-			 * 'l' - пишет log,
-			 * 'm' - отправляет по электронной почте (значения могут быть объединены, например: 'ws')
-			 */
-			//	$error_processor->err_proc("" , "w", $error_processor->error);
-			$error_processor->err_proc("", "wm", "");
-			//	$error_processor->err_proc("", "am", "");
 		}
 
 
@@ -93,6 +80,7 @@ header('Content-type: text/html; charset=windows-1251');
 
 	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="/favicon.ico"/>
 	<link rel="shortcut icon" href="/img/ico_nmain.gif"/>
+	<link rel="stylesheet" type="text/css" href="/css/reset.min.css">
 	<link href="/css/dynamic-to-top.css" rel="stylesheet" type="text/css"/>
 	<!-- кнопка вверх -->
 	<link href="/css/bootstrap.css" rel="stylesheet"/>

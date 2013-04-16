@@ -1,5 +1,8 @@
 <?php
+if(!isset($_SESSION['admin_logged']))
+	die();
 include __DIR__.'/../inc/i_resize.php';
+
 ?>
 <script type="text/javascript" src="js/ajaxAdmin.js"></script>
 <?
@@ -22,7 +25,6 @@ function get_ftp_size($ftp_handle, $dir, $global_size = 0)
 
       return $global_size;
    }
-
 
 function hardFlush($proc, $id, $remote_file)
    {
@@ -64,8 +66,6 @@ function ftp_is_dir($folder)
    }
 
 
-if (!isset($_SESSION['admin_logged']))
-die();
 
 if (isset($_POST['go_add']))
    {
@@ -445,12 +445,16 @@ if (isset($_POST['go_updown']))
 
 <div class="row">
    <div class="span5 offset2">
-      <div>1. Водяной знак для фотобанка и IP надпись формируется на сервере в момент <b>просмотра.</b></div>
-      <div>2. Чекбос "резкость" добавляет шарпинг <b>при закачке</b> с FTP.</div>
-      <div>3.Для папок <b>/два слэша/</b> обязательны.</div>
-      <div>4.Перед изменением <b>папки в фотобанке</b> для закаченного альбома необходимо сначала создать папку на
+
+			   <div id="result">
+
+      <p>1. Водяной знак для фотобанка и IP надпись формируется на сервере в момент <b>просмотра.</b></p>
+      <p>2. Чекбос "резкость" добавляет шарпинг <b>при закачке</b> с FTP.</p>
+      <p>3.Для папок <b>/два слэша/</b> обязательны.</p>
+      <p>4.Перед изменением <b>папки в фотобанке</b> для закаченного альбома необходимо сначала создать папку на
          сервере!
-      </div>
+      </p>
+			   </div>
    </div>
 </div><?
 
@@ -694,6 +698,14 @@ if (mysql_num_rows($rs) > 0)
                                                          </div>
 
                                                       </td>
+	                                                   <td>
+		                                                   <div class="slideThree">
+<!--			                                                   <input id="slideThree4" type='checkbox' NAME='dir' Value="Пиво" onclick="sendFtp();"/>-->
+			                                                   <input id="slideThree4" type='checkbox' name='dirFtp'  value='yes' onclick="sendFtp();"/>
+			                                                   <label for="slideThree4"></label>
+		                                                   </div>
+		                                                   Папка? на Ftp
+	                                                   </td>
                                                    </tr>
                                                    <tr>
                                                       <td>
@@ -732,10 +744,10 @@ if (mysql_num_rows($rs) > 0)
                                                 <div id="<?= $ln['order_field'] ?>err"></div>
                                                 <input class="btn-small btn-success" type="submit" value="Добавить с FTP"/><br/>
                                              </form>
-	                                          <div id="result"></div>
+
                                           </td><td>
 <!--		                                       <button class="btn-small btn-primary" onClick="sendFtp();">Папка Ftp</button>-->
-		                                       <a href="#" style="color: #fff; text-decoration: none;" onclick="sendFtp();">Папка Ftp</a>
+
                                              <iframe id="hiddenframe" name="hiddenframe" style="width:0; height:0; border:0"></iframe>
                                           </td>
                                        </tr>
@@ -775,22 +787,9 @@ if (mysql_num_rows($rs) > 0)
    endif;
    }
    }
-
-/*if (isset($_SESSION['us_name']) && $_SESSION['us_name'] == 'test')
-{*/
 ?>
-<div class="ttext_orange" style="position:relative; margin-top: 50px;">
-<br>
-	Память в конце: <?=intval(memory_get_usage()/1024)?> Кбайт;
-	Пик: <?=intval(memory_get_peak_usage()/1024)?> Кбайт;
-	<?
-	$time = microtime();
-	$time = explode(' ', $time);
-	$time = $time[1] + $time[0];
-	$finish = $time;
-	$total_time = round(($finish - $start), 4);
-	echo ' Страница сгенерированна за: '.$total_time.' секунд.'."\n";
-//	}
-	?>
-</div>
+
+<div class="end_content"></div>
+
+
 

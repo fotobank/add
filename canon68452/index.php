@@ -3,7 +3,52 @@ set_time_limit(0);
 include __DIR__.'/../inc/config.php';
 include __DIR__.'/../inc/func.php';
 
-error_reporting(E_ALL);
+
+	//Логин
+	if(isset($_POST['op']))
+		{
+			if($_POST['op'] == 'out')
+				{
+					unset($_SESSION['admin_logged']);
+					session_destroy();
+					main_redir('index.php');
+				}
+			else
+				{
+					//Вот тут прописываем логин и пароль админа!
+					if($_POST['login'] == 'Photomas123' && $_POST['pass'] == 'Ht45Fd76S98K23')
+						{
+							$_SESSION['admin_logged'] = true;
+							main_redir('index.php');
+						}
+				}
+		}
+
+
+	header('Content-type: text/html; charset=windows-1251');
+	header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+	 header("Last-Modified: Mon, 26 Jul 2997 05:00:00 GMT");
+	 header("Cache-Control: no-cache, must-revalidate");
+	 header("Cache-Control: post-check=0,pre-check=0");
+	 header("Cache-Control: max-age=0");
+	 header("Pragma: no-cache");
+
+?>
+
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//RU" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251"/>
+
+
+
+
+	<title>Админка</title>
+
+<?
+
+
+//error_reporting(E_ALL);
 
 	// обработка ошибок
 	include __DIR__.'/../inc/lib_mail.php';
@@ -16,7 +61,7 @@ error_reporting(E_ALL);
 	 *  Тесты для проверки Error_Processor
 	 * PHP set_error_handler TEST
 	 */
-	//	IMAGINE_CONSTANT;
+	// 	IMAGINE_CONSTANT;
 	/**
 	 * PHP set_exception_handler TEST
 	 */
@@ -26,55 +71,23 @@ error_reporting(E_ALL);
 	 */
 	//	 	imagine_function( );
 
+	$start = '';
 
-	/*if (isset($_SESSION['us_name']) && $_SESSION['us_name'] == 'test')
-		{*/
+	if (isset($_SESSION['admin_logged']) && $_SESSION['admin_logged'] == true)
+		{
 			$time = microtime();
 			$time = explode(' ', $time);
 			$time = $time[1] + $time[0];
 			$start = $time;
 			?>
-			<h2><< DEBUG >> </h2>
+			<h2>&laquo; DEBUG &raquo; </h2>
 			<div class="ttext_orange" style="position:relative">
 				Используемая память в начале: <?=intval(memory_get_usage() / 1024)?> Кбайт.
-				<hr class="style-one" style=" margin-bottom: 0px; margin-top: 10px"/>
+				<hr class="style-one" style=" margin-bottom: 0; margin-top: 10px"/>
 			</div>
 			<?
-			/**
-			 * $actions - переменная String с действиями:
-			 * '' - добавление ошибок в список ошибок,
-			 * 'w' - пишет сообщение об ошибке на экран,
-			 * 'а' - выводит список всех сообщений на экран,
-			 * "d" - очищает стек ошибки,
-			 * 's' - остановить исполнение,
-			 * 'l' - пишет log,
-			 * 'm' - отправляет по электронной почте (значения могут быть объединены, например: 'ws')
-			 */
-			//	$error_processor->err_proc("" , "w", $error_processor->error);
-			$error_processor->err_proc("", "w", "");
-			//	$error_processor->err_proc("", "am", "");
-//		}
+		}
 
-
-//Логин
-if(isset($_POST['op']))
-{
-	if($_POST['op'] == 'out')
-	{
-		unset($_SESSION['admin_logged']);
-		session_destroy();
-  	main_redir('index.php');
-	}
-	else
-	{
-    //Вот тут прописываем логин и пароль админа!
-    if($_POST['login'] == 'Photomas123' && $_POST['pass'] == 'Ht45Fd76S98K23')
-    {
-    	$_SESSION['admin_logged'] = true;
-    	main_redir('index.php');
-    }
-  }
-}
 
 //Страницы
 if(isset($_GET['page']))
@@ -84,23 +97,14 @@ if(isset($_GET['page']))
 }
 if(!isset($_SESSION['page']) || $_SESSION['page'] < 1 || $_SESSION['page'] > 8) $_SESSION['page'] = 1;
 
-/*header('Content-type: text/html; charset=windows-1251');
-header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
- header("Last-Modified: Mon, 26 Jul 2997 05:00:00 GMT");
- header("Cache-Control: no-cache, must-revalidate");
- header("Cache-Control: post-check=0,pre-check=0");
- header("Cache-Control: max-age=0");
- header("Pragma: no-cache");*/
+
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-<title>Админка</title>
 
 <link rel="shortcut icon" href="/img/ico_nmain.gif" />
 <link rel="stylesheet" href="/css/bootstrap.css" type="text/css" />
 <link href="/css/bootstrap-responsive.css" rel="stylesheet" type="text/css" />
 <!--<link rel="stylesheet" href="/css/main.css" type="text/css" />-->
+<link rel="stylesheet" href="/css/dynamic-to-top.css" type="text/css" />
 <script type="text/javascript" src="/js/jquery.js"></script>
 <script type="text/javascript" src="/js/bootstrap.min.js"></script>
 
@@ -220,8 +224,8 @@ tinyMCE.init({
 </script>
 -->
 
-<script src="/ckfinde/ckeditor.js"></script>
-<script src="/ckfinder/ckfinder.js"></script>
+<script src= "./../ckeditor/ckeditor.js"></script>
+<script src="./../ckfinder/ckfinder.js"></script>
 
 
 
@@ -229,6 +233,10 @@ tinyMCE.init({
 
 body {
     background: #efefef;
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
 }
 
 input[type=checkbox] {
@@ -249,9 +257,9 @@ input[type=checkbox] {
     border-radius: 50px;
     position: relative;
 
-    -webkit-box-shadow: inset 4px 4px 4px rgba(0, 1, 84, 0.73), 0px 1px 0px rgba(41, 0, 224, 0.67);
-    -moz-box-shadow: inset 4px 4px 4px rgba(0, 1, 84, 0.73), 0px 1px 0px rgba(41, 0, 224, 0.67);
-    box-shadow: inset 4px 4px 4px rgba(0, 1, 84, 0.73), 0px 1px 0px rgba(41, 0, 224, 0.67);
+    -webkit-box-shadow: inset 4px 4px 4px rgba(0, 1, 84, 0.73), 0 1px 0 rgba(41, 0, 224, 0.67);
+    -moz-box-shadow: inset 4px 4px 4px rgba(0, 1, 84, 0.73), 0 1px 0 rgba(41, 0, 224, 0.67);
+    box-shadow: inset 4px 4px 4px rgba(0, 1, 84, 0.73), 0 1px 0 rgba(41, 0, 224, 0.67);
 }
 
 .slideThree:after {
@@ -262,7 +270,7 @@ input[type=checkbox] {
     right: 10px;
     z-index: 0;
     font-weight: bold;
-    text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.44);
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.44);
 }
 
 .slideThree:before {
@@ -273,7 +281,7 @@ input[type=checkbox] {
     left: 10px;
     z-index: 0;
     font-weight: bold;
-    text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.61);
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.61);
 }
 
 .slideThree label {
@@ -296,9 +304,9 @@ input[type=checkbox] {
     left: 3px;
     z-index: 1;
 
-    -webkit-box-shadow: 0px 2px 5px 0px rgba(105, 105, 105, 0.12);
-    -moz-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.3);
-    box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.3);
+    -webkit-box-shadow: 0 2px 5px 0 rgba(105, 105, 105, 0.12);
+    -moz-box-shadow: 0 2px 5px 0 rgba(0,0,0,0.3);
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.3);
     background: #fcfff4;
 
     background: -webkit-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #9faa99 100%);
@@ -313,10 +321,24 @@ input[type=checkbox] {
     left: 43px;
 }
 
+hfooter {
+	position: absolute;
+	padding: 2px 20px;
+	color: #007;
+	background-color: #dbdbdb;
+	border: 1px solid #9d9da4;
+	font-family: "Times New Roman", Times, serif;
+	text-shadow: 1px 1px 1px #888888;
+	font-size: 20px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	box-shadow: 0 0 8px 1px #adadad, 0 0 2px rgba(199, 199, 199, 0.88) inset;
+	clear: both;
+}
+
+
 </style>
-
-
-
 
 </head>
 <body style="margin-left: 20px;">
@@ -441,7 +463,76 @@ switch($_SESSION['page'])
   </table>
   <input type="hidden" name="op" value="in">
 </form>
-<? endif; ?>
+<? endif;
+
+
+
+	if ((isset($_SESSION['admin_logged']) && $_SESSION['admin_logged'] == true))
+	{
+?>
+<div style="position:relative; margin-top: 50px;">
+<?
+/**
+ * $actions - переменная String с действиями:
+ * '' - добавление ошибок в список ошибок,
+ * 'w' - пишет сообщение об ошибке на экран,
+ * 'а' - выводит список всех сообщений на экран,
+ * "d" - очищает стек ошибки,
+ * 's' - остановить исполнение,
+ * 'l' - пишет log,
+ * 'm' - отправляет по электронной почте (значения могут быть объединены, например: 'ws')
+ */
+//	$error_processor->err_proc("" , "w", $error_processor->error);
+$error_processor->err_proc("", "wm", "");
+//	$error_processor->err_proc("", "am", "");
+	?>
+		<br>
+		Память в конце: <?=intval(memory_get_usage()/1024)?> Кбайт;
+		Пик: <?=intval(memory_get_peak_usage()/1024)?> Кбайт;
+		<?
+		$time = microtime();
+		$time = explode(' ', $time);
+		$time = $time[1] + $time[0];
+		$finish = $time;
+		$total_time = round(($finish - $start), 4);
+		echo ' Страница сгенерированна за: '.$total_time.' секунд.'."\n";
+		}
+		?>
+	</div>
+
+	<script type='text/javascript' src='/js/jquery.easing.1.3.js'></script>
+	<script type='text/javascript'>
+		/* <![CDATA[ */
+		var mv_dynamic_to_top = {"text":"0","version":"0","min":"200","speed":"1000","easing":"easeInOutExpo","margin":"20"};
+		/* ]]> */
+	</script>
+	<script type='text/javascript' src='./../js/dynamic.to.top.dev.js'></script>
+	<a id="dynamic_to_top" href="#" style="display: inline;">
+		<span> </span>
+	</a>
+
+
+<div id="footer">
+	<div style="padding-top: 13px; padding-left: 42%;">
+		<hfooter> Creative ls &copy; 2013</hfooter>
+	</div>
+	<div id="foot_JavaScript" style="position:relative;left:10px;top:13px;width:269px;height:25px;z-index:10;">
+		<div style="color:#000;font-size:10px;font-family:Verdana,sans-serif;font-weight:normal;font-style:normal;text-decoration:none" id="copyrightnotice">
+		</div>
+		<script type="text/javascript">
+			var now = new Date();
+			var startYear = "1995";
+			var text = "Copyright &copy; ";
+			if (startYear != '') {
+				text = text + startYear + "-";
+			}
+			text = text + now.getFullYear() + ", www.aleks.od.ua";
+			var copyrightnotice = document.getElementById('copyrightnotice');
+			copyrightnotice.innerHTML = text;
+		</script>
+	</div>
+
+</div>
 </body>
 </html>
 <?

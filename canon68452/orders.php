@@ -9,8 +9,9 @@
 	mysql_query("delete from order_items where id_order = '$id'");
 	mysql_query("delete from download_photo where id_order = '$id'");
     }
-    $pg = intval($_GET['pg']);
-    if($pg < 1) $pg = 1;
+
+$pg = 1;
+if(isset($_GET['pg'])) $pg = intval($_GET['pg']);
     $start = ($pg - 1) * RECORDS_PER_PAGE;
     $rs = mysql_query('select SQL_CALC_FOUND_ROWS r.*, u.login, u.us_name
                      from orders r, users u

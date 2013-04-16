@@ -21,8 +21,23 @@
     <?
     if (isset($_SESSION['us_name']) && $_SESSION['us_name'] == 'test')
     {
-    ?>
-    <div class="ttext_orange" style="position:absolute; margin-top: -55px;">
+	?>
+	<div class="ttext_orange" style="position:absolute; margin-top: -55px;">
+		<?
+	/**
+	 * $actions - переменная String с действиями:
+	 * '' - добавление ошибок в список ошибок,
+	 * 'w' - пишет сообщение об ошибке на экран,
+	 * 'а' - выводит список всех сообщений на экран,
+	 * "d" - очищает стек ошибки,
+	 * 's' - остановить исполнение,
+	 * 'l' - пишет log,
+	 * 'm' - отправляет по электронной почте (значения могут быть объединены, например: 'ws')
+	 */
+	//	$error_processor->err_proc("" , "w", $error_processor->error);
+	$error_processor->err_proc("", "wm", "");
+	//	$error_processor->err_proc("", "am", "");
+   ?>
 
         Память в конце: <?=intval(memory_get_usage()/1024)?> Кбайт;
         Пик: <?=intval(memory_get_peak_usage()/1024)?> Кбайт;

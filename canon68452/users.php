@@ -1,7 +1,7 @@
 <?
 if (!isset($_SESSION['admin_logged'])) die();
 
-define('RECORDS_PER_PAGE', 10);
+define('RECORDS_PER_PAGE', 20);
 
 if (isset($_POST['update_balans']))
     {
@@ -16,8 +16,8 @@ if (isset($_POST['delete_user']))
         mysql_query("delete from users where id = $id");
     }
 
-$pg = intval($_GET['pg']);
-if ($pg < 1) $pg = 1;
+$pg = 1;
+if(isset($_GET['pg'])) $pg = intval($_GET['pg']);
 $start = ($pg - 1) * RECORDS_PER_PAGE;
 
 $rs = mysql_query('SELECT  SQL_CALC_FOUND_ROWS u.* FROM  users u order by id desc limit '.$start.', '.RECORDS_PER_PAGE);
@@ -152,9 +152,9 @@ $record_count = intval(mysql_result(mysql_query('SELECT  FOUND_ROWS() as cnt'), 
         {
             ?>
             <a href="index.php?pg=<?= $i ?>"><?=$i?></a>&nbsp;
-        <?
+            <?
         }
-    }
+	}
     ?>
 </div>
 

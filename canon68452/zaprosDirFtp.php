@@ -27,7 +27,7 @@
 				showTree($f0, $space.'&nbsp;&nbsp;');
 			}
 			/* Если это файл, то просто выводим название файла */
-			else echo $space.$file."<br />";
+			//else echo $space.$file."<br />";
 		}
 	}
 
@@ -51,7 +51,7 @@
 //				}
 //		}
 
-	if (isset($_POST['data']))
+	if (isset($_POST['ftpDir']))
 		{
 			$ftp_host = get_param('ftp_host');
 			$ftp_user = get_param('ftp_user');
@@ -86,10 +86,10 @@
 							die('Неверный логин или пароль для FTP сервера!');
 						}
 					ftp_pasv($ftp, true);
-					if (ftp_chdir($ftp, $album_data['ftp_folder']))
+					/*if (ftp_chdir($ftp, ''))
 						{
-							ftp_chdir($ftp, $album_data['ftp_folder']);
-						}
+							ftp_chdir($ftp, '');
+						}*/
 
 					showTree("./", "");
 
