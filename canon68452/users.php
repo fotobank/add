@@ -1,7 +1,7 @@
 <?
 if (!isset($_SESSION['admin_logged'])) die();
 
-define('RECORDS_PER_PAGE', 20);
+define('RECORDS_PER_PAGE', 10);
 
 if (isset($_POST['update_balans']))
     {
@@ -16,8 +16,11 @@ if (isset($_POST['delete_user']))
         mysql_query("delete from users where id = $id");
     }
 
-$pg = 1;
-if(isset($_GET['pg'])) $pg = intval($_GET['pg']);
+$pg = isset($_GET['pg']) ? intval($_GET['pg']) : 1;
+if ($pg < 1)
+	{
+		$pg = 1;
+	}
 $start = ($pg - 1) * RECORDS_PER_PAGE;
 
 $rs = mysql_query('SELECT  SQL_CALC_FOUND_ROWS u.* FROM  users u order by id desc limit '.$start.', '.RECORDS_PER_PAGE);
@@ -144,17 +147,12 @@ $record_count = intval(mysql_result(mysql_query('SELECT  FOUND_ROWS() as cnt'), 
     ?>
     </tbody>
 </table>
-<div style="clear:both">
-    Страницы: &nbsp;&nbsp;
-    <?
-    $page_count = ceil($record_count / RECORDS_PER_PAGE);
-    for ($i = 1; $i <= $page_count; $i++)
-        {
-            ?>
-            <a href="index.php?pg=<?= $i ?>"><?=$i?></a>&nbsp;
-            <?
-        }
-	}
-    ?>
-</div>
+<div style="clear: both"></div>
+<?
+paginator($record_count, $pg);
+}
+?>
+
+
+
 

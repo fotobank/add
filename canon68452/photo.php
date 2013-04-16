@@ -12,7 +12,7 @@ if (!isset($_SESSION['admin_logged']))
 	{
 		die();
 	}
-define('RECORDS_PER_PAGE', 10);
+define('RECORDS_PER_PAGE', 6);
 
 if (isset($_POST['go_add']) && isset($_SESSION['current_album']) && intval($_SESSION['current_album']) > 0)
 	{
@@ -35,7 +35,8 @@ if (isset($_POST['go_add']) && isset($_SESSION['current_album']) && intval($_SES
 				$id_photo = mysql_insert_id();
 				$img         = 'id'.$id_photo.'.'.$ext;
 				$target_name = $_SERVER['DOCUMENT_ROOT'].$foto_folder.intval($_SESSION['current_album']).'/'.$img;
-				die ($_SERVER['DOCUMENT_ROOT'].$foto_folder.intval($_SESSION['current_album']).'/'.$img);
+			//	die ($_SERVER['DOCUMENT_ROOT'].$foto_folder.intval($_SESSION['current_album']).'/'.$img);
+
 				if (move_uploaded_file($_FILES['preview']['tmp_name'], $target_name))
 					{
 						mysql_query("update photos set img = '$img', price = '$price' where id = '$id_photo'");
@@ -43,8 +44,9 @@ if (isset($_POST['go_add']) && isset($_SESSION['current_album']) && intval($_SES
 				else
 					{
 						mysql_query('delete from photos where id = '.$id_photo);
-						die('Error uploading file!');
+				//		die('Error uploading file!');
 					}
+
 			}
 	}
 if (isset($_POST['go_delete']))
@@ -157,17 +159,20 @@ if (mysql_num_rows($rs) > 0)
 	}
 if (isset($_SESSION['current_album'])):
 
+
+$pg = isset($_GET['pg']) ? intval($_GET['pg']) : 1;
+if ($pg < 1)
+	{
 		$pg = 1;
-		if (isset($_GET['pg']))
-			{
-				$pg = intval($_GET['pg']);
-			}
-		$start = ($pg - 1) * RECORDS_PER_PAGE;
+	}
+$start = ($pg - 1) * RECORDS_PER_PAGE;
+
 		$rs =
 			mysql_query('SELECT SQL_CALC_FOUND_ROWS * FROM photos where id_album = '.intval($_SESSION['current_album']).'  order by id asc limit '.$start.', '.RECORDS_PER_PAGE);
 		// $rs = mysql_query('select * from photos where id_album = '.intval($_SESSION['current_album']).' order by id asc');
 		if (mysql_num_rows($rs) > 0)
 			{
+				$record_count = intval(mysql_result(mysql_query('select FOUND_ROWS() as cnt'), 0));
 				$foto_folder =
 					mysql_result(mysql_query('select foto_folder from albums where id = '.intval($_SESSION['current_album']).'  '), 0);
 				?>
@@ -232,6 +237,7 @@ if (isset($_SESSION['current_album'])):
 					?>
 				</ul>
 			<?
+				paginator($record_count, $pg);
 			}
 		else
 			{
@@ -265,18 +271,8 @@ if (isset($_SESSION['current_album'])):
 		</form>
 		-->
 
-		<div style="clear:both">
-			Страницы: &nbsp;&nbsp;
-			<?
-			$page_count = ceil($record_count / RECORDS_PER_PAGE);
-			for ($i = 1; $i <= $page_count; $i++)
-				{
-					?>
-					<a href="index.php?pg=<?= $i ?>"><?=$i?></a>&nbsp;
-				<?
-				}
-			?>
-		</div>
-	<? endif; ?>
+
+<?
+	 endif; ?>
 
 

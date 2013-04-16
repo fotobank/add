@@ -337,12 +337,125 @@ hfooter {
 	clear: both;
 }
 
+div.pagination {
+	padding:3px;
+	margin: 10px 0 -40px 0;
+	text-align:center;
+	z-index: 10;
+
+}
+
+div.pagination a, div.page a {
+	padding: 2px 5px 2px 5px;
+	margin-right: 2px;
+	border: 1px solid #2C2C2C;
+	text-decoration: none;
+	color: #fff;
+	background: #2C2C2C url(/img/image1.gif);
+}
+
+div.pagination a:hover, div.pagination a:active,div.page a:hover, div.page a:active {
+	border:1px solid #AAD83E;
+	color: #FFF;
+	background: #AAD83E url(/img/image2.gif);
+}
+
+div.pagination span.current, div.page span.current {
+	padding: 2px 5px 2px 5px;
+	margin-right: 2px;
+	border: 1px solid #AAD83E;
+	font-weight: bold;
+	background: #AAD83E url(/img/image2.gif);
+	color: #FFF;
+}
+
+div.pagination span.disabled, div.page span.disabled {
+	padding: 2px 5px 2px 5px;
+	margin-right: 2px;
+	border: 1px solid #f3f3f3;
+	color: #ccc;
+}
 
 </style>
 
 </head>
 <body style="margin-left: 20px;">
 <?
+
+
+function paginator($record_count, $pg)
+	{
+		/** @var $record_count  Количество фотографий в альбоме */
+		if (isset($record_count))
+			{
+				if ($record_count > RECORDS_PER_PAGE)
+					{
+
+						$page_count = ceil($record_count / RECORDS_PER_PAGE);
+						for ($i = 1; $i <= $page_count; $i++)
+							{
+								?>
+
+								<!-- ПОСТРАНИЧНАЯ РАЗБИВКА -->
+								<h4><a id="home" style="float: left">Страница <?=$pg?></a></h4>
+								<div class="pagination" align="center">
+									<?
+									if ($pg == 1)
+										{
+											?>
+											<span class="disabled">« </span>
+											<span class="disabled">« Предыдущая</span>
+										<?
+										}
+									else
+										{
+											?>
+											<a class="next" href="index.php?pg=1">« </a>
+											<a class="next" href="index.php?pg=<?= ($pg - 1) ?>">« Предыдущая</a>
+										<?
+										}
+									for ($i = 1; $i <= $page_count; $i++)
+										{
+											if ($i == $pg)
+												{
+													//Текущая страница
+													?>
+													<span class="current"><?=$i?></span>
+												<?
+												}
+											else
+												{
+													//Ссылка на другую страницу
+													?>
+													<a href="index.php?pg=<?= $i ?>"><?=$i?></a>
+												<?
+												}
+										}
+									if ($pg == $page_count)
+										{
+											?>
+											<span class="disabled">Следующая »</span>
+											<span class="disabled">Посл. »</span>
+										<?
+										}
+									if ($pg < $page_count)
+										{
+
+											?>
+											<a class="next" href="index.php?pg=<?= $pg + 1 ?>">Следующая »</a>
+											<a class="next" href="index.php?pg=<?= $page_count ?>">»</a>
+										<?
+										}
+									?>
+								</div>
+								<h4><a id="home" style="float: right">всего - <?=$record_count?> шт.</a></h4>
+								<div style="clear: both;"></div>
+							<?
+							}
+					}
+			}
+	}
+
 
   if(isset($err_msg))
   {

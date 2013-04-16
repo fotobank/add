@@ -1,7 +1,7 @@
 <?
     if(!isset($_SESSION['admin_logged']))
     die();
-    define('RECORDS_PER_PAGE', 10);
+    define('RECORDS_PER_PAGE', 20);
     if(isset($_POST['delete_order']))
     {
 	$id = intval($_POST['delete_order']);
@@ -10,9 +10,14 @@
 	mysql_query("delete from download_photo where id_order = '$id'");
     }
 
-$pg = 1;
-if(isset($_GET['pg'])) $pg = intval($_GET['pg']);
-    $start = ($pg - 1) * RECORDS_PER_PAGE;
+$pg = isset($_GET['pg']) ? intval($_GET['pg']) : 1;
+if ($pg < 1)
+	{
+		$pg = 1;
+	}
+$start = ($pg - 1) * RECORDS_PER_PAGE;
+
+
     $rs = mysql_query('select SQL_CALC_FOUND_ROWS r.*, u.login, u.us_name
                      from orders r, users u
                     where u.id = r.id_user
@@ -139,20 +144,10 @@ if(isset($_GET['pg'])) $pg = intval($_GET['pg']);
 	<? $n++?>	 			
 	<?
   	}
-  	?>	
-	<div style="clear:both">
-	Страницы: &nbsp;&nbsp;
-	<?
-	$page_count = ceil($record_count / RECORDS_PER_PAGE);
-	for($i = 1; $i <= $page_count; $i++)
-	{
-		?>
-		<a href="index.php?pg=<?=$i?>"><?=$i?></a>&nbsp;
-		<?
-	}
-	?>
-    </div>
-    <?
+  	?>
+	<div style="clear:both"> </div>
+   <?
+paginator($record_count, $pg);
     }	
     ?>
     </div>
