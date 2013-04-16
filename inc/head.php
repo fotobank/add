@@ -313,24 +313,19 @@ header('Content-type: text/html; charset=windows-1251');
 
 	</div>
 	<div class="modal-body" style="height: 180px;">
-
-		<form action="" id="reminder">
+		<form action="" id="reminder" >
 			<label>
-				<input class="autoclear" data-tabindex="2" maxlength="20" style="margin-left: 8px; width: 250px" type="text" value="Введите Ваш логин:" name="login"/>
+				<input class="autoclear" data-tabindex="2" title="Ваш логин:" maxlength="20" style="margin-left: 8px; width: 250px" type="text" value="Введите Ваш логин:" name="login"/>
 			</label> <label style="float: left">
-				<input class="autoclear" data-tabindex="1" maxlength="20" style="margin-left: 8px; width: 250px" type="text" value="или E-mail:" name="email"/>
+				<input class="autoclear" data-tabindex="1"  title="или E-mail:" maxlength="20" style="margin-left: 8px; width: 250px" type="text" value="или E-mail:" name="email"/>
 			</label> <label style="float: left">
-				<input class="autoclear" data-tabindex="3" maxlength="20" style="margin-left: 8px; width: 250px" type="text" value="Код безопасности:" name="pkey"/>
+				<input class="autoclear" data-tabindex="3"  title="Проверочное число:" maxlength="20" style="margin-left: 8px; width: 250px" type="text" value="Код безопасности:" name="pkey"/>
 			</label>
-
 			<div class="loadimg" style="float: right; margin: 5px 0 0 0 "></div>
 			<div id="loadCaptca" style="float: right; margin: 5px 0 0 0 "></div>
 			<div style="clear: both"></div>
 			<input class="btn" type="reset" value="Напомнить" onClick="send();" style="float: left; margin: 0 0 0 90px; "/>
-
 		</form>
-
-
 	</div>
 	<div class="modal-footer">
 		<button type="button" data-dismiss="modal" class="btn" onClick="$('#result').empty();"> Закрыть</button>

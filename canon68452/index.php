@@ -496,7 +496,7 @@ $error_processor->err_proc("", "wm", "");
 		$finish = $time;
 		$total_time = round(($finish - $start), 4);
 		echo ' Страница сгенерированна за: '.$total_time.' секунд.'."\n";
-		}
+
 		?>
 	</div>
 
@@ -533,6 +533,9 @@ $error_processor->err_proc("", "wm", "");
 	</div>
 
 </div>
+		<?
+		}
+	?>
 </body>
 </html>
 <?
