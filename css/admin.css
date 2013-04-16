@@ -1,0 +1,175 @@
+
+html, body {
+    height: 100%;
+
+}
+
+body {
+    background: #efefef;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.wrapper {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin-bottom: -80px; /* Отрицательное значение высоты footer'а */
+}
+
+.footer, .push {
+    height: 80px; /* .push и .footer должны быть одинаковой высоты */
+    clear: both;
+}
+
+/*#footer{
+    clear: both;
+    color: #FFF;
+    *//*position: absolute;*//*
+    height: 100%;
+    *//*min-height: 100%;*//*
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -20px;
+    height: 40px;
+    position: relative;
+
+}*/
+
+input[type=checkbox] {
+    visibility: hidden;
+}
+
+/* SLIDE THREE */
+.slideThree {
+    width: 80px;
+    height: 26px;
+    background: #08009a;
+    margin: -3px 10px 0 7px;
+    float: left;
+
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+    position: relative;
+
+    -webkit-box-shadow: inset 4px 4px 4px rgba(0, 1, 84, 0.73), 0 1px 0 rgba(41, 0, 224, 0.67);
+    -moz-box-shadow: inset 4px 4px 4px rgba(0, 1, 84, 0.73), 0 1px 0 rgba(41, 0, 224, 0.67);
+    box-shadow: inset 4px 4px 4px rgba(0, 1, 84, 0.73), 0 1px 0 rgba(41, 0, 224, 0.67);
+}
+
+.slideThree:after {
+    content: 'OFF';
+    font: 12px/26px Arial, sans-serif;
+    color: #fe6769;
+    position: absolute;
+    right: 10px;
+    z-index: 0;
+    font-weight: bold;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.44);
+}
+
+.slideThree:before {
+    content: 'ON';
+    font: 12px/26px Arial, sans-serif;
+    color: #00bf00;
+    position: absolute;
+    left: 10px;
+    z-index: 0;
+    font-weight: bold;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.61);
+}
+
+.slideThree label {
+    display: block;
+    width: 34px;
+    height: 20px;
+
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+
+    -webkit-transition: all .4s ease;
+    -moz-transition: all .4s ease;
+    -o-transition: all .4s ease;
+    -ms-transition: all .4s ease;
+    transition: all .4s ease;
+    cursor: pointer;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    z-index: 1;
+
+    -webkit-box-shadow: 0 2px 5px 0 rgba(105, 105, 105, 0.12);
+    -moz-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
+    background: #fcfff4;
+
+    background: -webkit-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #9faa99 100%);
+    background: -moz-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #9faa99 100%);
+    background: -o-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #9faa99 100%);
+    background: -ms-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #9faa99 100%);
+    background: linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #9faa99 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fcfff4', endColorstr='#b3bead', GradientType=0);
+}
+
+.slideThree input[type=checkbox]:checked + label {
+    left: 43px;
+}
+
+hfooter {
+    position: absolute;
+    padding: 2px 20px;
+    color: #007;
+    background-color: #dbdbdb;
+    border: 1px solid #9d9da4;
+    font-family: "Times New Roman", Times, serif;
+    text-shadow: 1px 1px 1px #888888;
+    font-size: 20px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    box-shadow: 0 0 8px 1px #adadad, 0 0 2px rgba(199, 199, 199, 0.88) inset;
+    clear: both;
+}
+
+div.pagination {
+    float: left;
+    padding: 3px;
+    margin: 18px 20px 0 20px;
+    text-align: center;
+    z-index: 10;
+
+}
+
+div.pagination a, div.page a {
+    padding: 2px 5px 2px 5px;
+    margin-right: 2px;
+    border: 1px solid #2C2C2C;
+    text-decoration: none;
+    color: #fff;
+    background: #2C2C2C url(/img/image1.gif);
+}
+
+div.pagination a:hover, div.pagination a:active, div.page a:hover, div.page a:active {
+    border: 1px solid #AAD83E;
+    color: #FFF;
+    background: #AAD83E url(/img/image2.gif);
+}
+
+div.pagination span.current, div.page span.current {
+    padding: 2px 5px 2px 5px;
+    margin-right: 2px;
+    border: 1px solid #AAD83E;
+    font-weight: bold;
+    background: #AAD83E url(/img/image2.gif);
+    color: #FFF;
+}
+
+div.pagination span.disabled, div.page span.disabled {
+    padding: 2px 5px 2px 5px;
+    margin-right: 2px;
+    border: 1px solid #f3f3f3;
+    color: #ccc;
+}
