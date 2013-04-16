@@ -402,7 +402,17 @@ if (isset($_POST['go_updown']))
                               while ($tmp2 = mysql_fetch_assoc($tmp))
                                  {
                                  ?>
-                                    <option value="<?= $tmp2['id'] ?>" <?=($tmp2['id'] == $_SESSION['id_category'] ? 'selected="selected"' : '')?>><?=$tmp2['nm']?></option>
+                                    <option value="<?=$tmp2['id'] ?>"
+	                                    <?
+	                                    if(!isset($_SESSION['id_category']))
+	                                    {
+		                                    $_SESSION['id_category'] = 1;
+	                                    }
+	                                    else
+	                                    {
+		                                    if( $tmp2['id'] == $_SESSION['id_category'] ? 'selected="selected"' : '');
+	                                    }
+	                                    ?>><?=$tmp2['nm']?></option>
                                  <?
                                  }
                               ?>
