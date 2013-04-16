@@ -133,7 +133,7 @@ if(mysql_num_rows($rs2) > 0)
   while($ln = mysql_fetch_assoc($rs2))
   	{
 ?>
- <form method="post" action="index.php" style="margin-left: 20px;">
+ <form method="post" action="index.php" style="margin: 0 0 120px 20px;">
   	 <textarea rows="25" cols="1200" name="content" style="font-size: 14px; width: 1200px;"><?=$ln['txt']?></textarea><br/>
   	 <input class="btn  btn-warning" type="hidden" name="go_update" value="<?=$ln['id']?>" />
   	 <input class="btn  btn-warning" type="submit" value="Применить" />

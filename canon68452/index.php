@@ -226,8 +226,9 @@ tinyMCE.init({
 
 
 	</head>
-	<div class="wrapper">
+
 	<body style="margin-left: 20px;">
+	<div class="wrapper">
 	<?
 
 
@@ -450,15 +451,15 @@ tinyMCE.init({
 		/* ]]> */
 	</script>
 	<script type='text/javascript' src='./../js/dynamic.to.top.dev.js'></script>
-
-	</body>
 	</div>
+	</body>
+
 	<?
 	if ((isset($_SESSION['admin_logged']) && $_SESSION['admin_logged'] == true))
 		{
 			?>
-			<div style="position:relative; margin-top: 20px;">
-				<div style="clear: both"></div>
+			<div style="clear: both"></div>
+			<div style="position:relative; margin: 20px 0 -60px 0;">
 				<?
 				/**
 				 * $actions - переменная String с действиями:

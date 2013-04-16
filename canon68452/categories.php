@@ -135,7 +135,7 @@ if(mysql_num_rows($rs) > 0)
   </form> 
   </div> 		
   
-  <form action="index.php" method="post" style="clear: both;" >
+  <form action="index.php" method="post" style="clear: both; margin: 0 0 120px 0" >
     <div>
   	 <textarea id="categories" name="categories" class="tinymce" rows="25" cols="1200" style="width: 1200px;" ><?=$ln['txt']?></textarea><br/>
   	 <input class="btn  btn-warning" type="hidden" name="go_update" value="<?=$ln['id']?>" />

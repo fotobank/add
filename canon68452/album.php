@@ -552,7 +552,7 @@ if (mysql_num_rows($rs_cat) > 0)
             </form>
          </div>
       </div>
-      </div>
+
    <?
    }
 
@@ -627,7 +627,7 @@ if (mysql_num_rows($rs) > 0)
                                     </div>
                                  </td>
                                  <td rowspan="3" align="center">
-                                    <form action="index.php" method="post" style="margin: 0 0 -20px;">
+                                    <form action="index.php" method="post" style="margin: 0 0 -20px 0;">
                                        <textarea rows="12" cols="35" name="descr" style="width: 346px; height: 210px;"><?=$ln['descr']?></textarea><br/>
                                        <input class="btn btn-primary" type="hidden" name="go_edit_descr" value="<?= $ln['id'] ?>"/>
                                        <input class="btn-small btn-primary" type="submit" value="сохранить" style="margin-bottom: 10px;">
@@ -791,6 +791,7 @@ if (mysql_num_rows($rs) > 0)
                      </tr>
                   </table>
                </div>
+
             <?
             }
          }

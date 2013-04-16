@@ -1,7 +1,6 @@
 
 html, body {
     height: 100%;
-
 }
 
 body {
@@ -14,28 +13,15 @@ body {
 .wrapper {
     min-height: 100%;
     height: auto !important;
-    height: 100%;
+    /*height: 100%;*/
     margin-bottom: -80px; /* Отрицательное значение высоты footer'а */
 }
 
 .footer, .push {
     height: 80px; /* .push и .footer должны быть одинаковой высоты */
     clear: both;
+    margin-top: 50px;
 }
-
-/*#footer{
-    clear: both;
-    color: #FFF;
-    *//*position: absolute;*//*
-    height: 100%;
-    *//*min-height: 100%;*//*
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: -20px;
-    height: 40px;
-    position: relative;
-
-}*/
 
 input[type=checkbox] {
     visibility: hidden;
