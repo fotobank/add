@@ -19,15 +19,10 @@
 							$_SESSION['admin_logged'] = true;
 							main_redir('index.php');
 						}
+
 				}
 		}
-	header('Content-type: text/html; charset=windows-1251');
-	header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-	header("Last-Modified: Mon, 26 Jul 2997 05:00:00 GMT");
-	header("Cache-Control: no-cache, must-revalidate");
-	header("Cache-Control: post-check=0,pre-check=0");
-	header("Cache-Control: max-age=0");
-	header("Pragma: no-cache");
+
 
 ?>
 
@@ -35,8 +30,9 @@
 	<html>
 	<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=windows-1251"/>
-
-
+	<meta name="description" content="Админка сайта Creative L.S." />
+	<meta name="keywords" content="Управление сайта Creative L.S." />
+	<meta name="author" content="webmaster" />
 	<title>Админка</title>
 
 	<?
@@ -114,6 +110,8 @@
 	<link href="/css/bootstrap-modal.css" rel="stylesheet" type="text/css"/>
 	<script src="/js/bootstrap-modalmanager.js"></script>
 	<script src="/js/bootstrap-modal.js"></script>
+
+
 
 	<!-- TinyMCE --><!--
 <script type="text/javascript" src="/js/tinymce/tiny_mce.js"></script>
@@ -224,9 +222,7 @@ tinyMCE.init({
 	<script src="./../ckeditor/ckeditor.js"></script>
 	<script src="./../ckfinder/ckfinder.js"></script>
 
-
 	</head>
-
 	<body style="margin-left: 20px;">
 	<div class="wrapper">
 	<?
@@ -404,9 +400,9 @@ tinyMCE.init({
 		}
 		?>
 
-	<? else: ?>
+	<? else:?>
 		<!-- ФОРМА ЛОГИНА -->
-		<form action="index.php" method="post">
+		<!--<form action="index.php" method="post">
 			<table border="0">
 				<tr>
 					<td>Логин</td>
@@ -421,27 +417,44 @@ tinyMCE.init({
 				</tr>
 			</table>
 			<input type="hidden" name="op" value="in">
-		</form>
+		</form>-->
 
+		<script type="text/javascript" src="/js/jquery.js"></script>
+		<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="/js/jquery.tools.min.js"></script>
+		<link href="/css/admin.css" rel="stylesheet" type="text/css"/>
 
-		<div class="row">
-			<div class="span4 offset4">
+		<!--Выделение формы входа-->
+		<script type="text/javascript">
+			// execute your scripts when the DOM is ready. this is a good habit
+			$(function() {
+				// expose the form when it's clicked
+				$(" .well ").click(function() {
+					$(this).expose({
+						// custom mask settings with CSS
+						maskId: 'mask',
+						api: true
+					}).load();
+				});
+			});
+		</script>
+
+			<div style="width:350px; height:200px; position:absolute; left:50%; top:50%; margin:-100px 0 0 -160px;">
 				<div class="well">
-					<legend>Sign in to WebApp</legend>
-					<form method="POST" action="" accept-charset="UTF-8">
-						<div class="alert alert-error">
-							<a class="close" data-dismiss="alert" href="#">x</a>Incorrect Username or Password!
-						</div>
-						<input class="span3" placeholder="Username" type="text" name="username">
-						<input class="span3" placeholder="Password" type="password" name="password"> <label class="checkbox">
-							<input type="checkbox" name="remember" value="1"> Remember Me </label>
-						<button class="btn-info btn" type="submit">Login</button>
-					</form>
+					<legend>ВХОД В АДМИНКУ</legend>
+					<form class="expose" method="POST" action="index.php" accept-charset="1251">
+						<input class="inp_f_kont span2" data-tabindex="1" title="Ваш логин?" maxlength="20" style="margin-left: 8px; width: 250px"
+							placeholder="Введите логин:" type="text" name="login">
+						<input class="inp_f_kont span2" data-tabindex="2" title="Пароль?" maxlength="20" style="margin-left: 8px; width: 250px"
+							placeholder="Введите пароль:" type="password" name="pass">
+						<input type="hidden" name="op" value="in">
+							<button class="btn-info btn" type="submit" value="Войти" style="float: right; margin-right: 20px; margin-top: 5px;">Войти</button>
+						<label class="checkbox" style="width: 150px; margin-top: 20px; margin-left: -10px;"><input type="checkbox" name="remember" value="1"> Напомнить пароль </label>
+				</form>
 				</div>
 			</div>
-		</div>
-
-	<? endif;?>
+	<?
+	endif;?>
 
 	<a id="dynamic_to_top" href="#" style="display: inline;"> <span> </span> </a>
 	<script type='text/javascript' src='/js/jquery.easing.1.3.js'></script>
