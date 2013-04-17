@@ -455,16 +455,12 @@ if (isset($_POST['go_updown']))
 
 <div class="row">
    <div class="span5 offset2">
-
-			   <div id="result">
-
       <p>1. Водяной знак для фотобанка и IP надпись формируется на сервере в момент <b>просмотра.</b></p>
       <p>2. Чекбос "резкость" добавляет шарпинг <b>при закачке</b> с FTP.</p>
       <p>3.Для папок <b>/два слэша/</b> обязательны.</p>
       <p>4.Перед изменением <b>папки в фотобанке</b> для закаченного альбома необходимо сначала создать папку на
          сервере!
       </p>
-			   </div>
    </div>
 </div><?
 
@@ -676,7 +672,7 @@ if (mysql_num_rows($rs) > 0)
                                                       <td>
                                                          <div class="input-prepend">
                                                             <span class="add-on">Категория:</span>
-                                                            <select id="prependedInput" class="span2" name="id_category" style="margin-bottom: 0px; width: 203px;">
+                                                            <select id="prependedInput" class="span2" name="id_category" style="margin-bottom: 0; width: 203px;">
                                                                <?
                                                                $tmp = mysql_query('select * from categories order by id asc');
                                                                while ($tmp2 = mysql_fetch_assoc($tmp))
@@ -695,7 +691,7 @@ if (mysql_num_rows($rs) > 0)
                                                          <div class="input-prepend">
                                                             <span class="add-on" style="padding-bottom: 0px; padding-top: 0px; margin-top: 5px;">Пароль на альбом:</span>
                                                             <input id="prependedInput" class="span2" type="text" NAME="pass" VALUE="<?= $ln['pass'] ?>"
-	                                                            style="margin-bottom: 0px; width: 152px; margin-top: 5px;"/>
+	                                                            style="margin-bottom: 0; width: 152px; margin-top: 5px;"/>
                                                          </div>
                                                       </td>
                                                    </tr>
@@ -704,25 +700,41 @@ if (mysql_num_rows($rs) > 0)
                                                          <div class="input-prepend">
                                                             <span class="add-on" style="padding-bottom: 0px; padding-top: 0px; margin-top: 5px;">Папка фотобанка:</span>
                                                             <input id="prependedInput" class="span2" type="text" NAME="foto_folder" VALUE="<?= $ln['foto_folder'] ?>"
-	                                                            style="margin-bottom: 0px; margin-top: 5px;"/>
+	                                                            style="margin-bottom: 0; margin-top: 5px;"/>
                                                          </div>
+
+
+	                                                      <div class="input-prepend">
+		                                                      <span class="add-on">Папка фотобанка:</span>
+		                                                      <select id="prependedInput" class="span2" name="id_category" style="margin-bottom: 0; width: 203px;">
+			                                                      <?
+			                                                      $tmp = mysql_query('select * from categories order by id asc');
+			                                                      while ($tmp2 = mysql_fetch_assoc($tmp))
+				                                                      {
+					                                                      ?>
+					                                                      <option value="<?= $tmp2['id'] ?>" <?=($tmp2['id'] == $ln['id_category'] ? 'selected="selected"' : '')?>><?=$tmp2['nm']?></option>
+				                                                      <?
+				                                                      }
+			                                                      ?>
+		                                                      </select>
+	                                                      </div>
+
 
                                                       </td>
 	                                                   <td>
 		                                                   <div class="slideThree">
-<!--			                                                   <input id="slideThree4" type='checkbox' NAME='dir' Value="Пиво" onclick="sendFtp();"/>-->
 			                                                   <input id="slideThree4" type='checkbox' name='dirFtp'  value='yes' onclick="sendFtp();"/>
 			                                                   <label for="slideThree4"></label>
 		                                                   </div>
-		                                                   Папка? на Ftp
+		                                                   Просмотр папок на Ftp:
 	                                                   </td>
                                                    </tr>
                                                    <tr>
                                                       <td>
                                                          <div class="input-prepend">
-                                                            <span class="add-on" style="padding-bottom: 0px; padding-top: 0px; margin-top: 5px;">Папка uploada FTP:</span>
+                                                            <span class="add-on" style="padding-bottom: 0; padding-top: 0; margin-top: 5px;">Папка uploada FTP:</span>
                                                             <input id="prependedInput" class="span2" type="text" NAME="ftp_folder" VALUE="<?= $ln['ftp_folder'] ?>"
-	                                                            style="margin-bottom: 0px; width: 147px; margin-top: 5px;"/>
+	                                                            style="margin-bottom: 0; width: 147px; margin-top: 5px;"/>
                                                          </div>
                                                       </td>
                                                       <td>
@@ -743,10 +755,14 @@ if (mysql_num_rows($rs) > 0)
                                                 </table>
                                              </form>
                                           </td>
+	                                       <td colspan="2" align="center">
+		                                       <p id="result"></p>
+		                                    </td>
                                        </tr>
                                        <tr>
                                           <td align="center">
-                                             <form action="index.php" name="go_ftp_upload" method="post" style="margin-bottom: 0px;" target="hiddenframe" onsubmit="document.getElementById('<?= $ln['order_field'] ?>').innerHTML='Подождите, идёт загрузка...'; return true;">
+                                             <form action="index.php" name="go_ftp_upload" method="post" style="margin-bottom: 0;" target="hiddenframe"
+	                                             onsubmit="document.getElementById('<?= $ln['order_field'] ?>').innerHTML='Подождите, идёт загрузка...'; return true;">
                                                 <input class="btn btn-success" type="hidden" name="go_ftp_upload" value="<?= $ln['id'] ?>"/>
 
                                                 <div id="<?= $ln['order_field'] ?>"></div>
@@ -754,10 +770,7 @@ if (mysql_num_rows($rs) > 0)
                                                 <div id="<?= $ln['order_field'] ?>err"></div>
                                                 <input class="btn-small btn-success" type="submit" value="Добавить с FTP"/><br/>
                                              </form>
-
                                           </td><td>
-<!--		                                       <button class="btn-small btn-primary" onClick="sendFtp();">Папка Ftp</button>-->
-
                                              <iframe id="hiddenframe" name="hiddenframe" style="width:0; height:0; border:0"></iframe>
                                           </td>
                                        </tr>
@@ -791,7 +804,6 @@ if (mysql_num_rows($rs) > 0)
                      </tr>
                   </table>
                </div>
-
             <?
             }
          }
@@ -799,7 +811,6 @@ if (mysql_num_rows($rs) > 0)
    }
    }
 ?>
-
 <div class="end_content"></div>
 
 

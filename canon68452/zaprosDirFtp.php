@@ -1,38 +1,34 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: Jurii
- * Date: 14.04.13
- * Time: 14:22
- * To change this template use File | Settings | File Templates.
- */
-
+	/**
+	 * Created by JetBrains PhpStorm.
+	 * User: Jurii
+	 * Date: 14.04.13
+	 * Time: 14:22
+	 * To change this template use File | Settings | File Templates.
+	 */
 	set_time_limit(0);
 	include __DIR__.'/../inc/config.php';
 	include __DIR__.'/../inc/func.php';
+	function showTree($file_list)
+		{
 
-
-	function showTree($folder, $space) {
-		/* Получаем полный список файлов и каталогов внутри $folder */
-		$files = scandir($folder);
-		foreach($files as $file) {
-			/* Отбрасываем текущий и родительский каталог */
-			if (($file == '.') || ($file == '..')) continue;
-			$f0 = $folder.'/'.$file; //Получаем полный путь к файлу
-			/* Если это директория */
-			if (is_dir($f0)) {
-				/* Выводим, делая заданный отступ, название директории */
-				echo $space.$file."<br />";
-				/* С помощью рекурсии выводим содержимое полученной директории */
-				showTree($f0, $space.'&nbsp;&nbsp;');
-			}
-			/* Если это файл, то просто выводим название файла */
-			//else echo $space.$file."<br />";
+			foreach ($file_list as $file)
+				{
+					/* Отбрасываем текущий и родительский каталог */
+					if (($file == '.') || ($file == '..'))
+						{
+							continue;
+						}
+					/* Если это директория */
+					$last = substr($file, -1);
+					if ($last == ":")
+						{
+							/* Выводим, делая заданный отступ, название директории */
+							$file = substr($file,0 , -1).'/';
+							echo $file."<br />";
+						}
+				}
 		}
-	}
-
-
-
 
 	// $dir_name = time(); //Здесь я создаю имя папки по времени запуска скрипта
 	/*$conn_ftp = @ftp_connect('your_ftp_server', 21, 5);
@@ -46,11 +42,9 @@
 					//ftp_mkdir ($conn_ftp, $dir_name);
 					//ftp_chmod($conn_ftp, 0777, $dir_name);
 					/* Запускаем функцию для текущего каталога */
-//					showTree("./", "");
-
-//				}
-//		}
-
+	//					showTree("./", "");
+	//				}
+	//		}
 	if (isset($_POST['ftpDir']))
 		{
 			$ftp_host = get_param('ftp_host');
@@ -86,12 +80,11 @@
 							die('Неверный логин или пароль для FTP сервера!');
 						}
 					ftp_pasv($ftp, true);
-					/*if (ftp_chdir($ftp, ''))
-						{
-							ftp_chdir($ftp, '');
-						}*/
-
-					showTree("./", "");
-
-						}
+					//Получаем список файлов в папке
+					//					$file_list = ftp_nlist($ftp, $album_data['ftp_folder']);
+					$file_list    = ftp_rawlist($ftp, '/fotoarhiv/', true);
+					$fileListSort = array_multisort($file_list);
+					showTree($file_list);
+					ftp_close($ftp);
+				}
 		}

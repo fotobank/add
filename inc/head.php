@@ -321,10 +321,12 @@ header('Content-type: text/html; charset=windows-1251');
 			</label> <label style="float: left">
 				<input class="autoclear" data-tabindex="3"  title="Проверочное число:" maxlength="20" style="margin-left: 8px; width: 250px" type="text" value="Код безопасности:" name="pkey"/>
 			</label>
-			<div class="loadimg" style="float: right; margin: 5px 0 0 0 "></div>
-			<div id="loadCaptca" style="float: right; margin: 5px 0 0 0 "></div>
+			<div class="loadCaptca" style="float: right; margin: 5px 0 0 0 "></div>
+<!--			<img class = "loadCaptca" src="/img/bg_out.png" style="float: right; margin: 5px 0 0 0 ">-->
+<!--			<img class = "loadCaptca" src="/img/bg_out.png" data-full="/inc/captcha/captcha.php">-->
 			<div style="clear: both"></div>
 			<input class="btn" type="reset" value="Напомнить" onClick="send();" style="float: left; margin: 0 0 0 90px; "/>
+			<input class="btn" type="reset" value="Сменить код" onClick="getCaptca();" style="float: right; margin: 0 0 0 90px; "/>
 		</form>
 	</div>
 	<div class="modal-footer">

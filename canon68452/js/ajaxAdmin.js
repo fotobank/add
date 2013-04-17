@@ -7,19 +7,15 @@
  */
 
 
-
 var value = $(" #result ").html();
      //   alert (value);
-
 
 function sendFtp() {
 
      //   if($(" #slideThree4 + :checked").val()==$(this).val())
     if($(" #slideThree4").prop("checked"))
         {
-
-
-            $.ajax({
+          $.ajax({
                 type: "POST",
                 url: "./zaprosDirFtp.php",
                 // data: "data="+data,
@@ -37,7 +33,6 @@ function sendFtp() {
                     $("#result").empty().append(data).fadeIn('slow');
                 }
             });
-
         }
         else
         {
@@ -45,5 +40,4 @@ function sendFtp() {
             $("#result").empty().append(value);
            // $("#result").empty();
         }
-
 }

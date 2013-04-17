@@ -32,10 +32,38 @@ function send() {
 }
 
 
-function getCaptca() {
-    $(' .loadimg ').load('/inc/captcha/captcha.html');
-}
 
+
+function getCaptca() {
+
+   $(" .loadCaptca").load("/inc/captcha/captcha.html");
+
+//   $(" .loadCaptca ").attr("src", src);
+
+  //  $.get("/inc/captcha/captcha.php");
+
+//   $.get("/inc/captcha/captcha.php", function(data){
+
+    //   alert(data);
+
+ //       $(" .loadCaptca ").attr("src", data);
+
+ //   });
+
+
+   // $(" .loadCaptca ").attr("src", "/inc/captcha/captcha.php");
+
+  //  $('img').each( function(){ this.src = this.getAttribute('data-full'); } );
+ //   $('img').each( function(){ $(this).attr('src', $(this).data('full')); } );
+
+
+
+
+    /* var src = ($(" .loadCaptca").attr("src") === "/inc/captcha/captcha.php")
+         ? "/inc/captcha/captcha.php"
+         : "/inc/captcha/captcha.php";
+     $(" .loadCaptca").attr("src", src);*/
+}
 
 /*
  Todo    - јвтоочистка текстового пол€ при получении фокуса

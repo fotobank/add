@@ -66,28 +66,6 @@ form.expose {
     background: #fff url(/img/h300.png) repeat-x;
 }
 
-/* http://www.quirksmode.org/css/forms.html */
-/*
-label, input {
-    display: block;
-    width: 150px;
-    float: left;
-    margin-bottom: 10px;
-}
-
-label {
-    text-align: right;
-    width: 75px;
-    padding-right: 20px;
-}
-
-br {
-    clear: left;
-}
-*/
-
-
-
 /* SLIDE THREE */
 .slideThree {
     width: 80px;
@@ -223,7 +201,11 @@ div.pagination span.disabled, div.page span.disabled {
 }
 
 
+#result {
 
+  text-align:"left";
+
+}
 
 
 

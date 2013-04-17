@@ -24,21 +24,8 @@
 			printf("Ошибка соединения: %s\n", mysqli_connect_error());
 			exit();
 		}
-	if ($_SESSION['secret_number'] == "")
-		{
-			$_SESSION['secret_number'] = "ABCD";
-		}
-	if (isset($_POST['comtext']))
-		{
-			if ($_SESSION["secret_number"] != $_POST['pkey'])
-				{
-					?><h1>Error</h1><?php
-				}
-			else
-				{
-					echo "Errors 2";
-				}
-		}
+
+
 	/**
 	 * @param $link
 	 * @param $where
@@ -148,7 +135,7 @@
 		}
 	else
 		{
-			$_SESSION['err_msg'] .= "Повторный ввод одинаковых данных!<br>";
+			$_SESSION['err_msg'] = "Повторный ввод одинаковых данных!<br>";
 		}
 	if (isset($_SESSION['ok_msg2']))
 		{
@@ -159,7 +146,13 @@
 	else
 		{
 			$_SESSION['err_msg'] = "<p class='ttext_red'>".$_SESSION['err_msg']."</p>";
-			echo $_SESSION['err_msg2'].$_SESSION['err_msg'];
+			if(isset($_SESSION['err_msg2']))
+				{
+			echo $_SESSION['err_msg2'];
+	} elseif(isset($_SESSION['err_msg']))
+				{
+					echo $_SESSION['err_msg'];
+				}
 		}
 	unset($_SESSION['err_msg']);
 	unset($_SESSION['err_msg2']);

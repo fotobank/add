@@ -1,6 +1,6 @@
 <?php
-	session_start();
-	header("Content-type: image/png");
+	 session_start();
+
 	$img = imagecreatetruecolor(130, 24) or die ('Canon create image');
 	imagefill($img, 0, 0, 0xFFFFFF);
 	$x   = 0;
@@ -15,6 +15,14 @@
 			imageline($img, 0, rand(0, 24), 130, rand(0, 20), 100);
 		}
 	$_SESSION['secret_number'] = $sum;
-	imagepng($img);
+
+	header("Content-type: image/png");
+//	imagepng($img);
+
+	$png = imagepng($img);
+	echo $png;
+//	echo '<img src="data:image/png;base64,' . $png . '" />';
 	imagedestroy($img);
-?>
+	?>
+
+
