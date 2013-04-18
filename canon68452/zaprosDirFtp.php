@@ -9,13 +9,16 @@
 	set_time_limit(0);
 	include __DIR__.'/../inc/config.php';
 	include __DIR__.'/../inc/func.php';
+
+
 	function showTree($file_list)
 		{
-
-			foreach ($file_list as $file)
+			$id = 1;
+			echo "<ul>";
+			foreach ($file_list as  $file)
 				{
 					/* Отбрасываем текущий и родительский каталог */
-					if (($file == '.') || ($file == '..'))
+					if (($file == '.') || ($file == '..') || ($file ==""))
 						{
 							continue;
 						}
@@ -24,27 +27,56 @@
 					if ($last == ":")
 						{
 							/* Выводим, делая заданный отступ, название директории */
-							$file = substr($file,0 , -1).'/';
+							$file = "<li><a href='' value='$id'>".substr($file,0 , -1)."/</a></li>";
 							echo $file."<br />";
+							$id++;
 						}
 				}
+			echo "</ul>";
 		}
 
-	// $dir_name = time(); //Здесь я создаю имя папки по времени запуска скрипта
-	/*$conn_ftp = @ftp_connect('your_ftp_server', 21, 5);
-	if($conn_ftp) // соединение прошло успешно
+
+
+
+
+	function showSelector($file_list)
 		{
-			$login_result = @ftp_login($conn_ftp, 'user', 'pass'); // вводим свои логин и пароль для FTP
-			if($login_result) // проверка логина и пароля прошла успешно
+			$id = 1;
+
+
+	echo "<div class='input-prepend'>";
+	echo "<span id='refresh' title='Обновить папки' class='add-on' onclick='sendFtp();'>Папка uploada FTP:</span>";
+	echo "<select id='prependedInput' class='span2' name='ftp_folder'>";
+
+			foreach ($file_list as  $file)
 				{
-					ftp_pasv ($conn_ftp, TRUE);
-					ftp_chdir ($conn_ftp, 'public_html/materials');
-					//ftp_mkdir ($conn_ftp, $dir_name);
-					//ftp_chmod($conn_ftp, 0777, $dir_name);
-					/* Запускаем функцию для текущего каталога */
-	//					showTree("./", "");
-	//				}
-	//		}
+					/* Отбрасываем текущий и родительский каталог */
+					if (($file == '.') || ($file == '..') || ($file ==""))
+						{
+							continue;
+						}
+					/* Если это директория */
+					$last = substr($file, -1);
+					if ($last == ":")
+						{
+							/* Выводим, делая заданный отступ, название директории */
+							$dir = substr($file,0 , -1).'/';
+
+							$select = "<option value = \"".$dir." \" <?= '".$dir."' == \$ln['ftp_folder'] ? 'selected=\"selected\"' : '' ?> >".$dir."</option>";
+							echo $select."<br />";
+							$id++;
+						}
+				}
+	echo "</select>";
+	echo "</div>";
+
+		}
+
+
+
+
+
+
 	if (isset($_POST['ftpDir']))
 		{
 			$ftp_host = get_param('ftp_host');
@@ -84,7 +116,8 @@
 					//					$file_list = ftp_nlist($ftp, $album_data['ftp_folder']);
 					$file_list    = ftp_rawlist($ftp, '/fotoarhiv/', true);
 					$fileListSort = array_multisort($file_list);
-					showTree($file_list);
+//					showTree($file_list);
+					showSelector($file_list);
 					ftp_close($ftp);
 				}
 		}

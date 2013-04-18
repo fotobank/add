@@ -5,6 +5,7 @@ include __DIR__.'/../inc/i_resize.php';
 
 ?>
 <script type="text/javascript" src="js/ajaxAdmin.js"></script>
+
 <?
 
 
@@ -603,7 +604,7 @@ if (mysql_num_rows($rs) > 0)
             {
             $_SESSION['id_category'] = $ln['id_category'];
             ?>
-               <div style="border-bottom: 0 #000;">
+	            <div style="border-bottom: 0 none; margin-bottom: 120px;">
                   <table border="0">
                      <tr>
                         <td valign="top">
@@ -638,8 +639,8 @@ if (mysql_num_rows($rs) > 0)
                                                    <tr>
                                                       <td>
                                                          <div class="input-prepend">
-                                                            <span class="add-on" style="padding-bottom: 0px; padding-top: 0px; margin-top: 5px;">Цена за фото (гр.):</span>
-                                                            <input id="prependedInput" class="span2" type="text" NAME="price" VALUE="<?= $ln['price'] ?>" style="margin-bottom: 0; width: 152px; margin-top: 5px;"/>
+                                                            <span class="add-on">Цена за фото (гр.):&nbsp;&nbsp;</span>
+                                                            <input id="prependedInput" class="span2" type="text" NAME="price" VALUE="<?= $ln['price'] ?>"/>
                                                          </div>
                                                       </td>
                                                       <td>
@@ -655,8 +656,8 @@ if (mysql_num_rows($rs) > 0)
                                                    <tr>
                                                       <td>
                                                          <div class="input-prepend">
-                                                            <span class="add-on" style="padding-bottom: 0; padding-top: 0; ; margin-top: 5px;">Качество .jpg (%):</span>
-                                                            <input id="prependedInput" class="span2" type="text" NAME="quality" VALUE="<?= $ln['quality'] ?>" style="margin-bottom: 0; width: 154px; margin-top: 5px;"/>
+                                                            <span class="add-on">Качество .jpg (%):&nbsp;&nbsp;</span>
+                                                            <input id="prependedInput" class="span2" type="text" NAME="quality" VALUE="<?= $ln['quality'] ?>" />
                                                          </div>
                                                       </td>
                                                       <td>
@@ -671,14 +672,15 @@ if (mysql_num_rows($rs) > 0)
                                                    <tr>
                                                       <td>
                                                          <div class="input-prepend">
-                                                            <span class="add-on">Категория:</span>
-                                                            <select id="prependedInput" class="span2" name="id_category" style="margin-bottom: 0; width: 203px;">
+                                                            <span class="add-on">Категория: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                            <select id="prependedInput" class="span2" name="id_category" >
                                                                <?
                                                                $tmp = mysql_query('select * from categories order by id asc');
                                                                while ($tmp2 = mysql_fetch_assoc($tmp))
                                                                   {
                                                                   ?>
-                                                                     <option value="<?= $tmp2['id'] ?>" <?=($tmp2['id'] == $ln['id_category'] ? 'selected="selected"' : '')?>><?=$tmp2['nm']?></option>
+       <option value="<?= $tmp2['id'] ?>" <?=($tmp2['id'] == $ln['id_category'] ? 'selected="selected"' : '')?>><?=$tmp2['nm']?></option>
+	    <option value='<?= $ln["ftp_folder"]?>' <?=('/fotoarhiv/deti/' == $ln["ftp_folder"] ? 'selected="selected"' : '')?>>/fotoarhiv/deti/</option>
                                                                   <?
                                                                   }
                                                                ?>
@@ -689,45 +691,18 @@ if (mysql_num_rows($rs) > 0)
                                                    <tr>
                                                       <td>
                                                          <div class="input-prepend">
-                                                            <span class="add-on" style="padding-bottom: 0px; padding-top: 0px; margin-top: 5px;">Пароль на альбом:</span>
-                                                            <input id="prependedInput" class="span2" type="text" NAME="pass" VALUE="<?= $ln['pass'] ?>"
-	                                                            style="margin-bottom: 0; width: 152px; margin-top: 5px;"/>
+                                                            <span class="add-on">Пароль на альбом:&nbsp;&nbsp;</span>
+                                                            <input id="prependedInput" class="span2" type="text" NAME="pass" VALUE="<?= $ln['pass'] ?>"/>
                                                          </div>
                                                       </td>
                                                    </tr>
                                                    <tr>
                                                       <td>
                                                          <div class="input-prepend">
-                                                            <span class="add-on" style="padding-bottom: 0px; padding-top: 0px; margin-top: 5px;">Папка фотобанка:</span>
-                                                            <input id="prependedInput" class="span2" type="text" NAME="foto_folder" VALUE="<?= $ln['foto_folder'] ?>"
-	                                                            style="margin-bottom: 0; margin-top: 5px;"/>
+                                                            <span class="add-on">Папка фотобанка:&nbsp;&nbsp;&nbsp;</span>
+                                                            <input id="prependedInput"  class="span2" type="text" NAME="foto_folder" VALUE="<?= $ln['foto_folder'] ?>"/>
                                                          </div>
-
-
-	                                                      <div class="input-prepend">
-		                                                      <span class="add-on">Папка фотобанка:</span>
-		                                                      <select id="prependedInput" class="span2" name="id_category" style="margin-bottom: 0; width: 203px;">
-			                                                      <?
-			                                                      $tmp = mysql_query('select * from categories order by id asc');
-			                                                      while ($tmp2 = mysql_fetch_assoc($tmp))
-				                                                      {
-					                                                      ?>
-					                                                      <option value="<?= $tmp2['id'] ?>" <?=($tmp2['id'] == $ln['id_category'] ? 'selected="selected"' : '')?>><?=$tmp2['nm']?></option>
-				                                                      <?
-				                                                      }
-			                                                      ?>
-		                                                      </select>
-	                                                      </div>
-
-
                                                       </td>
-	                                                   <td>
-		                                                   <div class="slideThree">
-			                                                   <input id="slideThree4" type='checkbox' name='dirFtp'  value='yes' onclick="sendFtp();"/>
-			                                                   <label for="slideThree4"></label>
-		                                                   </div>
-		                                                   Просмотр папок на Ftp:
-	                                                   </td>
                                                    </tr>
                                                    <tr>
                                                       <td>
@@ -737,7 +712,19 @@ if (mysql_num_rows($rs) > 0)
 	                                                            style="margin-bottom: 0; width: 147px; margin-top: 5px;"/>
                                                          </div>
                                                       </td>
-                                                      <td>
+	                                                   <td>
+		                                                   <div id="result">
+			                                                   <div class="input-prepend">
+				                                                   <span class="add-on">Папка uploada FTP:</span>
+				                                                   <select id="prependedInput" class="span2"  NAME="ftp_folder" onclick="sendFtp();">
+					                                                   <option  value="">Выбор папки</option>
+
+				                                                   </select>
+			                                                   </div>
+		                                                   </div>
+	                                                   </td>
+
+	                                                   <td>
                                                          <div class="slideThree">
                                                             <input id="slideThree3" type='checkbox' NAME='sharping' VALUE='yes' <?if ($ln['sharping'])
                                                                {
@@ -755,9 +742,7 @@ if (mysql_num_rows($rs) > 0)
                                                 </table>
                                              </form>
                                           </td>
-	                                       <td colspan="2" align="center">
-		                                       <p id="result"></p>
-		                                    </td>
+
                                        </tr>
                                        <tr>
                                           <td align="center">
@@ -811,7 +796,7 @@ if (mysql_num_rows($rs) > 0)
    }
    }
 ?>
-<div class="end_content"></div>
+
 
 
 

@@ -466,7 +466,7 @@ tinyMCE.init({
 	<script type='text/javascript' src='./../js/dynamic.to.top.dev.js'></script>
 	</div>
 	</body>
-
+	<div id="end_content"></div>
 	<?
 	if ((isset($_SESSION['admin_logged']) && $_SESSION['admin_logged'] == true))
 		{

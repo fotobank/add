@@ -202,10 +202,37 @@ div.pagination span.disabled, div.page span.disabled {
 
 
 #result {
-
-  text-align:"left";
-
+  text-align: left;
 }
+
+#end_content {
+position: relative;
+    width: 120px;
+    float: left;
+}
+
+a {
+    outline: none;
+}
+.b {padding-left:30px;padding-top:0px;font-weight:bold;color:#333333;height:16px;}
+a:link {
+    color: #0761b1; font-weight: bold; text-decoration:none
+}
+a:active {
+    color: #000; font-weight: bold; text-decoration: none
+}
+a:visited {color: #0761b1; font-weight: bold; text-decoration: none}
+a:hover {color: #190505; font-weight: bold; text-decoration: none}
+
+input.span2, textarea.span2, .uneditable-input.span2 {
+padding: 4px 5px;
+}
+
+#refresh {
+
+    cursor: pointer;
+}
+
 
 
 

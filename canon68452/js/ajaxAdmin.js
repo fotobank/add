@@ -7,19 +7,25 @@
  */
 
 
-var value = $(" #result ").html();
+//var value = $(" #result ").html();
      //   alert (value);
 
-function sendFtp() {
+$(document).ready(function () {
 
+    sendFtp();
+
+});
+
+
+function sendFtp() {
      //   if($(" #slideThree4 + :checked").val()==$(this).val())
-    if($(" #slideThree4").prop("checked"))
-        {
+//    if($(" #slideThree4").prop("checked"))
+//        {
           $.ajax({
                 type: "POST",
                 url: "./zaprosDirFtp.php",
                 // data: "data="+data,
-                data: {ftpDir: $('#slideThree4').val()},
+                data: {ftpDir: $('#prependedInput').val()},
 
                 // ¬ыводим то что вернул PHP
                 success: function (data) {
@@ -31,13 +37,27 @@ function sendFtp() {
 
                     //предварительно очищаем нужный элемент страницы
                     $("#result").empty().append(data).fadeIn('slow');
+//                     $("#result").append(data).fadeIn('slow');
                 }
             });
-        }
+       /* }
         else
-        {
+        {*/
           //  alert (value);
-            $("#result").empty().append(value);
+       //     $("#result").empty().append(value);
            // $("#result").empty();
-        }
+//        }
 }
+
+
+/*
+$(function() {
+
+$(' #result li a').click(function(){
+    var a = $(this).text();
+    $(this).closest(' #result').hide('slow');
+    $(" #foto_folder").val(a).show('slow');
+    return false
+    });
+});
+*/

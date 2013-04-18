@@ -361,7 +361,7 @@ a.bt_rgstr {
     width: 80px;
     height: 18px;
     background: #000000 url(../img/bt_rgstr.png) no-repeat center top;
-    display: block;
+    /*display: block;*/
     display: inline-block; /*ie*/
     color: #cccccc;
     font-weight: bold;
