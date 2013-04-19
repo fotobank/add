@@ -616,7 +616,8 @@ if (mysql_num_rows($rs) > 0)
                                     <div class="controls">
                                        <div class="input-append">
                                           <form action="index.php" method="post" >
-                                             <input id="appendedInputButton" type="text" name="nm" value="<?= $ln['nm'] ?>" style="height: 22px; margin-top: 20px;"/>
+	                                          <label for="appendedInputButton"></label>
+	                                          <input id="appendedInputButton" type="text" name="nm" value="<?= $ln['nm'] ?>" style="height: 22px; margin-top: 20px;"/>
                                              <input class="btn btn-primary" type="hidden" name="go_edit_name" value="<?= $ln['id'] ?>"/>
                                              <input class="btn btn-primary" type="submit" value="переименовать" style="margin-top: 20px;"/>
                                           </form>
@@ -625,7 +626,11 @@ if (mysql_num_rows($rs) > 0)
                                  </td>
                                  <td rowspan="3" align="center">
                                     <form action="index.php" method="post" style="margin: 0 0 -20px 0;">
-                                       <textarea rows="12" cols="35" name="descr" style="width: 346px; height: 210px;"><?=$ln['descr']?></textarea><br/>
+	                                    <label>
+		                                    <textarea rows="12" cols="35" name="descr" style="width: 346px; height: 210px;">
+			                                    <?=$ln['descr']?>
+		                                    </textarea>
+	                                    </label><br/>
                                        <input class="btn btn-primary" type="hidden" name="go_edit_descr" value="<?= $ln['id'] ?>"/>
                                        <input class="btn-small btn-primary" type="submit" value="сохранить" style="margin-bottom: 10px;">
                                     </form>
@@ -644,14 +649,13 @@ if (mysql_num_rows($rs) > 0)
                                                          </div>
                                                       </td>
                                                       <td>
-
                                                          <div class="slideThree">
-                                                            <input id="slideThree1" type='checkbox' NAME='watermark' VALUE='yes' <?if ($ln['watermark'])
-                                                               {
-                                                               echo 'checked="checked"';
-                                                               }?> /> <label for="slideThree1"></label>
+                                                            <input id="slideThree1" type='checkbox' NAME='watermark' VALUE='yes'
+	                                                            <?if ($ln['watermark']) { echo 'checked="checked"'; } ?> />
+	                                                         <label for="slideThree1"></label>
                                                          </div>
                                                          Водяной знак
+                                                      </td>
                                                    </tr>
                                                    <tr>
                                                       <td>
@@ -668,6 +672,7 @@ if (mysql_num_rows($rs) > 0)
                                                                }?> /> <label for="slideThree2"></label>
                                                          </div>
                                                          IP надпись
+                                                      </td>
                                                    </tr>
                                                    <tr>
                                                       <td>
@@ -706,21 +711,18 @@ if (mysql_num_rows($rs) > 0)
                                                    <tr>
                                                       <td>
                                                          <div class="input-prepend">
-                                                            <span class="add-on" style="padding-bottom: 0; padding-top: 0; margin-top: 5px;">Папка uploada FTP:</span>
-                                                            <input id="prependedInput" class="span2" type="text" NAME="ftp_folder" VALUE="<?= $ln['ftp_folder'] ?>"
-	                                                            style="margin-bottom: 0; width: 147px; margin-top: 5px;"/>
+                                                            <span class="add-on" >Папка uploada FTP:</span>
+                                                            <input id="prependedInput" class="span2" type="text" NAME="ftp_folder" VALUE="<?= $ln['ftp_folder'] ?>"/>
                                                          </div>
                                                       </td>
+	                                                </tr>
+	                                                <tr>
 	                                                   <td>
 		                                                   <div class="result">
 				                                                   <div class='input-prepend'>
 					                                                <span id='refresh' title='Обновить папки' class='add-on' onclick='sendFtp();'>Папка uploada FTP:</span>
 					                                                <select id="prependedInput" class="span2"  NAME="ftp_folder" onclick="sendFtp();">
-
-
 					                                                   <option  value="">Выбор папки</option>
-
-
 				                                                   </select>
 				                                                </div>
 		                                                   </div>
@@ -733,6 +735,7 @@ if (mysql_num_rows($rs) > 0)
                                                                }?> /> <label for="slideThree3"></label>
                                                          </div>
                                                          Добавить резкость
+	                                                   </td>
                                                    </tr>
                                                    <tr>
                                                       <td colspan="2" align="center">
@@ -743,7 +746,6 @@ if (mysql_num_rows($rs) > 0)
                                                 </table>
                                              </form>
                                           </td>
-
                                        </tr>
                                        <tr>
                                           <td align="center">
