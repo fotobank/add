@@ -13,34 +13,6 @@
 	/**
 	 * @param $file_list
 	 */
-	function showTree($file_list)
-		{
-
-			$id = 1;
-			echo "<ul>";
-			foreach ($file_list as $file)
-				{
-					/* Отбрасываем текущий и родительский каталог */
-					if (($file == '.') || ($file == '..') || ($file == ""))
-						{
-							continue;
-						}
-					/* Если это директория */
-					$last = substr($file, -1);
-					if ($last == ":")
-						{
-							/* Выводим, делая заданный отступ, название директории */
-							$file = "<li><a href='' value='$id'>".substr($file, 0, -1)."/</a></li>";
-							echo $file."<br />";
-							$id++;
-						}
-				}
-			echo "</ul>";
-		}
-
-	/**
-	 * @param $file_list
-	 */
 	function showSelector($file_list)
 		{
 
@@ -105,10 +77,8 @@
 						}
 					ftp_pasv($ftp, true);
 					//Получаем список файлов в папке
-					//					$file_list = ftp_nlist($ftp, $album_data['ftp_folder']);
 					$file_list    = ftp_rawlist($ftp, '/fotoarhiv/', true);
 					$fileListSort = array_multisort($file_list);
-					//	showTree($file_list);
 					showSelector($file_list);
 					ftp_close($ftp);
 				}
