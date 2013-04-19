@@ -264,7 +264,7 @@ function getRefresh()
 
 
 // элементы формы восстановления пароля, которые будем отправлять
-function getReminder()
+function getReminderNN()
 {
     var query;
     query = $('#reminder').serialize();
@@ -275,7 +275,7 @@ function getReminder()
 }
 
 
-function ajaxGet(metod, url, idName)
+function ajaxGet(metod, url, idName, data)
 {
     req.open(metod, url + '?sl&rn=' + Math.random() , true );
     req.onreadystatechange = function () {
@@ -294,5 +294,5 @@ function ajaxGet(metod, url, idName)
     }
     };
     req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
-    req.send();
+    req.send(data);
 }
