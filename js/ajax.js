@@ -14,13 +14,13 @@
  @time   - 8:54
  */
 
-function send() {
+function send1() {
     $.ajax({
         type: "POST",
         header: ('Content-Type: application/json; charset=utf-8;'),
         url: "/inc/SendData.php",
         // data: "data="+data,
-        data: $('#reminder').serialize(),
+        data: $(' #reminder').serialize(),
 
         error:function(xhr, status, errorThrown) {
             alert(errorThrown+'\n'+status+'\n'+xhr.statusText);
@@ -29,7 +29,7 @@ function send() {
         // Выводим то что вернул PHP
         success: function (html) {
             //предварительно очищаем нужный элемент страницы
-            $("#result").empty().append(html);
+            $(" #result").empty().append(html);
             getCaptca();
 
         }
@@ -39,20 +39,20 @@ function send() {
 
 
 
-function getCaptca() {
+function getCaptca2() {
 
  //  $(" .loadCaptca").load("/inc/captcha/captcha.html");
 
     $.ajax({
         type: "GET",
         header: ('Content-Type: application/json; charset=utf-8;'),
-        url: "/inc/captcha/captcha.html ",
+        url: "/inc/captcha/captcha.html",
        cache: false,
         error:function(xhr, status, errorThrown) {
             alert(errorThrown+'\n'+status+'\n'+xhr.statusText);
         },
         success: function(data){
-            $(" .loadCaptca ").empty().append(data);
+            $(" #loadCaptca ").empty().append(data);
 
 
             return false;
@@ -145,3 +145,154 @@ $(function () {
 
 
 
+
+
+
+
+
+
+/*
+var req = sCreate();
+
+function nameId(id)
+{
+    return document.getElementById(id);
+}
+
+function sCreate()
+{
+    if(navigator.appName == "Microsoft Internet Explorer")
+    {
+        req = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    else
+    {
+        req = new XMLHttpRequest();
+    }
+    return req;
+}
+
+function refresh(id)
+{
+    var a = req.readyState;
+    id = "loadCaptca";
+// alert(a);
+    if( a == 4 )
+    {
+        var b = req.responseText;
+        nameId(id).innerHTML = b;
+    }
+    else
+    {
+        nameId(id).innerHTML = '<br><div style="text-align: center;">Запрос.........</div>';
+    }
+}
+
+
+function gRequest(query)
+{
+    req.open('post', '/inc/SendData.php' , true );
+    req.onreadystatechange = refresh(' result ');
+    req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
+    req.send(query);
+}
+
+
+
+// элементы формы восстановления пароля, которые будем отправлять
+function getReminder()
+{
+    var query;
+    query = $('#reminder').serialize();
+    gRequest(query);
+}
+
+
+function getCaptca()
+{
+    var query;
+    var captcha = "1";
+    query = 'captcha=' + captcha;
+    req.open('post', '/inc/captcha/captcha.html' , true );
+    req.onreadystatechange = refresh();
+    req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
+    req.send(query);
+}
+*/
+
+
+
+var req = objectCreate();
+
+
+function idElement(idName)
+{
+    return document.getElementById(idName);
+}
+
+
+
+function objectCreate()
+{
+    if(navigator.appName == "Microsoft Internet Explorer")
+    {
+        req = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    else
+    {
+        req = new XMLHttpRequest();
+    }
+    return req;
+}
+
+
+function getRefresh()
+{
+    var dataState = req.readyState;
+    var id = 'loadCaptca';
+    if( dataState == 4 )
+    {
+      //  var dataResponse = req.responseText;
+        idElement(id).innerHTML = req.responseText;
+    }
+    else
+    {
+        idElement(id).innerHTML = '<br><div style="text-align: center;">Запрос ...</div>';
+
+    }
+}
+
+
+// элементы формы восстановления пароля, которые будем отправлять
+function getReminder()
+{
+    var query;
+    query = $('#reminder').serialize();
+    req.open('post', '/inc/captcha/captcha.html' , true );
+    req.onreadystatechange = getRefresh;
+    req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
+    req.send(query);
+}
+
+
+function ajaxGet(metod, url, idName)
+{
+    req.open(metod, url + '?sl&rn=' + Math.random() , true );
+    req.onreadystatechange = function () {
+
+    var dataState = req.readyState;
+
+    if( dataState == 4 )
+    {
+
+        idElement(idName).innerHTML = req.responseText;
+    }
+    else
+    {
+        idElement(idName).innerHTML = '<br><div style="text-align: center;">Запрос ...</div>';
+
+    }
+    };
+    req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
+    req.send();
+}

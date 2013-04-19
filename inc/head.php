@@ -281,7 +281,7 @@ header('Content-type: text/html; charset=windows-1251');
 							</tr>
 						</table>
 						<!--						<a href="/reminder.php" style="color: #fff; text-decoration: none;" >Забыли пароль?</a>-->
-						<a href="#" style="color: #fff; text-decoration: none;" onclick="getCaptca(); $(document).ready(function load() {$('#vosst').modal('show'); }); ">Забыли
+						<a href="#" style="color: #fff; text-decoration: none;" onclick="ajaxGet('get','/inc/captcha/captcha.html','loadCaptca'); $(document).ready(function load() {$('#vosst').modal('show'); }); ">Забыли
 							пароль?</a>
 					</form>
 				<? endif; ?>
@@ -317,18 +317,23 @@ header('Content-type: text/html; charset=windows-1251');
 	<div class="modal-body" style="height: 180px;">
 		<form action="" id="reminder" >
 			<label>
-				<input class="autoclear" data-tabindex="2" title="Ваш логин:" maxlength="20" style="margin-left: 8px; width: 250px" type="text" value="Введите Ваш логин:" name="login"/>
+				<input id="name" class="autoclear" data-tabindex="2" title="Ваш логин:" maxlength="20"
+					style="margin-left: 8px; width: 250px" type="text" value="Введите Ваш логин:" name="login"/>
 			</label> <label style="float: left">
-				<input class="autoclear" data-tabindex="1"  title="или E-mail:" maxlength="20" style="margin-left: 8px; width: 250px" type="text" value="или E-mail:" name="email"/>
+				<input id="email" class="autoclear" data-tabindex="1"  title="или E-mail:" maxlength="20"
+					style="margin-left: 8px; width: 250px" type="text" value="или E-mail:" name="email"/>
 			</label> <label style="float: left">
-				<input class="autoclear" data-tabindex="3"  title="Проверочное число:" maxlength="20" style="margin-left: 8px; width: 250px" type="text" value="Код безопасности:" name="pkey"/>
+				<input id="captcha" class="autoclear" data-tabindex="3"  title="Проверочное число:" maxlength="20"
+					style="margin-left: 8px; width: 250px" type="text" value="Код безопасности:" name="pkey"/>
 			</label>
-			<div class="loadCaptca" style="float: right; margin: 5px 0 0 0 "></div>
+<!--			<div class="loadCaptca" style="float: right; margin: 5px 0 0 0 "></div>-->
+			<div id="loadCaptca" style="float: right; margin: 5px 0 0 0 "></div>
 <!--			<img class = "loadCaptca" src="/img/bg_out.png" style="float: right; margin: 5px 0 0 0 ">-->
 <!--			<img class = "loadCaptca" src="/img/bg_out.png" data-full="/inc/captcha/captcha.php">-->
 			<div style="clear: both"></div>
-			<input class="btn" type="reset" value="Напомнить" onClick="send();" style="float: left; margin: 0 0 0 90px; "/>
-			<input class="btn" type="reset" value="Сменить код"  onClick="getCaptca();" style="float: right; margin: 0 0 0 90px; "/>
+			<input class="btn" type="reset" value="Напомнить" onClick="ajaxGet('post','/inc/SendData.php','result');" style="float: left; margin: 0 0 0 90px; "/>
+<!--			<input class="btn" type="reset" value="Сменить код"  onClick="getCaptca();" style="float: right; margin: 0 0 0 90px; "/>-->
+			<input class="btn" type="reset" value="Сменить код"  onClick="ajaxGet('get','/inc/captcha/captcha.html','loadCaptca');" style="float: right; margin: 0 0 0 90px; "/>
 		</form>
 	</div>
 	<div class="modal-footer">
