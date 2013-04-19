@@ -190,6 +190,8 @@ header('Content-type: text/html; charset=windows-1251');
 	</script>
 
 
+
+
 </head>
 <body>
 <div id="maket">
@@ -326,7 +328,7 @@ header('Content-type: text/html; charset=windows-1251');
 <!--			<img class = "loadCaptca" src="/img/bg_out.png" data-full="/inc/captcha/captcha.php">-->
 			<div style="clear: both"></div>
 			<input class="btn" type="reset" value="Напомнить" onClick="send();" style="float: left; margin: 0 0 0 90px; "/>
-			<input class="btn" type="reset" value="Сменить код" onClick="getCaptca();" style="float: right; margin: 0 0 0 90px; "/>
+			<input class="btn" type="reset" value="Сменить код"  onClick="getCaptca();" style="float: right; margin: 0 0 0 90px; "/>
 		</form>
 	</div>
 	<div class="modal-footer">

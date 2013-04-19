@@ -439,7 +439,7 @@ tinyMCE.init({
 			});
 		</script>
 
-			<div style="width:350px; height:200px; position:absolute; left:50%; top:50%; margin:-100px 0 0 -160px;">
+			<div style="width:350px; height:200px; position:absolute; left:50%; top:50%; margin:-100px 0 0 -200px;">
 				<div class="well">
 					<legend>бунд б юдлхмйс</legend>
 					<form class="expose" method="POST" action="index.php" accept-charset="1251">

@@ -10,15 +10,18 @@
 	include __DIR__.'/../inc/config.php';
 	include __DIR__.'/../inc/func.php';
 
-
+	/**
+	 * @param $file_list
+	 */
 	function showTree($file_list)
 		{
+
 			$id = 1;
 			echo "<ul>";
-			foreach ($file_list as  $file)
+			foreach ($file_list as $file)
 				{
 					/* Отбрасываем текущий и родительский каталог */
-					if (($file == '.') || ($file == '..') || ($file ==""))
+					if (($file == '.') || ($file == '..') || ($file == ""))
 						{
 							continue;
 						}
@@ -27,7 +30,7 @@
 					if ($last == ":")
 						{
 							/* Выводим, делая заданный отступ, название директории */
-							$file = "<li><a href='' value='$id'>".substr($file,0 , -1)."/</a></li>";
+							$file = "<li><a href='' value='$id'>".substr($file, 0, -1)."/</a></li>";
 							echo $file."<br />";
 							$id++;
 						}
@@ -35,23 +38,16 @@
 			echo "</ul>";
 		}
 
-
-
-
-
+	/**
+	 * @param $file_list
+	 */
 	function showSelector($file_list)
 		{
-			$id = 1;
 
-
-	echo "<div class='input-prepend'>";
-	echo "<span id='refresh' title='Обновить папки' class='add-on' onclick='sendFtp();'>Папка uploada FTP:</span>";
-	echo "<select id='prependedInput' class='span2' name='ftp_folder'>";
-
-			foreach ($file_list as  $file)
+			foreach ($file_list as $file)
 				{
 					/* Отбрасываем текущий и родительский каталог */
-					if (($file == '.') || ($file == '..') || ($file ==""))
+					if (($file == '.') || ($file == '..') || ($file == ""))
 						{
 							continue;
 						}
@@ -59,23 +55,19 @@
 					$last = substr($file, -1);
 					if ($last == ":")
 						{
-							/* Выводим, делая заданный отступ, название директории */
-							$dir = substr($file,0 , -1).'/';
-
-							$select = "<option value = \"".$dir." \" <?= '".$dir."' == \$ln['ftp_folder'] ? 'selected=\"selected\"' : '' ?> >".$dir."</option>";
-							echo $select."<br />";
-							$id++;
+							/* Выводим, убирая у последей директории разделительный знак ":" */
+							if (next($file_list))
+								{
+									$file = substr($file, 0, -1);
+									echo $file;
+								}
+							else
+								{
+									echo $file;
+								}
 						}
 				}
-	echo "</select>";
-	echo "</div>";
-
 		}
-
-
-
-
-
 
 	if (isset($_POST['ftpDir']))
 		{
@@ -116,7 +108,7 @@
 					//					$file_list = ftp_nlist($ftp, $album_data['ftp_folder']);
 					$file_list    = ftp_rawlist($ftp, '/fotoarhiv/', true);
 					$fileListSort = array_multisort($file_list);
-//					showTree($file_list);
+					//	showTree($file_list);
 					showSelector($file_list);
 					ftp_close($ftp);
 				}

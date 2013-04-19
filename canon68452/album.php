@@ -679,8 +679,7 @@ if (mysql_num_rows($rs) > 0)
                                                                while ($tmp2 = mysql_fetch_assoc($tmp))
                                                                   {
                                                                   ?>
-       <option value="<?= $tmp2['id'] ?>" <?=($tmp2['id'] == $ln['id_category'] ? 'selected="selected"' : '')?>><?=$tmp2['nm']?></option>
-	    <option value='<?= $ln["ftp_folder"]?>' <?=('/fotoarhiv/deti/' == $ln["ftp_folder"] ? 'selected="selected"' : '')?>>/fotoarhiv/deti/</option>
+                                                   <option value="<?= $tmp2['id'] ?>" <?=($tmp2['id'] == $ln['id_category'] ? 'selected="selected"' : '')?>><?=$tmp2['nm']?></option>
                                                                   <?
                                                                   }
                                                                ?>
@@ -713,17 +712,19 @@ if (mysql_num_rows($rs) > 0)
                                                          </div>
                                                       </td>
 	                                                   <td>
-		                                                   <div id="result">
-			                                                   <div class="input-prepend">
-				                                                   <span class="add-on">Папка uploada FTP:</span>
-				                                                   <select id="prependedInput" class="span2"  NAME="ftp_folder" onclick="sendFtp();">
+		                                                   <div class="result">
+				                                                   <div class='input-prepend'>
+					                                                <span id='refresh' title='Обновить папки' class='add-on' onclick='sendFtp();'>Папка uploada FTP:</span>
+					                                                <select id="prependedInput" class="span2"  NAME="ftp_folder" onclick="sendFtp();">
+
+
 					                                                   <option  value="">Выбор папки</option>
 
+
 				                                                   </select>
-			                                                   </div>
+				                                                </div>
 		                                                   </div>
 	                                                   </td>
-
 	                                                   <td>
                                                          <div class="slideThree">
                                                             <input id="slideThree3" type='checkbox' NAME='sharping' VALUE='yes' <?if ($ln['sharping'])

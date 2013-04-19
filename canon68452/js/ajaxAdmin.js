@@ -35,9 +35,34 @@ function sendFtp() {
                     //    .empty().append(data)
                    //     .ajaxStop(function() { $(this).show(); });
 
-                    //предварительно очищаем нужный элемент страницы
-                    $("#result").empty().append(data).fadeIn('slow');
-//                     $("#result").append(data).fadeIn('slow');
+                //    $("#result").empty().append(data).fadeIn('slow');
+                var selector;
+                var option;
+                var dataArray = data.split(":");
+                var topSelector = "<div class='input-prepend'><br>";
+                    topSelector += "<span id='refresh' title='Обновить папки' class='add-on' onclick='sendFtp();'>Папка uploada FTP:</span>";
+                    topSelector += "<select id='prependedInput' class='span2'  NAME='ftp_folder' >";
+
+                    jQuery.each(dataArray, function() {
+
+                        if (this != ">/")
+                        {
+               option += "<option value = '" + this  + "/' <?='" + this  + "/' == $ln['ftp_folder'] ? 'selected= \"selected\"'" + " : '' ? >/>" + this  + "/</option>";
+                        }
+                    });
+
+                    var bottomSelector = "</select></div>";
+                    selector = topSelector + option + bottomSelector;
+
+                    $(" .result ").empty().append(selector);
+
+
+
+
+                  //  $(" .result ").empty().html("<option value = '" + data + "' <?='" + data + "' == $ln['ftp_folder'] ? 'selected= 'selected'' : '' ?> >" + data + "</option>");
+
+               //    $(select).insertAfter('#result');
+                //    alert (select);
                 }
             });
        /* }

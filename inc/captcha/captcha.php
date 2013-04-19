@@ -1,6 +1,5 @@
 <?php
-	 session_start();
-
+	session_start();
 	$img = imagecreatetruecolor(130, 24) or die ('Canon create image');
 	imagefill($img, 0, 0, 0xFFFFFF);
 	$x   = 0;
@@ -24,5 +23,3 @@
 //	echo '<img src="data:image/png;base64,' . $png . '" />';
 	imagedestroy($img);
 	?>
-
-

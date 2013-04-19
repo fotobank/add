@@ -36,7 +36,47 @@ function send() {
 
 function getCaptca() {
 
-   $(" .loadCaptca").load("/inc/captcha/captcha.html");
+ //  $(" .loadCaptca").load("/inc/captcha/captcha.html");
+
+    $.ajax({
+        type: "GET",
+        url: "/inc/captcha/captcha.html ",
+
+
+        cache: false,
+        success: function(data){
+            $(" .loadCaptca ").empty().append(data);
+
+
+            return false;
+
+
+        }
+
+
+    });
+
+
+
+
+
+ //   $.ajax({
+//        type: 'post',
+    //    url: "/inc/captcha/captcha.php",
+   //     cache: false,
+//        data: 'action=report_link',
+//        dataType : 'html',
+//        context: $(this),
+   //     success: function (data) {
+        //    $(" .loadCaptca ").html(data);
+
+
+     //   }
+ //   });
+
+
+
+
 
 //   $(" .loadCaptca ").attr("src", src);
 
@@ -96,4 +136,5 @@ $(function () {
     $(' .autoclear ').autoClear();
 });
 
-;
+
+
