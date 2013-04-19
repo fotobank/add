@@ -14,12 +14,7 @@
 			imageline($img, 0, rand(0, 24), 130, rand(0, 20), 100);
 		}
 	$_SESSION['secret_number'] = $sum;
-
 	header("Content-type: image/png");
-//	imagepng($img);
-
-	$png = imagepng($img);
-	echo $png;
-//	echo '<img src="data:image/png;base64,' . $png . '" />';
+	imagepng($img);
 	imagedestroy($img);
 	?>
