@@ -14,7 +14,7 @@
  @time   - 8:54
  */
 
-function send1() {
+function ajaxP() {
     $.ajax({
         type: "POST",
         header: ('Content-Type: application/json; charset=utf-8;'),
@@ -39,7 +39,7 @@ function send1() {
 
 
 
-function getCaptca2() {
+function getCaptca() {
 
  //  $(" .loadCaptca").load("/inc/captcha/captcha.html");
 
@@ -65,8 +65,6 @@ function getCaptca2() {
 
 
 
-
-
  //   $.ajax({
 //        type: 'post',
     //    url: "/inc/captcha/captcha.php",
@@ -80,8 +78,6 @@ function getCaptca2() {
 
      //   }
  //   });
-
-
 
 
 
@@ -111,6 +107,96 @@ function getCaptca2() {
          : "/inc/captcha/captcha.php";
      $(" .loadCaptca").attr("src", src);*/
 }
+
+
+/**
+ * Определение типа браузера
+ * @returns {*}
+ */
+
+function getXmlHttp(){
+    var xmlhttp;
+    try {
+        xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+    } catch (e) {
+        try {
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        } catch (E) {
+            xmlhttp = false;
+        }
+    }
+    if (!xmlhttp && typeof XMLHttpRequest!='undefined') {
+        xmlhttp = new XMLHttpRequest();
+    }
+    return xmlhttp;
+}
+
+
+function idElement(idName)
+{
+    return document.getElementById(idName);
+}
+
+
+/**
+ * @ todo - отправка ajax запроса
+ * @param url - серверный скрипт
+ * @param idName - id элемента для вывода ответа
+ * @param data - посылаемые данные при пост методе (для <form> -" $('#div').serialize());" или "data[a,b,c]")
+ */
+
+function ajaxPost(url, idName, data)
+{
+    var xmlhttp = getXmlHttp();
+    xmlhttp.open('post', url + '?sl&rn=' + Math.random() , true );
+    xmlhttp.onreadystatechange = function () {
+
+        var dataState = xmlhttp.readyState;
+
+        if( dataState == 4 )
+        {
+            idElement(idName).innerHTML = xmlhttp.responseText;
+        }
+        else
+        {
+            idElement(idName).innerHTML = '<br><div style="text-align: center;">Запрос ...</div>';
+
+        }
+    };
+    xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
+    xmlhttp.send(data);
+}
+
+
+/**
+ * @ todo - отправка ajax запроса
+ * @param url - серверный скрипт
+ * @param idName - id элемента для вывода ответа
+ */
+function ajaxGet(url, idName)
+{
+    var xmlhttp = getXmlHttp();
+    xmlhttp.open('get', url + '?sl&rn=' + Math.random() , true );
+    xmlhttp.onreadystatechange = function () {
+
+    var dataState = xmlhttp.readyState;
+
+    if( dataState == 4 )
+    {
+        idElement(idName).innerHTML = xmlhttp.responseText;
+    }
+    else
+    {
+        idElement(idName).innerHTML = '<br><div style="text-align: center;">Запрос ...</div>';
+
+    }
+    };
+    xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
+    xmlhttp.send();
+}
+
+
+
 
 /*
  Todo    - Автоочистка текстового поля при получении фокуса
@@ -142,157 +228,3 @@ $(function () {
     // привязываем плагин ко всем элементам с id "#email, #login"
     $(' .autoclear ').autoClear();
 });
-
-
-
-
-
-
-
-
-
-/*
-var req = sCreate();
-
-function nameId(id)
-{
-    return document.getElementById(id);
-}
-
-function sCreate()
-{
-    if(navigator.appName == "Microsoft Internet Explorer")
-    {
-        req = new ActiveXObject("Microsoft.XMLHTTP");
-    }
-    else
-    {
-        req = new XMLHttpRequest();
-    }
-    return req;
-}
-
-function refresh(id)
-{
-    var a = req.readyState;
-    id = "loadCaptca";
-// alert(a);
-    if( a == 4 )
-    {
-        var b = req.responseText;
-        nameId(id).innerHTML = b;
-    }
-    else
-    {
-        nameId(id).innerHTML = '<br><div style="text-align: center;">Запрос.........</div>';
-    }
-}
-
-
-function gRequest(query)
-{
-    req.open('post', '/inc/SendData.php' , true );
-    req.onreadystatechange = refresh(' result ');
-    req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
-    req.send(query);
-}
-
-
-
-// элементы формы восстановления пароля, которые будем отправлять
-function getReminder()
-{
-    var query;
-    query = $('#reminder').serialize();
-    gRequest(query);
-}
-
-
-function getCaptca()
-{
-    var query;
-    var captcha = "1";
-    query = 'captcha=' + captcha;
-    req.open('post', '/inc/captcha/captcha.html' , true );
-    req.onreadystatechange = refresh();
-    req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
-    req.send(query);
-}
-*/
-
-
-
-var req = objectCreate();
-
-
-function idElement(idName)
-{
-    return document.getElementById(idName);
-}
-
-
-
-function objectCreate()
-{
-    if(navigator.appName == "Microsoft Internet Explorer")
-    {
-        req = new ActiveXObject("Microsoft.XMLHTTP");
-    }
-    else
-    {
-        req = new XMLHttpRequest();
-    }
-    return req;
-}
-
-
-function getRefresh()
-{
-    var dataState = req.readyState;
-    var id = 'loadCaptca';
-    if( dataState == 4 )
-    {
-      //  var dataResponse = req.responseText;
-        idElement(id).innerHTML = req.responseText;
-    }
-    else
-    {
-        idElement(id).innerHTML = '<br><div style="text-align: center;">Запрос ...</div>';
-
-    }
-}
-
-
-// элементы формы восстановления пароля, которые будем отправлять
-function getReminderNN()
-{
-    var query;
-    query = $('#reminder').serialize();
-    req.open('post', '/inc/captcha/captcha.html' , true );
-    req.onreadystatechange = getRefresh;
-    req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
-    req.send(query);
-}
-
-
-function ajaxGet(metod, url, idName, data)
-{
-    req.open(metod, url + '?sl&rn=' + Math.random() , true );
-    req.onreadystatechange = function () {
-
-    var dataState = req.readyState;
-
-    if( dataState == 4 )
-    {
-
-        idElement(idName).innerHTML = req.responseText;
-    }
-    else
-    {
-        idElement(idName).innerHTML = '<br><div style="text-align: center;">Запрос ...</div>';
-
-    }
-    };
-    req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
-    req.send(data);
-}

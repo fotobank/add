@@ -281,7 +281,7 @@ header('Content-type: text/html; charset=windows-1251');
 							</tr>
 						</table>
 						<!--						<a href="/reminder.php" style="color: #fff; text-decoration: none;" >Забыли пароль?</a>-->
-						<a href="#" style="color: #fff; text-decoration: none;" onclick="ajaxGet('get','/inc/captcha/captcha.html','loadCaptca', ''); $(document).ready(function load() {$('#vosst').modal('show'); }); ">Забыли
+						<a href="#" style="color: #fff; text-decoration: none;" onclick="ajaxGet('/inc/captcha/captcha.html','loadCaptca'); $(document).ready(function load() {$('#vosst').modal('show'); }); ">Забыли
 							пароль?</a>
 					</form>
 				<? endif; ?>
@@ -331,10 +331,13 @@ header('Content-type: text/html; charset=windows-1251');
 <!--			<img class = "loadCaptca" src="/img/bg_out.png" style="float: right; margin: 5px 0 0 0 ">-->
 <!--			<img class = "loadCaptca" src="/img/bg_out.png" data-full="/inc/captcha/captcha.php">-->
 			<div style="clear: both"></div>
-			<input class="btn" type="reset" value="Напомнить" onClick="ajaxGet('post','/inc/SendData.php','result', $('#reminder').serialize() );" style="float: left; margin: 0 0 0 90px; "/>
+			<input class="btn" type="reset" value="Напомнить"
+				onClick="ajaxPost('/inc/SendData.php','result', $('#reminder').serialize()); ajaxGet('/inc/captcha/captcha.html','loadCaptca');"
+				style="float: left; margin: 0 0 0 90px; "/>
 <!--			<input class="btn" type="reset" value="Сменить код"  onClick="getCaptca();" style="float: right; margin: 0 0 0 90px; "/>-->
-			<input class="btn" type="reset" value="Сменить код"  onClick="ajaxGet('get','/inc/captcha/captcha.html','loadCaptca','');" style="float: right; margin: 0 0 0 90px; "/>
 		</form>
+			<input class="btn" type="reset" value="Сменить код"  onClick="ajaxGet('/inc/captcha/captcha.html','loadCaptca');" style="float: right; margin: -20px 0 0 90px; "/>
+
 	</div>
 	<div class="modal-footer">
 		<button type="button" data-dismiss="modal" class="btn" onClick="$('#result').empty();"> Закрыть</button>

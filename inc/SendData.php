@@ -73,16 +73,6 @@
 		}
 
 	//Получаем данные
-
-	if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-		// Если к нам идёт Ajax запрос, то ловим его
-		$_SESSION['ok_msg2'] = 'Это ajax запрос!';
-	} else {
-		//Если это не ajax запрос
-		$_SESSION['err_msg'] = 'Это не ajax запрос!';
-	}
-
-
 	if ($_POST['login'].$_POST['email'].$_POST['pkey'] != $_SESSION['previos_data'])
 		{
 			$_SESSION['previos_data'] = $_POST['login'].$_POST['email'].$_POST['pkey'];
