@@ -17,9 +17,14 @@
 function send() {
     $.ajax({
         type: "POST",
+        header: ('Content-Type: application/json; charset=utf-8;'),
         url: "/inc/SendData.php",
         // data: "data="+data,
         data: $('#reminder').serialize(),
+
+        error:function(xhr, status, errorThrown) {
+            alert(errorThrown+'\n'+status+'\n'+xhr.statusText);
+        },
 
         // ¬ыводим то что вернул PHP
         success: function (html) {
@@ -40,10 +45,12 @@ function getCaptca() {
 
     $.ajax({
         type: "GET",
+        header: ('Content-Type: application/json; charset=utf-8;'),
         url: "/inc/captcha/captcha.html ",
-
-
-        cache: false,
+       cache: false,
+        error:function(xhr, status, errorThrown) {
+            alert(errorThrown+'\n'+status+'\n'+xhr.statusText);
+        },
         success: function(data){
             $(" .loadCaptca ").empty().append(data);
 
@@ -123,7 +130,7 @@ function getCaptca() {
             }
         })
             .bind('blur', function () {    // обработка потери фокуса
-                if ($(this).attr("value") == "") {
+                if ($(this).attr("value") == " ") {
                     $(this).attr("value", $(this).data("autoclear")).removeClass('autoclear-normalcolor');
                 }
             });

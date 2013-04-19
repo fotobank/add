@@ -296,7 +296,7 @@ header('Content-type: text/html; charset=windows-1251');
 <a href="#" class="overlay" id="scet_form"></a>
 
 <div id="popup">
-	Пополнение счета <a class="close2" href="#"></a>
+	<legend>Пополнение счета </legend><a class="close2" href="#"></a>
 </div>
 
 
@@ -308,7 +308,7 @@ header('Content-type: text/html; charset=windows-1251');
 		</button>
 		<div>
 			<h3>
-				<span style="font-weight: bold;">Восстановление пароля захода на сайт:</span>
+				<span style="font-weight: bold;"><legend>Восстановление пароля:</legend></span>
 			</h3>
 		</div>
 		<div id="result"></div>

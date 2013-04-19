@@ -23,10 +23,14 @@ function sendFtp() {
 //        {
           $.ajax({
                 type: "POST",
+                header: ('Content-Type: application/json; charset=utf-8;'),
                 url: "./zaprosDirFtp.php",
                 // data: "data="+data,
                 data: {ftpDir: $('#prependedInput').val()},
 
+              error:function(xhr, status, errorThrown) {
+                 	                alert(errorThrown+'\n'+status+'\n'+xhr.statusText);
+              },
                 // Выводим то что вернул PHP
                 success: function (data) {
 

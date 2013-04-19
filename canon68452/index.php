@@ -424,7 +424,7 @@ tinyMCE.init({
 		<script type="text/javascript" src="/js/jquery.tools.min.js"></script>
 		<link href="/css/admin.css" rel="stylesheet" type="text/css"/>
 
-		<!--Выделение формы входа-->
+		<!--Выделение формы входа с затемнением-->
 		<script type="text/javascript">
 			// execute your scripts when the DOM is ready. this is a good habit
 			$(function() {
