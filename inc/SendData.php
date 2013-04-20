@@ -24,7 +24,8 @@
 			printf("Ошибка соединения: %s\n", mysqli_connect_error());
 			exit();
 		}
-
+	$cryptinstall = '/inc/captcha/cryptographp.fct.php';
+	include  'captcha/cryptographp.fct.php';
 
 	/**
 	 * @param $link
@@ -82,7 +83,8 @@
 				}
 			else
 				{
-					if ($_POST['pkey'] == $_SESSION["secret_number"])
+					$cryptKey = chk_crypt($_POST['pkey']);
+					if ($_POST['pkey'] == chk_crypt($_POST['pkey']))
 						{
 							$where = '';
 							if (isset($_POST['login']))

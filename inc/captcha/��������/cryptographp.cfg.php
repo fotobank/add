@@ -1,16 +1,6 @@
 <?php
 
-// -----------------------------------------------
-// Cryptographp v1.4
-// (c) 2006-2007 Sylvain BRISON 
-//
 // www.cryptographp.com 
-// cryptographp@alphpa.com 
-//
-// Licence CeCILL modifiée
-// => Voir fichier Licence_CeCILL_V2-fr.txt)
-// -----------------------------------------------
-
 
 // -------------------------------------
 // Configuration du fond du cryptogramme
@@ -23,7 +13,7 @@ $bgR  = 230;         // Couleur du fond au format RGB: Red (0->255)
 $bgG  = 230;         // Couleur du fond au format RGB: Green (0->255)
 $bgB  = 230;         // Couleur du fond au format RGB: Blue (0->255)
 
-$bgclear = false;     // Fond transparent (true/false)
+$bgclear = true;     // Fond transparent (true/false)
                      // Uniquement valable pour le format PNG
 
 $bgimg = '';                 // Le fond du cryptogramme peut-être une image  
@@ -35,7 +25,7 @@ $bgimg = '';                 // Le fond du cryptogramme peut-être une image
                              // fichier l'image sera prise au hasard parmi 
                              // celles disponibles dans le répertoire
 
-$bgframe = true;    // Ajoute un cadre de l'image (true/false)
+$bgframe = false;    // Ajoute un cadre de l'image (true/false)
 
 
 // ----------------------------

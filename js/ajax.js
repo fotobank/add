@@ -35,12 +35,14 @@ function ajaxPostQ(url, idName,  data) {
     });
 }
 
+
+
 function ajaxRem() {
     $.ajax({
         type: "POST",
         header: ('Content-Type: application/json; charset=utf-8;'),
         url: '/inc/SendData.php',
-        // data: "data="+data,
+//        data: 'name='+ $(' #name ').val(),
         data: $('#reminder').serialize(),
 
         error:function(xhr, status, errorThrown) {
