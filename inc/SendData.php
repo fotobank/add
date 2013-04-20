@@ -146,7 +146,7 @@
 		}
 	else
 		{
-			$_SESSION['err_msg'] = "<p class='ttext_red'>".$_SESSION['err_msg']."</p>";
+			isset($_SESSION['err_msg']) ? ("<p class='ttext_red'>".$_SESSION['err_msg']."</p>") : ("");
 			if(isset($_SESSION['err_msg2']))
 				{
 			echo $_SESSION['err_msg2'];
