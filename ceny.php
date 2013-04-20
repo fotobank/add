@@ -135,7 +135,7 @@
 			<div id="count_price"><p>Итого: <span></span> руб.</p></div>
 		</form>
 	</div>
-
+<!--	--><?php //dsp_crypt(0,1); ?>
 <div id="cont_fb">
 <? echo mysql_result(mysql_query('select txt from content where id = 3'), 0); ?>
 </div>

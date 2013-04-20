@@ -87,7 +87,7 @@ $(' #result li a').click(function(){
 */
 
 
-function ajaxPost(url, idName,  data) {
+function ajaxPostQ(url, idName,  data) {
     $.ajax({
         type: "POST",
         header: ('Content-Type: application/json; charset=utf-8;'),

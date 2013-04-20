@@ -14,13 +14,14 @@
  @time   - 8:54
  */
 
-function ajaxP() {
+
+function ajaxPostQ(url, idName,  data) {
     $.ajax({
         type: "POST",
         header: ('Content-Type: application/json; charset=utf-8;'),
-        url: "/inc/SendData.php",
+        url: url,
         // data: "data="+data,
-        data: $(' #reminder').serialize(),
+        data: data,
 
         error:function(xhr, status, errorThrown) {
             alert(errorThrown+'\n'+status+'\n'+xhr.statusText);
@@ -29,14 +30,30 @@ function ajaxP() {
         // ¬ыводим то что вернул PHP
         success: function (html) {
             //предварительно очищаем нужный элемент страницы
-            $(" #result").empty().append(html);
-            getCaptca();
-
+            $(idName).empty().append(html);
         }
     });
 }
 
+function ajaxRem() {
+    $.ajax({
+        type: "POST",
+        header: ('Content-Type: application/json; charset=utf-8;'),
+        url: '/inc/SendData.php',
+        // data: "data="+data,
+        data: $('#reminder').serialize(),
 
+        error:function(xhr, status, errorThrown) {
+            alert(errorThrown+'\n'+status+'\n'+xhr.statusText);
+        },
+
+        // ¬ыводим то что вернул PHP
+        success: function (html) {
+            //предварительно очищаем нужный элемент страницы
+            $(' #result ').empty().append(html);
+        }
+    });
+}
 
 
 function getCaptca() {
@@ -48,7 +65,7 @@ function getCaptca() {
         header: ('Content-Type: application/json; charset=utf-8;'),
         url: "/inc/captcha/captcha.html",
 
-       cache: false,
+        cache: false,
         error:function(xhr, status, errorThrown) {
             alert(errorThrown+'\n'+status+'\n'+xhr.statusText);
         },

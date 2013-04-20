@@ -280,7 +280,7 @@ header('Content-type: text/html; charset=windows-1251');
 							</tr>
 						</table>
 						<!--						<a href="/reminder.php" style="color: #fff; text-decoration: none;" >Забыли пароль?</a>-->
-						<a href="#" style="color: #fff; text-decoration: none;" onclick="ajaxGet('/inc/captcha/cryptographp.fct.php','loadCaptca'); $(document).ready(function load() {$('#vosst').modal('show'); }); ">Забыли
+						<a href="#" style="color: #fff; text-decoration: none;" onclick="$(document).ready(function load() {$('#vosst').modal('show'); }); ">Забыли
 							пароль?</a>
 					</form>
 				<? endif; ?>
@@ -310,31 +310,33 @@ header('Content-type: text/html; charset=windows-1251');
 				<span style="font-weight: bold;"><legend>Восстановление пароля:</legend></span>
 			</h3>
 		</div>
-		<div id="result"></div>
+		<div id="result">123</div>
 	</div>
 	<div class="modal-body" style="height: 180px;">
 		<form action="" id="reminder" >
 			<label>
 				<input id="name" class="autoclear" data-tabindex="2" title="Ваш логин:" maxlength="20"
 					style="margin-left: 8px; width: 250px" type="text" value="Введите Ваш логин:" name="login"/>
-			</label> <label style="float: left">
+			</label> <label>
 				<input id="email" class="autoclear" data-tabindex="1"  title="или E-mail:" maxlength="20"
 					style="margin-left: 8px; width: 250px" type="text" value="или E-mail:" name="email"/>
 			</label> <label style="float: left">
 				<input id="captcha" class="autoclear" data-tabindex="3"  title="Проверочное число:" maxlength="20"
 					style="margin-left: 8px; width: 250px" type="text" value="Код безопасности:" name="pkey"/>
 			</label>
+			<div style="margin-top: 10px;"><?php dsp_crypt(0,1); ?></div>
 <!--			<div class="loadCaptca" style="float: right; margin: 5px 0 0 0 "></div>-->
-			<div id="loadCaptca" style="float: right; margin: 5px 0 0 0 "><?php dsp_crypt(0,1); ?></div>
+<!--			<img id='cryptogram' src="/inc/captcha/cryptographp.php">-->
+
+<!--<div id="loadCaptca" style="float: right; margin: 5px 0 0 0 "></div>-->
 <!--			<img class = "loadCaptca" src="/img/bg_out.png" style="float: right; margin: 5px 0 0 0 ">-->
 <!--			<img class = "loadCaptca" src="/img/bg_out.png" data-full="/inc/captcha/captcha.php">-->
-			<div style="clear: both"></div>
-			<input class="btn" type="reset" value="Напомнить"
-				onClick="ajaxPost('/inc/SendData.php','result', $('#reminder').serialize()); ajaxGet('/inc/captcha/cryptographp.fct.php','loadCaptca');"
-				style="float: left; margin: 0 0 0 90px; "/>
-<!--			<input class="btn" type="reset" value="Сменить код"  onClick="getCaptca();" style="float: right; margin: 0 0 0 90px; "/>-->
+<!--			<div style="clear: both"></div>-->
+<!--			'/inc/SendData.php','#result', $('#reminder').serialize()-->
+			<input class="btn" type="reset" value="Напомнить" onClick="ajaxRem()"
+				 style="float: left; margin: 0 0 0 90px; "/>
 		</form>
-			<input class="btn" type="reset" value="Сменить код"  onClick="ajaxGet('/inc/captcha/captcha.html','loadCaptca');" style="float: right; margin: -20px 0 0 90px; "/>
+<!--			<input class="btn" type="reset" value="Сменить код"  onClick="ajaxGet('/inc/captcha/captcha.html','loadCaptca');" style="float: right; margin: -20px 0 0 90px; "/>-->
 
 	</div>
 	<div class="modal-footer">
@@ -350,7 +352,7 @@ if (isset($_SESSION['err_msg']))
 	{
 		?>
 		<script type='text/javascript'>
-			dhtmlx.message.expire = 6000;
+			dhtmlx.message.expire = 6000; // время жизни сообщения
 			dhtmlx.message({ type: 'error', text: 'Ошибка!<br><?=$_SESSION['err_msg']?>'});
 			<!--			humane.error('Ошибка!<br>--><?//=$_SESSION['err_msg']?><!--')-->
 		</script>
@@ -550,6 +552,8 @@ if (isset($_SESSION['ok_msg2']))
 
 
 <!--Голова конец-->
+
+
 <?
 
 
