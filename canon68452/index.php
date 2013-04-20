@@ -95,7 +95,7 @@
 	<link href="/css/bootstrap-modal.css" rel="stylesheet" type="text/css"/>
 	<script src="/js/bootstrap-modalmanager.js"></script>
 	<script src="/js/bootstrap-modal.js"></script>
-	<script type="text/javascript" src="js/ajaxAdmin.js"></script>
+	<script type="text/javascript" src="/canon68452/ajax/ajaxAdmin.js"></script>
 
 		<script type="text/javascript">
 		function confirmDelete() {
