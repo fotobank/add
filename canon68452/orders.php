@@ -86,7 +86,7 @@ $start = ($pg - 1) * RECORDS_PER_PAGE;
     <td align="center" width="7%">
     <form action="index.php?pg=<?=$pg?>" method="post" style="margin-bottom: 0px; margin-top: 0px;">
     <input class="btn btn-danger" type="hidden" name="delete_order" value="<?=$ln['id']?>" />
-    <input class="btn-samall btn-danger" type="submit" value="Удалить" />
+    <input class="btn-samall btn-danger" type="submit" value="Удалить" onclick="return confirmDelete();" />
     </form>
     </td>
   	</tr>		

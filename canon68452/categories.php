@@ -131,7 +131,7 @@ if(mysql_num_rows($rs) > 0)
   <div>  
   <form action="index.php" method="post" >
 	<input class="btn btn-danger" type="hidden" name="go_delete" value="<?=$ln['id']?>" />
-	<input class="btn btn-danger" type="submit" value="Удалить раздел"  style="margin-left: 50px;"/>
+	<input class="btn btn-danger" type="submit" value="Удалить раздел"  style="margin-left: 50px;" onclick="return confirmDelete();"/>
   </form> 
   </div> 		
   

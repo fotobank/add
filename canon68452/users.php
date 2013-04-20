@@ -138,7 +138,7 @@ $record_count = intval(mysql_result(mysql_query('SELECT  FOUND_ROWS() as cnt'), 
                 <td align="center" width="7%">
                     <form action="index.php?pg=<?= $pg ?>" method="post" style="margin-bottom: 0;">
                         <input class="btn btn-danger" type="hidden" name="delete_user" value="<?= $ln['id'] ?>"/>
-                        <input class="btn-small btn-danger" type="submit" value="удалить"/>
+                        <input class="btn-small btn-danger" type="submit" value="удалить" onclick="return confirmDelete();" />
                     </form>
                 </td>
             </tr>
