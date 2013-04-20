@@ -3,8 +3,21 @@ if(!isset($_SESSION['admin_logged']))
 	die();
 include __DIR__.'/../inc/i_resize.php';
 
+
+/*
+	Todo    - сканирование FTP папок
+   @author - Jurii
+	@date   - 20.04.13
+	@time   - 10:44
+ */
+
 ?>
-<script type="text/javascript" src="js/ajaxAdmin.js"></script>
+<script type="text/javascript">
+$(function () {
+sendFtp();
+});
+</script>
+});
 
 <?
 

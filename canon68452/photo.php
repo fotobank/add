@@ -12,7 +12,7 @@ if (!isset($_SESSION['admin_logged']))
 	{
 		die();
 	}
-define('RECORDS_PER_PAGE', 60);
+define('RECORDS_PER_PAGE', 6);
 
 if (isset($_POST['go_add']) && isset($_SESSION['current_album']) && intval($_SESSION['current_album']) > 0)
 	{
