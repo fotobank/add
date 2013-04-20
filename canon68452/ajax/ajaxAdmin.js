@@ -87,87 +87,23 @@ $(' #result li a').click(function(){
 */
 
 
-/**
- * Определение типа браузера
- * @returns {*}
- */
+function ajaxPost(url, idName,  data) {
+    $.ajax({
+        type: "POST",
+        header: ('Content-Type: application/json; charset=utf-8;'),
+        url: url,
+        // data: "data="+data,
+        data: data,
 
-function getXmlHttp(){
-    var xmlhttp;
-    try {
-        xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
-    } catch (e) {
-        try {
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-        } catch (E) {
-            xmlhttp = false;
+        error:function(xhr, status, errorThrown) {
+            alert(errorThrown+'\n'+status+'\n'+xhr.statusText);
+        },
+
+        // Выводим то что вернул PHP
+        success: function (html) {
+            //предварительно очищаем нужный элемент страницы
+            $('id' + idName).empty().append(html);
+
         }
-    }
-    if (!xmlhttp && typeof XMLHttpRequest!='undefined') {
-        xmlhttp = new XMLHttpRequest();
-    }
-    return xmlhttp;
-}
-
-
-function idElement(idName)
-{
-    return document.getElementById(idName);
-}
-
-
-/**
- * @ todo - отправка ajax запроса
- * @param url - серверный скрипт
- * @param idName - id элемента для вывода ответа
- * @param data - посылаемые данные при пост методе (для <form> -" $('#div').serialize());" или "data[a,b,c]")
- */
-
-function ajaxPost(url, idName, data)
-{
-    var xmlhttp = getXmlHttp();
-    xmlhttp.open('post', url, true );
-    xmlhttp.onreadystatechange = function () {
-
-        var dataState = xmlhttp.readyState;
-
-        if( dataState == 4 )
-        {
-            idElement(idName).innerHTML = xmlhttp.responseText;
-        }
-        else
-        {
-            idElement(idName).innerHTML = '<br><div style="text-align: center;">Запрос ...</div>';
-        }
-    };
-    xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
-    xmlhttp.send(data);
-}
-
-
-/**
- * @ todo - отправка ajax запроса
- * @param url - серверный скрипт
- * @param idName - id элемента для вывода ответа
- */
-function ajaxGet(url, idName)
-{
-
-    var xmlhttp = getXmlHttp();
-    xmlhttp.open("get", url + '?sl&rn=' + Math.random(), true );
-    xmlhttp.onreadystatechange = function () {
-
-        var dataState = xmlhttp.readyState;
-
-        if( dataState == 4 )
-        {
-            idElement(idName).innerHTML = xmlhttp.responseText;
-        }
-        else
-        {
-            idElement(idName).innerHTML = '<br><div style="text-align: center;">Запрос ...</div>';
-        }
-    };
-    xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
-    xmlhttp.send();
+    });
 }

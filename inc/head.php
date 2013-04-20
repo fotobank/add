@@ -58,10 +58,9 @@ header('Content-type: text/html; charset=windows-1251');
 			<?
 		}
 
-
-
 	include __DIR__.'./title.php';
-	//include __DIR__.'./../reminder.php';
+	$cryptinstall = '/inc/captcha/cryptographp.fct.php';
+	include  'captcha/cryptographp.fct.php';
 	?>
 
 	<!--[if lt IE 9]>
@@ -281,7 +280,7 @@ header('Content-type: text/html; charset=windows-1251');
 							</tr>
 						</table>
 						<!--						<a href="/reminder.php" style="color: #fff; text-decoration: none;" >Забыли пароль?</a>-->
-						<a href="#" style="color: #fff; text-decoration: none;" onclick="ajaxGet('/inc/captcha/captcha.html','loadCaptca'); $(document).ready(function load() {$('#vosst').modal('show'); }); ">Забыли
+						<a href="#" style="color: #fff; text-decoration: none;" onclick="ajaxGet('/inc/captcha/cryptographp.fct.php','loadCaptca'); $(document).ready(function load() {$('#vosst').modal('show'); }); ">Забыли
 							пароль?</a>
 					</form>
 				<? endif; ?>
@@ -312,7 +311,6 @@ header('Content-type: text/html; charset=windows-1251');
 			</h3>
 		</div>
 		<div id="result"></div>
-
 	</div>
 	<div class="modal-body" style="height: 180px;">
 		<form action="" id="reminder" >
@@ -327,12 +325,12 @@ header('Content-type: text/html; charset=windows-1251');
 					style="margin-left: 8px; width: 250px" type="text" value="Код безопасности:" name="pkey"/>
 			</label>
 <!--			<div class="loadCaptca" style="float: right; margin: 5px 0 0 0 "></div>-->
-			<div id="loadCaptca" style="float: right; margin: 5px 0 0 0 "></div>
+			<div id="loadCaptca" style="float: right; margin: 5px 0 0 0 "><?php dsp_crypt(0,1); ?></div>
 <!--			<img class = "loadCaptca" src="/img/bg_out.png" style="float: right; margin: 5px 0 0 0 ">-->
 <!--			<img class = "loadCaptca" src="/img/bg_out.png" data-full="/inc/captcha/captcha.php">-->
 			<div style="clear: both"></div>
 			<input class="btn" type="reset" value="Напомнить"
-				onClick="ajaxPost('/inc/SendData.php','result', $('#reminder').serialize()); ajaxGet('/inc/captcha/captcha.html','loadCaptca');"
+				onClick="ajaxPost('/inc/SendData.php','result', $('#reminder').serialize()); ajaxGet('/inc/captcha/cryptographp.fct.php','loadCaptca');"
 				style="float: left; margin: 0 0 0 90px; "/>
 <!--			<input class="btn" type="reset" value="Сменить код"  onClick="getCaptca();" style="float: right; margin: 0 0 0 90px; "/>-->
 		</form>

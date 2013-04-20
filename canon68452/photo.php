@@ -49,7 +49,7 @@ if (isset($_POST['go_add']) && isset($_SESSION['current_album']) && intval($_SES
 
 			}
 	}
-if (isset($_POST['go_delete']))
+/*if (isset($_POST['go_delete']))
 	{
 		$id          = intval($_POST['go_delete']);
 		$img_name    = mysql_result(mysql_query('select img from photos where id = '.$id), 0);
@@ -58,7 +58,7 @@ if (isset($_POST['go_delete']))
 		$source      = $_SERVER['DOCUMENT_ROOT'].$foto_folder.intval($_SESSION['current_album']).'/'.$img_name;
 		unlink($source);
 		mysql_query('delete from photos where id = '.$id);
-	}
+	}*/
 if (isset($_POST['go_turn']))
 	{
 		$id          = intval($_POST['go_turn']);
@@ -212,8 +212,13 @@ $start = ($pg - 1) * RECORDS_PER_PAGE;
 											<form action="index.php" method="post" style="margin: 0;">
 												<input class="btn btn-danger" type="hidden" name="go_delete" value="<?= $ln['id'] ?>" />
 												<input class="btn-mini btn-danger" type="submit"
-													style="width: 50px; height: 18px; padding-top: 0; margin-top: 7px; margin-bottom: 0; margin-left: 38px;"
-													value="удалить"  onclick="return confirmDelete();"/>
+													style="width: 50px; height: 18px; padding-top: 0; margin-top: 7px; margin-bottom: 0; margin-left: 38px;" value="удалить"
+													onclick="return confirmDelete(); ajaxPost(
+														'/canon68452/ajax/deleteFoto.php',
+														'id<?= $ln['id'] ?>',
+														'<?= $file = array();
+													   $file[$ln['id']] ?>'
+														)"/>
 											</form>
 										</div>
 									</a>
