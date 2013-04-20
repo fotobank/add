@@ -326,7 +326,9 @@ header('Content-type: text/html; charset=windows-1251');
 			</label>
 
 			<div style="margin-top: 5px;"><?php dsp_crypt(0,1); ?></div>
-			<input class="btn" type="reset" value="Напомнить" onClick="ajaxPostQ('/inc/SendData.php','#result',$('#reminder').serialize());" style="float: left; margin: 0 0 0 90px;"/>
+			<input class="btn" type="reset" value="Напомнить"
+				onClick="ajaxPostQ('/inc/SendData.php','#result',$('#reminder').serialize()); reload(0,'');"
+				style="float: left; margin: 0 0 0 90px;"/>
 
 		</form>
 

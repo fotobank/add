@@ -37,6 +37,13 @@ function ajaxPostQ(url, idName,  data) {
 
 
 
+function reload (cfg, SID) {
+
+       $(" #cryptogram ").attr("src", "/inc/captcha/cryptographp.php?cfg=" + cfg + "&" + SID + "&" + Math.round(Math.random(0)*1000)+1);
+}
+
+
+
 function ajaxRem() {
     $.ajax({
         type: "POST",
