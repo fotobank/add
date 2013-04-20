@@ -209,9 +209,11 @@ $start = ($pg - 1) * RECORDS_PER_PAGE;
 
 										</div>
 										<div>
-											<form action="index.php" method="post" style="margin: 0px;">
-												<input class="btn btn-danger" type="hidden" name="go_delete" value="<?= $ln['id'] ?>"/>
-												<input class="btn-mini btn-danger" type="submit" style="width: 50px; height: 18px; padding-top: 0px; margin-top: 7px; margin-bottom: 0px; margin-left: 38px;" value="удалить"/>
+											<form action="index.php" method="post" style="margin: 0;">
+												<input class="btn btn-danger" type="hidden" name="go_delete" value="<?= $ln['id'] ?>" />
+												<input class="btn-mini btn-danger" type="submit"
+													style="width: 50px; height: 18px; padding-top: 0; margin-top: 7px; margin-bottom: 0; margin-left: 38px;"
+													value="удалить"  onclick="return confirmDelete();"/>
 											</form>
 										</div>
 									</a>

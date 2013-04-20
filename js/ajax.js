@@ -47,6 +47,7 @@ function getCaptca() {
         type: "GET",
         header: ('Content-Type: application/json; charset=utf-8;'),
         url: "/inc/captcha/captcha.html",
+
        cache: false,
         error:function(xhr, status, errorThrown) {
             alert(errorThrown+'\n'+status+'\n'+xhr.statusText);
@@ -148,7 +149,7 @@ function idElement(idName)
 function ajaxPost(url, idName, data)
 {
     var xmlhttp = getXmlHttp();
-    xmlhttp.open('post', url + '?sl&rn=' + Math.random() , true );
+    xmlhttp.open('post', url, true );
     xmlhttp.onreadystatechange = function () {
 
         var dataState = xmlhttp.readyState;
@@ -160,7 +161,6 @@ function ajaxPost(url, idName, data)
         else
         {
             idElement(idName).innerHTML = '<br><div style="text-align: center;">Запрос ...</div>';
-
         }
     };
     xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
@@ -175,8 +175,9 @@ function ajaxPost(url, idName, data)
  */
 function ajaxGet(url, idName)
 {
+
     var xmlhttp = getXmlHttp();
-    xmlhttp.open('get', url + '?sl&rn=' + Math.random() , true );
+    xmlhttp.open("get", url + '?sl&rn=' + Math.random(), true );
     xmlhttp.onreadystatechange = function () {
 
     var dataState = xmlhttp.readyState;
@@ -188,7 +189,6 @@ function ajaxGet(url, idName)
     else
     {
         idElement(idName).innerHTML = '<br><div style="text-align: center;">Запрос ...</div>';
-
     }
     };
     xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");

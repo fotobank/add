@@ -79,21 +79,6 @@
 		}
 
 
-	//Страницы
-	if (isset($_GET['page']))
-		{
-			$_SESSION['page'] = intval($_GET['page']);
-			if ($_SESSION['page'] < 1 || $_SESSION['page'] > 8)
-				{
-					$_SESSION['page'] = 1;
-				}
-		}
-	if (!isset($_SESSION['page']) || $_SESSION['page'] < 1 || $_SESSION['page'] > 8)
-		{
-			$_SESSION['page'] = 1;
-		}
-
-
 	?>
 
 	<link rel="shortcut icon" href="/img/ico_nmain.gif"/>
@@ -111,7 +96,11 @@
 	<script src="/js/bootstrap-modalmanager.js"></script>
 	<script src="/js/bootstrap-modal.js"></script>
 
-
+		<script type="text/javascript">
+		function confirmDelete() {
+		return confirm("Вы подтверждаете удаление?");
+		}
+		</script>
 
 	<!-- TinyMCE --><!--
 <script type="text/javascript" src="/js/tinymce/tiny_mce.js"></script>
@@ -226,6 +215,21 @@ tinyMCE.init({
 	<body style="margin-left: 20px;">
 	<div class="wrapper">
 	<?
+
+
+	//Страницы
+	if (isset($_GET['page']))
+		{
+			$_SESSION['page'] = intval($_GET['page']);
+			if ($_SESSION['page'] < 1 || $_SESSION['page'] > 8)
+				{
+					$_SESSION['page'] = 1;
+				}
+		}
+	if (!isset($_SESSION['page']) || $_SESSION['page'] < 1 || $_SESSION['page'] > 8)
+		{
+			$_SESSION['page'] = 1;
+		}
 
 
 	function paginator($record_count, $pg)

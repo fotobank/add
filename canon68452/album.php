@@ -488,8 +488,8 @@ if (isset($_POST['go_delete']))
          <div class="modal-footer">
             <form action="/inc/delete_dir.php" method="post">
                <input type="hidden" name="confirm_id" value=<?=$id?>/>
-               <button type= "submit" name= "confirm_del" value= <?=($_SERVER['DOCUMENT_ROOT'].$foto_folder.$album_folder)?> >< дю ></button>
-               <button id="noConfirm" type="submit" name="confirm_del" value="0">< мер ></button>
+               <button type= "submit" name= "confirm_del" value= <?=($_SERVER['DOCUMENT_ROOT'].$foto_folder.$album_folder)?> > дю </button>
+               <button id="noConfirm" type="submit" name="confirm_del" value="0"> мер </button>
             </form>
          </div>
       </div>
