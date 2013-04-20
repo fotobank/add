@@ -83,7 +83,6 @@
 				}
 			else
 				{
-					$cryptKey = chk_crypt($_POST['pkey']);
 					if ($_POST['pkey'] == chk_crypt($_POST['pkey']))
 						{
 							$where = '';
