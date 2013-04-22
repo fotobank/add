@@ -342,7 +342,6 @@ if (isset($_SESSION['ok_msg']))
 	{
 		?>
 		<script type='text/javascript'>
-
 			humane.success("Добро пожаловать, <?=$_SESSION['us_name']?>!<br><span><?=$_SESSION['ok_msg']?></span>");
 		</script>
 		<?

@@ -12,7 +12,7 @@ include  'inc/captcha/cryptographp.fct.php';
 ?>
 <!-- восстановление пароля data-focus-on="input:first" -->
 	<div class="modal-header" style="background: rgba(229,229,229,0.53)">
-		<a class="close" data-dismiss="modal" aria-hidden="true" onClick="$('#result').empty();reload('kontakti.cfg.php','.<?=SID?>.');">&times;</a>
+		<a class="close" data-dismiss="modal" aria-hidden="true" onClick="$('#result').empty();setTimeout(returnCaptcha (), 1000);">&times;</a>
 		<div>
 			<h3>
 				<span style="font-weight: bold;"><legend>Восстановление пароля:</legend></span>
@@ -37,7 +37,7 @@ include  'inc/captcha/cryptographp.fct.php';
 </div>
 <div class="modal-footer">
 	<a class="btn btn-primary" type="reset" onClick="ajaxPostQ('/inc/SendData.php','#result',$('#reminder').serialize()); reload(0,'.<?=SID?>.');">Напомнить</a>
-	<a class="btn" data-dismiss="modal"  onClick="$('#result').empty();reload('kontakti.cfg.php','.<?=SID?>.');">Закрыть</a>
+	<a class="btn" data-dismiss="modal"  onClick="$('#result').empty(); setTimeout( 'returnCaptcha ()', 1000);">Закрыть</a>
 </div>
 
 

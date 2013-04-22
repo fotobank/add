@@ -69,7 +69,10 @@ function reload (cfg, SID) {
        $(" #cryptogram ").attr("src", "/inc/captcha/cryptographp.php?cfg=" + cfg + "&" + SID + "&" + Math.round(Math.random(0)*1000)+1);
 }
 
+function returnCaptcha () {
 
+    reload('kontakti.cfg.php','.<?=SID?>.')
+}
 
 function getCaptca() {
 
