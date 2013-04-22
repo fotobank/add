@@ -257,9 +257,6 @@ function fotoPage($may_view, &$current_page, &$record_count)
 	}
 
 
-
-
-
 /**
  * @param $may_view
  * @todo function verifyParol
@@ -375,8 +372,6 @@ function top5($may_view, &$rs, &$ln, &$source, &$sz, &$sz_string)
 						return false;
 					})
 				</script>
-
-
 			<?
 			}
 	}

@@ -50,11 +50,11 @@ html {
     min-height: 100%;
     margin-left: auto;
     margin-right: auto;
-    /*z-index: -10;*/
+    z-index: 1;
 }
 
 #footer {
-    background-color: #1C7FFF;
+    /*background-color: #1C7FFF;*/
     color: #FFF;
     position: relative;
     width: 1200px;
@@ -62,7 +62,7 @@ html {
     /* height:auto; */
     margin-left: auto;
     margin-right: auto;
-    background: url(/img/bc_foot.png) repeat-x bottom;
+    background: #1C7FFF url(/img/bc_foot.png) repeat-x bottom;
     position: relative;
     margin-top: -40px; /* свойство должно быть равным высоте элемента, не забываем про отрицательное значение */
     height: 50px;
@@ -162,7 +162,7 @@ h2 {
     color: #ffffff;
     text-shadow: 1px 1px 1px #000000;
     font-family: monospace !important;
-    font-family: "Times New Roman", Times, serif;
+    /*font-family: "Times New Roman", Times, serif;*/
     font-weight: normal;
     text-align: center;
 
@@ -234,7 +234,7 @@ hremind {
     height: 300px;
     margin-left: auto;
     margin-right: auto;
-    z-index: 1;
+    z-index: 5;
 }
 
 .tb_head {

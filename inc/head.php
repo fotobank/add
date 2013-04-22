@@ -79,7 +79,7 @@ header('Content-type: text/html; charset=windows-1251');
 
 	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="/favicon.ico"/>
 	<link rel="shortcut icon" href="/img/ico_nmain.gif"/>
-	<link rel="stylesheet" type="text/css" href="/css/reset.min.css">
+<!--	<link rel="stylesheet" type="text/css" href="/css/reset.min.css">-->
 	<link href="/css/dynamic-to-top.css" rel="stylesheet" type="text/css"/>
 	<!-- кнопка вверх -->
 	<link href="/css/bootstrap.css" rel="stylesheet"/>
