@@ -1,5 +1,5 @@
 <?php
-    include './inc/head.php';
+   include './inc/head.php';
 ?>
 
 <!--[if IE]><script>
@@ -15,7 +15,7 @@
         height : '680px'
         }, 2000, function(){
                          $('#form_wrap input[type=submit]').css({'z-index' : '1', 'opacity' : '1'})} ) }, function() {
-        $('#form_wrap input[type=submit]').stop(true, true).css({ 'opacity' : '0'})
+        $('#form_wrap input[type=submit]').stop(true, true).css({ 'opacity' : '0'});
             $(this).stop(true, false).animate({
             height : '546px',
             top : '0px'
@@ -58,13 +58,13 @@
     #form_ob {background:#f7f2ec url('img/letter_bg.png');
         color: #000;
         position:relative;top:150px;overflow:hidden;
-        height:200px;width:470px;margin:0px auto;padding:20px;
+        height:200px;width:470px;margin:0 auto;padding:20px;
         border: 1px solid #ccc;
         border-radius: 3px;
         -moz-border-radius: 3px; -webkit-border-radius: 3px;
-        box-shadow: 0px 0px 3px #9d9d9d, inset 0px 0px 27px #fff;
-        -moz-box-shadow: 0px 0px 3px #9d9d9d, inset 0px 0px 14px #fff;
-        -webkit-box-shadow: 0px 0px 3px #9d9d9d, inset 0px 0px 27px #fff;
+        box-shadow: 0 0 3px #9d9d9d, inset 0 0 27px #fff;
+        -moz-box-shadow: 0 0 3px #9d9d9d, inset 0 0 14px #fff;
+        -webkit-box-shadow: 0 0 3px #9d9d9d, inset 0 0 27px #fff;
         -webkit-transition: all 1s ease-in-out .3s;
         -moz-transition: all 1s ease-in-out .3s;
         -o-transition: all 1s ease-in-out .3s;
@@ -102,7 +102,7 @@
 </style>
 
 <div id="main">
-<div id="cont_fb">
+<div id="cont_fb" >
 <?php
 
 	$uname = "";
@@ -203,26 +203,26 @@ print "<script language='Javascript' type='text/javascript'>
                     <table width="100%">
                         <tr>
                             <td width="750" >
-                                <form id="form_ob" action="kontakty.php" method="post" name="send_form">
+                                <form id="form_ob" action="kontakty.php" method="post" name="send_form" >
                                     <h3 style="color:#000;">Пишите нам:</h3>
                                     <table style="font-weight:bold">
                                         <tr>
                                             <td class="td_formL" style="width: 100px;">Ваше имя*:</td>
                                             <td class="td_formR"><input rel="tooltip" data-placement="top" data-original-title="Имя или ник на сайте.
                                               Длина от 3 до 16 символов."
-		                                            class="inp_f_kont" type="text" name="uname" style="margin-bottom: 5px; margin-left: 0px; width: 200px;" maxlength="20" value="<?=$uname;?>"/></td>
+		                                            class="inp_f_kont" type="text" name="uname" style="margin-bottom: 5px; margin-left: 0; width: 200px;" maxlength="20" value="<?=$uname;?>"/></td>
                                             <td><span class="label label-important" style="margin-left: 10px;"><?=$e1;?></span></td>
                                         </tr>
                                         <tr>
                                             <td class="td_formL" style="width: 100px;">Телефон*:</td>
                                             <td class="td_formR"><input rel="tooltip" data-placement="right" data-original-title="Не меньше 6 цифр."
-		                                            class="inp_f_kont" type="text" name="uphone" style="margin-bottom: 4px; margin-left: 0px; width: 200px;" maxlength="20" value="<?=$uphone;?>"/></td>
+		                                            class="inp_f_kont" type="text" name="uphone" style="margin-bottom: 4px; margin-left: 0; width: 200px;" maxlength="20" value="<?=$uphone;?>"/></td>
                                             <td><span class="label label-important" style=" margin-left: 10px;"><?=$e4;?></span></td>
                                         </tr>
                                         <tr>
                                             <td class="td_formL" style="width: 100px;">Skype:</td>
                                             <td class="td_formR"><input rel="tooltip" data-placement="right" data-original-title="Для быстрой связи."
-		                                            class="inp_f_kont" type="text" name="skype" style="margin-bottom: 5px; margin-left: 0px; width: 200px;" maxlength="20" value="<?=$skype;?>"/></td>
+		                                            class="inp_f_kont" type="text" name="skype" style="margin-bottom: 5px; margin-left: 0; width: 200px;" maxlength="20" value="<?=$skype;?>"/></td>
                                         </tr>
                                         <tr>
                                             <td class="td_formL" style="width: 100px;">Ваш E-mail*:</td>
@@ -242,12 +242,14 @@ print "<script language='Javascript' type='text/javascript'>
                                             <span class="label label-important" style="margin-top: -13px; margin-left: 180px; position:absolute"><?=$e2;?></span>
                                         </tr>
                                         <tr>
-                                            <td class="td_formL" style="width: 100px;"><div  style="position:relative; margin-top: -10px;">Введите результат 24*2=?:</div></td>
+<!--                                            <td class="td_formL" style="width: 100px;"><div  style="position:relative; margin-top: -10px;">Введите результат 24*2=?:</div></td>-->
+	                                        <td class="td_formL" style="width: 100px;">
+		                                        <div  style="position: absolute; margin-top: 1px; margin-left: 180px;"><?php dsp_crypt('kontakti.cfg.php',1); ?></div>
+	                                        </td>
                                             <td class="td_formR2">
-
-                                                <input rel="tooltip" data-placement="right" data-original-title="Защита от спама."
+                                                <input rel="tooltip" data-placement="top" data-original-title="Защита от спама."
 	                                                class="inp_f_kont" type="text" name="umath" value="" style="margin-left: -8px; width: 100px;" />
-                                                <span class="label label-important" style="margin-top: 20px; margin-left: 20px;"><?=$e5;?></span>
+                                                <span class="label label-important" style="position: relative;padding-top: 2px; top: 18px;"><?=$e5;?></span>
                                                 <input type="hidden" name="go" value="5"/><br>
                                                 <input class="inp_f_kont" type="submit" name="submit" value="Готово. Отправить!"
 	                                                data-original-title="" style="margin-top: 3px; margin-left: -8px; width: 300px;">

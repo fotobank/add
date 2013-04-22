@@ -280,7 +280,7 @@ header('Content-type: text/html; charset=windows-1251');
 							</tr>
 						</table>
 						<!--						<a href="/reminder.php" style="color: #fff; text-decoration: none;" >Забыли пароль?</a>-->
-						<a href="#" style="color: #fff; text-decoration: none;" onclick="$(document).ready(function load() {$('#vosst').modal('show'); }); ">Забыли
+						<a href="#" style="color: #fff; text-decoration: none;" onclick=" reload(0,'.<?=SID?>.'); $(document).ready(function load() {$('#vosst').modal('show'); }); ">Забыли
 							пароль?</a>
 					</form>
 				<? endif; ?>
@@ -303,7 +303,7 @@ header('Content-type: text/html; charset=windows-1251');
 <div id="vosst" class="modal hide fade in animated fadeInDown" style="position: absolute; top: 40%; left: 50%; z-index: 1;
 	" data-keyboard="false" data-width="460" data-backdrop="static" tabindex="-1" aria-hidden="false">
 	<div class="modal-header" style="background: rgba(229,229,229,0.53)">
-		<button type="button" class="close" data-dismiss="modal" aria-hidden="true" onClick="$('#result').empty();">x
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true" onClick="$('#result').empty();reload('kontakti.cfg.php','.<?=SID?>.');">x
 		</button>
 		<div>
 			<h3>
@@ -325,16 +325,16 @@ header('Content-type: text/html; charset=windows-1251');
 					style="margin-left: 8px; width: 250px" type="text" value="Код безопасности:" name="pkey"/>
 			</label>
 
-			<div style="margin-top: 5px;"><?php dsp_crypt(0,1); ?></div>
+			<div style="margin-top: 5px;"><?php dsp_crypt('cryptographp.cfg.php',1); ?></div>
 			<input class="btn" type="reset" value="Напомнить"
-				onClick="ajaxPostQ('/inc/SendData.php','#result',$('#reminder').serialize()); reload(0,'');"
+				onClick="ajaxPostQ('/inc/SendData.php','#result',$('#reminder').serialize()); reload(0,'.<?=SID?>.');"
 				style="float: left; margin: 0 0 0 90px;"/>
 
 		</form>
 
 	</div>
 	<div class="modal-footer">
-		<button type="button" data-dismiss="modal" class="btn" onClick="$('#result').empty();"> Закрыть</button>
+		<button type="button" data-dismiss="modal" class="btn" onClick="$('#result').empty();reload('kontakti.cfg.php','.<?=SID?>.');"> Закрыть</button>
 	</div>
 </div>
 

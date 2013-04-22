@@ -108,7 +108,7 @@ $nbcirclemax = 4;      // Шум: Максимальное число кругов alйatoires
 $noisecolorchar  = 3;  // Шум: Написание цвета пикселей, линии, круги:
                        // 1: Цвет почерка caractиres des caractиres
                        // 2: Цвет фона
-                       // 3: Цвет alйatoire
+                       // 3: Цвет Случайный цвет
                        
 $brushsize = 1;        // Размер шрифта princeaiu (в пикселях)
                         // 1 а 25 (чем выше значения могут привести к
@@ -130,13 +130,13 @@ $cryptsecure = "sha1";    // Mйthode de crytpage utilisйe: "md5", "sha1" ou "" (
                          // Si aucune mйthode n'est indiquйe, le code du cyptogramme est stockй 
                          // en clair dans la session.
                        
-$cryptusetimer = 0;        // Temps (en seconde) avant d'avoir le droit de regйnйrer un cryptogramme
-                           //Время (в секундах) перед правой regйnйrer криптограммы
+$cryptusetimer = 0;        //Времени (в секундах) перед тем, способны регенерировать новые криптограммы
 
-$cryptusertimererror = 3;  // Действие rйaliser а если минимальное время не respectй:
-                           // 1: Ничего не делать, не отправлять изображения.
-                           // 2: Изображение renvoyйe "images/erreur2.png" (можно изменить)
-                           // 3: Сценарий паузы соответствующее время (обратите внимание на тайм-аут
+
+$cryptusertimererror = 2;  // Если минимальное время не соблюдается:
+                           // 1: Ничего, не возвращаться изображения.
+	                        // 2: Отправить изображение "images/erreur2.png"
+                           // 3: сценарий находится в $ паузу во время секунд cryptusetimer (обратите внимание на тайм-аут
                            //    на недостаток, который режет PHP скрипты через 30 секунд)
                            //    см. "max_execution_time" переменную в вашей конфигурации PHP
 

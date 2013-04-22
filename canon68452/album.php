@@ -17,7 +17,6 @@ $(function () {
 sendFtp();
 });
 </script>
-});
 
 <?
 
@@ -257,7 +256,7 @@ if (isset($_POST['go_ftp_upload']))
             ftp_close($ftp);
             $out = "<div class='alert alert-error'>Папка: $album_data[ftp_folder] заданна не верно!<br>Проверьте путь!</div>";
             senderror($out, $id, '');
-            die ('Директория  '.$album_data[ftp_folder].' не существует! <br>');
+            die ('Директория  '.$album_data['ftp_folder'].' не существует! <br>');
             }
 //var_dump($file_list);
 //echo 'Ответ ftp: <br><pre>', print_r($file_list,1), '</pre>';

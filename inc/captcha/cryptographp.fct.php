@@ -11,14 +11,16 @@ $_SESSION['cryptdir'] = dirname($cryptinstall);
 function dsp_crypt($cfg = 0, $reload = 1)
 	{
 		// Отображает криптограммы
-		echo"<table><tr><td><img id='cryptogram' src='".$_SESSION['cryptdir']."/cryptographp.php?cfg=".$cfg."&".SID
-			."'></td>";
+		echo"<table><tr><td><img id='cryptogram' src='".$_SESSION['cryptdir']."/cryptographp.php?cfg=".$cfg."&".SID."'></td>";
+
 		if ($reload)
 			{
 				echo"<td><a title='".($reload == 1 ? '' : $reload)
-					."' style=\"cursor:pointer\" onclick=\"javascript:document.images.cryptogram.src='".$_SESSION['cryptdir']
-					."/cryptographp.php?cfg=".$cfg."&".SID."&'+Math.round(Math.random(0)*1000)+1\"><img src=\""
-					.$_SESSION['cryptdir']."/images/reload.png\"></a></td>";
+					."' style=\"cursor:pointer\"
+					onclick=
+
+					\"$(' #cryptogram ').attr('src', '".$_SESSION['cryptdir']."/cryptographp.php?cfg=".$cfg."&".SID."&' +Math.round(Math.random(0)*1000)+1);\">
+					<img src=\"".$_SESSION['cryptdir']."/images/reload.png\"></a></td>";
 			}
 		echo "</tr></table>";
 	}

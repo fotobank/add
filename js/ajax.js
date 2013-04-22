@@ -16,6 +16,30 @@
 
 
 function ajaxPostQ(url, idName,  data) {
+
+    $(idName).empty();
+
+    // индикатор загрузки
+    $(document).ready(function() {
+
+        // Установка ajax indicator
+        $(idName).append('<div id="ajaxBusy"><p><img src="/img/loading2.gif"></p></div>');
+
+        $('#ajaxBusy').css({
+            display:"none",
+            position:"relative",
+            left:"30px",
+            width:"auto"
+        });
+    });
+
+    // Ajax activity indicator bound to ajax start/stop document events
+    $(document).ajaxStart(function(){
+        $('#ajaxBusy').show();
+    }).ajaxStop(function(){
+            $('#ajaxBusy').hide();
+        });
+
     $.ajax({
         type: "POST",
         header: ('Content-Type: application/json; charset=utf-8;'),
@@ -41,6 +65,9 @@ function reload (cfg, SID) {
 
        $(" #cryptogram ").attr("src", "/inc/captcha/cryptographp.php?cfg=" + cfg + "&" + SID + "&" + Math.round(Math.random(0)*1000)+1);
 }
+
+
+
 
 
 

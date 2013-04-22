@@ -1,17 +1,27 @@
 <?php
 
+// -----------------------------------------------
+// Cryptographp v1.4
+// (c) 2006-2007 Sylvain BRISON 
+//
 // www.cryptographp.com 
+// cryptographp@alphpa.com 
+//
+// Licence CeCILL modifiée
+// => Voir fichier Licence_CeCILL_V2-fr.txt)
+// -----------------------------------------------
+
 
 // -------------------------------------
 // Configuration du fond du cryptogramme
 // -------------------------------------
 
-$cryptwidth  = 100;  // Largeur du cryptogramme (en pixels)
-$cryptheight = 35;   // Hauteur du cryptogramme (en pixels)
+$cryptwidth  = 130;  // Largeur du cryptogramme (en pixels)
+$cryptheight = 40;   // Hauteur du cryptogramme (en pixels)
 
-$bgR  = 230;         // Couleur du fond au format RGB: Red (0->255)
-$bgG  = 230;         // Couleur du fond au format RGB: Green (0->255)
-$bgB  = 230;         // Couleur du fond au format RGB: Blue (0->255)
+$bgR  = 255;         // Couleur du fond au format RGB: Red (0->255)
+$bgG  = 255;         // Couleur du fond au format RGB: Green (0->255)
+$bgB  = 255;         // Couleur du fond au format RGB: Blue (0->255)
 
 $bgclear = true;     // Fond transparent (true/false)
                      // Uniquement valable pour le format PNG
@@ -34,11 +44,11 @@ $bgframe = false;    // Ajoute un cadre de l'image (true/false)
 
 // Couleur de base des caractères
 
-$charR = 50;     // Couleur des caractères au format RGB: Red (0->255)
-$charG = 50;     // Couleur des caractères au format RGB: Green (0->255)
-$charB = 50;     // Couleur des caractères au format RGB: Blue (0->255)
+$charR = 0;     // Couleur des caractères au format RGB: Red (0->255)
+$charG = 0;     // Couleur des caractères au format RGB: Green (0->255)
+$charB = 0;     // Couleur des caractères au format RGB: Blue (0->255)
 
-$charcolorrnd = false;      // Choix aléatoire de la couleur.
+$charcolorrnd = true;      // Choix aléatoire de la couleur.
 $charcolorrndlevel = 2;    // Niveau de clarté des caractères si choix aléatoire (0->4)
                            // 0: Aucune sélection
                            // 1: Couleurs très sombres (surtout pour les fonds clairs)
@@ -56,20 +66,20 @@ $charclear = 0;   // Intensité de la transparence des caractères (0->127)
 //$tfont[] = 'Alanden_.ttf';       // Les polices seront aléatoirement utilisées.
 //$tfont[] = 'bsurp___.ttf';       // Vous devez copier les fichiers correspondants
 //$tfont[] = 'ELECHA__.TTF';       // sur le serveur.
-//$tfont[] = 'luggerbu.ttf';         // Ajoutez autant de lignes que vous voulez   
+$tfont[] = 'luggerbu.ttf';         // Ajoutez autant de lignes que vous voulez   
 //$tfont[] = 'RASCAL__.TTF';       // Respectez la casse ! 
-$tfont[] = 'SCRAWL.TTF';  
+//$tfont[] = 'SCRAWL.TTF';  
 //$tfont[] = 'WAVY.TTF';   
-
+//$tfont[] = 'verdana.ttf';
 
 // Caracteres autorisés
 // Attention, certaines polices ne distinguent pas (ou difficilement) les majuscules 
 // et les minuscules. Certains caractères sont faciles à confondre, il est donc
 // conseillé de bien choisir les caractères utilisés.
 
-$charel = 'ABCDEFGHKLMNPRTWXYZ234569';       // Caractères autorisés
+$charel = '012345689';       // Caractères autorisés
 
-$crypteasy = true;       // Création de cryptogrammes "faciles à lire" (true/false)
+$crypteasy = false;       // Création de cryptogrammes "faciles à lire" (true/false)
                          // composés alternativement de consonnes et de voyelles.
 
 $charelc = 'BCDFGKLMPRTVWXZ';   // Consonnes utilisées si $crypteasy = true
@@ -77,14 +87,14 @@ $charelv = 'AEIOUY';              // Voyelles utilisées si $crypteasy = true
 
 $difuplow = false;          // Différencie les Maj/Min lors de la saisie du code (true, false)
 
-$charnbmin = 5;         // Nb minimum de caracteres dans le cryptogramme
-$charnbmax = 5;         // Nb maximum de caracteres dans le cryptogramme
+$charnbmin = 3;         // Nb minimum de caracteres dans le cryptogramme
+$charnbmax = 3;         // Nb maximum de caracteres dans le cryptogramme
 
-$charspace = 16;        // Espace entre les caracteres (en pixels)
-$charsizemin = 16;      // Taille minimum des caractères
+$charspace = 18;        // Espace entre les caracteres (en pixels)
+$charsizemin = 10;      // Taille minimum des caractères
 $charsizemax = 18;      // Taille maximum des caractères
 
-$charanglemax  = 10;     // Angle maximum de rotation des caracteres (0-360)
+$charanglemax  = 0;     // Angle maximum de rotation des caracteres (0-360)
 $charup   = false;        // Déplacement vertical aléatoire des caractères (true/false)
 
 // Effets supplémentaires
@@ -107,7 +117,7 @@ $noiselinemax = 0;     // Bruit: Nb maximum de lignes aléatoires
 $nbcirclemin = 0;      // Bruit: Nb minimum de cercles aléatoires 
 $nbcirclemax = 0;      // Bruit: Nb maximim de cercles aléatoires
 
-$noisecolorchar  = 2;  // Bruit: Couleur d'ecriture des pixels, lignes, cercles: 
+$noisecolorchar  = 3;  // Bruit: Couleur d'ecriture des pixels, lignes, cercles:
                        // 1: Couleur d'écriture des caractères
                        // 2: Couleur du fond
                        // 3: Couleur aléatoire
@@ -117,7 +127,7 @@ $brushsize = 1;        // Taille d'ecriture du princeaiu (en pixels)
                        // Internal Server Error sur certaines versions de PHP/GD)
                        // Ne fonctionne pas sur les anciennes configurations PHP/GD
 
-$noiseup = false;      // Le bruit est-il par dessus l'ecriture (true) ou en dessous (false) 
+$noiseup = true;      // Le bruit est-il par dessus l'ecriture (true) ou en dessous (false)
 
 // --------------------------------
 // Configuration système & sécurité
@@ -134,7 +144,7 @@ $cryptsecure = "md5";    // Méthode de crytpage utilisée: "md5", "sha1" ou "" (a
                        
 $cryptusetimer = 0;        // Temps (en seconde) avant d'avoir le droit de regénérer un cryptogramme
 
-$cryptusertimererror = 3;  // Action à réaliser si le temps minimum n'est pas respecté:
+$cryptusertimererror = 2;  // Action à réaliser si le temps minimum n'est pas respecté:
                            // 1: Ne rien faire, ne pas renvoyer d'image.
                            // 2: L'image renvoyée est "images/erreur2.png" (vous pouvez la modifier)
                            // 3: Le script se met en pause le temps correspondant (attention au timeout
