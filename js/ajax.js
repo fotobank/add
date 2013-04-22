@@ -249,3 +249,4 @@ $(function () {
     // привязываем плагин ко всем элементам с id "#email, #login"
     $(' .autoclear ').autoClear();
 });
+

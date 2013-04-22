@@ -1,8 +1,6 @@
 <?php include ('inc/head.php');
 ?>
 	<div id="main">
-
-
 		<div style="text-align: center;">
 			<div>
 				<h2><b>
@@ -23,9 +21,7 @@
 			больше семи символов, включающий в себя цифры, а также большие и маленькие буквы.
 		</div>
 		<br>
-
 		<div id="form_reg">
-
 			<?
 			     $frm_reg='inline';
 			if ($_SERVER['REQUEST_METHOD'] == 'POST')
@@ -74,13 +70,13 @@
 						'select count(*) cnt from users where login = \''.mysql_escape_string($rLogin).'\''), 0));
 					if ($cnt > 0)
 						{
-							die('Пользовател с таким логином уже существует!');
+							die('Пользователь с таким логином уже существует!');
 						}
 					$cnt = intval(mysql_result(mysql_query(
 						'select count(*) cnt from users where email = \''.mysql_escape_string($rEmail).'\''), 0));
 					if ($cnt > 0)
 						{
-							die('Пользовател с таким e-mail уже существует!');
+							die('Пользователь с таким e-mail уже существует!');
 						}
 					$time = time();
 					// Устанавливаем соединение с бд(не забудьте подставить ваши значения сервер-логин-пароль)
@@ -133,9 +129,7 @@ LTR;
    </div>";
 						}
 				}
-
 			?>
-
 			<form action="" method="post" enctype="multipart/form-data" style="display:<?= $frm_reg ?>">
 				<table>
 					<tr>
@@ -160,7 +154,6 @@ LTR;
 					</tr>
 				</table>
 				<br>
-
 				<div align="center"><input class="metall_knopka" name="ok" type="submit" value="Отправить"></div>
 			</form>
 		</div>
