@@ -144,7 +144,7 @@
 		$skype = trim(htmlspecialchars($_POST["skype"]));
 		$e5 = null;
 		$umath = trim(htmlspecialchars($_POST["umath"]));
-		if ($umath != "48")
+		if ($umath != chk_crypt($umath))
 		{
 			$e5 .= "Введено неверное контрольное число<br>";
 		}
@@ -179,14 +179,16 @@
 		// отправляем
 		// выводим уведомление об успехе операции и перезагружаем страничку
 
-?>
+/**/?><!--
 <div class="ok_msg">
   Спасибо. Ваше сообщение отправленно.
 	<button class="close" data-dismiss="alert">x</button>
   </div>
-			<?
+--><?
+
 print "<script language='Javascript' type='text/javascript'>
   <!--
+  humane.success('Спасибо.<br> Ваше сообщение отправленно.');
   function reload()
   {location = \"kontakty.php\"};
   setTimeout('reload()', 4000);
@@ -203,30 +205,30 @@ print "<script language='Javascript' type='text/javascript'>
                     <table width="100%">
                         <tr>
                             <td width="750" >
-                                <form id="form_ob" action="kontakty.php" method="post" name="send_form" >
+                                <form id="form_ob" action="kontakty.php" method="post" name="send_form" data-focus-on="input:first">
                                     <h3 style="color:#000;">Пишите нам:</h3>
                                     <table style="font-weight:bold">
                                         <tr>
                                             <td class="td_formL" style="width: 100px;">Ваше имя*:</td>
-                                            <td class="td_formR"><input rel="tooltip" data-placement="top" data-original-title="Имя или ник на сайте.
+                                            <td class="td_formR"><input rel="tooltip" data-tabindex="1" data-placement="top" data-original-title="Имя или ник на сайте.
                                               Длина от 3 до 16 символов."
 		                                            class="inp_f_kont" type="text" name="uname" style="margin-bottom: 5px; margin-left: 0; width: 200px;" maxlength="20" value="<?=$uname;?>"/></td>
                                             <td><span class="label label-important" style="margin-left: 10px;"><?=$e1;?></span></td>
                                         </tr>
                                         <tr>
                                             <td class="td_formL" style="width: 100px;">Телефон*:</td>
-                                            <td class="td_formR"><input rel="tooltip" data-placement="right" data-original-title="Не меньше 6 цифр."
+                                            <td class="td_formR"><input rel="tooltip" data-tabindex="2" data-placement="right" data-original-title="Не меньше 6 цифр."
 		                                            class="inp_f_kont" type="text" name="uphone" style="margin-bottom: 4px; margin-left: 0; width: 200px;" maxlength="20" value="<?=$uphone;?>"/></td>
                                             <td><span class="label label-important" style=" margin-left: 10px;"><?=$e4;?></span></td>
                                         </tr>
                                         <tr>
                                             <td class="td_formL" style="width: 100px;">Skype:</td>
-                                            <td class="td_formR"><input rel="tooltip" data-placement="right" data-original-title="Для быстрой связи."
+                                            <td class="td_formR"><input rel="tooltip" data-tabindex="3" data-placement="right" data-original-title="Для быстрой связи."
 		                                            class="inp_f_kont" type="text" name="skype" style="margin-bottom: 5px; margin-left: 0; width: 200px;" maxlength="20" value="<?=$skype;?>"/></td>
                                         </tr>
                                         <tr>
                                             <td class="td_formL" style="width: 100px;">Ваш E-mail*:</td>
-                                            <td class="td_formR"><input rel="tooltip" data-placement="bottom" data-original-title="Указывайте реально существующий почтовый ящик.
+                                            <td class="td_formR"><input rel="tooltip" data-tabindex="4" data-placement="bottom" data-original-title="Указывайте реально существующий почтовый ящик.
                                              На него Вам прийдет ответ." class="inp_f_kont" type="text" name="umail"
 		                                            style="margin-bottom: 15px; margin-left: 0px; width: 200px;" maxlength="50" value="<?=$umail;?>"/></td>
                                             <td style="padding-bottom: 17px;"><span class="label label-important" style="margin-top: 7px; margin-left: 10px;"><?=$e3;?></span></td>
@@ -244,10 +246,10 @@ print "<script language='Javascript' type='text/javascript'>
                                         <tr>
 <!--                                            <td class="td_formL" style="width: 100px;"><div  style="position:relative; margin-top: -10px;">Введите результат 24*2=?:</div></td>-->
 	                                        <td class="td_formL" style="width: 100px;">
-		                                        <div  style="position: absolute; margin-top: 1px; margin-left: 180px;"><?php dsp_crypt('kontakti.cfg.php',1); ?></div>
+		                                        <div  style="position: absolute; margin-top: 1px; margin-left: 200px;"><?php dsp_crypt('kontakti.cfg.php',1); ?></div>
 	                                        </td>
                                             <td class="td_formR2">
-                                                <input rel="tooltip" data-placement="top" data-original-title="Защита от спама."
+                                                <input rel="tooltip" data-tabindex="5" data-placement="top" data-original-title="Защита от спама."
 	                                                class="inp_f_kont" type="text" name="umath" value="" style="margin-left: -8px; width: 100px;" />
                                                 <span class="label label-important" style="position: relative;padding-top: 2px; top: 18px;"><?=$e5;?></span>
                                                 <input type="hidden" name="go" value="5"/><br>

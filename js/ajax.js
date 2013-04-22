@@ -33,6 +33,8 @@ function ajaxPostQ(url, idName,  data) {
         });
     });
 
+
+
     // Ajax activity indicator bound to ajax start/stop document events
     $(document).ajaxStart(function(){
         $('#ajaxBusy').show();
@@ -61,35 +63,12 @@ function ajaxPostQ(url, idName,  data) {
 
 
 
+// перезагрузка капчи
 function reload (cfg, SID) {
 
        $(" #cryptogram ").attr("src", "/inc/captcha/cryptographp.php?cfg=" + cfg + "&" + SID + "&" + Math.round(Math.random(0)*1000)+1);
 }
 
-
-
-
-
-
-function ajaxRem() {
-    $.ajax({
-        type: "POST",
-        header: ('Content-Type: application/json; charset=utf-8;'),
-        url: '/inc/SendData.php',
-//        data: 'name='+ $(' #name ').val(),
-        data: $('#reminder').serialize(),
-
-        error:function(xhr, status, errorThrown) {
-            alert(errorThrown+'\n'+status+'\n'+xhr.statusText);
-        },
-
-        // Выводим то что вернул PHP
-        success: function (html) {
-            //предварительно очищаем нужный элемент страницы
-            $(' #result ').empty().append(html);
-        }
-    });
-}
 
 
 function getCaptca() {
@@ -100,24 +79,15 @@ function getCaptca() {
         type: "GET",
         header: ('Content-Type: application/json; charset=utf-8;'),
         url: "/inc/captcha/captcha.html",
-
         cache: false,
         error:function(xhr, status, errorThrown) {
             alert(errorThrown+'\n'+status+'\n'+xhr.statusText);
         },
         success: function(data){
             $(" #loadCaptca ").empty().append(data);
-
-
             return false;
-
-
         }
-
-
     });
-
-
 
  //   $.ajax({
 //        type: 'post',
@@ -152,8 +122,6 @@ function getCaptca() {
 
   //  $('img').each( function(){ this.src = this.getAttribute('data-full'); } );
  //   $('img').each( function(){ $(this).attr('src', $(this).data('full')); } );
-
-
 
 
     /* var src = ($(" .loadCaptca").attr("src") === "/inc/captcha/captcha.php")
