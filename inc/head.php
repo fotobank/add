@@ -153,7 +153,7 @@ header('Content-type: text/html; charset=windows-1251');
 	<script language=JavaScript type="text/javascript">
 
 		function smile(str) {
-			obj = document.Sad_Raven_Guestbook.mess;
+	      obj = document.Sad_Raven_Guestbook.mess;
 			obj.focus();
 			obj.value = obj.value + str;
 		}
@@ -161,8 +161,8 @@ header('Content-type: text/html; charset=windows-1251');
 			window.open(theURL, winName, features);
 		}
 		function inserttags(st_t, en_t) {
-			obj = document.Sad_Raven_Guestbook.mess;
-			obj2 = document.Sad_Raven_Guestbook;
+	      obj = document.Sad_Raven_Guestbook.mess;
+	      obj2 = document.Sad_Raven_Guestbook;
 			if ((document.selection)) {
 				obj.focus();
 				obj2.document.selection.createRange().text = st_t + obj2.document.selection.createRange().text + en_t;
@@ -289,7 +289,8 @@ header('Content-type: text/html; charset=windows-1251');
 							<tr></tr>
 							<tr>
 								<td>
-									<input data-placement="left" rel="tooltip" class="vhod" name="submit" type="submit" value="вход" title="Добро пожаловать!" data-original-title="Tooltip on left">
+									<input data-placement="left" rel="tooltip" class="vhod" name="submit" type="submit" value="вход"
+										title="Добро пожаловать!" data-original-title="Tooltip on left">
 								</td>
 
 								<td>
