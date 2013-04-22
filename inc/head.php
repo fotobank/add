@@ -194,6 +194,9 @@ header('Content-type: text/html; charset=windows-1251');
 			$('[data-toggle="modal"]').click(function(e) {
 				e.preventDefault();
 				var url = $(this).attr('href');
+				if (url.indexOf("#") == 0) {
+					$(url).modal('open');
+				} else {
 				$.get(url, function(data) {
 						$('<div id="vosst" class="modal hide fade in animated fadeInDown" style="position: absolute; top: 40%; left: 50%; z-index: 1; " data-keyboard="false" data-width="460" data-backdrop="static" tabindex="-1" aria-hidden="false">' + data + '</div>').modal();
 					})
@@ -201,7 +204,8 @@ header('Content-type: text/html; charset=windows-1251');
 							// привязываем плагин ко всем элементам с "autoclear"
 							$(' .autoclear ').autoClear().tooltip();
 						});
-				});
+				   }
+			  });
 		});
    </script>
 
@@ -295,7 +299,7 @@ header('Content-type: text/html; charset=windows-1251');
 						</table>
 						<!--						<a href="/reminder.php" style="color: #fff; text-decoration: none;" >Забыли пароль?</a>-->
 <!--						onclick=" reload(0,'.--><?//=SID?><!--.'); $(document).ready(function load() {$('#vosst').modal('show'); });"-->
-		   <a href="/reminder.php" style="color: #fff; text-decoration: none;" data-toggle="modal">Забыли пароль?</a>
+		   <a href="/reminder.php" style="color: #fff; text-decoration: none;" data-target="#" data-toggle="modal">Забыли пароль?</a>
 					</form>
 				<? endif; ?>
 
