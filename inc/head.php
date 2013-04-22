@@ -342,7 +342,7 @@ if (isset($_SESSION['ok_msg']))
 	{
 		?>
 		<script type='text/javascript'>
-			dhtmlx.message.expire = 6000;
+
 			humane.success("Добро пожаловать, <?=$_SESSION['us_name']?>!<br><span><?=$_SESSION['ok_msg']?></span>");
 		</script>
 		<?
@@ -355,6 +355,7 @@ if (isset($_SESSION['ok_msg2']))
 		?>
 		<script type='text/javascript'>
 			$(document).ready(function () {
+				dhtmlx.message.expire = 6000;
 				dhtmlx.message({ type: 'warning', text: <?=$_SESSION['ok_msg2'] ?>});
 			});
 			/*function redirect() {
