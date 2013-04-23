@@ -17,10 +17,10 @@
 			$foto_folder =
 				mysql_result(mysql_query('select foto_folder from albums where id = '.intval($_SESSION['current_album']).'  '), 0);
 			$source      = $_SERVER['DOCUMENT_ROOT'].$foto_folder.intval($_SESSION['current_album']).'/'.$img_name;
-			unlink($source);
+			if(isset($img_name)) unlink($source);
 			mysql_query('delete from photos where id = '.$id);
 			$test = $_SERVER['DOCUMENT_ROOT'].'/img/not_foto.png';
-		//	header("Content-type: image/png");
-			echo $test;
-		//	echo "<img src= ".$_SERVER['DOCUMENT_ROOT']."/img/not_foto.png>";
+	   	header("Content-type: image/png");
+		//	echo $test;
+			echo "<img style='width: 120px; float: left;' src= '$test'>";
 		}

@@ -93,16 +93,19 @@ function ajaxPostQ(url, idName,  data) {
         header: ('Content-Type: application/json; charset=utf-8;'),
         url: url,
         data: data,
-        error:function(xhr, status, errorThrown) {
-            alert(errorThrown+'\n'+status+'\n'+xhr.statusText);
+        error:function(XHR) {
+            alert(" Ошибка: "+XHR.status+ "  " + XHR.statusText);
         },
-
+        statusCode: {
+           404: function() {
+           alert("Страница не найдена");
+         }
+         },
         // Выводим то что вернул PHP
         success: function (html) {
             alert (html);
             //предварительно очищаем нужный элемент страницы
-            $('id' + idName).empty().append(html);
-
-        }
+            $(idName).empty().append(html);
+         }
     });
 }

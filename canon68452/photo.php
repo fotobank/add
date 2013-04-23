@@ -219,21 +219,22 @@ if (isset($_SESSION['current_album'])):
 										</div>
 										<div>
 <!--											<form action="index.php" method="post" style="margin: 0;">-->
-											<form action="" style="margin: 0;">
-												<input class="btn btn-danger" type="hidden" name="go_delete" value="<?= $ln['id'] ?>"/>
+											<form id='delFoto' action="" style="margin: 0;">
+<!--												<input class="btn btn-danger" type="hidden" name="go_delete" value="--><?//= $ln['id'] ?><!--"/>-->
 												<input class="btn-mini btn-danger" type="submit"
 													style="width: 50px; height: 18px; padding-top: 0; margin-top: 7px; margin-bottom: 0; margin-left: 38px;"
 													value="удалить" onclick="
 //													return confirmDelete();
-													ajaxPostQ('/canon68452/ajax/deleteFoto.php','<?='id'.$ln['id'] ?>','<?= 'go_delete='.$ln['id'] ?>')
+													ajaxPostQ('/canon68452/ajax/deleteFoto.php','<?='#'.$ln['id'] ?>','<?='go_delete='.$ln['id'] ?>')
 													"/>
 										   </form>
 										</div>
 									</a>
-									<a class="btn-mini btn-danger" style="width: 50px; height: 18px; padding-top: 0; margin-top: 7px; margin-bottom: 0; margin-left: 38px;" onclick=" return confirmDelete();
-										ajaxPostQ('/canon68452/ajax/deleteFoto.php','<?='id'.$ln['id'] ?>','<?= 'go_delete='.$ln['id'] ?>')
+	<a class="btn-mini btn-danger" style="width: 50px; height: 18px; padding-top: 0; margin-top: 7px; margin-bottom: 0; margin-left: 38px;" onclick="
+		//return confirmDelete();
+										ajaxPostQ('/canon68452/ajax/deleteFoto.php','<?='#'.$ln['id'] ?>','<?= 'go_delete='.$ln['id'] ?>')
 										">удалить</a>
-
+	<a class="btn-mini btn-primary" type="reset" onClick="ajaxPostQ('/canon68452/ajax/deleteFoto.php','<?='#'.$ln['id'] ?>',$('#delFoto').serialize());">удалить</a>
 									<div class="controls">
 										<div class="input-append">
 											<form action="index.php" method="post" style="margin: 5px;">
