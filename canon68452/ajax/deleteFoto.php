@@ -19,8 +19,6 @@
 			$source      = $_SERVER['DOCUMENT_ROOT'].$foto_folder.intval($_SESSION['current_album']).'/'.$img_name;
 			if(isset($img_name)) unlink($source);
 			mysql_query('delete from photos where id = '.$id);
-			$test = $_SERVER['DOCUMENT_ROOT'].'/img/not_foto.png';
 	   	header("Content-type: image/png");
-		//	echo $test;
-			echo "<img style='width: 120px; float: left;' src= '$test'>";
+			echo "<img style='width: 140px; float: left; margin-left: 5px;' src= '/img/not_foto.png'>";
 		}

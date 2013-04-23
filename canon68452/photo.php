@@ -13,7 +13,7 @@ if (!isset($_SESSION['admin_logged']))
 	{
 		die();
 	}
-define('RECORDS_PER_PAGE', 6);
+define('RECORDS_PER_PAGE', 7);
 
 if (isset($_POST['go_add']) && isset($_SESSION['current_album']) && intval($_SESSION['current_album']) > 0)
 	{
@@ -188,68 +188,59 @@ if (isset($_SESSION['current_album'])):
 					while ($ln = mysql_fetch_assoc($rs))
 						{
 							?>
-							<div class="ramka" style="width: 135px; height: 290px; float: left; left: 0px; margin-left: 5px; ">
+						<div class="ramka" style="width: 135px; height: 290px; float: left; left: 0px; margin-left: 5px; ">
+							<div id="<?= 'ramka'.$ln['id'] ?>">
 								<li class="span2" style="margin-left: 10px; margin-bottom: 10px;">
 									<a class="thumbnail" href="<?=
 									$foto_folder.$ln['id_album'].'/'.$ln['img'] ?>" style="width: 120px;">
+										<div style="display: inline-block">
 										<div id="<?= $ln['id'] ?>">
 											<img style="width: 120px; float: left;" alt="" src="<?=
 											$foto_folder.$ln['id_album'].'/'.$ln['img'] ?>?t=<?= time() ?>">
 										</div>
-										<div style="float: left; height: 20px; width: 90px; margin-left: 22px; margin-top: -23px;">
-
-											<form action="index.php" name="go_turn" method="post" style="margin: 5px;" target="hiddenframe" onsubmit="document.getElementById('<?= $ln['id'] ?>').innerHTML='Подождите, идёт загрузка...'; return true;">
+										<div style="display: inline-block; float: left; height: 20px; width: 90px; margin-left: 22px; margin-top: -23px;">
+											<form action="index.php" name="go_turn" method="post" style="margin: 5px;" target="hiddenframe"
+												onsubmit="document.getElementById('<?= $ln['id'] ?>').innerHTML='Подождите, идёт загрузка...'; return true;">
 												<input class="btn" type="hidden" name="go_turn" value="<?= $ln['id'] ?>"/>
 												<input class="btn" type="hidden" name="povorot" value="270"/>
-												<input class="btn-mini btn-info" type="submit" value="^" style="float:left; width: 24px; height: 18px; padding: 0px 0px 0px 0px;  margin: 0px 0 0 0px;"/>
+												<input class="btn-mini btn-info" type="submit" value="^" style="float:left; width: 24px; height: 18px; padding: 0 0 0 0;  margin: 0 0 0 0;"/>
 											</form>
-											<form action="index.php" name="go_turn" method="post" style="margin: 5px;" target="hiddenframe" onsubmit="document.getElementById('<?= $ln['id'] ?>').innerHTML='Подождите, идёт загрузка...'; return true;">
+											<form action="index.php" name="go_turn" method="post" style="margin: 5px;" target="hiddenframe"
+												onsubmit="document.getElementById('<?= $ln['id'] ?>').innerHTML='Подождите, идёт загрузка...'; return true;">
 												<input class="btn" type="hidden" name="go_turn" value="<?= $ln['id'] ?>"/>
 												<input class="btn" type="hidden" name="povorot" value="180"/>
-												<input class="btn-mini btn-info" type="submit" value="180" style="float:left; width: 24px; height: 18px; padding: 0px 0px 0px 0px;  margin: 0px 0 0 0px;"/>
+												<input class="btn-mini btn-info" type="submit" value="180" style="float:left; width: 24px; height: 18px; padding: 0 0 0 0;  margin: 0 0 0 0;"/>
 											</form>
-											<form action="index.php" name="go_turn" method="post" style="margin: 5px;" target="hiddenframe" onsubmit="document.getElementById('<?= $ln['id'] ?>').innerHTML='Подождите, идёт загрузка...'; return true;">
+											<form action="index.php" name="go_turn" method="post" style="margin: 5px;" target="hiddenframe"
+												onsubmit="document.getElementById('<?= $ln['id'] ?>').innerHTML='Подождите, идёт загрузка...'; return true;">
 												<input class="btn" type="hidden" name="go_turn" value="<?= $ln['id'] ?>"/>
 												<input class="btn" type="hidden" name="povorot" value="90"/>
-												<input class="btn-mini btn-info" type="submit" value="^" style="float:left; width: 24px; height: 18px; padding: 0px 0px 0px 0px;  margin: 0px 0 0 0px;"/>
-
+												<input class="btn-mini btn-info" type="submit" value="^" style="float:left; width: 24px; height: 18px; padding: 0 0 0 0;  margin: 0 0 0 0;"/>
 											</form>
-											<iframe id="hiddenframe" name="hiddenframe" style="width:0px; height:0px; border:0px"></iframe>
-
+											<iframe id="hiddenframe" name="hiddenframe" style="width:0; height:0; border:0"></iframe>
 										</div>
-										<div>
-<!--											<form action="index.php" method="post" style="margin: 0;">-->
-											<form id='delFoto' action="" style="margin: 0;">
-<!--												<input class="btn btn-danger" type="hidden" name="go_delete" value="--><?//= $ln['id'] ?><!--"/>-->
-												<input class="btn-mini btn-danger" type="submit"
-													style="width: 50px; height: 18px; padding-top: 0; margin-top: 7px; margin-bottom: 0; margin-left: 38px;"
-													value="удалить" onclick="
-//													return confirmDelete();
-													ajaxPostQ('/canon68452/ajax/deleteFoto.php','<?='#'.$ln['id'] ?>','<?='go_delete='.$ln['id'] ?>')
-													"/>
-										   </form>
 										</div>
+								<div style="display: inline-block"></div>
 									</a>
-	<a class="btn-mini btn-danger" style="width: 50px; height: 18px; padding-top: 0; margin-top: 7px; margin-bottom: 0; margin-left: 38px;" onclick="
-		//return confirmDelete();
-										ajaxPostQ('/canon68452/ajax/deleteFoto.php','<?='#'.$ln['id'] ?>','<?= 'go_delete='.$ln['id'] ?>')
-										">удалить</a>
-	<a class="btn-mini btn-primary" type="reset" onClick="ajaxPostQ('/canon68452/ajax/deleteFoto.php','<?='#'.$ln['id'] ?>',$('#delFoto').serialize());">удалить</a>
+	<button class="btn-mini btn-danger" style=" border-bottom-width: 20px; border-top-width: 0;width: 50px; height: 18px; padding-top: 0;
+	 margin-top: 0; margin-bottom: 0; margin-left: 40px;" onclick="
+		/*return confirmDelete();*/ ajaxPostQ('/canon68452/ajax/deleteFoto.php','<?= '#ramka'.$ln['id'] ?>','<?= 'go_delete='.$ln['id'] ?>'); ">удалить</button>
 									<div class="controls">
 										<div class="input-append">
 											<form action="index.php" method="post" style="margin: 5px;">
-												<input class="span1" id="appendedInputButton" type="text" name="nm" value="<?= $ln['nm'] ?>" style="padding-top: 0px; padding-bottom: 0px; width: 74px;"/>
+												<input class="span1" id="appendedInputButton" type="text" name="nm" value="<?= $ln['nm'] ?>" style="padding-top: 0; padding-bottom: 0; width: 74px;"/>
 												<input class="btn " type="hidden" name="go_edit_name" value="<?= $ln['id'] ?>"/>
-												<input class="btn-mini " type="submit" value="прим" style="width: 44px; height: 20px; padding-left: 0px; padding-right: 0px;"/>
+												<input class="btn-mini " type="submit" value="прим" style="width: 44px; height: 20px; padding-left: 0; padding-right: 0;"/>
 											</form>
 											<form action="index.php" method="post" style="margin: 5px;">
-												<input class="span1" id="appendedInputButton" type="text" name="price" value="<?= $ln['price'] ?>" style="padding-top: 0px; padding-bottom: 0px; width: 74px;"/>
+												<input class="span1" id="appendedInputButton" type="text" name="price" value="<?= $ln['price'] ?>" style="padding-top: 0; padding-bottom: 0; width: 74px;"/>
 												<input class="btn " type="hidden" name="go_edit_price" value="<?= $ln['id'] ?>"/>
-												<input class="btn-mini " type="submit" value="прим" style="width: 44px; height: 20px; padding-left: 0px; padding-right: 0px;"/>
+												<input class="btn-mini " type="submit" value="прим" style="width: 44px; height: 20px; padding-left: 0; padding-right: 0;"/>
 											</form>
 										</div>
 									</div>
 								</li>
+							</div>
 							</div>
 						<?
 						}

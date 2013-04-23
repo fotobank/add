@@ -276,6 +276,7 @@ if (isset($_POST['go_ftp_upload']))
          $pload = 100 / (get_ftp_size($ftp, $album_data['ftp_folder']));
          $proc = 0;
          $all=0;
+	      ob_start();
          //Перебираем файлы, закачиваем и обрабатываем по одному
          foreach ($file_list as  $remote_file)
             {

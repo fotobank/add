@@ -477,7 +477,7 @@ tinyMCE.init({
 		{
 			?>
 			<div style="clear: both"></div>
-			<div style="position:relative; margin: 20px 0 -60px 0;">
+			<div style="position:relative; margin: 0 0 -60px 0;">
 				<?
 				/**
 				 * $actions - переменная String с действиями:
