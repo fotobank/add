@@ -188,7 +188,7 @@ header('Content-type: text/html; charset=windows-1251');
 			});
 	</script>
 
-<!--	запуск reminder -->
+<!--	запуск modal reminder -->
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('[data-toggle="modal"]').click(function(e) {

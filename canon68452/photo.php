@@ -4,7 +4,8 @@ function send_img($id, $res_foto)
 	{
 
 		echo '<script type="text/javascript">';
-		echo 'window.parent.document.getElementById("'.$id.'").innerHTML=\'<img style="width: 120px; float: left;" src="'.$res_foto.'?t='.time().'">\';';
+		echo'window.parent.document.getElementById("'.$id.'").innerHTML=\'<img style="width: 120px; float: left;" src="'
+			.$res_foto.'?t='.time().'">\';';
 		echo '</script>';
 	}
 
@@ -25,18 +26,20 @@ if (isset($_POST['go_add']) && isset($_SESSION['current_album']) && intval($_SES
 					{
 						$nm = '-----';
 					}
-				mysql_query('insert into photos (id_album, nm) values ('.intval($_SESSION['current_album']).', \''.$nm.'\')');
+				mysql_query(
+					'insert into photos (id_album, nm) values ('.intval($_SESSION['current_album']).', \''.$nm.'\')');
 				$foto_folder =
-					mysql_result(mysql_query('select foto_folder from albums where id = '.intval($_SESSION['current_album']).'  '), 0);
+					mysql_result(mysql_query(
+						'select foto_folder from albums where id = '.intval($_SESSION['current_album']).'  '),
+						0);
 				if (mysql_errno() > 0)
 					{
 						die('Ошибка MySQL!');
 					}
-				$id_photo = mysql_insert_id();
+				$id_photo    = mysql_insert_id();
 				$img         = 'id'.$id_photo.'.'.$ext;
 				$target_name = $_SERVER['DOCUMENT_ROOT'].$foto_folder.intval($_SESSION['current_album']).'/'.$img;
-			//	die ($_SERVER['DOCUMENT_ROOT'].$foto_folder.intval($_SESSION['current_album']).'/'.$img);
-
+				//	die ($_SERVER['DOCUMENT_ROOT'].$foto_folder.intval($_SESSION['current_album']).'/'.$img);
 				if (move_uploaded_file($_FILES['preview']['tmp_name'], $target_name))
 					{
 						mysql_query("update photos set img = '$img', price = '$price' where id = '$id_photo'");
@@ -44,7 +47,7 @@ if (isset($_POST['go_add']) && isset($_SESSION['current_album']) && intval($_SES
 				else
 					{
 						mysql_query('delete from photos where id = '.$id_photo);
-				//		die('Error uploading file!');
+						//		die('Error uploading file!');
 					}
 
 			}
@@ -65,10 +68,11 @@ if (isset($_POST['go_turn']))
 		$povorot     = intval($_POST['povorot']);
 		$img_name    = mysql_result(mysql_query('select img from photos where id = '.$id), 0);
 		$foto_folder =
-			mysql_result(mysql_query('select foto_folder from albums where id = '.intval($_SESSION['current_album']).'  '), 0);
+			mysql_result(mysql_query('select foto_folder from albums where id = '.intval($_SESSION['current_album']).'  '),
+				0);
 		$source      = $_SERVER['DOCUMENT_ROOT'].$foto_folder.intval($_SESSION['current_album']).'/'.$img_name;
-		$tmp_file = $_SERVER['DOCUMENT_ROOT'].'/tmp/'.$img_name;
-		$ext      = strtolower(substr($source, strrpos($source, '.') + 1));
+		$tmp_file    = $_SERVER['DOCUMENT_ROOT'].'/tmp/'.$img_name;
+		$ext         = strtolower(substr($source, strrpos($source, '.') + 1));
 		rename($source, $tmp_file);
 		switch ($ext)
 		{
@@ -145,7 +149,8 @@ if (mysql_num_rows($rs) > 0)
 						while ($ln = mysql_fetch_assoc($rs))
 							{
 								?>
-								<option value="<?= $ln['id'] ?>" <?=($current == $ln['id'] ? 'selected="selected"' : '')?>> <?=$ln['nm']?></option>
+								<option value="<?= $ln['id'] ?>" <?=(
+								$current == $ln['id'] ? 'selected="selected"' : '')?>> <?=$ln['nm']?></option>
 							<?
 							}
 						?>
@@ -160,21 +165,23 @@ if (mysql_num_rows($rs) > 0)
 if (isset($_SESSION['current_album'])):
 
 
-$pg = isset($_GET['pg']) ? intval($_GET['pg']) : 1;
-if ($pg < 1)
-	{
-		$pg = 1;
-	}
-$start = ($pg - 1) * RECORDS_PER_PAGE;
-
+		$pg = isset($_GET['pg']) ? intval($_GET['pg']) : 1;
+		if ($pg < 1)
+			{
+				$pg = 1;
+			}
+		$start = ($pg - 1) * RECORDS_PER_PAGE;
 		$rs =
-			mysql_query('SELECT SQL_CALC_FOUND_ROWS * FROM photos where id_album = '.intval($_SESSION['current_album']).'  order by id asc limit '.$start.', '.RECORDS_PER_PAGE);
+			mysql_query('SELECT SQL_CALC_FOUND_ROWS * FROM photos where id_album = '.intval($_SESSION['current_album'])
+				.'  order by id asc limit '.$start.', '.RECORDS_PER_PAGE);
 		// $rs = mysql_query('select * from photos where id_album = '.intval($_SESSION['current_album']).' order by id asc');
 		if (mysql_num_rows($rs) > 0)
 			{
 				$record_count = intval(mysql_result(mysql_query('select FOUND_ROWS() as cnt'), 0));
-				$foto_folder =
-					mysql_result(mysql_query('select foto_folder from albums where id = '.intval($_SESSION['current_album']).'  '), 0);
+				$foto_folder  =
+					mysql_result(mysql_query(
+						'select foto_folder from albums where id = '.intval($_SESSION['current_album']).'  '),
+						0);
 				?>
 				<ul class="thumbnails" style="margin-left: -15px;">
 					<?
@@ -183,9 +190,11 @@ $start = ($pg - 1) * RECORDS_PER_PAGE;
 							?>
 							<div class="ramka" style="width: 135px; height: 290px; float: left; left: 0px; margin-left: 5px; ">
 								<li class="span2" style="margin-left: 10px; margin-bottom: 10px;">
-									<a class="thumbnail" href="<?= $foto_folder.$ln['id_album'].'/'.$ln['img'] ?>" style="width: 120px;">
+									<a class="thumbnail" href="<?=
+									$foto_folder.$ln['id_album'].'/'.$ln['img'] ?>" style="width: 120px;">
 										<div id="<?= $ln['id'] ?>">
-											<img style="width: 120px; float: left;" alt="" src="<?= $foto_folder.$ln['id_album'].'/'.$ln['img'] ?>?t=<?= time() ?>">
+											<img style="width: 120px; float: left;" alt="" src="<?=
+											$foto_folder.$ln['id_album'].'/'.$ln['img'] ?>?t=<?= time() ?>">
 										</div>
 										<div style="float: left; height: 20px; width: 90px; margin-left: 22px; margin-top: -23px;">
 
@@ -209,16 +218,15 @@ $start = ($pg - 1) * RECORDS_PER_PAGE;
 
 										</div>
 										<div>
-											<form action="index.php" method="post" style="margin: 0;">
-												<input class="btn btn-danger" type="hidden" name="go_delete" value="<?= $ln['id'] ?>" />
+<!--											<form action="index.php" method="post" style="margin: 0;">-->
+											<form action="" style="margin: 0;">
+												<input class="btn btn-danger" type="hidden" name="go_delete" value="<?= $ln['id'] ?>"/>
 												<input class="btn-mini btn-danger" type="submit"
-													style="width: 50px; height: 18px; padding-top: 0; margin-top: 7px; margin-bottom: 0; margin-left: 38px;" value="удалить"
-													onclick="return confirmDelete(); ajaxPost(
-														'/canon68452/ajax/deleteFoto.php',
-														'id<?= $ln['id'] ?>',
-														'<?= $file = array();
-													   $file[$ln['id']] ?>'
-														)"/>
+													style="width: 50px; height: 18px; padding-top: 0; margin-top: 7px; margin-bottom: 0; margin-left: 38px;"
+													value="удалить" onclick="
+//													return confirmDelete();
+													ajaxPostQ('ajax/deleteFoto.php','id<?= $ln['id'] ?>','<?= 'file='.$ln['id'] ?>')
+													"/>
 											</form>
 										</div>
 									</a>
@@ -243,7 +251,7 @@ $start = ($pg - 1) * RECORDS_PER_PAGE;
 						}
 					?>
 				</ul>
-			<?
+				<?
 				paginator($record_count, $pg);
 			}
 		else
@@ -279,7 +287,7 @@ $start = ($pg - 1) * RECORDS_PER_PAGE;
 		-->
 
 
-<?
-	 endif; ?>
+	<?
+endif; ?>
 
 

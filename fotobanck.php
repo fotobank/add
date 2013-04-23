@@ -363,15 +363,19 @@ function top5($may_view, &$rs, &$ln, &$source, &$sz, &$sz_string)
 			}
 				?>
 				<div style="clear: both"></div>
+          <!--желтя рамка топа-->
+			//	<script type='text/javascript'>
+				//	$(function () {
+  //<!--$('#--><?//=$id_foto['1']?><!--, #--><?//=$id_foto['2']?><!--, #--><?//=$id_foto['3']?><!--, #--><?//=$id_foto['4']?><!--, #--><?//=$id_foto['5']?><!--').click(function () {-->
+				//			$('#photo_preview').css('box-shadow', '0 0 0 2px #000,0 0 2px 6px #fa0, 0 0 0 11px #fd0, 0 0 0 13px #000');
+				//		$("img[src='dir.php?num=5618']").closest("#photo_preview")
+				//	.css('box-shadow', '0 0 0 2px #000,0 0 2px 6px #fa0, 0 0 0 11px #fd0, 0 0 0 13px #000');
 
-				<script type='text/javascript'>
-					$(function () {
-						$('#<?=$id_foto['1']?>, #<?=$id_foto['2']?>, #<?=$id_foto['3']?>, #<?=$id_foto['4']?>, #<?=$id_foto['5']?>').click(function () {
-							$('#photo_preview').css('box-shadow', '0 0 0 2px #000,0 0 2px 6px #fa0, 0 0 0 11px #fd0, 0 0 0 13px #000');
-						});
-						return false;
-					})
-				</script>
+				//	   });
+			//			});
+			//		return false;
+			//		});
+			//	</script>
 			<?
 			}
 	}

@@ -92,7 +92,6 @@ function ajaxPostQ(url, idName,  data) {
         type: "POST",
         header: ('Content-Type: application/json; charset=utf-8;'),
         url: url,
-        // data: "data="+data,
         data: data,
 
         error:function(xhr, status, errorThrown) {

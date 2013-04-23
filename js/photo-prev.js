@@ -24,11 +24,16 @@ function preview(idPhoto) {
 }
 
 
+
+
+
 function previewTop(idPhoto) {
 
     $('#photo_preview').fadeTo('fast', 0.01, function () {
         $('#photo_preview').load('photo_top_preview.php?id=' + idPhoto, function () {
             $('#photo_preview_bg').height($(document).height()).toggleClass('hidden').fadeTo('fast', 0.7, function () {
+           //   $("img[src='dir.php?num=5618']").closest("#photo_preview").css('box-shadow', '0 0 0 2px #000,0 0 2px 6px #fa0, 0 0 0 11px #fd0, 0 0 0 13px #000');
+              $("#photo_preview").css('box-shadow', '0 0 0 2px #000,0 0 2px 6px #fa0, 0 0 0 11px #fd0, 0 0 0 13px #000');
                 $('#photo_preview').alignCenter().toggleClass('hidden').fadeTo('fast', 1).click(function(){
                       $('#photo_preview').css('box-shadow','');
                   });

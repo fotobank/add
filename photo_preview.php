@@ -105,7 +105,6 @@ if ($id > 0)
             }
     }
 mysql_close();
-
 else:
 
         echo '<script type="text/javascript">';
@@ -116,6 +115,7 @@ else:
 endif;
 
 ?>
+
 <script type='text/javascript'>
   $('img').error(function(){
      $(this).attr('src', 'img/404.png');

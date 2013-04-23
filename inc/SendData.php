@@ -59,27 +59,27 @@
 					// Отправляем письмо
 					if (!mail($user_data['email'], $subject, $letter, $headers))
 						{
-							$_SESSION['err_msg'] .= "Не удалось отправить письмо. Пожалуйста, попробуйте позже.<br>";
+							if(isset($_SESSION['err_msg']))	$_SESSION['err_msg'] .= "Не удалось отправить письмо. Пожалуйста, попробуйте позже.<br>";
 						}
 					else
 						{
-							$_SESSION['ok_msg2'] =
+							if(isset($_SESSION['ok_msg2']))	$_SESSION['ok_msg2'] =
 								"Запрос выполнен.<br>Новый пароль отправлен на E-mail,<br> указанный Вами при регистрации.<br>";
 						}
 				}
 			else
 				{
-					$_SESSION['err_msg'] .= "Пользователь с данным '$type' не найден.<br>";
+					if(isset($_SESSION['err_msg'])) $_SESSION['err_msg'] .= "Пользователь с данным '$type' не найден.<br>";
 				}
 		}
 
 	//Получаем данные
-	if ($_POST['login'].$_POST['email'].$_POST['pkey'] != $_SESSION['previos_data'])
+	if (isset($_SESSION['previos_data']) && $_POST['login'].$_POST['email'].$_POST['pkey'] != $_SESSION['previos_data'])
 		{
 			$_SESSION['previos_data'] = $_POST['login'].$_POST['email'].$_POST['pkey'];
 			if (iconv("utf-8", "windows-1251", $_POST['login'].$_POST['email'].$_POST['pkey']) == "Введите Ваш логин:или E-mail:Код безопасности:")
 				{
-					$_SESSION['err_msg'] .= "Необходимо заполнить одно из полей.<br>";
+				if(isset($_SESSION['err_msg'])) $_SESSION['err_msg'] .= "Необходимо заполнить одно из полей.<br>";
 				}
 			else
 				{
@@ -94,7 +94,7 @@
 											$login = trim(htmlspecialchars($dataLogin));
 											if (!preg_match("/[?a-zA-Zа-яА-Я0-9_-]{3,16}$/", $login))
 												{
-													$_SESSION['err_msg2'] .= "Логин может состоять из букв, цифр, дефисов и подчёркиваний. Длина от 3 до 16 символов.<br>";
+													if(isset($_SESSION['err_msg2'])) 	$_SESSION['err_msg2'] .= "Логин может состоять из букв, цифр, дефисов и подчёркиваний. Длина от 3 до 16 символов.<br>";
 													$where = 'false';
 												}
 											else
@@ -113,7 +113,7 @@
 											$email = trim(htmlspecialchars($dataEmail));
 											if (!preg_match("/[0-9a-z_]+@[0-9a-z_^\.-]+\.[a-z]{2,3}/i", $email))
 												{
-													$_SESSION['err_msg2'] .= "Ошибочный 'E-mail' (пример: a@b.c)!<br>";
+													if(isset($_SESSION['err_msg2'])) $_SESSION['err_msg2'] .= "Ошибочный 'E-mail' (пример: a@b.c)!<br>";
 													$where = 'false';
 												}
 											else
@@ -125,18 +125,18 @@
 								}
 							if ($where == '')
 								{
-									$_SESSION['err_msg'] .= "Пожалуйста, заполните одно из полей!<br>";
+									if(isset($_SESSION['err_msg'])) 	$_SESSION['err_msg'] .= "Пожалуйста, заполните одно из полей!<br>";
 								}
 						}
 					else
 						{
-							$_SESSION['err_msg'] .= "Неправильный ввод проверочного числа!<br>";
+							if(isset($_SESSION['err_msg'])) $_SESSION['err_msg'] .= "Неправильный ввод проверочного числа!<br>";
 						}
 				}
 		}
 	else
 		{
-			$_SESSION['err_msg'] = "Повторный ввод одинаковых данных!<br>";
+			if(isset($_SESSION['err_msg'])) $_SESSION['err_msg'] = "Повторный ввод одинаковых данных!<br>";
 		}
 	if (isset($_SESSION['ok_msg2']))
 		{
@@ -146,14 +146,13 @@
 		}
 	else
 		{
-			isset($_SESSION['err_msg']) ? ("<p class='ttext_red'>".$_SESSION['err_msg']."</p>") : ("");
+			if(isset($_SESSION['err_msg']))  $_SESSION['err_msg'] .= "<p class='ttext_red'>".$_SESSION['err_msg']."</p>";
 			if(isset($_SESSION['err_msg2']))
 				{
 			echo $_SESSION['err_msg2'];
-	} elseif(isset($_SESSION['err_msg']))
-				{
-					echo $_SESSION['err_msg'];
-				}
+	         }
+			elseif(isset($_SESSION['err_msg'])) echo $_SESSION['err_msg'];
+
 		}
 	unset($_SESSION['err_msg']);
 	unset($_SESSION['err_msg2']);
