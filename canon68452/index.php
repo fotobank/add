@@ -61,14 +61,14 @@
 	 */
 	//	 	imagine_function( );
 
-	$start = '';
+		$startTime = '';
 
 	if (isset($_SESSION['admin_logged']) && $_SESSION['admin_logged'] == true)
 		{
 			$time  = microtime();
 			$time  = explode(' ', $time);
 			$time  = $time[1] + $time[0];
-			$start = $time;
+			$startTime = $time;
 			?>
 			<h2>&laquo; DEBUG &raquo; </h2>
 			<div class="ttext_orange" style="position:relative">
@@ -499,8 +499,8 @@ tinyMCE.init({
 				$time = microtime();
 				$time = explode(' ', $time);
 				$time = $time[1] + $time[0];
-				$finish = $time;
-				$total_time = round(($finish - $start), 4);
+				$finishTime = $time;
+				$total_time = round(($finishTime - $startTime), 4);
 				echo ' Страница сгенерированна за: '.$total_time.' секунд.'."\n";
 				?>
 			</div>

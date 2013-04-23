@@ -35,7 +35,7 @@
 	 * 'm' - отправляет по электронной почте (значения могут быть объединены, например: 'ws')
 	 */
 	//	$error_processor->err_proc("" , "w", $error_processor->error);
-	$error_processor->err_proc("", "wm", "");
+	$error_processor->err_proc("", "w", "");
 	//	$error_processor->err_proc("", "am", "");
    ?>
 

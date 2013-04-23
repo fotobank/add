@@ -13,7 +13,7 @@ if (!isset($_SESSION['admin_logged']))
 	{
 		die();
 	}
-define('RECORDS_PER_PAGE', 7);
+define('RECORDS_PER_PAGE', 78);
 
 if (isset($_POST['go_add']) && isset($_SESSION['current_album']) && intval($_SESSION['current_album']) > 0)
 	{
@@ -109,22 +109,9 @@ if (isset($_POST['go_turn']))
 		imagedestroy($img);
 		unlink($tmp_file);
 	}
-if (isset($_POST['go_edit_name']))
-	{
-		$id = intval($_POST['go_edit_name']);
-		$nm = mysql_escape_string($_POST['nm']);
-		if (empty($nm))
-			{
-				$nm = 'Не заданно';
-			}
-		mysql_query('update photos set nm = \''.$nm.'\' where id = '.$id);
-	}
-if (isset($_POST['go_edit_price']))
-	{
-		$id    = intval($_POST['go_edit_price']);
-		$price = floatval($_POST['price']);
-		mysql_query('update photos set price = \''.$price.'\' where id = '.$id);
-	}
+
+
+
 if (isset($_POST['chenge_album']))
 	{
 		$_SESSION['current_album'] = intval($_POST['album_id']);
@@ -198,7 +185,11 @@ if (isset($_SESSION['current_album'])):
 											<img style="width: 120px; float: left;" alt="" src="<?=
 											$foto_folder.$ln['id_album'].'/'.$ln['img'] ?>?t=<?= time() ?>">
 										</div>
-										<div style="display: inline-block; float: left; height: 20px; width: 90px; margin-left: 22px; margin-top: -23px;">
+										</div>
+
+									</a>
+									<div style="display: inline-block">
+										<div style="float: left; height: 20px; width: 84px; margin-left: -2px;">
 											<form action="index.php" name="go_turn" method="post" style="margin: 5px;" target="hiddenframe"
 												onsubmit="document.getElementById('<?= $ln['id'] ?>').innerHTML='Подождите, идёт загрузка...'; return true;">
 												<input class="btn" type="hidden" name="go_turn" value="<?= $ln['id'] ?>"/>
@@ -219,24 +210,21 @@ if (isset($_SESSION['current_album'])):
 											</form>
 											<iframe id="hiddenframe" name="hiddenframe" style="width:0; height:0; border:0"></iframe>
 										</div>
-										</div>
-								<div style="display: inline-block"></div>
-									</a>
-	<button class="btn-mini btn-danger" style=" border-bottom-width: 20px; border-top-width: 0;width: 50px; height: 18px; padding-top: 0;
-	 margin-top: 0; margin-bottom: 0; margin-left: 40px;" onclick="
-		/*return confirmDelete();*/ ajaxPostQ('/canon68452/ajax/deleteFoto.php','<?= '#ramka'.$ln['id'] ?>','<?= 'go_delete='.$ln['id'] ?>'); ">удалить</button>
+									</div>
+					<button class="btn-mini" style="position: relative; width: 46px; height: 18px; padding: 0 0 0 0; margin: 0 0 5px -2px;" onclick="
+					/*return confirmDelete();*/ ajaxPostQ('/canon68452/ajax/ajaxPhoto.php','<?= '#ramka'.$ln['id'] ?>','<?= 'go_delete='.$ln['id'] ?>'); ">удалить</button>
 									<div class="controls">
 										<div class="input-append">
-											<form action="index.php" method="post" style="margin: 5px;">
-												<input class="span1" id="appendedInputButton" type="text" name="nm" value="<?= $ln['nm'] ?>" style="padding-top: 0; padding-bottom: 0; width: 74px;"/>
-												<input class="btn " type="hidden" name="go_edit_name" value="<?= $ln['id'] ?>"/>
-												<input class="btn-mini " type="submit" value="прим" style="width: 44px; height: 20px; padding-left: 0; padding-right: 0;"/>
-											</form>
-											<form action="index.php" method="post" style="margin: 5px;">
-												<input class="span1" id="appendedInputButton" type="text" name="price" value="<?= $ln['price'] ?>" style="padding-top: 0; padding-bottom: 0; width: 74px;"/>
-												<input class="btn " type="hidden" name="go_edit_price" value="<?= $ln['id'] ?>"/>
-												<input class="btn-mini " type="submit" value="прим" style="width: 44px; height: 20px; padding-left: 0; padding-right: 0;"/>
-											</form>
+												<input class="span1" id="nm<?= $ln['id'] ?>" type="text" name="nm" value="<?= $ln['nm'] ?>"
+													style="padding-top: 0; padding-bottom: 0; width: 83px; float: left;"/>
+												<button class="btn-mini" style="width: 44px; height: 20px; padding-left: 0; padding-right: 0;"
+					onclick="ajaxPostQ('/canon68452/ajax/ajaxPhoto.php', '', '<?= 'go_edit_name='.$ln['id'].'&nm=' ?>' + $('#nm<?= $ln['id'] ?>').val());">прим</button>
+											<br style="clear: both">
+												<input class="span1" id="price<?= $ln['id'] ?>" type="text" name="price" value="<?= $ln['price'] ?>"
+													style="padding-top: 0; padding-bottom: 0; width: 83px;"/>
+											<button class="btn-mini" style="width: 44px; height: 20px; padding-left: 0; padding-right: 0;"
+					onclick="ajaxPostQ('/canon68452/ajax/ajaxPhoto.php', '', '<?= 'go_edit_price='.$ln['id'].'&price=' ?>' + $('#price<?= $ln['id'] ?>').val());">прим</button>
+											<br style="clear: both">
 										</div>
 									</div>
 								</li>

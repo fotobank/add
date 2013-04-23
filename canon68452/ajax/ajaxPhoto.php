@@ -22,3 +22,22 @@
 	   	header("Content-type: image/png");
 			echo "<img style='width: 140px; float: left; margin-left: 5px;' src= '/img/not_foto.png'>";
 		}
+
+	if (isset($_POST['go_edit_name']))
+		{
+			$id = intval($_POST['go_edit_name']);
+			$nm = mysql_escape_string($_POST['nm']);
+			if (empty($nm))
+				{
+					$nm = 'Не заданно';
+				}
+	 	mysql_query('update photos set nm = \''.$nm.'\' where id = '.$id);
+		}
+
+
+	if (isset($_POST['go_edit_price']))
+		{
+			$id    = intval($_POST['go_edit_price']);
+			$price = floatval($_POST['price']);
+			mysql_query('update photos set price = \''.$price.'\' where id = '.$id);
+		}
