@@ -52,16 +52,7 @@ if (isset($_POST['go_add']) && isset($_SESSION['current_album']) && intval($_SES
 
 			}
 	}
-/*if (isset($_POST['go_delete']))
-	{
-		$id          = intval($_POST['go_delete']);
-		$img_name    = mysql_result(mysql_query('select img from photos where id = '.$id), 0);
-		$foto_folder =
-			mysql_result(mysql_query('select foto_folder from albums where id = '.intval($_SESSION['current_album']).'  '), 0);
-		$source      = $_SERVER['DOCUMENT_ROOT'].$foto_folder.intval($_SESSION['current_album']).'/'.$img_name;
-		unlink($source);
-		mysql_query('delete from photos where id = '.$id);
-	}*/
+
 if (isset($_POST['go_turn']))
 	{
 		$id          = intval($_POST['go_turn']);
@@ -112,10 +103,8 @@ if (isset($_POST['go_turn']))
 
 
 
-if (isset($_POST['chenge_album']))
-	{
-		$_SESSION['current_album'] = intval($_POST['album_id']);
-	}
+if (isset($_POST['chenge_album'])) $_SESSION['current_album'] = intval($_POST['album_id']);
+
 $rs = mysql_query('select * from albums order by order_field asc');
 if (mysql_num_rows($rs) > 0)
 	{
@@ -149,8 +138,8 @@ if (mysql_num_rows($rs) > 0)
 		<hr/>
 	<?
 	}
-if (isset($_SESSION['current_album'])):
 
+if (isset($_SESSION['current_album'])):
 
 		$pg = isset($_GET['pg']) ? intval($_GET['pg']) : 1;
 		if ($pg < 1)
