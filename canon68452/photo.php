@@ -219,15 +219,15 @@ if (isset($_SESSION['current_album'])):
 										</div>
 										<div>
 <!--											<form action="index.php" method="post" style="margin: 0;">-->
-											<form action="" style="margin: 0;">
-												<input class="btn btn-danger" type="hidden" name="go_delete" value="<?= $ln['id'] ?>"/>
+											<!--<form action="" style="margin: 0;">
+												<input class="btn btn-danger" type="hidden" name="go_delete" value="<?/*= $ln['id'] */?>"/>-->
 												<input class="btn-mini btn-danger" type="submit"
 													style="width: 50px; height: 18px; padding-top: 0; margin-top: 7px; margin-bottom: 0; margin-left: 38px;"
 													value="удалить" onclick="
 //													return confirmDelete();
-													ajaxPostQ('ajax/deleteFoto.php','id<?= $ln['id'] ?>','<?= 'file='.$ln['id'] ?>')
+													ajaxPostQ('/canon68452/ajax/deleteFoto.php','id<?= $ln['id'] ?>','<?= 'go_delete='.$ln['id'] ?>')
 													"/>
-											</form>
+<!--											</form>-->
 										</div>
 									</a>
 

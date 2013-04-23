@@ -93,13 +93,13 @@ function ajaxPostQ(url, idName,  data) {
         header: ('Content-Type: application/json; charset=utf-8;'),
         url: url,
         data: data,
-
         error:function(xhr, status, errorThrown) {
             alert(errorThrown+'\n'+status+'\n'+xhr.statusText);
         },
 
         // ¬ыводим то что вернул PHP
         success: function (html) {
+          //  alert (html);
             //предварительно очищаем нужный элемент страницы
             $('id' + idName).empty().append(html);
 
