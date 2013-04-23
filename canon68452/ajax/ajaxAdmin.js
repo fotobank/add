@@ -99,7 +99,7 @@ function ajaxPostQ(url, idName,  data) {
 
         // ¬ыводим то что вернул PHP
         success: function (html) {
-          //  alert (html);
+            alert (html);
             //предварительно очищаем нужный элемент страницы
             $('id' + idName).empty().append(html);
 
