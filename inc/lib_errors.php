@@ -242,14 +242,7 @@
 						for ($I = count($dump) - 17; $I > 0; $I--)
 							{
 								$str = rtrim($dump[$I]);
-														/*$aa =   strval(substr($str,19,-6));
-					 	 		         $Ii = count($dump) - 17;
 
-											$a = strtotime(substr($str,19,-6));
-											$b = strtotime("-".$this->EP_mail_period." minutes");
-											$c = strtotime("now");
-								         $d = $a -$b;*/
-								//$a = strtotime(substr($str,19,-6));
                          if (($timestamp = strtotime(substr($str,19,-6))) !== false)
 								    {
 
