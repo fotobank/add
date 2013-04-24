@@ -1,5 +1,4 @@
-<?
-
+<?php
 function send_img($id, $res_foto)
 	{
 
@@ -258,8 +257,4 @@ if (isset($_SESSION['current_album'])):
 		</form>
 		-->
 
-
-	<?
-endif; ?>
-
-
+<?endif;?>

@@ -161,7 +161,3 @@ $record_count = intval(mysql_result(mysql_query('SELECT  FOUND_ROWS() as cnt'), 
 paginator($record_count, $pg);
 }
 ?>
-
-
-
-

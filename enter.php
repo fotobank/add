@@ -1,6 +1,6 @@
 <?php
-include 'inc/config.php';
-include 'inc/func.php';
+include (dirname(__FILE__).'/inc/config.php');
+include (dirname(__FILE__).'/inc/func.php');
 
 if(isset($_POST['login']))
 {

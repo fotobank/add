@@ -1,4 +1,4 @@
-<?php include ('inc/head.php');
+<?php include (dirname(__FILE__).'/inc/head.php');
 ?>
 <div id="main">
 <br><h2><span style="color: #ffa500">Образцы работ с детских мероприятий </span></h2><br>
@@ -10,5 +10,5 @@
 </div>
 <div class="end_content"></div>
 </div>
-<?php include ('inc/footer.php');
+<?php include (dirname(__FILE__).'/inc/footer.php');
 ?>

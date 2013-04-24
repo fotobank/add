@@ -1,6 +1,6 @@
 <?
-include '../inc/config.php';
-include '../inc/func.php';
+include ('../inc/config.php');
+include ('../inc/func.php');
 header('Content-type: text/html; charset=windows-1251');
 ?>
 

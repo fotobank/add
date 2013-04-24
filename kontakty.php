@@ -1,5 +1,5 @@
 <?php
-   include './inc/head.php';
+   include (dirname(__FILE__).'/inc/head.php');
 ?>
 
 <!--[if IE]><script>
@@ -279,5 +279,5 @@ print "<script language='Javascript' type='text/javascript'>
     <div class="end_content"></div>
     </div>
 <?php
-    include ('/inc/footer.php');
+    include (dirname(__FILE__).'/inc/footer.php');
 ?>

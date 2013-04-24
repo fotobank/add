@@ -1,8 +1,8 @@
 <?php
 
-include  ('inc/head.php');
-include  ('inc/ip-ban.php');
-include  ('inc/dirPatc.php');
+include  (dirname(__FILE__).'/inc/head.php');
+include  (dirname(__FILE__).'/inc/ip-ban.php');
+include  (dirname(__FILE__).'/inc/dirPatc.php');
 
 $ip = Get_IP(); // Ip пользовател€
 // оличество фоток на странице
@@ -849,5 +849,5 @@ endif;
 </div></div>
 
 <?php
-include ('inc/footer.php');
-?>            
+include (dirname(__FILE__).'inc/footer.php');
+?>

@@ -1,4 +1,4 @@
-<?php include ('inc/head.php');
+<?php include (dirname(__FILE__).'/inc/head.php');
 ?>
 
 <div id="main">
@@ -44,5 +44,5 @@ if (isset($_GET['login']) && isset($_GET['key'])) {
 ?>
 <div class="end_content"></div>
 </div>
-<?php include ('inc/footer.php');
+<?php include (dirname(__FILE__).'/inc/footer.php');
 ?>

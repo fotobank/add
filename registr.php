@@ -1,4 +1,5 @@
-<?php include ('inc/head.php');
+<?php
+include (dirname(__FILE__).'/inc/head.php');
 ?>
 	<div id="main">
 		<div style="text-align: center;">

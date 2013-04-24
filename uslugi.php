@@ -1,4 +1,4 @@
-<?php include ('inc/head.php');
+<?php include (dirname(__FILE__).'/inc/head.php');
 ?>
 
 <div id="main">
@@ -60,5 +60,5 @@
 <? echo mysql_result(mysql_query('select txt from content where id = 18'), 0); ?>
 <div class="end_content" style="margin-top: -40px;"></div>
 </div>
-<?php include ('inc/footer.php');
+<?php include (dirname(__FILE__).'/inc/footer.php');
 ?>

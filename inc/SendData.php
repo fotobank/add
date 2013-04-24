@@ -11,12 +11,12 @@
 	*/
 
 	// обработка ошибок
-	include (dirname(__FILE__).'./lib_mail.php');
-	include (dirname(__FILE__).'./lib_ouf.php');
-	include (dirname(__FILE__).'./lib_errors.php');
+	include (dirname(__FILE__).'/lib_mail.php');
+	include (dirname(__FILE__).'/lib_ouf.php');
+	include (dirname(__FILE__).'/lib_errors.php');
 	$error_processor = Error_Processor::getInstance();
-	include (dirname(__FILE__).'./config.php');
-	include (dirname(__FILE__).'./func.php');
+	include (dirname(__FILE__).'/config.php');
+	include (dirname(__FILE__).'/func.php');
 	$link = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 	/* ѕроверить соединение */
 	if (mysqli_connect_errno())
@@ -158,5 +158,4 @@
 	unset($_SESSION['err_msg2']);
 	unset($_SESSION['secret_number']);
 	mysqli_close($link);
-
-
+?>

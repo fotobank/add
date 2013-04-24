@@ -1,6 +1,6 @@
 <?php
-include ('inc/config.php');
-include ('inc/func.php');
+include (dirname(__FILE__).'/inc/config.php');
+include (dirname(__FILE__).'/inc/func.php');
 ob_start();
 $id = intval($_POST['id']);
 $status = 'ERR';

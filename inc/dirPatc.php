@@ -1,8 +1,4 @@
 <?php
-
-
-
-
 	/**
 	 * Created by JetBrains PhpStorm.
 	 * User: Jurii
@@ -91,5 +87,4 @@
 
 
 	}
-
-
+?>

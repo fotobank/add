@@ -1,5 +1,5 @@
 <?php
-include ('inc/config.php');
+include (dirname(__FILE__).'/inc/config.php');
 ob_start();
 $id = intval($_POST['id']);
 $status = 'ERR';

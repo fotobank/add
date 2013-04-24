@@ -1,5 +1,5 @@
 <?php
-//	include ('inc/head.php');
+//	include (dirname(__FILE__).'/inc/head.php');
 ?>
 
 	<style type="text/css">

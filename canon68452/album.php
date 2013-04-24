@@ -847,7 +847,3 @@ if (isset($_SESSION['current_cat']))
 			}
 	}
 ?>
-
-
-
-

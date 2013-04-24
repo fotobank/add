@@ -36,3 +36,4 @@ function deleteDir($dir)
       }
 
    session_destroy();
+?>

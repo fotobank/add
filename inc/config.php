@@ -14,5 +14,4 @@
 	mysql_query('set character_set_connection = \'cp1251\'');
 	mysql_query('set character_set_results = \'cp1251\'');
 	mysql_query('set character_set_system = \'cp1251\'');
-
 ?>

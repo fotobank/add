@@ -1,5 +1,6 @@
 <?php
-include ('inc/head.php');
+include (dirname(__FILE__).'/inc/head.php');
+
 ?>
 <div id="main">
 
@@ -32,5 +33,5 @@ include ('inc/head.php');
 <div class="end_content"></div>
 </div>
 
-<?php include ('inc/footer.php');
+<?php include (dirname(__FILE__).'/inc/footer.php');
 ?>

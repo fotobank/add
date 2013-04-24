@@ -6,7 +6,7 @@
  * Time: 14:24
  * To change this template use File | Settings | File Templates.
  */
-
+header('Content-type: text/html; charset=windows-1251');
 $cryptinstall = '/inc/captcha/cryptographp.fct.php';
 include  'inc/captcha/cryptographp.fct.php';
 ?>
@@ -39,5 +39,4 @@ include  'inc/captcha/cryptographp.fct.php';
 	<a class="btn btn-primary" type="reset" onClick="ajaxPostQ('/inc/SendData.php','#result',$('#reminder').serialize()); reload(0,'.<?=SID?>.');">Напомнить</a>
 	<a class="btn" data-dismiss="modal"  onClick="$('#result').empty(); setTimeout( 'returnCaptcha ()', 1000);">Закрыть</a>
 </div>
-
 
