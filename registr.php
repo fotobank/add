@@ -31,22 +31,23 @@
 					$rPass2 = trim($_POST['rPass2']);
 					$rEmail = trim($_POST['rEmail']);
 					$rName_us = trim($_POST['rName_us']);
-					$rIp = Get_IP(); // Ip пользователя
+					$rIp =  Get_IP(); // Ip пользователя
 					if ($rLogin == '')
 						{
 							echo("<div align='center' class='err_f_reg'>Поле 'Логин' не заполнено!</div>");
 							// Логин может состоять из букв, цифр и подчеркивания
 						}
-					elseif (!preg_match("/^\w{3,}$/", $rLogin))
+					elseif (!preg_match("/[?a-zA-Zа-яА-Я0-9_-]{3,16}$/", $rLogin))
 						{
-							die("<div align='center' class='err_f_reg'>В поле 'Логин' введены недопустимые символы.<dr>Допускаются только латинские символы!</div>");
+							die("<div align='center' class='err_f_reg'>Логин может состоять из букв, цифр, дефисов и подчёркиваний. Длина от 3 до 16 символов.</div>");
 						}
 					if ($rEmail == '')
 						{
 							die("<div align='center' class='err_f_reg'>Поле 'E-mail' не заполнено</div>");
 							// Проверяем e-mail на корректность
 						}
-					elseif (!preg_match("/^[a-zA-Z0-9_\.\-]+@([a-zA-Z0-9\-]+\.)+[a-zA-Z]{2,6}$/", $rEmail))
+				//	elseif (!preg_match("/^[a-zA-Z0-9_\.\-]+@([a-zA-Z0-9\-]+\.)+[a-zA-Z]{2,6}$/", $rEmail))
+						elseif (!preg_match("/[0-9a-z_]+@[0-9a-z_^\.-]+\.[a-z]{2,3}/i", $rEmail))
 						{
 							die("<div align='center' class='err_f_reg'>Указанный 'E-mail' имеет недопустимый формат</div>");
 						}
@@ -82,10 +83,10 @@
 					$time = time();
 					// Устанавливаем соединение с бд(не забудьте подставить ваши значения сервер-логин-пароль)
 					mysql_query("INSERT INTO users (login, pass, email, us_name, timestamp, ip)
-                             VALUES ('$rLogin','$mdPassword','$rEmail','$rName_us',$time,'$rIp'");
+                             VALUES ('$rLogin','$mdPassword','$rEmail','$rName_us',$time, '$rIp')");
 					if (mysql_error() != "")
 						{
-							die("<div align='center' class='err_f_reg'>Пользователь с таким логином уже существует, выберите другой.</div>");
+							die("<div align='center' class='err_f_reg'> '".mysql_error()."' </div>");
 						}
 					// Получаем Id, под которым юзер добавился в базу
 					$id = mysql_result(mysql_query("SELECT LAST_INSERT_ID()"), 0);

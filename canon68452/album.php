@@ -3,7 +3,7 @@ if (!isset($_SESSION['admin_logged']))
 	{
 		die();
 	}
-include __DIR__.'/../inc/i_resize.php';
+include (dirname(__FILE__).'/../inc/i_resize.php');
 
 
 /*

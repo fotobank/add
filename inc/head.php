@@ -1,6 +1,6 @@
 <?
-include __DIR__.'./config.php';
-include __DIR__.'./func.php';
+include (dirname(__FILE__).'./config.php');
+include (dirname(__FILE__).'./func.php');
 
 
 
@@ -23,9 +23,9 @@ header('Content-type: text/html; charset=windows-1251');
 
 
 	// обработка ошибок
-	include __DIR__.'./lib_mail.php';
-	include __DIR__.'./lib_ouf.php';
-	include __DIR__.'./lib_errors.php';
+	include (dirname(__FILE__).'./lib_mail.php');
+	include (dirname(__FILE__).'./lib_ouf.php');
+	include (dirname(__FILE__).'./lib_errors.php');
 	$error_processor = Error_Processor::getInstance();
 
 	/**
@@ -58,7 +58,7 @@ header('Content-type: text/html; charset=windows-1251');
 			<?
 		}
 
-	include __DIR__.'./title.php';
+	include (dirname(__FILE__).'./title.php');
 	$cryptinstall = '/inc/captcha/cryptographp.fct.php';
 	include  'captcha/cryptographp.fct.php';
 	?>

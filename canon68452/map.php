@@ -7,7 +7,8 @@
  * To change this template use File | Settings | File Templates.
  */
 
-$visitorIP = $_SERVER['REMOTE_ADDR'];
+//$visitorIP = $_SERVER['REMOTE_ADDR'];
+$visitorIP = '31.31.116.22';
 $location = json_decode(file_get_contents('http://iploc.mwudka.com/iploc/'.$visitorIP.'/json'));
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -18,7 +19,7 @@ $location = json_decode(file_get_contents('http://iploc.mwudka.com/iploc/'.$visi
 	<meta http-equiv="X-UA-Compatible" content="IE=7"/>
 	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 	<title>√де €? :-)</title>
-	<script src="http://api-maps.yandex.ru/1.0/index.xml?key=AA3Jd1EBAAAAMXcKGAMA-0yN_Na-LXsKvwsyPMQgwhgzaoQAAAAAAAAAAAAVJw_gC8K61J1Z7obG7AoCROYYPg=="
+	<script src="http://api-maps.yandex.ru/1.1/index.xml?key=AA3Jd1EBAAAAMXcKGAMA-0yN_Na-LXsKvwsyPMQgwhgzaoQAAAAAAAAAAAAVJw_gC8K61J1Z7obG7AoCROYYPg=="
 		type="text/javascript"></script>
 	<script type="text/javascript">
 		window.onload = function() {

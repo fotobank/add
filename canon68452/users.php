@@ -36,6 +36,9 @@ $record_count = intval(mysql_result(mysql_query('SELECT  FOUND_ROWS() as cnt'), 
         <td><b>Логин</b></td>
         <td><b>Имя</b></td>
         <td><b>E-mail</b></td>
+	     <td><b>Skype</b></td>
+	     <td><b>Телефон</b></td>
+	     <td><b>Ip</b></td>
         <td><b>Регистр.</b></td>
         <td><b>Подтв.рег.</b></td>
         <td><b>Баланс</b></td>
@@ -53,6 +56,11 @@ $record_count = intval(mysql_result(mysql_query('SELECT  FOUND_ROWS() as cnt'), 
                 <td style="text-align: left; vertical-align: middle"><?=$ln['login']?></td>
                 <td style="text-align: left; vertical-align: middle"><?=$ln['us_name']?></td>
                 <td style="text-align: left; vertical-align: middle"><?=$ln['email']?></td>
+	             <td style="text-align: left; vertical-align: middle"><?=$ln['skype']?></td>
+	             <td style="text-align: left; vertical-align: middle"><?=$ln['phone']?></td>
+	             <td style="text-align: left; vertical-align: middle">
+		             <a class="map"  href="/canon68452/map.php"><?=$ln['ip']?></a>
+	             </td>
                 <td width="12%" style="text-align: left; vertical-align: middle"><?=date('H:i d.m.Y', $ln['timestamp'])?></td>
                 <? if ($ln['status'] == 1)
                     {

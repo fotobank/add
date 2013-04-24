@@ -7,8 +7,8 @@
 	 * To change this template use File | Settings | File Templates.
 	 */
 	set_time_limit(0);
-	include __DIR__.'/../inc/config.php';
-	include __DIR__.'/../inc/func.php';
+	include (dirname(__FILE__).'/../inc/config.php');
+	include (dirname(__FILE__).'/../inc/func.php');
 
 	/**
 	 * @param $file_list

@@ -9,13 +9,13 @@
 	{
 
 		var $EP_tmpl_err_item = '<br><br>[ERR_MSG]'; // Error messages template: one item of list of a messages
-		var $EP_log_fullname = '/errors.log'; // Path and filename of error log
+		var $EP_log_fullname = 'errors.log'; // Path and filename of error log
 		var $EP_mail_period = 5; // Minimal period for sending an error message (in minutes)
 		var $EP_from_addr = "webmaster@aleks.od.ua";
 		var $EP_from_name = "Ошибки в скриптах";
 		var $EP_to_addr = "aleksjurii@gmail.com";
 		var $EP_log_max_size = 500; // Max size of a log before it will sended and cleared (in kb)
-		var $event_log_fullname = '/events.log'; // Path and filename of event log
+		var $event_log_fullname = 'events.log'; // Path and filename of event log
 		static private $instance = NULL;
       var $err_led;
 		var $err_list = array();

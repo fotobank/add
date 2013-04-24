@@ -1,7 +1,7 @@
 <?
 	set_time_limit(0);
-	include __DIR__.'/../inc/config.php';
-	include __DIR__.'/../inc/func.php';
+	include (dirname(__FILE__).'/../inc/config.php');
+	include (dirname(__FILE__).'/../inc/func.php');
 	//Логин
 	if (isset($_POST['op']))
 		{
@@ -25,25 +25,22 @@
 
 
 ?>
-
-	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//RU" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-	<html>
-	<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=windows-1251"/>
-	<meta name="description" content="Админка сайта Creative L.S." />
-	<meta name="keywords" content="Управление сайта Creative L.S." />
-	<meta name="author" content="webmaster" />
-	<title>Админка</title>
-
-	<?
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//RU" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:Логин="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251"/>
+<meta name="description" content="Админка сайта Creative L.S." />
+<meta name="keywords" content="Управление сайта Creative L.S." />
+<meta name="author" content="webmaster" />
+<title>Админка</title>
+<?
 
 	//error_reporting(E_ALL);
 
 	// обработка ошибок
-	include __DIR__.'/../inc/lib_mail.php';
-	include __DIR__.'/../inc/lib_ouf.php';
-	include __DIR__.'/../inc/lib_errors.php';
+	include (dirname(__FILE__).'/../inc/lib_mail.php');
+	include (dirname(__FILE__).'/../inc/lib_ouf.php');
+	include (dirname(__FILE__).'/../inc/lib_errors.php');
 	$error_processor = Error_Processor::getInstance();
 
 

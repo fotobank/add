@@ -11,12 +11,12 @@
 	*/
 
 	// обработка ошибок
-	include __DIR__.'./lib_mail.php';
-	include __DIR__.'./lib_ouf.php';
-	include __DIR__.'./lib_errors.php';
+	include (dirname(__FILE__).'./lib_mail.php');
+	include (dirname(__FILE__).'./lib_ouf.php');
+	include (dirname(__FILE__).'./lib_errors.php');
 	$error_processor = Error_Processor::getInstance();
-	include __DIR__.'./config.php';
-	include __DIR__.'./func.php';
+	include (dirname(__FILE__).'./config.php');
+	include (dirname(__FILE__).'./func.php');
 	$link = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 	/* ѕроверить соединение */
 	if (mysqli_connect_errno())
