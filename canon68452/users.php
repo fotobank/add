@@ -147,6 +147,7 @@ $record_count = intval(mysql_result(mysql_query('SELECT  FOUND_ROWS() as cnt'), 
     ?>
     </tbody>
 </table>
+
 <div style="clear: both; margin-top: 120px;"></div>
 <?
 paginator($record_count, $pg);

@@ -31,6 +31,7 @@
 					$rPass2 = trim($_POST['rPass2']);
 					$rEmail = trim($_POST['rEmail']);
 					$rName_us = trim($_POST['rName_us']);
+					$rIp = Get_IP(); // Ip пользователя
 					if ($rLogin == '')
 						{
 							echo("<div align='center' class='err_f_reg'>Поле 'Логин' не заполнено!</div>");
@@ -80,8 +81,8 @@
 						}
 					$time = time();
 					// Устанавливаем соединение с бд(не забудьте подставить ваши значения сервер-логин-пароль)
-					mysql_query("INSERT INTO users (login, pass, email, us_name, timestamp)
-                   VALUES ('$rLogin','$mdPassword','$rEmail','$rName_us',$time)");
+					mysql_query("INSERT INTO users (login, pass, email, us_name, timestamp, ip)
+                             VALUES ('$rLogin','$mdPassword','$rEmail','$rName_us',$time,'$rIp'");
 					if (mysql_error() != "")
 						{
 							die("<div align='center' class='err_f_reg'>Пользователь с таким логином уже существует, выберите другой.</div>");

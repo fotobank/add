@@ -583,7 +583,7 @@ if (mysql_num_rows($rs_cat) > 0)
 		<hr/>
 		<div><h3>Редактор альбомов:</h3>
 		</div>
-		<div><strong>Выбрать категорию:</strong> <strong style="margin-left: 216px;">Выбрать альбом:</strong>
+		<div><strong>Выбрать категорию:</strong> <strong style="margin-left: 300px;">Выбрать альбом:</strong>
 		</div>
 		<div class="controls" style="float:left;">
 			<div class="input-append">
@@ -715,7 +715,7 @@ if (isset($_SESSION['current_cat']))
 																						<tr>
 																							<td>
 																								<div class="input-prepend">
-																									<label for="quality" class="add-on">Качество .jpg (%):&nbsp;&nbsp;</label>
+																									<label for="quality" class="add-on">Качество .jpg (%):&nbsp;&nbsp;&nbsp;</label>
 																									<input id="quality" class="span2" type="text" NAME="quality" VALUE="<?= $ln['quality'] ?>"/>
 																								</div>
 																							</td>
@@ -730,22 +730,20 @@ if (isset($_SESSION['current_cat']))
 																							</td>
 																						</tr>
 																						<tr>
-																							<td>
+																							<td colspan="2">
 																								<div class="input-prepend">
-																									<label for="id_category" class="add-on">Категория: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-																									<select id="id_category" class="span2" name="id_category">
+																									<label for="id_category" class="add-on">Категория: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+																									<select id="id_category" class="span3" name="id_category">
 																										<?
 																										$tmp = mysql_query('select * from categories order by id asc');
-
 																										while ($tmp2 = mysql_fetch_assoc($tmp))
 																											{
-																												?>
+																										 ?>
 																												<option value="<?= $tmp2['id'] ?>" <?=( $tmp2['id']
-
 																													== $ln['id_category'] ? 'selected="selected"' : '')?>><?=$tmp2['nm']?></option>
-																											<?
+																										  <?
 																											}
-																										?>
+																										  ?>
 																									</select>
 																								</div>
 																							</td>
@@ -776,17 +774,12 @@ if (isset($_SESSION['current_cat']))
 																							</td>
 																						</tr>
 																						<tr>
-																							<td>
-																								<div class="input-prepend">
-																									<label id='refresh' title='Обновить папки' for="ftp_folder" class="add-on" onclick='sendFtp();'>Папка uploada FTP:</label>
-																									<input id="ftp_folder" class="span2" type="text" NAME="ftp_folder" VALUE="<?= $ln['ftp_folder'] ?>"/>
-																								</div>
-																							</td>
-																							<td>
+																							<td colspan="2">
 																								<input id="ftpFold" type="hidden" name="ftpFold" value="<?= $ln['ftp_folder'] ?>"/>
-																								<label for="upFTP"></label>
-																									<div class='input-prepend'>
-																										<select id= "upFTP" class="span2" NAME="ftp_folder">
+																								<div class="input-prepend">
+																								<label id='refresh' title='Обновить папки' for="upFTP" class="add-on" onclick='sendFtp();'>
+																									Папка uploada FTP:</label>
+																										<select id= "upFTP" class="span3" NAME="ftp_folder">
 																											<option value="<?= $ln['ftp_folder'] ?>"><?= $ln['ftp_folder'] ?></option>
 																										</select>
 																								</div>

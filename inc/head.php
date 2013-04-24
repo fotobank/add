@@ -50,7 +50,7 @@ header('Content-type: text/html; charset=windows-1251');
 			$time = $time[1] + $time[0];
 			$start = $time;
 			?>
-			<h2><< DEBUG >> </h2>
+			<h2>&laquo; DEBUG &raquo; </h2>
 			<div class="ttext_orange" style="position:relative">
 				Используемая память в начале: <?=intval(memory_get_usage() / 1024)?> Кбайт.
 				<hr class="style-one" style=" margin-bottom: -20px; margin-top: 10px"/>

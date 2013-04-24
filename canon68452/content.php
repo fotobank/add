@@ -50,11 +50,15 @@ if(mysql_num_rows($rs) > 0)
   while($ln = mysql_fetch_assoc($rs))
   	{
 ?>
- <form action="index.php" method="post">
-    <div>
-  	 <textarea id="content" name="content" class="tinymce" rows="25" cols="1200" style="float: left; width: 1200px;" ><?=$ln['txt']?></textarea><br style="clear:both;"/>		
-    <script>
-          CKEDITOR.replace( 'content', {
+ <form action="index.php" method="post" >
+
+	    <label for="content"></label>
+	    <textarea id="content" name="content" class="tinymce" style="font-size: 14px; width: 1230px;"><?=$ln['txt']?>
+	    </textarea>
+	    <br style="clear:both;"/>
+
+   <!-- 	<script type="text/javascript">
+    CKEDITOR.replace( 'content', {
     toolbar: 'Basic',
     uiColor: '#9AB8F3',
 	extraPlugins: 'stylesheetparser',
@@ -63,16 +67,12 @@ if(mysql_num_rows($rs) > 0)
 	filebrowserImageBrowseUrl : '/ckfinder/ckfinder.html?type=Images',
 	filebrowserFlashBrowseUrl : '/ckfinder/ckfinder.html?type=Flash',
 	filebrowserUploadUrl : '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
-	filebrowserImageUploadUrl : '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
 	filebrowserFlashUploadUrl : '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash',
-	filebrowserWindowWidth : '1000',
- 	filebrowserWindowHeight : '700',
-	filebrowserImageUploadUrl : 
-	   '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images&currentFolder=/images/'
-	
-});
-    </script>
-        <a href="javascript:;" class="btn" onclick="tinyMCE.get('content').show();return false;">Show</a>
+	filebrowserImageUploadUrl : '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images&currentFolder=/images/'
+    });
+    </script>-->
+
+      <a href="javascript:;" class="btn" onclick="tinyMCE.get('content').show();return false;">Show</a>
 		<a href="javascript:;" class="btn" onclick="tinyMCE.get('content').hide();return false;">Hide</a>
 		<a href="javascript:;" class="btn" onclick="tinyMCE.get('content').execCommand('Bold');return false;">Bold</a>
 		<a href="javascript:;" class="btn" onclick="alert(tinyMCE.get('content').getContent());return false;">Get contents</a>
@@ -86,7 +86,7 @@ if(mysql_num_rows($rs) > 0)
 		<br />
 		<input class="btn  btn-warning" type="hidden" name="go_update" value="<?=$ln['id']?>" /> 
 		<!-- <input class="btn btn-warning" type="submit" value="Применить" name="save" style="margin-top: 10px; margin-bottom: 40px;"> -->
-      </div>
+
 </form> 
  <?
     }
@@ -106,7 +106,7 @@ if(isset($_POST['chenge_kontent2']))
   else {
    $current = 0; }
    ?>
-<div class="controls" style="clear: both; margin-top: 100px;"
+<div class="controls" style="clear: both; padding-top: 80px;"
 <div class="input-append">
   <form id="myForm1" action="index.php" method="post">
    <select id="appendedInputButton" class="span3" name="id" style="height: 28px;"  onChange="$('#myForm1').trigger('submit');">
@@ -134,7 +134,7 @@ if(mysql_num_rows($rs2) > 0)
   	{
 ?>
  <form method="post" action="index.php" style="margin: 0 0 120px 20px;">
-  	 <textarea rows="25" cols="1200" name="content" style="font-size: 14px; width: 1200px;"><?=$ln['txt']?></textarea><br/>
+  	 <textarea rows="25" cols="1200" name="content" style="font-size: 14px; width: 1200px; min-height: 500px;"><?=$ln['txt']?></textarea><br/>
   	 <input class="btn  btn-warning" type="hidden" name="go_update" value="<?=$ln['id']?>" />
   	 <input class="btn  btn-warning" type="submit" value="Применить" />
  </form>  

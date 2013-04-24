@@ -61,22 +61,15 @@
 	 */
 	//	 	imagine_function( );
 
-		$startTime = '';
 
-	if (isset($_SESSION['admin_logged']) && $_SESSION['admin_logged'] == true)
-		{
-			$time  = microtime();
-			$time  = explode(' ', $time);
-			$time  = $time[1] + $time[0];
-			$startTime = $time;
-			?>
-			<h2>&laquo; DEBUG &raquo; </h2>
-			<div class="ttext_orange" style="position:relative">
-				Используемая память в начале: <?=intval(memory_get_usage() / 1024)?> Кбайт.
-				<hr class="style-one" style=" margin-bottom: 0; margin-top: 10px"/>
-			</div>
-		<?
-		}
+
+
+	$time  = microtime();
+	$time  = explode(' ', $time);
+	$time  = $time[1] + $time[0];
+	$startTime = $time;
+	$startMem = intval(memory_get_usage() / 1024); //Используемая память в начале
+
 
 
 	?>
@@ -169,9 +162,14 @@ tinyMCE.init({
 
 });
 </script>
---><!--
+-->
+
 <script type="text/javascript" src="/js/tinymce/tiny_mce.js"></script>
 
+
+
+
+		<!--<script type="text/javascript" src="/js/tinymce/tiny_mce.js"></script>-->
 <script type="text/javascript">
 tinyMCE.init({    
         
@@ -207,10 +205,9 @@ tinyMCE.init({
 
 });
 </script>
--->
 
-	<script src="./../ckeditor/ckeditor.js"></script>
-	<script src="./../ckfinder/ckfinder.js"></script>
+	<!--<script src="./../ckeditor/ckeditor.js"></script>
+	<script src="./../ckfinder/ckfinder.js"></script>-->
 
 	</head>
 	<body style="margin-left: 20px;">
@@ -406,23 +403,6 @@ tinyMCE.init({
 		?>
 
 	<? else:?>
-		<!-- ФОРМА ЛОГИНА -->
-		<!--<form action="index.php" method="post">
-			<table border="0">
-				<tr>
-					<td>Логин</td>
-					<td><input type="text" name="login" value=""></td>
-				</tr>
-				<tr>
-					<td>Пароль</td>
-					<td><input type="password" name="pass" value=""></td>
-				</tr>
-				<tr>
-					<td colspan="2" align="center"><input type="submit" value="Войти"></td>
-				</tr>
-			</table>
-			<input type="hidden" name="op" value="in">
-		</form>-->
 
 		<script type="text/javascript" src="/js/jquery.js"></script>
 		<script type="text/javascript" src="/js/bootstrap.min.js"></script>
@@ -493,7 +473,8 @@ tinyMCE.init({
 				$error_processor->err_proc("", "w", "");
 				//	$error_processor->err_proc("", "am", "");
 				?>
-				<br> Память в конце: <?=intval(memory_get_usage() / 1024)?> Кбайт;
+			   Используемая память в начале: <?=$startMem?> Кбайт;
+				Память в конце: <?=intval(memory_get_usage() / 1024)?> Кбайт;
 				Пик: <?=intval(memory_get_peak_usage() / 1024)?> Кбайт;
 				<?
 				$time = microtime();
