@@ -697,8 +697,8 @@ if (isset($_SESSION['current_cat']))
 																						<tr>
 																							<td>
 																								<div class="input-prepend">
-																									<span class="add-on">Цена за фото (гр.):&nbsp;&nbsp;</span>
-																									<input id="prependedInput" class="span2" type="text" NAME="price" VALUE="<?= $ln['price'] ?>"/>
+																									<label for="price" class="add-on">Цена за фото (гр.):&nbsp;&nbsp;</label>
+																									<input id="price" class="span2" type="text" NAME="price" VALUE="<?= $ln['price'] ?>"/>
 																								</div>
 																							</td>
 																							<td>
@@ -715,8 +715,8 @@ if (isset($_SESSION['current_cat']))
 																						<tr>
 																							<td>
 																								<div class="input-prepend">
-																									<span class="add-on">Качество .jpg (%):&nbsp;&nbsp;</span>
-																									<input id="prependedInput" class="span2" type="text" NAME="quality" VALUE="<?= $ln['quality'] ?>"/>
+																									<label for="quality" class="add-on">Качество .jpg (%):&nbsp;&nbsp;</label>
+																									<input id="quality" class="span2" type="text" NAME="quality" VALUE="<?= $ln['quality'] ?>"/>
 																								</div>
 																							</td>
 																							<td>
@@ -732,8 +732,8 @@ if (isset($_SESSION['current_cat']))
 																						<tr>
 																							<td>
 																								<div class="input-prepend">
-																									<span class="add-on">Категория: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-																									<select id="prependedInput" class="span2" name="id_category">
+																									<label for="id_category" class="add-on">Категория: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+																									<select id="id_category" class="span2" name="id_category">
 																										<?
 																										$tmp = mysql_query('select * from categories order by id asc');
 
@@ -753,16 +753,16 @@ if (isset($_SESSION['current_cat']))
 																						<tr>
 																							<td>
 																								<div class="input-prepend">
-																									<span class="add-on">Пароль на альбом:&nbsp;&nbsp;</span>
-																									<input id="prependedInput" class="span2" type="text" NAME="pass" VALUE="<?= $ln['pass'] ?>"/>
+																									<label for="pass" class="add-on">Пароль на альбом:&nbsp;&nbsp;</label>
+																									<input id="pass" class="span2" type="text" NAME="pass" VALUE="<?= $ln['pass'] ?>"/>
 																								</div>
 																							</td>
 																						</tr>
 																						<tr>
 																							<td>
 																								<div class="input-prepend">
-																									<span class="add-on">Папка фотобанка:&nbsp;&nbsp;&nbsp;</span>
-																									<input id="prependedInput" class="span2" type="text" NAME="foto_folder" VALUE="<?= $ln['foto_folder'] ?>"/>
+																									<label for="foto_folder" class="add-on">Папка фотобанка:&nbsp;&nbsp;&nbsp;</label>
+																									<input id="foto_folder" class="span2" type="text" NAME="foto_folder" VALUE="<?= $ln['foto_folder'] ?>"/>
 																								</div>
 																							</td>
 																							<td>
@@ -775,25 +775,22 @@ if (isset($_SESSION['current_cat']))
 																								Добавить резкость
 																							</td>
 																						</tr>
-
 																						<tr>
 																							<td>
 																								<div class="input-prepend">
-																									<span id='refresh' title='Обновить папки' class='add-on' onclick='sendFtp();'>Папка uploada FTP:</span>
-																									<input id="prependedInput" class="span2" type="text" NAME="ftp_folder" VALUE="<?= $ln['ftp_folder'] ?>"/>
+																									<label id='refresh' title='Обновить папки' for="ftp_folder" class="add-on" onclick='sendFtp();'>Папка uploada FTP:</label>
+																									<input id="ftp_folder" class="span2" type="text" NAME="ftp_folder" VALUE="<?= $ln['ftp_folder'] ?>"/>
 																								</div>
 																							</td>
 																							<td>
-																								<input id="upFTP" type="hidden" name="upFTP" value="<?= $ln['ftp_folder'] ?>"/>
-																								<div class="result">
+																								<input id="ftpFold" type="hidden" name="ftpFold" value="<?= $ln['ftp_folder'] ?>"/>
+																								<label for="upFTP"></label>
 																									<div class='input-prepend'>
-																										<select id="prependedInput" class="span2" NAME="ftp_folder" onclick="sendFtp();">
-																											<option value="">Выбор папки</option>
+																										<select id= "upFTP" class="span2" NAME="ftp_folder">
+																											<option value="<?= $ln['ftp_folder'] ?>"><?= $ln['ftp_folder'] ?></option>
 																										</select>
-																									</div>
 																								</div>
 																							</td>
-
 																						</tr>
 																						<tr>
 																							<td colspan="2" align="center">

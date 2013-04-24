@@ -13,9 +13,7 @@
 
 
 function sendFtp() {
-     //   if($(" #slideThree4 + :checked").val()==$(this).val())
-//    if($(" #slideThree4").prop("checked"))
-//        {
+
           $.ajax({
                 type: "POST",
                 header: ('Content-Type: application/json; charset=utf-8;'),
@@ -25,63 +23,24 @@ function sendFtp() {
               error:function(xhr, status, errorThrown) {
                  	                alert(errorThrown+'\n'+status+'\n'+xhr.statusText);
               },
-                // Выводим то что вернул PHP
                 success: function (data) {
 
                 var selector;
                 var option;
                 var dataArray = data.split(":");
-                var topSelector = "<div class='input-prepend'><br>";
-                 //   topSelector += "<span id='refresh' title='Обновить папки' class='add-on' onclick='sendFtp();'>Папка uploada FTP:</span>";
-                    topSelector += "<select id='prependedInput' class='span2'  NAME='ftp_folder' >";
-
+                var ftpFold = $(' #ftpFold ').val();
 
                     jQuery.each(dataArray, function() {
-
                         if (this != ">/") // последний элемент массива
                         {
                  option += "<option value = '" + this  + "/' >" + this  + "/</option>";
                         }
                         return option;
                     });
-
-                    var bottomSelector = "</select></div>";
-                    selector = topSelector + option + bottomSelector;
-
-                    $(" .result ").empty().append(selector);
-
+                    selector = "<option value = '" + ftpFold  + "' >" + ftpFold  + "</option>" + option;
+                    $(" #upFTP ").empty().append(selector);
                 }
             });
-
-          //  alert (value);
-       //     $("#result").empty().append(value);
-           // $("#result").empty();
-}
-
-
-function checkFtp  (data){
-
-    $.ajax({
-        type: "POST",
-        header: ('Content-Type: application/json; charset=utf-8;'),
-        url: "./zaprosDirFtp.php",
-        data: data,
-        error:function(XHR) {
-            alert(" Ошибка: "+XHR.status+ "  " + XHR.statusText);
-        },
-        statusCode: {
-            404: function() {
-                alert("Страница не найдена");
-            }
-        },
-        // Выводим то что вернул PHP
-        success: function (html) {
-            //предварительно очищаем нужный элемент страницы
-            $(idName).empty().append(html);
-        }
-    });
-
-    return idName;
 }
 
 
