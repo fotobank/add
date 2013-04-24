@@ -53,9 +53,7 @@ function ajaxPostQ(url, idName,  data) {
             alert(errorThrown+'\n'+status+'\n'+xhr.statusText);
         },
 
-        // ¬ыводим то что вернул PHP
         success: function (html) {
-            //предварительно очищаем нужный элемент страницы
             $(idName).empty().append(html);
         }
     });

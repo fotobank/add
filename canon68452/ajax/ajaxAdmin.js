@@ -20,7 +20,6 @@ function sendFtp() {
                 type: "POST",
                 header: ('Content-Type: application/json; charset=utf-8;'),
                 url: "./zaprosDirFtp.php",
-                // data: "data="+data,
                 data: {ftpDir: $('#prependedInput').val()},
 
               error:function(xhr, status, errorThrown) {
@@ -29,25 +28,21 @@ function sendFtp() {
                 // Выводим то что вернул PHP
                 success: function (data) {
 
-                   // $('#result')
-                   //     .ajaxStart(function() { $(this).hide(); })
-                    //    .empty().append(data)
-                   //     .ajaxStop(function() { $(this).show(); });
-
-                //    $("#result").empty().append(data).fadeIn('slow');
                 var selector;
                 var option;
                 var dataArray = data.split(":");
                 var topSelector = "<div class='input-prepend'><br>";
-                    topSelector += "<span id='refresh' title='Обновить папки' class='add-on' onclick='sendFtp();'>Папка uploada FTP:</span>";
+                 //   topSelector += "<span id='refresh' title='Обновить папки' class='add-on' onclick='sendFtp();'>Папка uploada FTP:</span>";
                     topSelector += "<select id='prependedInput' class='span2'  NAME='ftp_folder' >";
+
 
                     jQuery.each(dataArray, function() {
 
-                        if (this != ">/")
+                        if (this != ">/") // последний элемент массива
                         {
-               option += "<option value = '" + this  + "/' <?='" + this  + "/' == $ln['ftp_folder'] ? 'selected= \"selected\"'" + " : '' ? >/>" + this  + "/</option>";
+                 option += "<option value = '" + this  + "/' >" + this  + "/</option>";
                         }
+                        return option;
                     });
 
                     var bottomSelector = "</select></div>";
@@ -55,36 +50,39 @@ function sendFtp() {
 
                     $(" .result ").empty().append(selector);
 
-
-
-
-                  //  $(" .result ").empty().html("<option value = '" + data + "' <?='" + data + "' == $ln['ftp_folder'] ? 'selected= 'selected'' : '' ?> >" + data + "</option>");
-
-               //    $(select).insertAfter('#result');
-                //    alert (select);
                 }
             });
-       /* }
-        else
-        {*/
+
           //  alert (value);
        //     $("#result").empty().append(value);
            // $("#result").empty();
-//        }
 }
 
 
-/*
-$(function() {
+function checkFtp  (data){
 
-$(' #result li a').click(function(){
-    var a = $(this).text();
-    $(this).closest(' #result').hide('slow');
-    $(" #foto_folder").val(a).show('slow');
-    return false
+    $.ajax({
+        type: "POST",
+        header: ('Content-Type: application/json; charset=utf-8;'),
+        url: "./zaprosDirFtp.php",
+        data: data,
+        error:function(XHR) {
+            alert(" Ошибка: "+XHR.status+ "  " + XHR.statusText);
+        },
+        statusCode: {
+            404: function() {
+                alert("Страница не найдена");
+            }
+        },
+        // Выводим то что вернул PHP
+        success: function (html) {
+            //предварительно очищаем нужный элемент страницы
+            $(idName).empty().append(html);
+        }
     });
-});
-*/
+
+    return idName;
+}
 
 
 function ajaxPostQ(url, idName,  data) {
@@ -103,7 +101,6 @@ function ajaxPostQ(url, idName,  data) {
          },
         // Выводим то что вернул PHP
         success: function (html) {
-         //   alert (html);
             //предварительно очищаем нужный элемент страницы
             $(idName).empty().append(html);
          }

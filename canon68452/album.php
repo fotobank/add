@@ -735,13 +735,13 @@ if (isset($_SESSION['current_cat']))
 																									<span class="add-on">Категория: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 																									<select id="prependedInput" class="span2" name="id_category">
 																										<?
-																										$tmp =
-																											mysql_query('select * from categories order by id asc');
+																										$tmp = mysql_query('select * from categories order by id asc');
+
 																										while ($tmp2 = mysql_fetch_assoc($tmp))
 																											{
 																												?>
-																												<option value="<?= $tmp2['id'] ?>" <?=(
-																												$tmp2['id']
+																												<option value="<?= $tmp2['id'] ?>" <?=( $tmp2['id']
+
 																													== $ln['id_category'] ? 'selected="selected"' : '')?>><?=$tmp2['nm']?></option>
 																											<?
 																											}
@@ -765,26 +765,6 @@ if (isset($_SESSION['current_cat']))
 																									<input id="prependedInput" class="span2" type="text" NAME="foto_folder" VALUE="<?= $ln['foto_folder'] ?>"/>
 																								</div>
 																							</td>
-																						</tr>
-																						<tr>
-																							<td>
-																								<div class="input-prepend">
-																									<span class="add-on">Папка uploada FTP:</span>
-																									<input id="prependedInput" class="span2" type="text" NAME="ftp_folder" VALUE="<?= $ln['ftp_folder'] ?>"/>
-																								</div>
-																							</td>
-																						</tr>
-																						<tr>
-																							<td>
-																								<div class="result">
-																									<div class='input-prepend'>
-																										<span id='refresh' title='Обновить папки' class='add-on' onclick='sendFtp();'>Папка uploada FTP:</span>
-																										<select id="prependedInput" class="span2" NAME="ftp_folder" onclick="sendFtp();">
-																											<option value="">Выбор папки</option>
-																										</select>
-																									</div>
-																								</div>
-																							</td>
 																							<td>
 																								<div class="slideThree">
 																									<input id="slideThree3" type='checkbox' NAME='sharping' VALUE='yes' <?if ($ln['sharping'])
@@ -794,6 +774,26 @@ if (isset($_SESSION['current_cat']))
 																								</div>
 																								Добавить резкость
 																							</td>
+																						</tr>
+
+																						<tr>
+																							<td>
+																								<div class="input-prepend">
+																									<span id='refresh' title='Обновить папки' class='add-on' onclick='sendFtp();'>Папка uploada FTP:</span>
+																									<input id="prependedInput" class="span2" type="text" NAME="ftp_folder" VALUE="<?= $ln['ftp_folder'] ?>"/>
+																								</div>
+																							</td>
+																							<td>
+																								<input id="upFTP" type="hidden" name="upFTP" value="<?= $ln['ftp_folder'] ?>"/>
+																								<div class="result">
+																									<div class='input-prepend'>
+																										<select id="prependedInput" class="span2" NAME="ftp_folder" onclick="sendFtp();">
+																											<option value="">Выбор папки</option>
+																										</select>
+																									</div>
+																								</div>
+																							</td>
+
 																						</tr>
 																						<tr>
 																							<td colspan="2" align="center">

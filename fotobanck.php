@@ -540,18 +540,18 @@ if ($album_data)
 
 parol($may_view, $ip, $ipLog, $timeout);
 
-if (!isset($_SESSION['current_cat']))
+$data =0;
+
+if (isset($_SESSION['current_cat']))
+	{
+		$data =	mysql_query('select nm from categories where id = '.intval($_SESSION['current_cat']));
+	}else
 	{
 		echo "<script>window.document.location.href='/fotobanck.php?back_to_albums'</script>";
 	}
 
-$data =	mysql_query('select nm from categories where id = '.intval($_SESSION['current_cat']));
-if (mysql_num_rows($data) > 0)
-	{
-$razdel = mysql_result($data, 0);
-	}
 
-
+$razdel = (mysql_num_rows($data) > 0) ? mysql_result($data, 0) : 1;
 
 
 // <!-- Проверка пароля на блокировку -->
