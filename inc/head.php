@@ -1,6 +1,6 @@
 <?
-	include (dirname(__FILE__).'/config.php');
-	include (dirname(__FILE__).'/func.php');
+	include ($_SERVER['DOCUMENT_ROOT'].'/inc/config.php');
+	include ($_SERVER['DOCUMENT_ROOT'].'/inc/func.php');
 	//error_reporting(E_ALL);
 	//ini_set('display_errors', 1);
 	error_reporting(0);
@@ -20,9 +20,9 @@
 
 
 		// обработка ошибок
-		include (dirname(__FILE__).'/lib_mail.php');
-		include (dirname(__FILE__).'/lib_ouf.php');
-		include (dirname(__FILE__).'/lib_errors.php');
+		include ($_SERVER['DOCUMENT_ROOT'].'/inc/lib_mail.php');
+		include ($_SERVER['DOCUMENT_ROOT'].'/inc/lib_ouf.php');
+		include ($_SERVER['DOCUMENT_ROOT'].'/inc/lib_errors.php');
 		$error_processor = Error_Processor::getInstance();
 
 		/**
@@ -55,7 +55,7 @@
 			<?
 			}
 
-		include (dirname(__FILE__).'/title.php');
+		include ($_SERVER['DOCUMENT_ROOT'].'/inc/title.php');
 		$cryptinstall = '/inc/captcha/cryptographp.fct.php';
 		include  'captcha/cryptographp.fct.php';
 		?>
