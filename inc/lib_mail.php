@@ -42,7 +42,6 @@ class Mail_sender {
     $cnt = $header["content"];
     $cnt = chunk_split(base64_encode($cnt));
     $encoding = "base64";
-	 $charset = '; charset="UTF-8"';
     if ($header["encode"]=="text/html" or $header["encode"]=="text/plain") {
       $charset = '; charset="windows-1251\r\n"';
     }
@@ -92,7 +91,7 @@ class Mail_sender {
 	     * @todo Закодировать тело письма в base64
 	     */
 	   $this->body = chunk_split(base64_encode($this->body));
-      $mime .= "Content-Type: ".$this->body_type."; charset=\"UTF-8\"\nContent-Transfer-Encoding: base64\n\n".$this->body;
+      $mime .= "Content-Type: ".$this->body_type."; charset=\"windows-1251\"\nContent-Transfer-Encoding: base64\n\n".$this->body;
     }
 
     if (!is_array($this->to)) $this->to = array($this->to);
@@ -102,7 +101,7 @@ class Mail_sender {
   // Sends letter
   function send_letter()
   {
-    foreach ($this->to as $to) {
+    foreach ($this -> to as $to) {
       @mail($to, $this->subj, "", $this->mime);
     }
   }

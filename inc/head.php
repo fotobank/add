@@ -29,7 +29,7 @@
 		 *  Тесты для проверки Error_Processor
 		 * PHP set_error_handler TEST
 		 */
-//			IMAGINE_CONSTANT;
+	//	IMAGINE_CONSTANT;
 		/**
 		 * PHP set_exception_handler TEST
 		 */
@@ -356,13 +356,9 @@
 					dhtmlx.message.expire = 6000;
 					dhtmlx.message({ type: 'warning', text: <?=$_SESSION['ok_msg2'] ?>});
 				});
-				/*function redirect() {
-				 window.document.location.href = '<?=$back?>'
-				 }
-				 setTimeout('redirect()', 3000);*/
 			</script>
 			<?
-			//	unset($_SESSION['ok_msg2']);
+				unset($_SESSION['ok_msg2']);
 		}
 	?>
 

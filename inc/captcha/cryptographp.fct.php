@@ -58,5 +58,4 @@ function chk_crypt($code)
 				return false;
 			}
 	}
-
 ?>

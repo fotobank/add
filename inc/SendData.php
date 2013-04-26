@@ -73,8 +73,12 @@
 				}
 		}
 
+
+if(!isset($_SESSION['previos_data'])) $_SESSION['previos_data'] = md5($_POST['login'].$_POST['email'].$_POST['pkey']);
+$_SESSION['err_msg'] = $_SESSION['err_msg2'] = $_SESSION['ok_msg2'] = '';
+
 	//Получаем данные
-	if (isset($_SESSION['previos_data']) && md5($_POST['login'].$_POST['email'].$_POST['pkey']) != $_SESSION['previos_data'])
+	if ($_SESSION['previos_data'] != md5($_POST['login'].$_POST['email'].$_POST['pkey']))
 		{
 			if (iconv("utf-8", "windows-1251", $_POST['login'].$_POST['email'].$_POST['pkey']) == "Введите Ваш логин:или E-mail:Код безопасности:")
 				{
@@ -135,9 +139,11 @@
 		}
 	else
 		{
-			if(isset($_SESSION['err_msg'])) $_SESSION['err_msg'] = "Повторный ввод одинаковых данных!<br>";
+			if(isset($_SESSION['err_msg'])) $_SESSION['err_msg'] = "<p class='ttext_red'>Повторный ввод одинаковых данных!</p><br>";
 		}
-	if (isset($_SESSION['ok_msg2']))
+
+
+	if (isset($_SESSION['ok_msg2']) && $_SESSION['ok_msg2'] != '')
 		{
 			$_SESSION['ok_msg2'] = "<p class='ttext_blue'>".$_SESSION['ok_msg2']."</p>";
 			echo $_SESSION['ok_msg2'];
@@ -145,12 +151,15 @@
 		}
 	else
 		{
-			if(isset($_SESSION['err_msg']))  $_SESSION['err_msg'] .= "<p class='ttext_red'>".$_SESSION['err_msg']."</p>";
-			if(isset($_SESSION['err_msg2']))
+			if(isset($_SESSION['err_msg2']) && $_SESSION['err_msg2'] != '')
 				{
-			echo $_SESSION['err_msg2'];
+			     echo $_SESSION['err_msg2'];
 	         }
-			elseif(isset($_SESSION['err_msg'])) echo $_SESSION['err_msg'];
+			elseif(isset($_SESSION['err_msg']) && $_SESSION['err_msg'] != '')
+            {
+	            echo $_SESSION['err_msg'];
+            }
+
 
 		}
    $_SESSION['previos_data'] = md5($_POST['login'].$_POST['email'].$_POST['pkey']);

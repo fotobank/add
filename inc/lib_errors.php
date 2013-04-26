@@ -10,16 +10,18 @@
 	{
 
 		var $EP_tmpl_err_item = '<br><br>[ERR_MSG]'; // Error messages template: one item of list of a messages
-		var $EP_log_fullname = 'log/errors.log'; // Path and filename of error log
+		var $EP_log_fullname ; // Path and filename of error log
 		var $EP_mail_period = 5; // Minimal period for sending an error message (in minutes)
 		var $EP_from_addr = "webmaster@aleks.od.ua";
 		var $EP_from_name = "Ошибки в скриптах";
 		var $EP_to_addr = "aleksjurii@gmail.com";
 		var $EP_log_max_size = 500; // Max size of a log before it will sended and cleared (in kb)
-		var $event_log_fullname = "log/events.log"; // Path and filename of event log
+		var $event_log_fullname ; // Path and filename of event log
 		static private $instance = NULL;
-      var $err_led;
+      var $err_led; // сообщения об ошибке для вывода на экран
 		var $err_list = array();
+		var $err_name; // имя ошибки для заголовка письма
+
 
 
 		/**
@@ -51,6 +53,8 @@
 				set_error_handler(array('Error_Processor', 'userErrorHandler'));
 				set_exception_handler(array('Error_Processor', 'captureException'));
 				register_shutdown_function(array('Error_Processor', 'captureShutdown'));
+				$this ->event_log_fullname = $_SERVER['DOCUMENT_ROOT'].'/log/events.log'; // Path and filename of error log
+				$this ->EP_log_fullname = $_SERVER['DOCUMENT_ROOT'].'/log/errors.log'; // Path and filename of event log
 
 			}
 
@@ -81,8 +85,7 @@
 						/**
 						 * включаем буфферизацию вывода (вывод скрипта сохраняется во внутреннем буфере)
 						 */
-						  //  ob_start();
-						  //  ob_end_clean();
+						    ob_start();
 						/**
 						 * timestamp для входа ошибки
 						 */
@@ -113,21 +116,21 @@
 
 						// набор ошибок, на которые переменный след будет сохранен
 						$user_errors = array(E_USER_ERROR, E_USER_WARNING, E_USER_NOTICE);
-						$err         = "<CATCHABLE ERRORS>\n";
-						$err .= "\t Тип ошибки:      ".$errortype[$errno]."\n";
-						$err .= "\t Сообщение:       ".$errmsg."\n";
-						$err .= "\t Номер ошибки:    ".$errno."\n";
-						$err .= "\t Файл скрипта:    ".$filename."\n";
-						$err .= "\t Страница:        ".$_SERVER['REQUEST_URI']."\n";
-						$err .= "\t Номер строки:    ".$linenum."\n";
-						$err .= "\t Дата:            ".$dt."\n";
-						$err .= "\t Ip пользователя: ".Get_IP()."\n";
-						$err .= "\t Браузер:         ".$_SERVER['HTTP_USER_AGENT']."\n";
+						$err         = "<b><CATCHABLE ERRORS></b>\n<br>";
+						$err .= "\t <b>Тип ошибки:</b>      ".$errortype[$errno]."\n<br>";
+						$err .= "\t <b>Сообщение:</b>       ".$errmsg."\n<br>";
+						$err .= "\t <b>Номер ошибки:</b>    ".$errno."\n<br>";
+						$err .= "\t <b>Файл скрипта:</b>    ".$filename."\n<br>";
+						$err .= "\t <b>Страница:</b>        ".$_SERVER['REQUEST_URI']."\n<br>";
+						$err .= "\t <b>Номер строки:</b>    ".$linenum."\n<br>";
+						$err .= "\t <b>Дата:</b>            ".$dt."\n<br>";
+						$err .= "\t <b>Ip пользователя:</b> ".Get_IP()."\n<br>";
+						$err .= "\t <b>Браузер:</b>         ".$_SERVER['HTTP_USER_AGENT']."\n<br>";
 						if (in_array($errno, $user_errors))
 							{
-								$err .= "\t Трассировка ошибки:".wddx_serialize_value($vars, "Variables")."\n";
+								$err .= "\t <b>Трассировка ошибки:</b>".wddx_serialize_value($vars, "Variables")."\n<br>";
 							}
-						$err .= "</CATCHABLE ERRORS>\n\n";
+						$err .= "<b></CATCHABLE ERRORS></b>\n\n";
 
 						/**
 						 * @todo Cохранить в файл регистрации ошибок, и послать мне по электронной почте,
@@ -150,11 +153,14 @@
 						/**
 						 * @todo Формирование сообщения об ошибке для вывода на экран
 						 */
-						$err_led = "<span><b>$errortype[$errno]</b></span>[$errno] $errmsg (<span><b>$filename на  $linenum  строке)<br /></b></span>\n";
+						$error_processor->err_name = $errortype[$errno];
+						$err_led = "<span><b>$errortype[$errno]</b></span>[$errno] $errmsg (<span><b>$filename на  $linenum  строке)<br /></b></span>\n<br>";
 						/**
 						 * @todo Отправка ошибок в  лог файл и email
 						 */
 						$error_processor->err_proc($err,'lm',$err_led);
+
+						ob_end_clean();
 					}
 
 				return true;
@@ -209,8 +215,7 @@
 		 * выводит список всех сообщений на экран, "d" - дополнительно очищает стек ошибки,
 		 * 's' - дополнительно остановить исполнение, 'l' - дополнительно пишет log,
 		 * 'm' - дополнительно отправляет по электронной почте (значения могут быть объединены, например: 'ws')
-		 * $err_file, $err_line - имя файла и строки с ошибкой (как правило, константы
-		 * __FILE__ and __LINE__)
+		 * $err_file, $err_line - имя файла и строки с ошибкой
 		 *
 		 */
 		function err_proc($err_msg, $actions = '', $err_led)
@@ -219,7 +224,8 @@
 				$this->log_send(0);
 				// Adding in list of errors
 				$this->err_list[] = $err_msg;
-				$this->err_led .= $err_led;
+				$this->err_led .= $err_led; // сообщения об ошибке для вывода на экран
+
 
 				/**
 				 * Writing log
@@ -244,11 +250,13 @@
 						for ($I = count($dump) - 17; $I > 0; $I--)
 							{
 								$str = rtrim($dump[$I]);
-
+//        $test = substr($str,-25,-6);
                          if (($timestamp = strtotime(substr($str,19,-6))) !== false)
 								    {
-
-						          	if (strtotime(substr($str,19,-6)) > strtotime("-".$this->EP_mail_period." minutes"))
+//          $test1 = strtotime(substr($str,-25,-6));
+//          $test2 = strtotime("-".$this->EP_mail_period." minutes");
+//			   $test3 =  $test1 -  $test2;
+						          	if (strtotime(substr($str,-25,-6)) > strtotime("-".$this->EP_mail_period." minutes"))
 											{
 														$too_often = true;
 														break;
@@ -258,43 +266,42 @@
 								    }
 							}
 						if ($too_often == false)
-							{
+//						if ($too_often)
+						{
 								$mail_mes = "
-										Error: $err_msg\n\n
-										Date/time: ".date('r')."\n
-										\$SERVER_NAME = ".$_SERVER['SERVER_NAME']."\n
-										\$REQUEST_URI: ".$_SERVER['REQUEST_URI']."\n
-										\$REMOTE_ADDR: ".$_SERVER['REMOTE_ADDR']."\n
-										\$HTTP_USER_AGENT: ".$_SERVER['HTTP_USER_AGENT']."\n
-										\$HTTP_REFERER: ".$_SERVER['HTTP_REFERER']."\n
-										\$REQUEST_METHOD: ".$_SERVER['REQUEST_METHOD']."\n
-										\$HTTP_ACCEPT_LANGUAGE: ".$_SERVER['HTTP_ACCEPT_LANGUAGE']."\n
-									   Cookie:\n";
+										<u><b>Error:</b></u><br> $err_msg<br>
+										<b>\$SERVER_NAME</b> = ".$_SERVER['SERVER_NAME']."<br>
+										<b>\$HTTP_REFERER:</b> ".$_SERVER['HTTP_REFERER']."<br>
+										<b>\$REQUEST_METHOD:</b> ".$_SERVER['REQUEST_METHOD']."<br>
+										<b>\$HTTP_ACCEPT_LANGUAGE:</b> ".$_SERVER['HTTP_ACCEPT_LANGUAGE']."<br>
+									  <b>Cookie:</b><br>";
 								foreach ($_COOKIE as $I => $val)
 									{
-										$mail_mes .= $I.'='.$val."\n";
+										$mail_mes .= $I.'='.$val."<br>";
 									}
 								$mail_mes .= "
-    	                        Variables (GET):\n ";
+    	                       <b> Variables (GET):</b><br> ";
 								while (list($I, $val) = each($_GET))
 									{
-										$mail_mes .= " $I=$val\n";
+										$mail_mes .= " $I=$val<br>";
 									}
 								$mail_mes .= "
-										 Variables (POST):\n ";
+										<b> Variables (POST):</b><br> ";
 								while (list($I, $val) = each($_POST))
 									{
-										$mail_mes .= " $I=$val\n";
+										$mail_mes .= " $I=$val<br>";
 									}
 								$mail            = new Mail_sender;
 								$mail->from_addr = $this->EP_from_addr;
 								$mail->from_name = $this->EP_from_name;
 								$mail->to        = $this->EP_to_addr;
-								$mail->subj      = "Error occurred: $err_msg";
+								$mail->subj      = "Произошла ошибка: $this->err_name";
+							   $mail->body_type = 'text/html';
 								$mail->body      = $mail_mes;
 								$mail->priority  = 1;
 								$mail->prepare_letter();
 								$mail->send_letter();
+
 							}
 					}
 				if (substr_count($actions, 'w'))

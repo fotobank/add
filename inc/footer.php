@@ -53,7 +53,7 @@
     </div>
 
     <!-- Piwik -->
-    <!--<script type="text/javascript">
+    <script type="text/javascript">
         var pkBaseURL = (("https:" == document.location.protocol) ? "https://fotosait.no-ip.org/piwik/" : "http://fotosait.no-ip.org/piwik/");
         document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
     </script>
@@ -65,7 +65,7 @@
         } catch (err) {
         }
     </script>
-    <noscript><p><img src="http://fotosait.no-ip.org/piwik/piwik.php?idsite=1" style="border:0" alt=""/></p></noscript> -->
+    <noscript><p><img src="http://fotosait.no-ip.org/piwik/piwik.php?idsite=1" style="border:0" alt=""/></p></noscript>
     <!-- End Piwik Tracking Code -->
 
 

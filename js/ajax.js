@@ -33,8 +33,6 @@ function ajaxPostQ(url, idName,  data) {
         });
     });
 
-
-
     // Ajax activity indicator bound to ajax start/stop document events
     $(document).ajaxStart(function(){
         $('#ajaxBusy').show();
@@ -46,14 +44,19 @@ function ajaxPostQ(url, idName,  data) {
         type: "POST",
         header: ('Content-Type: application/json; charset=utf-8;'),
         url: url,
-        // data: "data="+data,
         data: data,
 
-        error:function(xhr, status, errorThrown) {
-            alert(errorThrown+'\n'+status+'\n'+xhr.statusText);
+        error:function(XHR) {
+            alert(" Ошибка: "+XHR.status+ "  " + XHR.statusText);
+        },
+        statusCode: {
+            404: function() {
+            alert("Страница не найдена");
+            }
         },
 
         success: function (html) {
+// alert (html);
             $(idName).empty().append(html);
         }
     });
