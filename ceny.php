@@ -1,5 +1,5 @@
 <?php
-include (dirname(__FILE__).'inc/head.php');
+include (dirname(__FILE__).'/inc/head.php');
 ?>
 
 	<link href="/css/calkul.css" rel="stylesheet" type="text/css" />
@@ -135,7 +135,6 @@ include (dirname(__FILE__).'inc/head.php');
 			<div id="count_price"><p>Итого: <span></span> руб.</p></div>
 		</form>
 	</div>
-<!--	--><?php //dsp_crypt(0,1); ?>
 <div id="cont_fb">
 <? echo mysql_result(mysql_query('select txt from content where id = 3'), 0); ?>
 </div>
@@ -143,5 +142,5 @@ include (dirname(__FILE__).'inc/head.php');
 </div>
 <div class="end_content"></div>
 </div>
-<?php include ('inc/footer.php');
+<?php include (dirname(__FILE__).'/inc/footer.php');
 ?>

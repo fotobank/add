@@ -42,8 +42,9 @@ class Mail_sender {
     $cnt = $header["content"];
     $cnt = chunk_split(base64_encode($cnt));
     $encoding = "base64";
+	 $charset = '; charset="UTF-8"';
     if ($header["encode"]=="text/html" or $header["encode"]=="text/plain") {
-      $charset = '; charset="UTF-8"';
+      $charset = '; charset="windows-1251\r\n"';
     }
     return "Content-Type: ".$header["encode"].
     ($header["name"]? "; name = \"".$header["name"]."\"" : "")."$charset\nContent-Transfer-Encoding: $encoding".($header['cid']?"\nContent-ID: <".$header['cid'].">":"")."\n\n$cnt\n";

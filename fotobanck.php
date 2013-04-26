@@ -839,7 +839,7 @@ endif;
 
 <script type='text/javascript'>
 	$('img').error(function () {
-		$(this).attr('src', 'img/not_foto.png');
+		$(this).attr('src', '/img/not_foto.png');
 	});
 </script>
 
@@ -849,5 +849,5 @@ endif;
 </div></div>
 
 <?php
-include (dirname(__FILE__).'inc/footer.php');
+include (dirname(__FILE__).'/inc/footer.php');
 ?>

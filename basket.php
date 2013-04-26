@@ -1,5 +1,5 @@
 <?php
-    include (dirname(__FILE__).'inc/head.php');
+    include (dirname(__FILE__).'/inc/head.php');
 
     if(isset($_GET['del']))
       {
@@ -127,8 +127,8 @@
      <li class="span2" style="margin-left: 30px; width: 160px; height: 300px;">	
      <div class="thumbnail">	
 	 <img src="dir.php?num=<?=substr(($photo_data['img']),2,-4)?>" alt="<?=$photo_data['nm']?>" title="<?=$photo_data['nm']?>"><br>	             
-     <span class="foto_prev_nm" style="margin-top: -20px; margin-left: 0px;"><center>№ <?=$photo_data['nm']?></center></span>
-     <span style="color:#FFFFFF"><b><center><?=$photo_data['price']?> грн.</center></b></span>            
+     <span class="foto_prev_nm" style="margin-top: -20px; margin-left: 0; text-align: center;">№  <?=$photo_data['nm']?></span>
+     <span style="color:#FFFFFF"><b style="text-align: center;"><?=$photo_data['price']?> грн.</b></span>
 	 </div>  
      </li>   
      </div>
@@ -154,5 +154,5 @@
  </div>
 <?
 }
-include ('inc/footer.php');
+include (dirname(__FILE__).'/inc/footer.php');
 ?>

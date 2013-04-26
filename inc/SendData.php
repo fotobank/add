@@ -74,9 +74,8 @@
 		}
 
 	//Получаем данные
-	if (isset($_SESSION['previos_data']) && $_POST['login'].$_POST['email'].$_POST['pkey'] != $_SESSION['previos_data'])
+	if (isset($_SESSION['previos_data']) && md5($_POST['login'].$_POST['email'].$_POST['pkey']) != $_SESSION['previos_data'])
 		{
-			$_SESSION['previos_data'] = $_POST['login'].$_POST['email'].$_POST['pkey'];
 			if (iconv("utf-8", "windows-1251", $_POST['login'].$_POST['email'].$_POST['pkey']) == "Введите Ваш логин:или E-mail:Код безопасности:")
 				{
 				if(isset($_SESSION['err_msg'])) $_SESSION['err_msg'] .= "Необходимо заполнить одно из полей.<br>";
@@ -154,6 +153,7 @@
 			elseif(isset($_SESSION['err_msg'])) echo $_SESSION['err_msg'];
 
 		}
+   $_SESSION['previos_data'] = md5($_POST['login'].$_POST['email'].$_POST['pkey']);
 	unset($_SESSION['err_msg']);
 	unset($_SESSION['err_msg2']);
 	unset($_SESSION['secret_number']);
