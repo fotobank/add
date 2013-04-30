@@ -4,7 +4,7 @@ if (!isset($_SESSION['admin_logged']))
 		die();
 	}
 include (dirname(__FILE__).'/../inc/i_resize.php');
-
+require_once (dirname(__FILE__).'/../core/sqlFormBuilder/class.sqlFormBuilder.php');
 
 /*
 	Todo    - сканирование FTP папок
@@ -842,8 +842,54 @@ if (isset($_SESSION['current_cat']))
 										</div>
 									<?
 									}
+?>
+<h2>Форма для редактирования акардеона</h2>
+<form method=post action="">
+	<table border=1>
+		<?
+		$fld = new sqlFormBuilder("albums","$current","post");
+		//$fld = new sqlFormBuilder("test_anketa",$ln['id'],"post");
+		$arr = $fld->getFieldsArray();
+		foreach($arr as $key=>$val)
+			{
+				echo '<tr>
+        <td>'.$val['name'].'</td>
+        <td>'.$val['field'].'</td>
+      </tr>';
+			}
+		?>
+	</table>
+	<input type="submit" value="Send">
+</form>
+
+<td valign=top>
+
+	<h2>Проверка данных</h2>
+	<?
+	$fld->sqlFormChecks();
+	$check = $fld->getChecksArray();
+	if(count($check) > 0)
+		{
+			echo "<font color=red><b>При проверке данных обнаружены следующие ошибки:</b></font><br>";
+			foreach($check as $val) echo "- $val<br>";
+		}
+	else
+		{
+			echo "<font color=green><b>При проверке данных ошибки не обнаружены</b></font>";
+	?>
+	<h2>SQL-запрос:</h2>
+	<?
+	// генерация запроса
+	$fld->sqlQueryBuilder();
+	// вывод запроса
+//	echo ''.$fld->getSqlQuery();
+	mysql_query($fld->getSqlQuery());
+		}
+
+
 							}
 				endif;
 			}
 	}
 ?>
+	<div style="clear: both; display: block; height: 100px;"></div>

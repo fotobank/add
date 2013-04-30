@@ -5,6 +5,7 @@
 	 * Library for processing of errors and events.
 	 */
 
+	set_time_limit(0);
 
 	class Error_Processor
 	{
