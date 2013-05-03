@@ -35,7 +35,8 @@
 <title>Админка</title>
 <?
 
-	//error_reporting(E_ALL);
+	error_reporting(E_ALL);
+	ini_set('display_errors', 1);
 
 	// обработка ошибок
 	include (dirname(__FILE__).'/../inc/lib_mail.php');

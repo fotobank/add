@@ -5,7 +5,7 @@
 <div id="cont_fb">
 <h2><span style="color: #ffa500"> –‡Á‰ÂÎ ”—À”√»</span></h2>
 <br>
-<? echo mysql_result(mysql_query('select txt from content where id = 17'), 0); ?>
+	<? echo $db->query('select txt from content where id = ?i',array(17),'el'); ?>
 
 			<table width="100%" border="0">
             <tr>
@@ -57,7 +57,7 @@
 </div>
 </div>
 <div class="end_content"></div>
-<? echo mysql_result(mysql_query('select txt from content where id = 18'), 0); ?>
+<? echo $db->query('select txt from content where id = ?i',array(18),'el'); ?>
 <div class="end_content" style="margin-top: -40px;"></div>
 </div>
 <?php include (dirname(__FILE__).'/inc/footer.php');

@@ -5,7 +5,7 @@
 <a class="small button full blue" href="uslugi.php">&nbsp &nbsp &nbsp &nbsp Назад к категориям &nbsp &nbsp &nbsp &nbsp </a><br><br>
 <br><br><br>
 <div id="cont_fb">
-<?  echo mysql_result(mysql_query('select txt from content where id = 11'), 0); ?>
+	<? echo $db->query('select txt from content where id = ?i',array(11),'el'); ?>
 </div>
 </div>
 <div class="end_content"></div>

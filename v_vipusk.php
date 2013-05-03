@@ -7,7 +7,7 @@
 
 <div id="cont_fb">
 
-<?  echo mysql_result(mysql_query('select txt from content where id = 13'), 0); ?>
+<? echo $db->query('select txt from content where id = ?i',array(13),'el'); ?>
 
 </div>
 </div>

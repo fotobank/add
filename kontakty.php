@@ -271,7 +271,7 @@ print "<script language='Javascript' type='text/javascript'>
 </table>
 <div class="ttext_orange">
     <?
-    echo mysql_result(mysql_query('select txt from content where id = 4'), 0);
+	 echo $db->query('select txt from content where id = ?i',array(4),'el');
     ?>
 </div>
 </div>

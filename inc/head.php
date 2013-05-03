@@ -1,9 +1,9 @@
 <?
-	include ($_SERVER['DOCUMENT_ROOT'].'/inc/config.php');
-	include ($_SERVER['DOCUMENT_ROOT'].'/inc/func.php');
-	//error_reporting(E_ALL);
-	//ini_set('display_errors', 1);
-	error_reporting(0);
+	include (__DIR__.'/config.php');
+	include (__DIR__.'/func.php');
+	error_reporting(E_ALL);
+	ini_set('display_errors', 1);
+	//error_reporting(0);
 	header('Content-type: text/html; charset=windows-1251');
 
 
@@ -16,8 +16,6 @@
 		<meta name="google-site-verification" content="uLdE_lzhCOntN_AaTM1_sQNmIXFk1-Dsi5AWS0bKIgs"/>
 		  <link href='http://fonts.googleapis.com/css?family=Lobster|Comfortaa:700|Jura:600&subset=cyrillic,cyrillic-ext' rel='stylesheet' type='text/css'>
 		<?
-
-
 
 		// обработка ошибок
 		include ($_SERVER['DOCUMENT_ROOT'].'/inc/lib_mail.php');
@@ -33,7 +31,7 @@
 		/**
 		 * PHP set_exception_handler TEST
 		 */
-		//   throw new Exception( 'Imagine Exception' );
+	//	   throw new Exception( 'Imagine Exception' );
 		/**
 		 * PHP register_shutdown_function TEST ( IF YOU WANT TEST THIS, DELETE PREVIOUS LINE )
 		 */
@@ -256,12 +254,12 @@
 
 					<? if (isset($_SESSION['logged'])): ?>
 						<div style="text-align: center;">
-  <span style="color:#bb5">Здравствуйте,<br> <span style="font-weight: bold;"><?=$_SESSION['us_name']?></span><br/>
+  <span style="color:#bb5"><span style="font-size: 14px">Здравствуйте,</span><br> <span style="font-weight: bold;"><?=$_SESSION['us_name']?></span><br/>
 	  <?
-	  $user_balans =
-		  floatval(mysql_result(mysql_query('select balans from users where id = '.intval($_SESSION['userid'])), 0));
+	  $user_balans = $db->query('select balans from users where id = ?i',array($_SESSION['userid']),'el');
 	  ?>
-	  Ваш баланс: <span style="font-weight: bold;"><?=$user_balans?></span> гр.<br/></span></div>
+	  <span style="font-size: 12px";> Ваш баланс: </span>
+	  <span style="font-weight: bold;"><?=$user_balans?></span> гр.<br/></span></div>
 
 						<div style="margin-top: 8px;">
 							<a class="korzina" href="/basket.php">корзина</a>

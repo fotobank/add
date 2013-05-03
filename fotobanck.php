@@ -3,6 +3,7 @@
 	include  (dirname(__FILE__).'/inc/head.php');
 	include  (dirname(__FILE__).'/inc/ip-ban.php');
 	include  (dirname(__FILE__).'/inc/dirPatc.php');
+
 	$ip = Get_IP(); // Ip пользователя
 	//Количество фоток на странице
 	define('PHOTOS_ON_PAGE', 7);
@@ -217,18 +218,23 @@
 							$current_page = 1;
 						}
 					$start        = ($current_page - 1) * PHOTOS_ON_PAGE;
-					$rs           =
-						mysql_query(
-							'select SQL_CALC_FOUND_ROWS p.* from photos p where id_album = '.$_SESSION['current_album']
-								.' order by img ASC, id ASC limit '.$start.','.PHOTOS_ON_PAGE);
-					$record_count = intval(mysql_result(mysql_query('select FOUND_ROWS() as cnt'), 0)); // количество записей
-					if (mysql_num_rows($rs) > 0)
+					$db = go\DB\Storage::getInstance()->get('db-for-data');
+					$rs           = $db->query(
+		//					'select SQL_CALC_FOUND_ROWS p.* from photos p where id_album = '.$_SESSION['current_album']
+		//						.' order by img ASC, id ASC limit '.$start.','.PHOTOS_ON_PAGE);
+					'select SQL_CALC_FOUND_ROWS p.* from photos p where id_album = ?i
+					 order by img ASC, id ASC limit ?i,'.PHOTOS_ON_PAGE,
+					array($_SESSION['current_album'], $start),'assoc');
+					$db = go\DB\Storage::getInstance()->get('db-for-data');
+					$record_count = $db->query('select FOUND_ROWS() as cnt', null, 'iassoc'); // количество записей
+					if ($rs)
 						{
 							?>
 							<!-- 3 -->
 							<hr class="style-one" style="margin-top: 10px; margin-bottom: -20px;">
 							<?
-							while ($ln = mysql_fetch_assoc($rs))
+		//					while ($ln = mysql_fetch_assoc($rs))
+								foreach ($rs as $ln)
 								{
 									$source = ($_SERVER['DOCUMENT_ROOT'].fotoFolder().$ln['id_album'].'/'.$ln['img']);
 									$sz     = @getimagesize($source);
@@ -327,14 +333,15 @@
 					<!-- 1 -->
 					<hr class="style-one" style="margin: 0 0 -20px 0;"/>
 					<?
-					$rs      =
-						mysql_query('select * from photos where id_album = '.$_SESSION['current_album']
-							.' order by votes desc, id asc limit 0, 5');
+					$db = go\DB\Storage::getInstance()->get('db-for-data');
+					$rs = $db->query('select * from photos where id_album = ?i
+						   order by votes desc, id asc limit 0, 5',array($_SESSION['current_album']),'iassoc');
 					$id_foto = array();
-				if (mysql_num_rows($rs) > 0)
+				if ($rs)
 				{
 					$pos_num = 1;
-				while ($ln = mysql_fetch_assoc($rs))
+		//		while ($ln = mysql_fetch_assoc($rs))
+				foreach ($rs as $ln)
 				{
 					$source            = $_SERVER['DOCUMENT_ROOT'].fotoFolder().$ln['id_album'].'/'.$ln['img'];
 					$sz                = @getimagesize($source);
@@ -476,7 +483,7 @@
 
 	if (isset($_SESSION['current_album'])):
 
-	$rs = mysql_query('select * from albums where id = '.$_SESSION['current_album']);
+	$rs = $db->query('select * from albums where id = ?i', array($_SESSION['current_album']),'assoc');
 	$may_view = false;
 	$album_data = false;
 	if (mysql_num_rows($rs) == 0)
@@ -560,7 +567,7 @@
 
 	if (isset($_SESSION['current_cat']))
 		{
-			$data = mysql_query('select nm from categories where id = '.intval($_SESSION['current_cat']));
+			$data = $db->query('select nm from `categories` where id = ?i', array($_SESSION['current_cat']),'el');
 		}
 	else
 		{
@@ -732,8 +739,7 @@ else:
 				$razdel = '';
 				if (isset($_SESSION['current_cat']))
 					{
-						$razdel =
-							mysql_result(mysql_query('select nm from categories where id = '.$_SESSION['current_cat']), 0);
+				   $razdel = $db->query('select nm from categories where id = ?i',array($_SESSION['current_cat']),'el');
 					}
 				?>
 				<div class="zagol2"><h2><span style="color: #ffa500">Раздел фотобанка - "<?=$razdel;?>"</span></h2></div>
@@ -748,11 +754,11 @@ else:
 
 				<!-- Подготовка вывода альбомов на страницы разделов   -->
 				<?
-				$rs = mysql_query('select * from albums where id_category = '.$current_cat.' order by order_field asc');
+				$rs = $db->query('select * from albums where id_category = ?i order by order_field asc',array($current_cat),'iassoc');
 				/**
 				 * @todo  Вывод текстовой информации на страницы разделов
 				 */
-				echo mysql_result(mysql_query('select txt from categories where id = '.$current_cat.'  '), 0);
+				echo $db->query('select txt from categories where id = ?i',array($current_cat),'el');
 				/**
 				 * @todo Печать альбомов
 				 */
@@ -760,7 +766,8 @@ else:
 					{
 						$i = 0;
 						$h = 0;
-						while ($ln = mysql_fetch_assoc($rs))
+//						while ($ln = mysql_fetch_assoc($rs))
+							foreach ($rs as $ln)
 							{
 								$top  = $h * 1 + 20;
 								$left = $i * 250;
@@ -824,8 +831,9 @@ else:
 						<td>
 
 							<?
-							$rs = mysql_query('select * from categories order by id asc');
-							while ($ln = mysql_fetch_assoc($rs))
+							$rs = $db->query('select * from categories order by id asc');
+	//						while ($ln = mysql_fetch_assoc($rs))
+ 							foreach ($rs as $ln)
 								{
 									/**
 									 * @todo кнопки разделов

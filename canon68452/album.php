@@ -4,7 +4,6 @@ if (!isset($_SESSION['admin_logged']))
 		die();
 	}
 include (dirname(__FILE__).'/../inc/i_resize.php');
-require_once (dirname(__FILE__).'/../core/sqlFormBuilder/class.sqlFormBuilder.php');
 
 /*
 	Todo    - сканирование FTP папок
@@ -104,16 +103,21 @@ if (isset($_POST['go_add']))
 							{
 								$nm = 'Без имени';
 							}
-						mysql_query('insert into albums (nm) values (\''.$nm.'\')');
+//						mysql_query('insert into albums (nm) values (\''.$nm.'\')');
+
+						$db->query('insert into `albums` (nm) VALUES (?string)',array($nm));
+
+
 						if (mysql_errno() > 0)
 							{
 								die('Ошибка MySQL!'.mysql_error());
 							}
 						$id_album    = mysql_insert_id();
+//						mysql_query('insert into accordions (id_album) values (\''.$id_album.'\',)');
+						$db->query('insert into `accordions` (id_album) VALUES (?scalar)',array($id_album));
 						$img         = 'id'.$id_album.'.'.$ext;
 						$target_name = $_SERVER['DOCUMENT_ROOT'].'/images/'.$img;
 						$file_load   = $_SERVER['DOCUMENT_ROOT'].'/tmp/'.$img;
-						$preffiks    = '/Public/fotobank/';
 						if (move_uploaded_file($_FILES['preview']['tmp_name'], $file_load))
 							{
 								$sharping  = 1;
@@ -446,8 +450,12 @@ if (isset($_POST['go_updown']))
 								<div>
 									<label for="prependedInput"></label><select id="prependedInput" class="span2" name="id_category" style="margin-bottom: 0; width: 207px;">
 										<?
-										$tmp = mysql_query('select * from categories order by id asc');
-										while ($tmp2 = mysql_fetch_assoc($tmp))
+//										$tmp = mysql_query('select * from categories order by id asc');
+
+										$tmp = $db->query('select * from `categories` order by id asc')->assoc();
+
+	//									while ($tmp2 = mysql_fetch_assoc($tmp))
+											foreach ($tmp as $tmp2)
 											{
 												?>
 												<option value="<?= $tmp2['id'] ?>"
@@ -458,7 +466,7 @@ if (isset($_POST['go_updown']))
 														}
 													else
 														{
-															if ($tmp2['id'] == $_SESSION['id_category'] ? 'selected="selected"' : '')
+															if ($tmp2['id'] == $_SESSION['id_category'] ? 'selected="selected"' : 'el')
 																{
 																	;
 																}
@@ -562,14 +570,18 @@ if (isset($_POST['chenge_cat']))
 	{
 		$_SESSION['current_cat'] = intval($_POST['id']);
 	}
-$rs_cat = mysql_query('select DISTINCT c.nm, c.id
+/*$rs_cat = mysql_query('select DISTINCT c.nm, c.id
   		      from categories c, albums a 
   		    	where  c.id = a.id_category							      
-  		      order by a.order_field asc   ');
+  		      order by a.order_field asc   ');*/
 
+$rs_cat = $db->query('select DISTINCT c.nm, c.id
+  		      from categories c, albums a
+  		    	where  c.id = a.id_category
+  		      order by a.order_field asc' )->assoc();
 
-if (mysql_num_rows($rs_cat) > 0)
-	{
+/*if (mysql_num_rows($rs_cat) > 0)
+	{*/
 		if (isset($_SESSION['current_cat']))
 			{
 				$current_c = intval($_SESSION['current_cat']);
@@ -590,7 +602,8 @@ if (mysql_num_rows($rs_cat) > 0)
 				<form id="myForm1" action="index.php" method="post">
 					<select id="appendedInputButton" class="span3" name="id" style="height: 28px;">
 						<?
-						while ($ln_cat = mysql_fetch_assoc($rs_cat))
+//						while ($ln_cat = mysql_fetch_assoc($rs_cat))
+							foreach ($rs_cat as $ln_cat)
 							{
 								?>
 								<option value="<?= $ln_cat['id'] ?>" <?=(
@@ -605,7 +618,7 @@ if (mysql_num_rows($rs_cat) > 0)
 		</div>
 
 	<?
-	}
+//	}
 
 if (isset($_POST['chenge_album']))
 	{
@@ -614,13 +627,19 @@ if (isset($_POST['chenge_album']))
 
 if (isset($_SESSION['current_cat']))
 	{
-		$rs = mysql_query('select c.nm, a.*
+		/*$rs = mysql_query('select c.nm, a.*
   		      from categories c, albums a 
   		      where  c.id = a.id_category
   		      and  a.id_category = '.intval($_SESSION['current_cat']).'
-  		      order by a.order_field asc');
-		if (mysql_num_rows($rs) > 0)
-			{
+  		      order by a.order_field asc');*/
+		$rs = $db->query('select c.nm, a.*
+  		      from categories c, albums a
+  		      where  c.id = a.id_category
+  		      and  a.id_category = '.intval($_SESSION['current_cat']).'
+  		      order by a.order_field asc' )->assoc();
+
+		/*if (mysql_num_rows($rs) > 0)
+			{*/
 				if (isset($_SESSION['current_album']))
 					{
 						$current = intval($_SESSION['current_album']);
@@ -635,7 +654,8 @@ if (isset($_SESSION['current_cat']))
 						<form id="myForm2" action="index.php" method="post">
 							<select id="appendedInputButton" class="span3" style=" margin-left: 100px; height: 28px;" name="id">
 								<?
-								while ($ln = mysql_fetch_assoc($rs))
+						//		while ($ln = mysql_fetch_assoc($rs))
+									foreach ($rs as $ln)
 									{
 										?>
 										<option value="<?= $ln['id'] ?>" <?=(
@@ -651,10 +671,13 @@ if (isset($_SESSION['current_cat']))
 
 				<?
 				if (isset($_SESSION['current_album'])):
-						$rs = mysql_query('select * from albums where id = '.intval($_SESSION['current_album']));
-						if (mysql_num_rows($rs) > 0)
-							{
-								while ($ln = mysql_fetch_assoc($rs))
+	//					$rs = mysql_query('select * from albums where id = '.intval($_SESSION['current_album']));
+
+						$rs = $db->query('select * from albums where id = ?', array($_SESSION['current_album']), 'assoc');
+						/*if (mysql_num_rows($rs) > 0)
+							{*/
+	//							while ($ln = mysql_fetch_assoc($rs))
+									foreach ($rs as $ln)
 									{
 										$_SESSION['id_category'] = $ln['id_category'];
 										?>
@@ -735,8 +758,10 @@ if (isset($_SESSION['current_cat']))
 																									<label for="id_category" class="add-on">Категория: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 																									<select id="id_category" class="span3" name="id_category">
 																										<?
-																										$tmp = mysql_query('select * from categories order by id asc');
-																										while ($tmp2 = mysql_fetch_assoc($tmp))
+																										$tmp = $db->query('select * from `categories` order by id asc', null,'assoc');
+//																										$tmp = mysql_query('select * from categories order by id asc');
+//																										while ($tmp2 = mysql_fetch_assoc($tmp))
+																										foreach ($tmp as $tmp2)
 																											{
 																										 ?>
 																												<option value="<?= $tmp2['id'] ?>" <?=( $tmp2['id']
@@ -841,55 +866,10 @@ if (isset($_SESSION['current_cat']))
 											</table>
 										</div>
 									<?
-									}
-?>
-<h2>Форма для редактирования акардеона</h2>
-<form method=post action="">
-	<table border=1>
-		<?
-		$fld = new sqlFormBuilder("albums","$current","post");
-		//$fld = new sqlFormBuilder("test_anketa",$ln['id'],"post");
-		$arr = $fld->getFieldsArray();
-		foreach($arr as $key=>$val)
-			{
-				echo '<tr>
-        <td>'.$val['name'].'</td>
-        <td>'.$val['field'].'</td>
-      </tr>';
-			}
-		?>
-	</table>
-	<input type="submit" value="Send">
-</form>
-
-<td valign=top>
-
-	<h2>Проверка данных</h2>
-	<?
-	$fld->sqlFormChecks();
-	$check = $fld->getChecksArray();
-	if(count($check) > 0)
-		{
-			echo "<font color=red><b>При проверке данных обнаружены следующие ошибки:</b></font><br>";
-			foreach($check as $val) echo "- $val<br>";
-		}
-	else
-		{
-			echo "<font color=green><b>При проверке данных ошибки не обнаружены</b></font>";
-	?>
-	<h2>SQL-запрос:</h2>
-	<?
-	// генерация запроса
-	$fld->sqlQueryBuilder();
-	// вывод запроса
-//	echo ''.$fld->getSqlQuery();
-	mysql_query($fld->getSqlQuery());
-		}
-
-
-							}
+								}
+	//						}
 				endif;
-			}
+//			}
 	}
 ?>
 	<div style="clear: both; display: block; height: 100px;"></div>

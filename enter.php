@@ -4,14 +4,14 @@ include (dirname(__FILE__).'/inc/func.php');
 
 if(isset($_POST['login']))
 {
-  $rs = mysql_query('select * from users where login = \''.mysql_escape_string($_POST['login']).'\' and pass = \''.mysql_escape_string(md5($_POST['password'])).'\'');
-  if(mysql_num_rows($rs) == 0)
+  $rs = $db->query('select * from `users` where `login` = ? and `pass` = md5(?)', array($_POST['login'], $_POST['password']), 'row');
+  if(!$rs)
   {
   	err_exit('Неправильный логин или пароль!', '/index.php');
   }
   else
   {
-  	$udata = mysql_fetch_assoc($rs);
+  	$udata = $rs;
     if($udata['status'] == 0)
     {
     	err_exit('Login не активирован! Активируйте свой профиль с помощью письма, пришедшего на Ваш E-mail!', '/index.php');

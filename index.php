@@ -17,7 +17,7 @@ include (dirname(__FILE__).'/inc/head.php');
 </div>-->
 
 <div id="cont_fb">
-<? echo mysql_result(mysql_query('select txt from content where id = 1'), 0); ?>
+<? echo $db->query('select txt from content where id = ?i',array(1),'el'); ?>
 </div>
 <?
 /*echo "<script type='text/javascript'>

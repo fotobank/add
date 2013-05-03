@@ -136,7 +136,7 @@ include (dirname(__FILE__).'/inc/head.php');
 		</form>
 	</div>
 <div id="cont_fb">
-<? echo mysql_result(mysql_query('select txt from content where id = 3'), 0); ?>
+	<? echo $db->query('select txt from content where id = ?i',array(3),'el'); ?>
 </div>
 
 </div>

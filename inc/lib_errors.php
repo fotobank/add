@@ -159,7 +159,7 @@
 						/**
 						 * @todo Отправка ошибок в  лог файл и email
 						 */
-						$error_processor->err_proc($err,'lm',$err_led);
+						$error_processor->err_proc($err,'wl',$err_led);
 
 						ob_end_clean();
 					}
@@ -172,11 +172,23 @@
 		 */
 		public static function captureException($exception)
 			{
-
-				// Display content $exception variable
-				echo '<pre>';
+				$dt = date("Y-m-d H:i:s (T)");
+				$err =  "<EXTENSIONS ERROR> \n";
+				// заносим все выводимые данные в буфер
+				ob_start();
+				?><pre><?
 				print_r($exception);
-				echo '</pre>';
+				?></pre><?
+				// очищаем буфер
+				$err .= ob_get_clean();
+				$err .= "\t Страница:        ".$_SERVER['REQUEST_URI']."\n";
+				$err .= "\t Дата:            ".$dt."\n";
+				$err .= "\t Ip пользователя: ".Get_IP()."\n";
+				$err .= "\t Браузер:         ".$_SERVER['HTTP_USER_AGENT']."\n";
+				$err .=  "</EXTENSIONS ERROR> \n\n";
+				$err_led = $err;
+				$error_processor = Error_Processor::getInstance();
+				$error_processor->err_proc($err,'wlm',$err_led);
 				return true;
 			}
 
@@ -187,19 +199,33 @@
 
 		public static function captureShutdown()
 			{
-
 				$error = error_get_last();
+				$dt = date("Y-m-d H:i:s (T)");
 				if ($error)
 					{
 						## IF YOU WANT TO CLEAR ALL BUFFER, UNCOMMENT NEXT LINE:
 						//  ob_end_clean();
+
 						// Display content $error variable
-						echo '<pre>';
-						print_r($error);
-						echo '</pre>';
+						$err_led  = "<FATAL ERROR> <br>";
+						$err =  "<FATAL ERROR> \n";
+						foreach($error as $key => $value)
+							{
+				//				echo "<b>$key:</b> $value <br />";
+								$err_led .= "<b>$key:</b> $value <br />";
+								$err .= "\t $key:\t \t      $value \n";
+							}
+						$err_led  .= "</FATAL ERROR> <br> <br>";
 
+						$err .= "\t Страница:        ".$_SERVER['REQUEST_URI']."\n";
+						$err .= "\t Дата:            ".$dt."\n";
+						$err .= "\t Ip пользователя: ".Get_IP()."\n";
+						$err .= "\t Браузер:         ".$_SERVER['HTTP_USER_AGENT']."\n";
+						$err .=  "</FATAL ERROR> \n\n";
+
+						$error_processor = Error_Processor::getInstance();
+						$error_processor->err_proc($err,'wlm',$err_led);
 					}
-
 						return true;
 			}
 

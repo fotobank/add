@@ -50,7 +50,7 @@
 	$body = <<<END
 <p><a href='http://aleks.od.ua/'>Перейдем на Главную страницу?</a></p>
 <div style='text-align: right;'>
-    <img src='./img/404a.png' alt='404'>
+    <img src='/img/404a.png' alt='404'>
 </div>
 
 END;

@@ -5,7 +5,9 @@ function main_redir($addr, $close_conn = true, $code = 'HTTP/1.1 303 See Other')
   header('location: '.$addr);
   if ($close_conn)
   {
-    mysql_close();
+	 $db = go\DB\Storage::getInstance()->get('db-for-data');
+	 $db->close(true);
+//    mysql_close();
     exit();
   }
 }
@@ -26,12 +28,14 @@ function ok_exit($msg = 'Операция успешно завершена', $a
   main_redir($addr);
 }
 
+
+
 function get_param($param_name)
 {
-	$value = false;
-	$rs = mysql_query('select param_value from nastr where param_name = \''.$param_name.'\'');
-  if(mysql_num_rows($rs) > 0)
-    $value = mysql_result($rs, 0);
+//	go\DB\Storage::getInstance()->get('db-for-data')->query($pattern, $data);
+	$db = go\DB\Storage::getInstance()->get('db-for-data');
+	$rs = $db->query('select param_value from nastr where param_name = (?string)',array($param_name), 'el');
+	$value = $rs ? $rs : false;
 	return $value;
 }
 
@@ -40,14 +44,17 @@ function get_param($param_name)
  */
 function fotoFolder()
    {
-      $foto_folder = mysql_result(mysql_query('select foto_folder from albums where id = '.intval($_SESSION['current_album']).'  '), 0);
+	   $db = go\DB\Storage::getInstance()->get('db-for-data');
+	   $foto_folder = $db->query('select foto_folder from albums where id = ?i',array($_SESSION['current_album']), 'el');
       return $foto_folder;
    }
 
 function getPassword($password,$id){
-	stripslashes($password);
-	$ipassword = trim(md5($password));
-	$update = mysql_query("UPDATE users SET pass = '$ipassword' WHERE id = '$id'")or die(mysql_error()) ;
+//	stripslashes($password);
+//	$ipassword = trim(md5($password));
+//	$update = mysql_query("UPDATE users SET pass = '$ipassword' WHERE id = '$id'")or die(mysql_error()) ;
+	$db = go\DB\Storage::getInstance()->get('db-for-data');
+	$update = $db->query('UPDATE users SET pass = md5(?string) WHERE id = ?i',array($password,$id)) or die(mysql_error()) ;
 	if($update){return true;}
 	return false;
 }
