@@ -5,26 +5,26 @@ include (dirname(__FILE__).'/inc/func.php');
 header('Content-type: text/html; charset=windows-1251');
 
 if (isset($_SESSION['current_album'])):
-$id = intval($_GET['id']);
+$id = $_GET['id'];
 if ($id > 0)
     {
-        $rs = mysql_query('select * from photos where id = '.$id);
-        if (mysql_num_rows($rs) > 0)
+        $rs = $db->query('select * from `photos` where `id` = ?i',array($id),'row');
+        if ($rs)
             {
-                $photo_data = mysql_fetch_assoc($rs);
-                $rs = mysql_query('select id from photos where id_album = '.intval($photo_data['id_album']).' and id > '.$id.' order by id asc limit 0, 1');
-                if (mysql_num_rows($rs) > 0)
+                $photo_data = $rs;
+                $rs = $db->query('select `id` from `photos` where `id_album`= ?i and id > ?i order by `id` asc limit 0, 1',array($photo_data['id_album'], $id), 'el');
+                if ($rs)
                     {
-                        $right_id = intval(mysql_result($rs, 0));
+                        $right_id = intval($rs);
                     }
                 else
                     {
                         $right_id = false;
                     }
-                $rs = mysql_query('select id from photos where id_album = '.intval($photo_data['id_album']).' and id < '.$id.' order by id desc limit 0, 1');
-                if (mysql_num_rows($rs) > 0)
+	             $rs = $db->query('select `id` from `photos` where `id_album`= ?i and id < ?i order by `id` asc limit 0, 1',array($photo_data['id_album'], $id), 'el');
+                if ($rs)
                     {
-                        $left_id = intval(mysql_result($rs, 0));
+                        $left_id = intval($rs);
                     }
                 else
                     {
@@ -104,13 +104,13 @@ if ($id > 0)
             <?
             }
     }
-mysql_close();
+		$db->close(true);
 else:
 
         echo '<script type="text/javascript">';
         echo 'history.go(-1);';
         echo '</script>';
-        mysql_close();
+		  $db->close(true);
 
 endif;
 

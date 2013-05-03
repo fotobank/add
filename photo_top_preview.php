@@ -8,21 +8,15 @@ if (isset($_SESSION['current_album'])):
 		$id = intval($_GET['id']);
 		if ($id > 0)
 			{
-				$rs = mysql_query('select * from photos where id = '.$id);
-				if (mysql_num_rows($rs) > 0)
+				$rs = $db->query('select * from `photos` where `id` = ?i',array($id),'row');
+				if ($rs)
 					{
-						$photo_data = mysql_fetch_assoc($rs);
-						$rs = mysql_query('select id from photos where id_album = '.intval($photo_data['id_album'])
-							.' order by votes desc, id asc limit 0, 5');
-						if (mysql_num_rows($rs) > 0)
+						$photo_data = $rs;
+						$id_foto = $db->query('select `id` from `photos` where `id_album` = ?i
+							       order by votes desc, id asc limit 0, 5',array($photo_data['id_album']),'col');
+						if ($id_foto)
 							{
 								$index = 0;
-								$id_foto = array();
-								while ($ln = mysql_fetch_assoc($rs))
-									{
-										$id_foto[$index] = ($ln['id']);
-										$index++;
-									}
 								$right_id = 0;
 								$left_id = 0;
 								foreach ($id_foto as $key => $val)
@@ -113,13 +107,13 @@ if (isset($_SESSION['current_album'])):
 							}
 					}
 			}
-		mysql_close();
+		$db->close(true);
 else:
 
 		echo '<script type="text/javascript">';
 		echo 'history.go(-1);';
 		echo '</script>';
-		mysql_close();
+		$db->close(true);
 
 endif;
 

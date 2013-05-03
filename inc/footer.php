@@ -22,7 +22,7 @@
     if (isset($_SESSION['us_name']) && $_SESSION['us_name'] == 'test')
     {
 	?>
-	<div class="ttext_orange" style="position:absolute; margin-top: -55px;">
+	<div class="ttext_blue" style="position:absolute; margin-top: 45px;">
 		<?
 	/**
 	 * $actions - переменная String с действиями:

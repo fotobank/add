@@ -219,14 +219,11 @@
 						}
 					$start        = ($current_page - 1) * PHOTOS_ON_PAGE;
 					$db = go\DB\Storage::getInstance()->get('db-for-data');
-					$rs           = $db->query(
-		//					'select SQL_CALC_FOUND_ROWS p.* from photos p where id_album = '.$_SESSION['current_album']
-		//						.' order by img ASC, id ASC limit '.$start.','.PHOTOS_ON_PAGE);
+					$rs = $db->query(
 					'select SQL_CALC_FOUND_ROWS p.* from photos p where id_album = ?i
 					 order by img ASC, id ASC limit ?i,'.PHOTOS_ON_PAGE,
 					array($_SESSION['current_album'], $start),'assoc');
-					$db = go\DB\Storage::getInstance()->get('db-for-data');
-					$record_count = $db->query('select FOUND_ROWS() as cnt', null, 'iassoc'); // количество записей
+					$record_count = $db->query('select FOUND_ROWS() as cnt', null, 'el'); // количество записей
 					if ($rs)
 						{
 							?>
@@ -335,7 +332,7 @@
 					<?
 					$db = go\DB\Storage::getInstance()->get('db-for-data');
 					$rs = $db->query('select * from photos where id_album = ?i
-						   order by votes desc, id asc limit 0, 5',array($_SESSION['current_album']),'iassoc');
+						   order by votes desc, id asc limit 0, 5',array($_SESSION['current_album']),'assoc');
 					$id_foto = array();
 				if ($rs)
 				{
@@ -364,8 +361,7 @@
 
 							<span class="top_pos" style="opacity: 0;"><?=$pos_num?></span>
 							<img id="<?= substr(trim($ln['img']), 2, -4) ?>" src="dir.php?num=<?= substr(trim($ln['img']),
-								2,
-								-4) ?>" alt="<?= $ln['nm'] ?>" title="Нажмите для просмотра" <?=$sz_string?> />
+								2,-4) ?>" alt="<?= $ln['nm'] ?>" title="Нажмите для просмотра" <?=$sz_string?> />
 							<figcaption><span style="font-size: x-small; font-family: Times, serif; ">№ <?=$ln['nm']?>
 									Голосов:<span class="badge badge-warning"> <span id="<?= substr(trim($ln['img']),
 											2,
@@ -483,17 +479,8 @@
 
 	if (isset($_SESSION['current_album'])):
 
-	$rs = $db->query('select * from albums where id = ?i', array($_SESSION['current_album']),'assoc');
+	$album_data = $db->query('select * from albums where id = ?i', array($_SESSION['current_album']),'row');
 	$may_view = false;
-	$album_data = false;
-	if (mysql_num_rows($rs) == 0)
-		{
-			unset($_SESSION['current_album']);
-		}
-	else
-		{
-			$album_data = mysql_fetch_assoc($rs);
-		}
 	if ($album_data)
 		{
 			$may_view = true;
@@ -555,7 +542,12 @@
 				{
 					unset($_SESSION['popitka'][$_SESSION['current_album']]);
 				}
+		} else
+
+		{
+			unset($_SESSION['current_album']);
 		}
+
 	// @todo Отключить проверку пароля
 	// $may_view = true;
 
@@ -563,19 +555,16 @@
 
 	parol($may_view, $ip, $ipLog, $timeout);
 
-	$data = 0;
 
 	if (isset($_SESSION['current_cat']))
 		{
-			$data = $db->query('select nm from `categories` where id = ?i', array($_SESSION['current_cat']),'el');
+			$razdel = $db->query('select nm from `categories` where id = ?i', array($_SESSION['current_cat']),'el');
 		}
 	else
 		{
 			echo "<script>window.document.location.href='/fotobanck.php?back_to_albums'</script>";
 		}
 
-
-	$razdel = (mysql_num_rows($data) > 0) ? mysql_result($data, 0) : 1;
 
 
 	// <!-- Проверка пароля на блокировку -->
@@ -661,8 +650,7 @@
 
 	<!-- Название альбома  -->
 
-	<div class="zagol2" class="span5 offset0"><h2><span style="color: #ffa500; float: left;  margin: 20px 0 0 300px;">Фотографии альбома "<?=$album_data['nm']?>
-				"</span></h2></div>
+	<div class="zagol2" class="span5 offset0"><h2><span style="color: #ffa500; float: left;  margin: 20px 0 0 300px;">Фотографии альбома "<?=$album_data['nm']?>"</span></h2></div>
 	<div style="clear: both;"></div>
 
 	<!--/**	выводим фотографию - заголовок альбома*/ -->
@@ -670,8 +658,7 @@
 		<div class="alb_logo">
 			<div id="fb_alb_fotoP">
 				<img src="album_id.php?num=<?= substr(($album_data['img']),
-					2,
-					-4) ?>" width="130px" height="124px" alt="-"/>
+					2,-4) ?>" width="130px" height="124px" alt="-"/>
 			</div>
 			<div id="fb_alb_nameP"></div>
 		</div>
@@ -717,6 +704,8 @@
 	$SqlPagesMessage = "SELECT `*` FROM `*`;";
 	$CountToShow = PHOTOS_ON_PAGE;
 	//include 'pages.php';
+
+
 endif;
 /**
  * @todo <!-- Вывод альбомов в разделах -->
@@ -754,7 +743,7 @@ else:
 
 				<!-- Подготовка вывода альбомов на страницы разделов   -->
 				<?
-				$rs = $db->query('select * from albums where id_category = ?i order by order_field asc',array($current_cat),'iassoc');
+				$rs = $db->query('select * from albums where id_category = ?i order by order_field asc',array($current_cat),'assoc');
 				/**
 				 * @todo  Вывод текстовой информации на страницы разделов
 				 */
@@ -762,7 +751,7 @@ else:
 				/**
 				 * @todo Печать альбомов
 				 */
-				if (mysql_num_rows($rs) > 0)
+				if ($rs)
 					{
 						$i = 0;
 						$h = 0;
@@ -831,7 +820,7 @@ else:
 						<td>
 
 							<?
-							$rs = $db->query('select * from categories order by id asc');
+							$rs = $db->query('select * from `categories` order by `id` asc',null,'assoc:id');
 	//						while ($ln = mysql_fetch_assoc($rs))
  							foreach ($rs as $ln)
 								{
