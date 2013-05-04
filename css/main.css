@@ -119,9 +119,8 @@ p {
     font-size: 14px;
     font-weight: normal;
     text-indent: 5px; /* Отступ первой строки в пикселах */
-    color: #CCCCCC;
+    color: #000;
     font-family: "Times New Roman", Times, serif;
-
 }
 
 @font-face {
@@ -158,25 +157,26 @@ h1 {
 
 
 h2 {
-    font-size: 24px;
-    color: #ffffff;
-    text-shadow: 1px 1px 1px #000000;
-    font-family: monospace !important;
-    /*font-family: "Times New Roman", Times, serif;*/
+    font-size: 22px;
+    color: #000000;
+    text-shadow: 1px 1px 1px #aaa;
+    /*font-family: monospace !important;*/
+    font-family: "Times New Roman", Times, serif;
+    /*font-family: Arial, Helvetica, sans-serif;*/
     font-weight: normal;
     text-align: center;
-
 }
 
 
 h3 {
-    font-size: 20px;
-    margin: 10px 0;
-    font-family: inherit;
-    font-weight: bold;
-    line-height: 20px;
-    color: #777;
-
+    font-size: 18px;
+    margin: 3px 0;
+    /*font-family: inherit;*/
+    font-family: "Times New Roman", Times, serif;
+    /*font-weight: bold;*/
+    /*line-height: 20px;*/
+    color: #000;
+    text-align: center;
 }
 
 
@@ -188,7 +188,7 @@ h4 {
     font-family: inherit;
     font-weight: bold;
     line-height: 20px;
-    color: #CCC;
+    color: #000;
 
 }
 
@@ -204,17 +204,17 @@ hfooter {
     background-color: #bbb;
     border: 1px solid #e1e1e8;
     font-family: "Times New Roman", Times, serif;
-    text-shadow: 2px 2px 3px #000000;
+    text-shadow: 1px 1px 2px #555;
     font-size: 20px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
-    box-shadow: 1px 1px 3px 2px #000, 0 0 2px rgba(0, 0, 0, .5) inset;
+    box-shadow: 1px 1px 1px 1px #555, 0 0 2px rgba(100, 100, 100, .2) inset;
 }
 
 hremind {
     padding: 2px 20px;
-    color: #FFCC33;
+    color: #00146e;
     background-color: #bbb;
     border: 1px solid #e1e1e8;
     /* font-family:"Times New Roman", Times, serif; */
@@ -223,7 +223,7 @@ hremind {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
-    box-shadow: 1px 1px 3px 2px #000, 0 0 2px rgba(0, 0, 0, .5);
+    box-shadow: 1px 1px 1px 1px #555, 0 0 2px rgba(124, 124, 124, 0.24);
 }
 
 #head {
@@ -424,10 +424,10 @@ a.bt_rgstr:hover {
     top: -12px;
     left: 10%;
     border: 1px solid #fff;
-    background: #6c6c6c;
-   /* -webkit-box-shadow: 0 0 30px #969696;
+    background: #909090;
+    -webkit-box-shadow: 0 0 30px #969696;
     -moz-box-shadow: 0 0 30px #969696;
-    box-shadow: 0 0 30px #969696;*/
+    box-shadow: 0 0 30px #969696;
     z-index: 1;
     display: none;
 
@@ -439,7 +439,7 @@ a.bt_rgstr:hover {
     padding: 2px 5px;
     background: #345;
     color: #fff;
-    margin: -13px 0 0 230px ;
+    margin: -2px 0 0 230px ;
     width: 160px;
     height: 22px;
     text-align: center;
@@ -583,32 +583,59 @@ a.gb_act {
 }
 
 #form_reg {
-    width: 300px;
+    width: 350px;
     height: 200px;
     padding-top: 10px;
     margin-left: auto;
     margin-right: auto;
     display: block;
-    background: #313;
+    background: #e7e1cf;
     border-radius: 14px;
-    border: #110011 ridge 4px;
-    color: #ccc;
+    border: #aaaaaa ridge 2px;
+    color: #000000;
     font-size: 18px;
     font-family: "Times New Roman", Times, serif;
+    padding-left: 10px;
 }
 
-#for_reg_cont {
-    width: 600px;
-    color: #cccccc;
+#form_act {
+    width: 300px;
+    height: 100px;
+    padding-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    background: #e7e1cf;
+    border-radius: 14px;
+    border: #aaaaaa ridge 2px;
+    color: #000000;
     font-size: 18px;
     font-family: "Times New Roman", Times, serif;
     text-align: center;
+
+}
+
+#for_reg_cont {
+    width: 900px;
+    color: #000;
+    font-size: 18px;
+    font-family: "Times New Roman", Times, serif;
+    text-align: match-parent;
     margin-left: auto;
     margin-right: auto;
 }
 
+#for_reg_cont:first-letter{
+    display:block;
+    margin: 0 0 0 5px;
+    float:left;
+    color: #001592;
+    font-size:50px;
+    font-family:Georgia;
+}
+
 .inp_f_reg {
-    width: 150px;
+    width: 190px;
     background: #ccc;
     font-size: 15px;
     padding-left: 5px;
@@ -783,7 +810,7 @@ a.gb_act {
 
 .foto_prev_nm {
     font-size: 14px;
-    color: #FFFFFF;
+    color: #000;
     padding: 5px;
     display: inherit;
     width: 140px;
@@ -848,7 +875,7 @@ a.gb_act {
     top: -178px;
     left: 28px;
 }
-/*
+
 .div_fb3 {
     background: url(../img/bk_fb_td.png) no-repeat left top;
     position: absolute;
@@ -857,20 +884,21 @@ a.gb_act {
     float: left;
     cursor: pointer;
     text-align: center;
-    font-size: 13px;
+    font-size: 12px;
     z-index: 1;
-
+    PADDING-LEFT: 2px;
 }
 
 .div_fb3:hover {
     background: url(../img/bk_fb_td_act.png) no-repeat left top;
     width: 252px;
     height: 250px;
-    font-size: 19px;
+    font-size: 14px;
     z-index: 1;
 }
-*/
 
+
+/*
 .div_fb3 {
     background: url(/img/bk_fb_td_act.png) no-repeat left top;
     position: absolute;
@@ -882,6 +910,7 @@ a.gb_act {
     font-size: 13px;
     z-index: 1;
 }
+*/
 
 
 
@@ -2370,3 +2399,75 @@ hr.style-one:before {
     color: #000;
 }
 
+
+
+.cont-list {
+    position:relative;
+    z-index:0;
+}
+
+.drop-shadow {
+    position:relative;
+    float:left;
+    padding: 3px 25px 3px 25px;
+    margin:5px 10px 5px 10px;
+    background: #f6f0e8;
+    -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+    box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+}
+
+.drop-shadow:before, .drop-shadow:after {
+    content:"";
+    position:absolute;
+    z-index:-2;
+}
+
+.drop-shadow p {
+    font-size:16px;
+    font-weight:bold;
+}
+
+.curved:before {
+    top:10px;
+    bottom:10px;
+    left:0;
+    right:50%;
+    -webkit-box-shadow:0 0 15px rgba(0,0,0,0.6);
+    box-shadow:0 0 15px rgba(0,0,0,0.6);
+    border-radius:10px / 100px;
+}
+
+.curved-vt-2:before {
+    top:50%;
+    bottom:0;
+    left:10px;
+    right:10px;
+    border-radius:100px / 10px;
+}
+
+.lifted {border-radius:0;}
+
+.lifted:before,  .lifted:after {
+    bottom:15px;
+    left:10px;
+    width:50%;
+    height:20%;
+    max-width:200px;
+    -webkit-box-shadow:0 15px 10px rgba(0, 0, 0, 0.7);
+    box-shadow:0 15px 10px rgba(0, 0, 0, 0.7);
+    -webkit-transform:rotate(-3deg);
+    -moz-transform:rotate(-3deg);
+    -ms-transform:rotate(-3deg);
+    -o-transform:rotate(-3deg);
+    transform:rotate(-3deg);
+}
+
+.lifted:after {
+    right:10px;
+    left:auto;
+    -webkit-transform:rotate(3deg);
+    -moz-transform:rotate(3deg);
+    -ms-transform:rotate(3deg);
+    -o-transform:rotate(3deg);
+    transform:rotate(3deg);
+}

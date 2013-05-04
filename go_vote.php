@@ -13,16 +13,16 @@ else
 {
   if($id > 0)
   {
-    $rs = mysql_query('select id from photos where id = '.$id);
-    if(mysql_num_rows($rs) > 0)
+    $rs = $db->query('select id from photos where id = ?i', array($id), 'el');
+    if($rs)
     {
-      $balans = floatval(mysql_result(mysql_query('select balans from users where id = '.intval($_SESSION['userid'])),0));
+      $balans = floatval($db->query('select balans from users where id = ?i', array($_SESSION['userid']), 'el'));
       $vote_price = floatval(get_param('vote_price'));
       if($vote_price <= $balans)
       {
-        mysql_query('insert into votes (id_user, id_photo) values ('.intval($_SESSION['userid']).', '.$id.')');
-        mysql_query('update photos set votes = votes + 1 where id = '.$id);
-        mysql_query('update users set balans = balans - '.$vote_price.' where id = '.intval($_SESSION['userid']));
+	      $db->query('insert into votes (id_user, id_photo) values (?i,?i)',array($_SESSION['userid'], $id));
+	      $db->query('update photos set votes = votes + 1 where id = ?i',array($id));
+	      $db->query('update users set balans = balans - ? where id = ?i', array($vote_price, $_SESSION['userid']));
         $status = 'OK';
       }
       else
@@ -36,5 +36,5 @@ ob_end_clean();
 
 echo json_encode(array('status' => $status, 'msg' => $msg));
 
-mysql_close();
+$db->close(true);
 ?>

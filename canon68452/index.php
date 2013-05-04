@@ -509,5 +509,5 @@ tinyMCE.init({
 
 	</html>
 <?
-	mysql_close();
+	$db->close();
 ?>

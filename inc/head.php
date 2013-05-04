@@ -43,14 +43,12 @@
 				$time  = microtime();
 				$time  = explode(' ', $time);
 				$time  = $time[1] + $time[0];
-				$start = $time;
+				$startTime = $time;
+				$startMem = intval(memory_get_usage() / 1024); //Используемая память в начале
 				?>
 				<h2>&laquo; DEBUG &raquo; </h2>
-				<div class="ttext_blue" style="position:relative">
-					Используемая память в начале: <?=intval(memory_get_usage() / 1024)?> Кбайт.
 					<hr class="style-one" style=" margin-bottom: -20px; margin-top: 10px"/>
-				</div>
-			<?
+			   <?
 			}
 
 		include ($_SERVER['DOCUMENT_ROOT'].'/inc/title.php');

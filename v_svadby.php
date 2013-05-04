@@ -1,7 +1,9 @@
 <?php include (dirname(__FILE__).'/inc/head.php');
 ?>
 <div id="main">
-<br><h2><span style="color: #ffa500">Садебные клипы</span></h2><br>
+	<div class="cont-list" style="margin: 0 10px 20px 40%;"><div class="drop-shadow lifted">
+			<h2><span style="color: #00146e;">Садебные клипы</span></h2>
+		</div></div>
 <a class="small button full blue" href="uslugi.php">&nbsp &nbsp &nbsp &nbsp Назад к категориям &nbsp &nbsp &nbsp &nbsp </a><br><br>
 <br><br><br>
 <div id="cont_fb">

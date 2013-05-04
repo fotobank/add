@@ -1,7 +1,7 @@
 <?php
 include (dirname(__FILE__).'/inc/config.php');
 ob_start();
-$id = intval($_POST['id']);
+$id = $_POST['id'];
 $status = 'ERR';
 $msg = 'File not found!';
 if(!isset($_SESSION['logged']))
@@ -10,21 +10,19 @@ if(!isset($_SESSION['logged']))
 }
 else
 {
-  if($id > 0)
+  if($id)
   {
-    $rs = mysql_query('select id from photos where id = '.$id);
-    if(mysql_num_rows($rs) > 0)
+    $rs = $db->query('select id from photos where id = ?i', array($id), 'el');
+    if($rs)
     {
       if(!isset($_SESSION['basket']))
         $_SESSION['basket'] = array();
-      $_SESSION['basket'][$id] = 1;
-      $status = 'OK';
+        $_SESSION['basket'][$id] = 1;
+        $status = 'OK';
     }
   }
 }
 ob_end_clean();
-
 echo json_encode(array('status' => $status, 'msg' => $msg));
-
-mysql_close();
+$db->close(true);
 ?>

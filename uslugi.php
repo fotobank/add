@@ -3,7 +3,9 @@
 
 <div id="main">
 <div id="cont_fb">
-<h2><span style="color: #ffa500"> ׀אחהוכ ׃ֻׁ׃ֳָ</span></h2>
+	<div class="cont-list" style="margin: -10px 10px 60px 40%;"><div class="drop-shadow lifted">
+			<h2><span style="color: #00146e;"> ׀אחהוכ ׃ֻׁ׃ֳָ</span></h2>
+		</div></div>
 <br>
 	<? echo $db->query('select txt from content where id = ?i',array(17),'el'); ?>
 

@@ -1,6 +1,6 @@
 <div id="footer">
     <div id="foot_JavaScript1" style="position:absolute;left:960px;top:-13px;width:269px;height:25px;z-index:10;">
-        <div style="color:#fff;font-size:10px;font-family:Verdana;font-weight:normal;font-style:normal;text-decoration:none" id="copyrightnotice">
+        <div style="color:#000;font-size:10px;font-family:Verdana;font-weight:normal;font-style:normal;text-decoration:none" id="copyrightnotice">
         </div>
         <script type="text/javascript">
             var now = new Date();
@@ -38,16 +38,16 @@
 	$error_processor->err_proc("", "w", "");
 	//	$error_processor->err_proc("", "am", "");
    ?>
-
-        Память в конце: <?=intval(memory_get_usage()/1024)?> Кбайт;
-        Пик: <?=intval(memory_get_peak_usage()/1024)?> Кбайт;
-	    <?
-        $time = microtime();
-        $time = explode(' ', $time);
-        $time = $time[1] + $time[0];
-        $finish = $time;
-        $total_time = round(($finish - $start), 4);
-        echo ' Страница сгенерированна за: '.$total_time.' секунд.'."\n";
+		Используемая память в начале: <?=$startMem?> Кбайт;
+		Память в конце: <?=intval(memory_get_usage() / 1024)?> Кбайт;
+		Пик: <?=intval(memory_get_peak_usage() / 1024)?> Кбайт;
+		<?
+		$time = microtime();
+		$time = explode(' ', $time);
+		$time = $time[1] + $time[0];
+		$finishTime = $time;
+		$total_time = round(($finishTime - $startTime), 4);
+		echo ' Страница сгенерированна за: '.$total_time.' секунд.'."\n";
         }
         ?>
     </div>
@@ -85,6 +85,5 @@
     </body>
     </html>
 <?
-
-mysql_close();
+$db->close();
 ?>

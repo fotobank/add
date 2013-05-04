@@ -6,31 +6,31 @@ if(!isset($_SESSION['logged']))
   err_exit('Для скачивания фото необходимо залогиниться на сайте!', 'index.php');
 if(!isset($_GET['key']))
   err_exit('Ключ не найден!', 'index.php');
-$key = mysql_escape_string($_GET['key']);
-$rs = mysql_query('select * from download_photo where download_key = \''.$key.'\'');
-if(mysql_num_rows($rs) == 0)
+$key = $_GET['key'];
+$rs = $db->query('select * from download_photo where download_key = ?', array($key), 'row');
+if(!$rs)
 {
   err_exit('Ключ не найден!', 'index.php');
 }
 else
 {
-  $data = mysql_fetch_assoc($rs);
+  $data = $rs;
   if((time() - intval($data['dt_start']) > 172800) && intval($data['downloads']) > 0)
   {
   	//Раскомментировать следующую строку, если надо удалять просроченные записи о фото
-  	//mysql_query('delete from download_photo where id = '.$data['id']);
+  	//$db->query('delete from download_photo where id = ?',array($data['id']));
   	err_exit('Лимит в 48 часов для скачивания фото прошел!', 'index.php');
   }
   else
   {
-    $rs = mysql_query('select * from photos where id = '.$data['id_photo']);
-    if(mysql_num_rows($rs) == 0)
+    $rs = $db->query('select * from photos where id = ?i', array($data['id_photo']), 'row');
+    if(!$rs)
     {
       err_exit('Фотография не найдена!', 'index.php');
     }
     else
     {
-      $photo_data = mysql_fetch_assoc($rs);
+      $photo_data = $rs;
       $ftp_host = get_param('ftp_host');
       $ftp_user = get_param('ftp_user');
       $ftp_pass = get_param('ftp_pass');
@@ -49,8 +49,8 @@ else
     	   //Соединяемся	 	  
       	$ftp = ftp_connect($ftp_host, $ftp_port);
       	if(!$ftp)
-      	{
-		var_dump ($ftp);
+        {
+//		var_dump ($ftp);
          err_exit('Фотография недоступна! Обратитесь к администрации сервиса (ERR=002)', 'index.php');
         }
         if(!ftp_login($ftp, $ftp_user, $ftp_pass))
@@ -60,7 +60,7 @@ else
         }
     		$remote_file = $photo_data['ftp_path'];
     		$f_name = substr($remote_file, strrpos($remote_file, '/') + 1);								   
-$f_name = iconv('utf-8', 'cp1251', $f_name);	
+ $f_name = iconv('utf-8', 'cp1251', $f_name);
         $ext = strtolower(substr($f_name, strrpos($f_name, '.') + 1));
     		$local_file = $_SERVER['DOCUMENT_ROOT'].'/tmp/'.$f_name;
     	if(!ftp_get($ftp, $local_file, $remote_file, FTP_BINARY))
@@ -98,7 +98,7 @@ $f_name = iconv('utf-8', 'cp1251', $f_name);
         }
         imagedestroy($img);
         unlink($local_file);
-        mysql_query('update download_photo set downloads = downloads + 1 where id = '.$data['id']);
+	      $db->query('update download_photo set downloads = downloads + 1 where id = ?i', array($data['id']));
       }
       else
       {
@@ -108,6 +108,5 @@ $f_name = iconv('utf-8', 'cp1251', $f_name);
   }
 
 }
-
-mysql_close();
+$db->close();
 ?>

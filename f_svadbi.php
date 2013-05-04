@@ -3,7 +3,9 @@
 
 <div id="main">
 <div id="cont_fb">
-<h2><span style="color: #ffa500">Свадьбы </span></h2><br>
+	<div class="cont-list" style="margin: 0 10px 20px 43%;"><div class="drop-shadow lifted">
+			<h2><span style="color: #00146e;">Свадьбы</span></h2>
+		</div></div>
 <a class="small button full blue" href="uslugi.php">&nbsp &nbsp &nbsp &nbsp Назад к категориям &nbsp &nbsp &nbsp &nbsp </a><br><br>
 <br><br>
 	<? echo $db->query('select txt from content where id = ?i',array(5),'el'); ?>

@@ -36,7 +36,7 @@
 
 
 ?>
-	<form name=vote_price>
+	<form name=vote_price  style="margin-bottom: 0;">
 		<?
 		$vote_price = floatval(get_param('vote_price'));
 		?>
@@ -322,11 +322,9 @@
 			if ($may_view)
 				{
 					?>
-					<h3>
-						<div style="text-align: center;">
-							<span> Топ 5 альбома:</span>
-						</div>
-					</h3>
+					<div class="cont-list" style="margin-left: 50%"><div class="drop-shadow curved curved-vt-2">
+							<h3><span style="color: #ba712c"> Топ 5 альбома:</span></h3>
+						</div></div><br><br><br>
 					<!-- 1 -->
 					<hr class="style-one" style="margin: 0 0 -20px 0;"/>
 					<?
@@ -580,8 +578,9 @@
 			<div class="accordion" id="accordion2">
 				<div class="accordion-group">
 					<div class="accordion-heading">
-						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">Заказ
-							фотографий:</a>
+						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+							r фотографий:
+						</a>
 					</div>
 					<div id="collapseOne" class="accordion-body collapse in">
 						<div class="accordion-inner">
@@ -596,7 +595,8 @@
 				<div class="accordion-group">
 					<div class="accordion-heading">
 						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
-							Рейтинговая система голосования: </a>
+							Рейтинговая система голосования:
+						</a>
 					</div>
 					<div id="collapseTwo" class="accordion-body collapse">
 						<div class="accordion-inner">
@@ -609,7 +609,8 @@
 				<div class="accordion-group">
 					<div class="accordion-heading">
 						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
-							Действующие на альбом акции и скидки: </a>
+							Действующие на альбом акции и скидки:
+						</a>
 					</div>
 					<div id="collapseThree" class="accordion-body collapse">
 						<div class="accordion-inner">
@@ -650,7 +651,9 @@
 
 	<!-- Название альбома  -->
 
-	<div class="zagol2" class="span5 offset0"><h2><span style="color: #ffa500; float: left;  margin: 20px 0 0 300px;">Фотографии альбома "<?=$album_data['nm']?>"</span></h2></div>
+	<div class="cont-list" style="margin: 40px 10px 30px 0;"><div class="drop-shadow lifted">
+			<h2><span style="color: #00146e;">Фотографии альбома "<?=$album_data['nm']?>"</span></h2>
+	</div></div>
 	<div style="clear: both;"></div>
 
 	<!--/**	выводим фотографию - заголовок альбома*/ -->
@@ -731,7 +734,10 @@ else:
 				   $razdel = $db->query('select nm from categories where id = ?i',array($_SESSION['current_cat']),'el');
 					}
 				?>
-				<div class="zagol2"><h2><span style="color: #ffa500">Раздел фотобанка - "<?=$razdel;?>"</span></h2></div>
+				<div class="cont-list" style="margin: 20px 10px 30px 0;"><div class="drop-shadow lifted">
+						<h2><span style="color: #00146e;">Раздел фотобанка - "<?=$razdel;?>"</span></h2>
+				</div></div>
+
 				<!-- Кнопки назад -->
 
 				<div class="page">
@@ -813,8 +819,9 @@ else:
 			{
 				?>
 				<br>
-
-				<h2><span style="color: #ffa500">Выбор категорий</span></h2><br>
+				<div class="cont-list" style="margin: -10px 10px 60px 40%;"><div class="drop-shadow lifted">
+						<h2><span style="color: #00146e;">Выбор категорий:</span></h2>
+				</div></div>
 				<table>
 					<tr>
 						<td>

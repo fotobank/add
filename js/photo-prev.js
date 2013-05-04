@@ -75,7 +75,6 @@ function basketAdd(idPhoto) {
     $.post('add_basket.php', {'id': idPhoto}, function (data) {
         var ans = JSON.parse(data);
         if (ans.status == 'ERR') {
-
             humane.error(ans.msg);
         }
         else {

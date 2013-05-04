@@ -2,25 +2,28 @@
 include (dirname(__FILE__).'/inc/head.php');
 ?>
 	<div id="main">
-		<div style="text-align: center;">
+		<div style="text-align: center">
 			<div>
-				<h2><b>
+				<h2 style="margin-top: 30px;"><b>
 						<hremind>Регистрация на сайте:</hremind>
 					</b></h2>
 			</div>
 		</div>
 		<br>
 
-		<div id="for_reg_cont">
+
+			<p id="for_reg_cont">
 			Регистрация необходима для хранения, покупки или бесплатного скачивания фотографий из фотобанка. Для всех
 			зарегистрированных пользователей, активно принимающих участие в голосованиях за фотографии, предусмотрены
 			скидочные бонусы и акции, а для пользователей, чьи фотографии набрали пять и более звездочек рейтинга в альбоме
-			- бесплатная печать на профессиональном оборудовании. <br> Пожалуйста, внимательно заполните все поля и нажмите
+			- бесплатная печать на профессиональном оборудовании. </p>
+			<p id="for_reg_cont">Пожалуйста, внимательно заполните все поля и нажмите
 			кнопку "отправить". Указывайте реально существующий email, на него будут приходить ссылки для скачивания
 			выбранных Вами фотографий. Внимание! В целях безопасности, никому не передавайте свои логин и пароль! Пароль и
 			логин могут состоять только из ЛАТИНСКИХ букв, цифр или подчеркивания. Желательно использовать пароль длиной
-			больше семи символов, включающий в себя цифры, а также большие и маленькие буквы.
-		</div>
+			больше восьми символов, включающий в себя цифры, а также большие и маленькие буквы.
+			</p>
+
 		<br>
 		<div id="form_reg">
 			<?
@@ -69,28 +72,26 @@ include (dirname(__FILE__).'/inc/head.php');
 					$mdPassword = md5($rPass);
 //   $mdPassword = $rPass;
 					// А также временная метка (зачем - позже)
-					$cnt = intval(mysql_result(mysql_query(
-						'select count(*) cnt from users where login = \''.mysql_escape_string($rLogin).'\''), 0));
+					$cnt = intval($db->query('select count(*) cnt from users where login = ?string',array($rLogin),'el'));
 					if ($cnt > 0)
 						{
 							die('Пользователь с таким логином уже существует!');
 						}
-					$cnt = intval(mysql_result(mysql_query(
-						'select count(*) cnt from users where email = \''.mysql_escape_string($rEmail).'\''), 0));
+					$cnt = intval($db->query(
+						'select count(*) cnt from users where email = ?string',array($rEmail), 'el'));
 					if ($cnt > 0)
 						{
 							die('Пользователь с таким e-mail уже существует!');
 						}
 					$time = time();
 					// Устанавливаем соединение с бд(не забудьте подставить ваши значения сервер-логин-пароль)
-					mysql_query("INSERT INTO users (login, pass, email, us_name, timestamp, ip)
-                             VALUES ('$rLogin','$mdPassword','$rEmail','$rName_us',$time, '$rIp')");
+					$id = $db->query('INSERT INTO users (login, pass, email, us_name, timestamp, ip)
+                             VALUES (?,?,?,?,?,?)', array($rLogin,$mdPassword,$rEmail,$rName_us,$time,$rIp), 'id');
 					if (mysql_error() != "")
 						{
 							die("<div align='center' class='err_f_reg'> '".mysql_error()."' </div>");
 						}
 					// Получаем Id, под которым юзер добавился в базу
-					$id = mysql_result(mysql_query("SELECT LAST_INSERT_ID()"), 0);
 // Составляем "keystring" для активации
 					$key = md5(substr($rEmail, 0, 2).$id.substr($rLogin, 0, 2));
 					$date = date("d.m.Y", $time);
@@ -120,7 +121,7 @@ LTR;
 					if (!mail($rEmail, $subject, $letter, $headers))
 						{
 							// Если письмо не отправилось, удаляем юзера из базы
-							mysql_query("DELETE FROM users WHERE login='".$rLogin."' LIMIT 1");
+							$db->query('DELETE FROM users WHERE login= ?string LIMIT 1', array($rLogin));
 							echo "<div align='center' class='err_f_reg'>Произошла ошибка при отправке письма. Попробуйте зарегистрироваться еще раз.</div>";
 						}
 					else
@@ -144,7 +145,7 @@ LTR;
 						<td><input class="inp_f_reg" type="password" name="rPass"></td>
 					</tr>
 					<tr>
-						<td>Пароль ещё раз:</td>
+						<td style="padding-right: 10px">Пароль ещё раз:</td>
 						<td><input class="inp_f_reg" type="password" name="rPass2"></td>
 					</tr>
 					<tr>

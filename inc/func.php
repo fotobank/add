@@ -6,8 +6,7 @@ function main_redir($addr, $close_conn = true, $code = 'HTTP/1.1 303 See Other')
   if ($close_conn)
   {
 	 $db = go\DB\Storage::getInstance()->get('db-for-data');
-	 $db->close(true);
-//    mysql_close();
+	 $db->close();
     exit();
   }
 }
@@ -32,7 +31,6 @@ function ok_exit($msg = 'Операция успешно завершена', $a
 
 function get_param($param_name)
 {
-//	go\DB\Storage::getInstance()->get('db-for-data')->query($pattern, $data);
 	$db = go\DB\Storage::getInstance()->get('db-for-data');
 	$rs = $db->query('select param_value from nastr where param_name = (?string)',array($param_name), 'el');
 	$value = $rs ? $rs : false;
