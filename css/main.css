@@ -618,7 +618,7 @@ a.gb_act {
 #for_reg_cont {
     width: 900px;
     color: #000;
-    font-size: 18px;
+    font-size: 16px;
     font-family: "Times New Roman", Times, serif;
     text-align: match-parent;
     margin-left: auto;
@@ -627,10 +627,19 @@ a.gb_act {
 
 #for_reg_cont:first-letter{
     display:block;
-    margin: 0 0 0 5px;
+    margin: 5px 0 0 5px;
     float:left;
     color: #001592;
     font-size:50px;
+    font-family:Georgia;
+}
+
+.bukvica:first-letter{
+    display:block;
+    margin: 0 0 0 5px;
+    /*float:left;*/
+    color: #001592;
+    font-size:25px;
     font-family:Georgia;
 }
 

@@ -572,19 +572,66 @@
 
 
 	if ($may_view):
+	$idAlbum = isset($_SESSION['current_album']) ? $_SESSION['current_album'] : NULL;
+	$accordions = $db->query('SELECT * FROM accordions WHERE `id_album` = ?i || `id_album` = ?i', array($idAlbum, 1), 'assoc:id_album');
+	if ($accordions)
+		{
+			if($accordions[$idAlbum]['accordion_nm'] != '')
+				{
+					$collapse_nm = explode("][", $accordions[$idAlbum]['collapse_nm']);
+			if ($collapse_nm[0] == '') $collapse_nm = explode("][", $accordions[1]['collapse_nm']);
+					$collapse = explode("][", $accordions[$idAlbum]['collapse']);
+			if ($collapse[0] == '') $collapse = explode("][", $accordions[1]['collapse']);
+					echo "
+					<div class='profile'>
+		         <div id='garmon' class='span12 offset1'>
+			      <div class='accordion' id='accordion2'>
+					";
+					foreach ($collapse_nm as $key => $collapseData) {
+						if ($key == 0)
+							{
+								$in = 'in';
+							} else {
+							$in = '';
+						   }
+						echo "
+                  <div class='accordion-group'>
+					   <div class='accordion-heading'>
+						<a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion2' href='#collapse$key'>
+                  $collapseData
+                  </a>
+					   </div>
+					   <div id='collapse$key' class='accordion-body collapse $in'>
+						<div class='accordion-inner'>
+					   <p class='bukvica'><span style='font-size:11.0pt;'>
+                  $collapse[$key]
+                  </span></p>
+						</div>
+					   </div>
+				      </div>
+						";
+					}
+				   echo "
+					</div>
+			      <a class='profile_bitton2' href='#'>Закрыть</a>
+		         </div></div>
+	            <div><a class='profile_bitton' href='#'>".$accordions[$idAlbum]['accordion_nm']."</a></div>
+					";
+				}
+		}
 	?>
-	<div class="profile">
+	<!--<div class="profile">
 		<div id="garmon" class="span12 offset1">
 			<div class="accordion" id="accordion2">
 				<div class="accordion-group">
 					<div class="accordion-heading">
 						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-							r фотографий:
+							Заказ фотографий:
 						</a>
 					</div>
 					<div id="collapseOne" class="accordion-body collapse in">
 						<div class="accordion-inner">
-							<p><span style="font-size:11.0pt;">Фотографии, представленные в альбоме <strong>"<?=$album_data['nm']?>
+							<p><span style="font-size:11.0pt;">Фотографии, представленные в альбоме <strong>"<?/*=$album_data['nm']*/?>
 										"</strong>, прошли предварительную ручную обработку и полностью подготовлены к печати в размере 13x18см 300Dpi в городских минилабах с применением стандартного профиля. Внимание! В целях экономии места на сервере и защиты контента превьюшки, представленные на странице, сильно сжаты и предназначены только для общего представления о фотографии (местность, время, кадрировка, закрытые глаза, номер кадра и т.д ). При покупке фотографии на Ваш email,указанный при регистрации, придет ссылка для скачивания файла фотографии в разрешении <code>13x18см
 										300Dpi</code> без <code>IP</code> - защиты и <code>водяного знака</code>. Выкупленные фотографии Вы имеете право распечатывать в любом количестве. Для использования фотографий в рекламных или коммерческих целях свяжитесь с фотографом.
                                             </span></p>
@@ -621,11 +668,12 @@
 				</div>
 			</div>
 			<a class="profile_bitton2" href="#">Закрыть</a>
-		</div>
+		</div>-->
 		<!-- гармошка -->
 
-	</div>
-	<div><a class="profile_bitton" href="#">Условия и скидки</a></div>
+<!--	</div>-->
+<!--	<div><a class="profile_bitton" href="#">Условия и скидки</a></div>-->
+
 	</div>
 
 
