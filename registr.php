@@ -6,12 +6,12 @@ include (dirname(__FILE__).'/inc/head.php');
 			<div>
 				<div class="cont-list" style="margin: 30px 0 0 38%"><div class="drop-shadow curved curved-vt-2">
 						<h2><b><span style="color: #001591">Регистрация на сайте:</span></b></h2>
-					</div></div><br><br><br>
+					</div></div><br><br>
 			</div>
 		</div>
 		<br>
 
-		<div class="cont-list" style="margin: 0 0px 0px 10%;"><div class="drop-shadow lifted">
+		<div class="cont-list" style="margin: 0 0 0 11%;"><div class="drop-shadow lifted" style="padding: 15px 25px 3px 25px;">
 			<p id="for_reg_cont">
 			Регистрация необходима для хранения, покупки или бесплатного скачивания фотографий из фотобанка. Для всех
 			зарегистрированных пользователей, активно принимающих участие в голосованиях за фотографии, предусмотрены

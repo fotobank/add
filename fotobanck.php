@@ -6,7 +6,7 @@
 
 	$ip = Get_IP(); // Ip пользователя
 	//Количество фоток на странице
-	define('PHOTOS_ON_PAGE', 7);
+	define('PHOTOS_ON_PAGE', 77);
 	$Dir = DirPatc::getInst();
 	if (isset($_GET['album_id']))
 		{
@@ -136,7 +136,7 @@
 							$page_count = ceil($record_count / PHOTOS_ON_PAGE);
 							?>
 							<!-- ПОСТРАНИЧНАЯ РАЗБИВКА -->
-							<h4><a id="home" style="float: left">Страница <?=$current_page?></a></h4>
+							<h4><a id="home" style="float: left;">Страница <?=$current_page?></a></h4>
 							<div class="pagination" align="center">
 								<?
 								if ($current_page == 1)
@@ -323,7 +323,7 @@
 				{
 					?>
 					<div class="cont-list" style="margin-left: 50%"><div class="drop-shadow curved curved-vt-2">
-							<h3><span style="color: #ba712c"> Топ 5 альбома:</span></h3>
+							<h3><span style="color: #c95030"> Топ 5 альбома:</span></h3>
 						</div></div><br><br><br>
 					<!-- 1 -->
 					<hr class="style-one" style="margin: 0 0 -20px 0;"/>
@@ -597,14 +597,14 @@
 						echo "
                   <div class='accordion-group'>
 					   <div class='accordion-heading'>
-						<a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion2' href='#collapse$key'>
-                  $collapseData
+						<a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion2' href='#collapse".$key."'>
+                  ".$collapseData."
                   </a>
 					   </div>
-					   <div id='collapse$key' class='accordion-body collapse $in'>
+					   <div id='collapse".$key."' class='accordion-body collapse ".$in."'>
 						<div class='accordion-inner'>
 					   <p class='bukvica'><span style='font-size:11.0pt;'>
-                  $collapse[$key]
+                  ".$collapse[$key]."
                   </span></p>
 						</div>
 					   </div>
@@ -620,64 +620,7 @@
 				}
 		}
 	?>
-	<!--<div class="profile">
-		<div id="garmon" class="span12 offset1">
-			<div class="accordion" id="accordion2">
-				<div class="accordion-group">
-					<div class="accordion-heading">
-						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-							Заказ фотографий:
-						</a>
-					</div>
-					<div id="collapseOne" class="accordion-body collapse in">
-						<div class="accordion-inner">
-							<p><span style="font-size:11.0pt;">Фотографии, представленные в альбоме <strong>"<?/*=$album_data['nm']*/?>
-										"</strong>, прошли предварительную ручную обработку и полностью подготовлены к печати в размере 13x18см 300Dpi в городских минилабах с применением стандартного профиля. Внимание! В целях экономии места на сервере и защиты контента превьюшки, представленные на странице, сильно сжаты и предназначены только для общего представления о фотографии (местность, время, кадрировка, закрытые глаза, номер кадра и т.д ). При покупке фотографии на Ваш email,указанный при регистрации, придет ссылка для скачивания файла фотографии в разрешении <code>13x18см
-										300Dpi</code> без <code>IP</code> - защиты и <code>водяного знака</code>. Выкупленные фотографии Вы имеете право распечатывать в любом количестве. Для использования фотографий в рекламных или коммерческих целях свяжитесь с фотографом.
-                                            </span></p>
-						</div>
-					</div>
-				</div>
-
-				<div class="accordion-group">
-					<div class="accordion-heading">
-						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
-							Рейтинговая система голосования:
-						</a>
-					</div>
-					<div id="collapseTwo" class="accordion-body collapse">
-						<div class="accordion-inner">
-							<p><span style="font-size:11.0pt;">Вы можете проголосовать за понравившуюся Вам фотографию, повысив ее рейтинг. Пять фотографий, набравших максимальное количество баллов, размещаюся в начале альбома и примут участие в скидочных акциях.
-                                            </span></p>
-						</div>
-					</div>
-				</div>
-
-				<div class="accordion-group">
-					<div class="accordion-heading">
-						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
-							Действующие на альбом акции и скидки:
-						</a>
-					</div>
-					<div id="collapseThree" class="accordion-body collapse">
-						<div class="accordion-inner">
-							<p><span style="font-size:11.0pt;">Фотографии, набравшие больше 5 звездочек в рейтинге, распечатаваются для владельцев бесплатно.
-                                            </span></p>
-						</div>
-					</div>
-				</div>
-			</div>
-			<a class="profile_bitton2" href="#">Закрыть</a>
-		</div>-->
-		<!-- гармошка -->
-
-<!--	</div>-->
-<!--	<div><a class="profile_bitton" href="#">Условия и скидки</a></div>-->
-
 	</div>
-
-
-
 	<script language=JavaScript type="text/javascript">
 		$(function () {
 			$('.profile_bitton , .profile_bitton2').click(function () {
@@ -687,9 +630,7 @@
 		});
 	</script>
 
-
 	<!-- кнопки назад -->
-
 	<div class="page">
 		<a class="next" href="fotobanck.php?back_to_albums">« назад</a> <a class="next" href="fotobanck.php?unchenge_cat">«
 			выбор категорий </a> <a class="next" href="fotobanck.php?back_to_albums">« раздел "<?=$razdel?>"</a>
@@ -698,7 +639,6 @@
 
 
 	<!-- Название альбома  -->
-
 	<div class="cont-list" style="margin: 40px 10px 30px 0;"><div class="drop-shadow lifted">
 			<h2><span style="color: #00146e;">Фотографии альбома "<?=$album_data['nm']?>"</span></h2>
 	</div></div>

@@ -424,7 +424,7 @@ a.bt_rgstr:hover {
     top: -12px;
     left: 10%;
     border: 1px solid #fff;
-    background: #909090;
+    background: #979797;
     -webkit-box-shadow: 0 0 30px #969696;
     -moz-box-shadow: 0 0 30px #969696;
     box-shadow: 0 0 30px #969696;
@@ -437,7 +437,7 @@ a.bt_rgstr:hover {
 .profile_bitton {
     display: block;
     padding: 2px 5px;
-    background: #345;
+    background: #ca5030;
     color: #fff;
     margin: -2px 0 0 230px ;
     width: 160px;
@@ -445,17 +445,16 @@ a.bt_rgstr:hover {
     text-align: center;
     z-index: 0;
     position: absolute;
-
-    /*display: none;*/
-
-
-
+    border-radius: 0 0 6px 6px;
+    -moz-border-radius:0 0 6px 6px;
+    -khtml-border-radius: 0 0 6px 6px;
+    box-shadow: 2px 2px 2px 0 #7a7a7a;
 }
 
 .profile_bitton2 {
     display: block;
     padding: 2px 5px;
-    background: #345;
+    background: #b7732d;
     color: #fff;
     /*margin: -13px 0 0 230px ;*/
     width: 160px;
@@ -466,6 +465,11 @@ a.bt_rgstr:hover {
     margin-left: 100px;
     margin-top: -14px;
     margin-bottom: 11px;
+
+    border-radius: 6px 6px 0 0;
+    -moz-border-radius:6px 6px 0 0;
+    -khtml-border-radius: 6px 6px 0 0;
+    box-shadow: 2px 2px 2px 0 #7a7a7a;
 }
 
 
@@ -639,7 +643,7 @@ a.gb_act {
     margin: 0 0 0 5px;
     /*float:left;*/
     color: #001592;
-    font-size:25px;
+    font-size:35px;
     font-family:Georgia;
 }
 
@@ -2310,7 +2314,7 @@ div.pagination span.disabled, div.page span.disabled {
     padding: 2px 5px 2px 5px;
     margin-right: 2px;
     border: 1px solid #f3f3f3;
-    color: #ccc;
+    color: #000;
 }
 
 .zagol2 {

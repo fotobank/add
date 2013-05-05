@@ -2,7 +2,11 @@
 ?>
 
 <div id="main">
-	<h2 style="margin: 30px 0 30px 0"><hremind>Активация:</hremind></h2>
+	<div class="cont-list" style="margin: 20px 0 0 39%"><div class="drop-shadow curved curved-vt-2">
+			<h2><b><span style="color: #001591">Активация логина:</span></b></h2>
+		</div></div>
+	<div style="clear: both; margin-bottom: 20px"></div>
+
 	<?
 	if (isset($_GET['login']) && isset($_GET['key']))
 		{
