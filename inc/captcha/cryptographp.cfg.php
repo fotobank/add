@@ -5,11 +5,11 @@
 // -------------------------------------
 
 $cryptwidth  = 120;  // Largeur du cryptogramme (en pixels)
-$cryptheight = 40;   // Hauteur du cryptogramme (en pixels)
+$cryptheight = 38;   // Hauteur du cryptogramme (en pixels)
 
-$bgR  = 255;         // Цвет фона в формате RGB: Red (0->255)
-$bgG  = 255;         // Цвет фона в формате RGB: Green (0->255)
-$bgB  = 255;         // Цвет фона в формате RGB: Blue (0->255)
+$bgR  = 231;         // Цвет фона в формате RGB: Red (0->255)
+$bgG  = 225;         // Цвет фона в формате RGB: Green (0->255)
+$bgB  = 227;         // Цвет фона в формате RGB: Blue (0->255)
 
 $bgclear = true;     // прозрачный фон (true/false)
                      // Действительно только для PNG
@@ -37,7 +37,7 @@ $charG = 0;     // Couleur des caractиres au format RGB: Green (0->255)
 $charB = 0;     // Couleur des caractиres au format RGB: Blue (0->255)
 
 $charcolorrnd = true;      // Choix alйatoire de la couleur. выбор цвета.
-$charcolorrndlevel = 0;    // Niveau de clartй des caractиres si choix alйatoire (0->4)
+$charcolorrndlevel = 2;    // Niveau de clartй des caractиres si choix alйatoire (0->4)
                            // 0: Aucune sйlection  нет
                            // 1: Couleurs trиs sombres (surtout pour les fonds clairs)  очень темные цвета (особенно для светлого фона)
                            // 2: Couleurs sombres  Темные цвета

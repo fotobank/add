@@ -13,11 +13,11 @@ include  'inc/captcha/cryptographp.fct.php';
 <!-- восстановление пароля data-focus-on="input:first" -->
 	<div class="modal-header" style="background: rgba(229,229,229,0.53)">
 		<a class="close" data-dismiss="modal" aria-hidden="true" onClick="$('#result').empty();setTimeout(returnCaptcha (), 1000);">&times;</a>
-		<div>
-			<h3>
-				<span style="font-weight: bold;"><legend>Восстановление пароля:</legend></span>
-			</h3>
-		</div>
+
+			<div class="cont-list" style="margin-left: 20%"><div class="drop-shadow curved curved-vt-2">
+					<h3><span style="color: #c95030">Восстановление пароля:</span></h3>
+				</div></div>
+<div style="clear: both"></div><br>
 		<div id="result"></div>
 	</div>
 	<div class="modal-body" style="height: 180px;">

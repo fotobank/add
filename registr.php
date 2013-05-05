@@ -1,109 +1,107 @@
 <?php
-include (dirname(__FILE__).'/inc/head.php');
+	include (dirname(__FILE__).'/inc/head.php');
 ?>
 	<div id="main">
-		<div style="text-align: center">
-			<div>
-				<div class="cont-list" style="margin: 30px 0 0 38%"><div class="drop-shadow curved curved-vt-2">
-						<h2><b><span style="color: #001591">Регистрация на сайте:</span></b></h2>
-					</div></div><br><br>
-			</div>
-		</div>
-		<br>
+	<br>
+	<?
+	$rLogin = 'Псевдоним для входа';
+	$rPass  = '';
+	$rPass2 = '';
+	$rEmail = 'Рабочий E-mail';
+	$rSkype = 'Не обязательно';
+	$rPhone = 'Не обязательно';
+	$rName_us = 'Просто имя';
+		if ($_SERVER['REQUEST_METHOD'] == 'POST')
+			{
+				$rLogin   = trim($_POST['rLogin']);
+				$rPass    = trim($_POST['rPass']);
+				$rPass2   = trim($_POST['rPass2']);
+				$rEmail   = trim($_POST['rEmail']);
+				$rName_us = trim($_POST['rName_us']);
+				$rPhone   = trim($_POST['rPhone']);
+				$rSkype   = trim($_POST['rSkype']);
+				$rPkey    = trim($_POST['rPkey']);
+				$rIp      = Get_IP();
+				if ($rLogin != 'Псевдоним для входа')
+					{
+						if (preg_match("/[?a-zA-Zа-яА-Я0-9_-]{3,20}$/", $rLogin))
+								{
 
-		<div class="cont-list" style="margin: 0 0 0 11%;"><div class="drop-shadow lifted" style="padding: 15px 25px 3px 25px;">
-			<p id="for_reg_cont">
-			Регистрация необходима для хранения, покупки или бесплатного скачивания фотографий из фотобанка. Для всех
-			зарегистрированных пользователей, активно принимающих участие в голосованиях за фотографии, предусмотрены
-			скидочные бонусы и акции, а для пользователей, чьи фотографии набрали пять и более звездочек рейтинга в альбоме
-			- бесплатная печать на профессиональном оборудовании.
-			</p>
-			<p id="for_reg_cont">Пожалуйста, внимательно заполните все поля и нажмите
-			кнопку "отправить". Указывайте реально существующий email, на него будут приходить ссылки для скачивания
-			выбранных Вами фотографий. Внимание! В целях безопасности, никому не передавайте свои логин и пароль! Пароль и
-			логин могут состоять только из ЛАТИНСКИХ букв, цифр или подчеркивания. Желательно использовать пароль длиной
-			больше восьми символов, включающий в себя цифры, а также большие и маленькие буквы.
-			</p>
-	</div></div>
-		<div style="clear: both"></div>
-		<br>
-		<div id="form_reg">
-			<?
-			     $frm_reg='inline';
-			if ($_SERVER['REQUEST_METHOD'] == 'POST')
-				{
-					$rLogin = trim($_POST['rLogin']);
-					$rPass = trim($_POST['rPass']);
-					$rPass2 = trim($_POST['rPass2']);
-					$rEmail = trim($_POST['rEmail']);
-					$rName_us = trim($_POST['rName_us']);
-					$rIp =  Get_IP(); // Ip пользователя
-					if ($rLogin == '')
-						{
-							echo("<div align='center' class='err_f_reg'>Поле 'Логин' не заполнено!</div>");
-							// Логин может состоять из букв, цифр и подчеркивания
-						}
-					elseif (!preg_match("/[?a-zA-Zа-яА-Я0-9_-]{3,16}$/", $rLogin))
-						{
-							die("<div align='center' class='err_f_reg'>Логин может состоять из букв, цифр, дефисов и подчёркиваний. Длина от 3 до 16 символов.</div>");
-						}
-					if ($rEmail == '')
-						{
-							die("<div align='center' class='err_f_reg'>Поле 'E-mail' не заполнено</div>");
-							// Проверяем e-mail на корректность
-						}
-				//	elseif (!preg_match("/^[a-zA-Z0-9_\.\-]+@([a-zA-Z0-9\-]+\.)+[a-zA-Z]{2,6}$/", $rEmail))
-						elseif (!preg_match("/[0-9a-z_]+@[0-9a-z_^\.-]+\.[a-z]{2,3}/i", $rEmail))
-						{
-							die("<div align='center' class='err_f_reg'>Указанный 'E-mail' имеет недопустимый формат</div>");
-						}
-					if ($rPass == '' || $rPass2 == '')
-						{
-							die("<div align='center' class='err_f_reg'>Поле 'Пароль' не заполнено</div>");
-						}
-					elseif ($rPass !== $rPass2)
-						{
-							die("<div align='center' class='err_f_reg'>Пароли не совпадают</div>");
-							// Пароль может состоять из букв, цифр и подчеркивания
-						}
-					elseif (!preg_match("/^\w{3,}$/", $rPass))
-						{
-							die("<div align='center' class='err_f_reg'>В поле 'Пароль' введены недопустимые символы.Допускаются только латинские символы и цифры!</div>");
-						}
-					// В базе данных у нас будет храниться md5-хеш пароля
-					$mdPassword = md5($rPass);
-//   $mdPassword = $rPass;
-					// А также временная метка (зачем - позже)
-					$cnt = intval($db->query('select count(*) cnt from users where login = ?string',array($rLogin),'el'));
-					if ($cnt > 0)
-						{
-							die('Пользователь с таким логином уже существует!');
-						}
-					$cnt = intval($db->query(
-						'select count(*) cnt from users where email = ?string',array($rEmail), 'el'));
-					if ($cnt > 0)
-						{
-							die('Пользователь с таким e-mail уже существует!');
-						}
-					$time = time();
-					// Устанавливаем соединение с бд(не забудьте подставить ваши значения сервер-логин-пароль)
-					$id = $db->query('INSERT INTO users (login, pass, email, us_name, timestamp, ip)
-                             VALUES (?,?,?,?,?,?)', array($rLogin,$mdPassword,$rEmail,$rName_us,$time,$rIp), 'id');
-					if (mysql_error() != "")
-						{
-							die("<div align='center' class='err_f_reg'> '".mysql_error()."' </div>");
-						}
-					// Получаем Id, под которым юзер добавился в базу
+								if ($rEmail != 'Рабочий E-mail')
+									{
+									if ($rName_us != 'Просто имя' || preg_match("/[?a-zA-Zа-яА-Я0-9_-]{2,20}$/", $rName_us))
+											{
+										if (preg_match("/[0-9a-z_]+@[0-9a-z_^\.-]+\.[a-z]{2,3}/i", $rEmail))
+											{
+												if ($rPass != '' || $rPass2 != '')
+													{
+														if ($rPass === $rPass2)
+															{
+																if (preg_match("/^\w{3,}$/", $rPass))
+																	{
+
+																		$mdPassword = md5($rPass);
+																		$cnt = intval($db->query('select count(*) cnt from users where login = ?string', array($rLogin),'el'));
+																		if ($cnt <= 0)
+																			{
+																		$cnt = intval($db->query('select count(*) cnt from users where email = ?string',array($rEmail),'el'));
+																				if ($cnt <= 0)
+																					{
+																						if ($rPhone == 'Не обязательно')
+																							{
+																								$rPhone = '';
+																							}
+																						if ((strlen($rPhone) == '') || (strlen($rPhone) >= 7) && (!preg_match("/[%a-z_@.,^=:;а-я\"*()&$#№!?<>\~`|[{}\]]/i",$rPhone)))
+																	                  {
+
+																						if ($rSkype == 'Не обязательно')
+																							{
+																								$rSkype = '';
+																							}
+																						$time = time();
+// проверка капчи
+																						if ($rPkey == chk_crypt($rPkey))
+																							{
+// Устанавливаем соединение с бд(не забудьте подставить ваши значения сервер-логин-пароль)
+																								try
+																									{
+// Получаем Id, под которым юзер добавился в базу
+																										$id = $db->query('INSERT INTO users (login, pass, email, us_name, timestamp, ip, phone, skype)
+                             VALUES (?,?,?,?,?i,?,?,?)',
+																											array($rLogin,
+																											      $mdPassword,
+																											      $rEmail,
+																											      $rName_us,
+																											      $time,
+																											      $rIp,
+																											      $rPhone,
+																											      $rSkype),
+																											'id');
+																									}
+																								catch (go\DB\Exceptions\Exception  $e)
+																									{
+																										trigger_error("Ошибка при работе с базой данных во время регистрации пользователя! Файл - registr.php.");
+																										$err_msg = "Ошибка при работе с базой данных!";
+																										die("<div align='center' class='err_f_reg'>Ошибка при работе с базой данных!</div>");
+																									}
 // Составляем "keystring" для активации
-					$key = md5(substr($rEmail, 0, 2).$id.substr($rLogin, 0, 2));
-					$date = date("d.m.Y", $time);
+																								$key  =
+																									md5(substr($rEmail, 0, 2).$id.substr($rLogin,
+																										0,
+																										2));
+																								$date = date("d.m.Y", $time);
 // Компонуем письмо
-					$title = 'Потвеждение регистрации на сайте Creative line studio';
-					$headers = "Content-type: text/plain; charset=windows-1251\r\n";
-					$headers .= "From: Администрация Creative line studio <webmaster@aleks.od.ua> \r\n";
-//$headers .= "From: webmaster@aleks.od.ua <webmaster@aleks.od.ua> \r\n";
-					$subject = '=?koi8-r?B?'.base64_encode(convert_cyr_string($title, "w", "k")).'?=';
-					$letter = <<< LTR
+																								$title   =
+																									'Потвеждение регистрации на сайте Creative line studio';
+																								$headers =
+																									"Content-type: text/plain; charset=windows-1251\r\n";
+																								$headers .= "From: Администрация Creative line studio <webmaster@aleks.od.ua> \r\n";
+																								$subject =
+																									'=?koi8-r?B?'
+																										.base64_encode(convert_cyr_string($title,
+																										"w",
+																										"k")).'?=';
+																								$letter  = <<< LTR
    Здравствуйте, $rName_us.
    Вы успешно зарегистрировались на Creative line studio.
    После активации аккаунта Вам станут доступны скачивание, покупка или голосование за понравившуюся фотографию.
@@ -113,55 +111,204 @@ include (dirname(__FILE__).'/inc/head.php');
       пароль: $rPass
 
    Для активации аккаунта вам следует пройти по ссылке:
-   http://aleks.od.ua/activation.php?login=$rLogin&key=$key
+   $_SERVER[DOCUMENT_ROOT]/activation.php?login=$rLogin&key=$key
 
    Данная ссылка будет доступна в течении 5 дней.
 
    $date
 LTR;
 // Отправляем письмо
-					if (!mail($rEmail, $subject, $letter, $headers))
-						{
-							// Если письмо не отправилось, удаляем юзера из базы
-							$db->query('DELETE FROM users WHERE login= ?string LIMIT 1', array($rLogin));
-							echo "<div align='center' class='err_f_reg'>Произошла ошибка при отправке письма. Попробуйте зарегистрироваться еще раз.</div>";
-						}
-					else
-						{
-							$frm_reg = 'none';
-							echo "<div align='center' class='err_f_reg'>Вы успешно зарегистрировались в системе.
-   <br>На указанный вами
-   e-mail было отправлено письмо со ссылкой для активации аккаунта.
-   </div>";
-						}
-				}
-			?>
-			<form action="" method="post" enctype="multipart/form-data" style="display:<?= $frm_reg ?>">
-				<table>
-					<tr>
-						<td> Логин:</td>
-						<td><input class="inp_f_reg" name="rLogin"></td>
-					</tr>
-					<tr>
-						<td> Пароль:</td>
-						<td><input class="inp_f_reg" type="password" name="rPass"></td>
-					</tr>
-					<tr>
-						<td style="padding-right: 10px">Пароль ещё раз:</td>
-						<td><input class="inp_f_reg" type="password" name="rPass2"></td>
-					</tr>
-					<tr>
-						<td>Ваше имя:</td>
-						<td><input name="rName_us" class="inp_f_reg" type="text"></td>
-					</tr>
-					<tr>
-						<td>E-mail:</td>
-						<td><input name="rEmail" class="inp_f_reg" type="text"></td>
-					</tr>
-				</table>
-				<br>
-				<div align="center"><input class="metall_knopka" name="ok" type="submit" value="Отправить"></div>
-			</form>
+																								if (!mail($rEmail, $subject, $letter, $headers))
+																									{
+																										// Если письмо не отправилось, удаляем юзера из базы
+																										$db->query('DELETE FROM users WHERE login= (?string) LIMIT 1', array($rLogin));
+																										$err_msg = "Произошла ошибка при отправке письма.<br> Попробуйте зарегистрироваться еще раз.";
+																									}
+																								else
+																									{
+																										unset ($err_msg);
+																										echo "<div align='center' class='err_f_reg'>Вы успешно зарегистрировались в системе.
+																											   <br>На указанный вами
+																											   e-mail было отправлено письмо со ссылкой для активации аккаунта.
+																											   </div>";
+
+																										print "<script language='Javascript' type='text/javascript'>
+																												  <!--
+																                                      humane.timeout = (6000);
+                     humane.success('Спасибо.<br>Вы успешно зарегистрировались в системе.<br>На указанный вами e-mail было отправлено письмо со ссылкой для активации аккаунта.');
+																												  function reLoad()
+																												  {location = \"registr.php\"};
+																												  setTimeout('reLoad()', 8000);
+																												  -->
+																												  </script>";
+																									}
+																							}
+																						else
+																							{
+																								$err_msg = "Неправильны ввод проверочного числа!";
+																							}
+
+																							}
+																						else
+																							{
+																								$err_msg = "Телефон указан неправильно! (должно быть больше 6 цифр)";
+																							}
+																					}
+																				else
+																					{
+																						$err_msg = "Пользователь с таким E-mail уже существует!<br>Нажмите на восстановление пароля или зарегистрируйтесь на другой E-mail.";
+																					}
+																			}
+																		else
+																			{
+																				$err_msg = "Пользователь с таким логином уже существует!";
+																			}
+
+																	}
+																else
+																	{
+																		$err_msg = "В поле `Пароль` введены недопустимые символы.<br> Допускаются только латинские символы и цифры!";
+																	}
+															}
+														else
+															{
+																$err_msg = "Пароли не совпадают!";
+															}
+													}
+												else
+													{
+														$err_msg = "Поле `Пароль` не заполнено!";
+													}
+											}
+										else
+											{
+												$err_msg = "Указанный `E-mail` имеет недопустимый формат!";
+											}
+
+											}
+									else
+										{
+											$err_msg = "Заполните поле `Ваше имя`!";
+										}
+									}
+								else
+									{
+										$err_msg = "Поле `E-mail` не заполнено!";
+									}
+
+
+							}
+						else
+							{
+								$err_msg = "Логин может состоять из букв, цифр, дефисов и подчёркиваний.<br> Длина от 3 до 20 символов.";
+							}
+					}
+				else
+					{
+						$err_msg = "Поле `Логин` не заполнено!";
+					}
+				if(isset($err_msg))
+					{
+				echo "<script language='Javascript' type='text/javascript'>
+				      humane.timeout = (6000);
+				      humane.error('Ошибка!<br>$err_msg');
+			         </script>";
+					}
+			}
+		?>
+	<div id="form_reg">
+
+		<div class="cont-list" style="margin: 0 0 10px 80px">
+			<div class="drop-shadow curved curved-vt-2">
+				<h2><b><span style="color: #001591">Регистрация на сайте:</span></b></h2>
+			</div>
+		</div>
+		<br><br>
+
+		<form action="" method="post" enctype="multipart/form-data">
+			<table>
+				<tr>
+					<td> Логин:*</td>
+					<td>
+						<input name="rLogin" class="inp_f_reg" title="Логин может состоять из букв, цифр, дефисов и подчёркиваний. Длина от 3 до 16 символов."
+							value="<?=$rLogin?>" maxlength="20" data-placement="right">
+					</td>
+				</tr>
+				<tr>
+					<td> Пароль:*</td>
+					<td>
+						<input name="rPass" class="inp_f_reg" type="password" title="От 8 до 20 символов" maxlength="20"
+							value="<?=$rPass?>" data-placement="right">
+					</td>
+				</tr>
+				<tr>
+					<td>Пароль ещё раз:*</td>
+					<td>
+						<input name="rPass2" class="inp_f_reg" type="password" title="Повторить пароль" maxlength="20"
+							value="<?=$rPass2?>"  data-placement="right">
+					</td>
+				</tr>
+				<tr>
+					<td>Ваше имя:*</td>
+					<td>
+						<input name="rName_us" class="inp_f_reg" type="text" title="Как к Вам обращаться?"
+							value="<?=$rName_us?>" maxlength="20" data-placement="right">
+					</td>
+				</tr>
+				<tr>
+					<td>E-mail:*</td>
+					<td>
+						<input name="rEmail" class="inp_f_reg" type="text" title="E-mail, на который прийдут ссылки для скачивания фотографий"
+							value="<?=$rEmail?>" maxlength="20" data-placement="right">
+					</td>
+				</tr>
+				<tr>
+					<td>Skype:</td>
+					<td>
+						<input name="rSkype" class="inp_f_reg" type="text" title="Для быстрой связи (заполнять не обязательно)"
+							value="<?=$rSkype?>" maxlength="20" data-placement="right">
+					</td>
+				</tr>
+				<tr>
+					<td>Телефон:</td>
+					<td>
+						<input name="rPhone" class="inp_f_reg" type="text" title="Ваш телефон (заполнять не обязательно)"
+							value="<?=$rPhone?>" maxlength="20" data-placement="right">
+					</td>
+				</tr>
+				<tr>
+					<td style="padding-right: 30px">Проверочный код:*</td>
+					<td>
+						<input name="rPkey" id="captcha" class="inp_f_reg" type="text" title="Цифры внизу. Если не видны, нажмите на колечко со стрелками" value="Защита от спама" maxlength="20" data-placement="right">
+					</td>
+				</tr>
+				<tr>
+					<td>Обновить:</td>
+					<td>
+						<div style="margin: 10px 0 -10px 30px;"><?php dsp_crypt('cryptographp.cfg.php', 1); ?></div>
+					</td>
+				</tr>
+			</table>
+			<br>
+
+			<div align="center"><input class="metall_knopka" name="ok" type="submit" value="Отправить"></div>
+		</form>
+	</div>
+	</div>
+	<div class="cont-list" style="margin: 0 0 0 10%;">
+		<div class="drop-shadow lifted" style="padding: 15px 25px 3px 25px;">
+			<p id="for_reg_cont">
+				Регистрация необходима для хранения, покупки или бесплатного скачивания фотографий из фотобанка. Для всех
+				зарегистрированных пользователей, активно принимающих участие в голосованиях за фотографии, предусмотрены
+				скидочные бонусы и акции, а для пользователей, чьи фотографии набрали пять и более звездочек рейтинга в
+				альбоме - специальное предложение. </p>
+
+			<p id="for_reg_cont">Пожалуйста, внимательно заполните все поля и нажмите кнопку "отправить". Указывайте
+				реально существующий email, на него будут приходить ссылки для скачивания выбранных Вами фотографий.
+				Внимание! В целях безопасности, никому не передавайте свои логин и пароль! Пароль и логин могут состоять
+				только из ЛАТИНСКИХ букв, цифр или подчеркивания. Желательно использовать пароль длиной больше восьми
+				символов, включающий в себя цифры, а также большие и маленькие буквы. Поля, отмеченные звездочкой,
+				заполнять обязательно.</p>
 		</div>
 	</div>
 	<div class="end_content"></div>

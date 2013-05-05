@@ -335,7 +335,6 @@
 				if ($rs)
 				{
 					$pos_num = 1;
-		//		while ($ln = mysql_fetch_assoc($rs))
 				foreach ($rs as $ln)
 				{
 					$source            = $_SERVER['DOCUMENT_ROOT'].fotoFolder().$ln['id_album'].'/'.$ln['img'];
@@ -369,7 +368,6 @@
                                                         </span></figcaption>
 						</figure>
 					</div>
-					<!-- </div>-->
 					<?
 					$pos_num++;
 				}
@@ -749,7 +747,6 @@ else:
 					{
 						$i = 0;
 						$h = 0;
-//						while ($ln = mysql_fetch_assoc($rs))
 							foreach ($rs as $ln)
 							{
 								$top  = $h * 1 + 20;
@@ -816,7 +813,6 @@ else:
 
 							<?
 							$rs = $db->query('select * from `categories` order by `id` asc',null,'assoc:id');
-	//						while ($ln = mysql_fetch_assoc($rs))
  							foreach ($rs as $ln)
 								{
 									/**

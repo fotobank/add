@@ -587,19 +587,21 @@ a.gb_act {
 }
 
 #form_reg {
-    width: 350px;
-    height: 200px;
+    width: 450px;
+    height: 365px;
     padding-top: 10px;
     margin-left: auto;
     margin-right: auto;
     display: block;
     background: #e7e1cf;
+    /*background: #ffffff;*/
     border-radius: 14px;
     border: #aaaaaa ridge 2px;
     color: #000000;
     font-size: 18px;
     font-family: "Times New Roman", Times, serif;
     padding-left: 10px;
+    margin-bottom: 20px;
 }
 
 #form_act {
@@ -650,7 +652,7 @@ a.gb_act {
 }
 
 .inp_f_reg {
-    width: 190px;
+    width: 240px;
     background: #ccc;
     font-size: 15px;
     padding-left: 5px;
@@ -682,7 +684,7 @@ a.gb_act {
 }
 
 .err_f_reg {
-    color: #ffffff;
+    color: #000;
     font-size: 20px;
     font-family: "Times New Roman", Times, serif;
     font-weight: bold;

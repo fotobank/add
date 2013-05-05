@@ -17,28 +17,34 @@
 	$error_processor = Error_Processor::getInstance();
 	include (dirname(__FILE__).'/config.php');
 	include (dirname(__FILE__).'/func.php');
-	$link = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+//	$link = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+
 	/* Проверить соединение */
-	if (mysqli_connect_errno())
+	/*if (mysqli_connect_errno())
 		{
 			printf("Ошибка соединения: %s\n", mysqli_connect_error());
 			exit();
-		}
+		}*/
 	$cryptinstall = '/inc/captcha/cryptographp.fct.php';
 	include  'captcha/cryptographp.fct.php';
 
 	/**
-	 * @param $link
 	 * @param $where
 	 * @param $type
 	 */
-	function checkData($link, $where, $type)
+	function checkData($where, $type)
 		{
-
-			$rs = mysqli_query($link, 'select * from users where '.$where);
-			if (mysqli_errno($link) == 0 && mysqli_num_rows($rs) > 0)
+			$db = go\DB\Storage::getInstance()->get('db-for-data');
+			$user_data = NULL;
+			$error = false;
+try {
+			$user_data = $db->query('select * from users where ?col = ?', array($type,$where),'row');
+} catch (go\DB\Exceptions\Exception  $e) {
+	if(isset($_SESSION['err_msg']))	$_SESSION['err_msg'] .= 'Ошибка при работе с базой данных';
+	$error = true;
+}
+			if ($error != true && $user_data)
 				{
-					$user_data = mysqli_fetch_assoc($rs);
 					$title     = 'Восстановление пароля на сайте Creative line studio';
 					$headers   = "Content-type: text/plain; charset=windows-1251\r\n";
 					$headers .= "From: Администрация Creative line studio \r\n";
@@ -54,8 +60,7 @@
 					getPassword($password, $user_data['id']) or die("Ошибка!");
 					$letter .= "   пароль: $password\r\n";
 					$letter .= "Если вы не запрашивали восстановление пароля, пожалуйста, немедленно свяжитесь с администрацией сайта!\r\n";
-					/* закрытие выборки */
-					mysqli_free_result($rs);
+
 					// Отправляем письмо
 					if (!mail($user_data['email'], $subject, $letter, $headers))
 						{
@@ -102,9 +107,8 @@ $_SESSION['err_msg'] = $_SESSION['err_msg2'] = $_SESSION['ok_msg2'] = '';
 												}
 											else
 												{
-													$where = ' login = \''.mysqli_escape_string($link, $login).'\'';
-													$where = iconv("windows-1251", "utf-8", $where);
-													checkData($link, $where, 'Login');
+													$login = iconv("windows-1251", "utf-8", $login);
+													checkData($login, 'login');
 												}
 										}
 								}
@@ -121,8 +125,7 @@ $_SESSION['err_msg'] = $_SESSION['err_msg2'] = $_SESSION['ok_msg2'] = '';
 												}
 											else
 												{
-													$where = ' email = \''.mysqli_escape_string($link, $email).'\'';
-													checkData($link, $where, 'E-mail');
+													checkData($email, 'email');
 												}
 										}
 								}
@@ -166,5 +169,5 @@ $_SESSION['err_msg'] = $_SESSION['err_msg2'] = $_SESSION['ok_msg2'] = '';
 	unset($_SESSION['err_msg']);
 	unset($_SESSION['err_msg2']);
 	unset($_SESSION['secret_number']);
-	mysqli_close($link);
+	$db->close();
 ?>

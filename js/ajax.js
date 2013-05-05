@@ -251,6 +251,6 @@ function ajaxGet(url, idName)
 
 $(function () {
     // привязываем плагин ко всем элементам с id "#email, #login"
-    $(' .autoclear ').autoClear();
+    $(' .autoclear, .inp_f_reg ').autoClear();
 });
 
