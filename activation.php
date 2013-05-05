@@ -55,7 +55,7 @@
 			$db->close();
 		}
 	?>
-
+</div></div>
 	<div class="end_content"></div>
 
 <?php include (dirname(__FILE__).'/inc/footer.php');
