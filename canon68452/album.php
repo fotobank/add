@@ -95,25 +95,19 @@ if (isset($_POST['go_add']))
 					{
 						$ext         =
 							strtolower(substr($_FILES['preview']['name'], 1 + strrpos($_FILES['preview']['name'], ".")));
-						$nm          = mysql_escape_string($_POST['nm']);
-						$descr       = mysql_escape_string($_POST['descr']);
-						$foto_folder = mysql_escape_string($_POST['foto_folder']);
-						$id_category = mysql_escape_string($_POST['id_category']);
+						$nm          = $_POST['nm'];
+						$descr       = $_POST['descr'];
+						$foto_folder = $_POST['foto_folder'];
+						$id_category = $_POST['id_category'];
 						if (empty($nm))
 							{
 								$nm = 'Без имени';
 							}
-//						mysql_query('insert into albums (nm) values (\''.$nm.'\')');
-
-						$db->query('insert into `albums` (nm) VALUES (?string)',array($nm));
-
-
-						if (mysql_errno() > 0)
-							{
-								die('Ошибка MySQL!'.mysql_error());
-							}
-						$id_album    = mysql_insert_id();
-//						mysql_query('insert into accordions (id_album) values (\''.$id_album.'\',)');
+						try {
+						$id_album = $db->query('insert into `albums` (nm) VALUES (?string)',array($nm), 'id');
+						} catch (go\DB\Exceptions\Exception $e) {
+							die('Ошибка при работе с базой данных');
+						}
 						$db->query('insert into `accordions` (id_album) VALUES (?scalar)',array($id_album));
 						$img         = 'id'.$id_album.'.'.$ext;
 						$target_name = $_SERVER['DOCUMENT_ROOT'].'/images/'.$img;
@@ -127,7 +121,8 @@ if (isset($_POST['go_add']))
 									== 'true'
 								)
 									{
-										mysql_query("update albums set id_category = '$id_category', img = '$img', order_field = '$id_album', descr = '$descr', foto_folder = '$foto_folder'  where id = '$id_album'");
+	                        $db->query('update albums set id_category = ?i, img = ?, order_field = ?i, descr = ?, foto_folder = ? where id = ?i',
+		                                 array($id_category,$img,$id_album,$descr, $foto_folder,$id_album));
 										mkdir('../'.$foto_folder.$id_album, 0777, true) or die($php_errormsg);
 										unlink($file_load);
 										$_SESSION['current_album'] = $id_album;
@@ -135,22 +130,23 @@ if (isset($_POST['go_add']))
 									}
 								else
 									{
-										mysql_query('delete from albums where id = '.$id_album);
-										die('Для обработки принимаются только JPG, PNG или GIF имеющие размер не более 15Mb.');
+										$db->query('delete from albums where id ?i', array($id_album));
 										unlink($file_load);
+										die('Для обработки принимаются только JPG, PNG или GIF имеющие размер не более 15Mb.');
 									}
 							}
 						else
 							{
-								mysql_query('delete from albums where id = '.$id_album);
-								die('Не могу загрузить файл в папку "tmp"');
+								$db->query('delete from albums where id ?i', array($id_album));
 								unlink($file_load);
+								die('Не могу загрузить файл в папку "tmp"');
+
 							}
 					}
 				else
 					{
-						die('Размер файла превышает 15 мегабайт');
 						unlink($file_load);
+						die('Размер файла превышает 15 мегабайт');
 					}
 			}
 		//   else
@@ -167,13 +163,13 @@ Todo    - go_edit_name
  */
 if (isset($_POST['go_edit_name']))
 	{
-		$id = intval($_POST['go_edit_name']);
-		$nm = mysql_escape_string($_POST['nm']);
+		$id = $_POST['go_edit_name'];
+		$nm = $_POST['nm'];
 		if (empty($nm))
 			{
 				$nm = '-----';
 			}
-		mysql_query('update albums set nm = \''.$nm.'\' where id = '.$id);
+		$db->query('update albums set nm = ? where id = ?i',array($nm,$id));
 	}
 
 
@@ -181,9 +177,9 @@ if (isset($_POST['go_edit_name']))
 
 if (isset($_POST['go_edit_descr']))
 	{
-		$id    = intval($_POST['go_edit_descr']);
-		$descr = mysql_escape_string($_POST['descr']);
-		mysql_query('update albums set descr = \''.$descr.'\' where id = '.$id);
+		$id    = $_POST['go_edit_descr'];
+		$descr = $_POST['descr'];
+		$db->query('update albums set descr = ? where id = ?i', array($descr,$id));
 	}
 
 
@@ -194,19 +190,18 @@ if (isset($_POST['go_edit_nastr']))
 		$watermark   = (int)isset($_REQUEST['watermark']);
 		$ip_marker   = (int)isset($_REQUEST['ip_marker']);
 		$sharping    = (int)isset($_REQUEST['sharping']);
-		$quality     = mysql_escape_string($_POST['quality']);
-		$id          = intval($_POST['go_edit_nastr']);
-		$price       = floatval($_POST['price']);
-		$id_category = intval($_POST['id_category']);
-		$pass        = mysql_escape_string($_POST['pass']);
-		$ftp_folder  = mysql_escape_string($_POST['ftp_folder']);
-		$foto_folder = mysql_escape_string($_POST['foto_folder']);
-		mysql_query(
-			'update albums set price = \''.$price.'\', id_category = '.$id_category.', pass = \''.$pass.'\',quality = \''
-				.$quality.'\'
-  , ftp_folder = \''.$ftp_folder.'\', foto_folder = \''.$foto_folder.'\', watermark = \''.$watermark.'\',
-  ip_marker = \''.$ip_marker.'\', sharping = \''.$sharping.'\' where id = '.$id);
-		mysql_query('update photos set price = \''.$price.'\' where id_album = '.$id);
+		$quality     = $_POST['quality'];
+		$id          = $_POST['go_edit_nastr'];
+		$price       = $_POST['price'];
+		$id_category = $_POST['id_category'];
+		$pass        = $_POST['pass'];
+		$ftp_folder  = $_POST['ftp_folder'];
+		$foto_folder = $_POST['foto_folder'];
+		$db->query(
+			'update albums set price = ?scalar, id_category = ?i, pass = ?string, quality = ?i, ftp_folder = ?string, foto_folder = ?string,
+			 watermark = ?scalar, ip_marker = ?scalar, sharping = ?scalar where id = ?i',
+			array($price,$id_category,$pass,$quality,$ftp_folder,$foto_folder,$watermark,$ip_marker,$sharping,$id));
+		$db->query('update photos set price = \''.$price.'\' where id_album = '.$id);
 		$_SESSION['current_album'] = $id;
 		$_SESSION['current_cat']   = $id_category;
 	}
@@ -222,12 +217,11 @@ if (isset($_POST['go_edit_nastr']))
 if (isset($_POST['go_ftp_upload']))
 	{
 		//600x450
-		$id = intval($_POST['go_ftp_upload']);
-		$rs = mysql_query('select * from albums where id = '.$id);
-		if (mysql_num_rows($rs) > 0)
+		$id = $_POST['go_ftp_upload'];
+		$album_data = $db->query('select * from albums where id = ?i', array($id), 'row');
+		if ($album_data)
 			{
 				//Выбираем данные по альбому и настройки FTP-сервера
-				$album_data = mysql_fetch_assoc($rs);
 				$ftp_host   = get_param('ftp_host');
 				$ftp_user   = get_param('ftp_user');
 				$ftp_pass   = get_param('ftp_pass');
@@ -326,10 +320,7 @@ if (isset($_POST['go_ftp_upload']))
 											}
 										//Создаем запись в БД
 										$nm = substr($f_name, 0, strrpos($f_name, '.'));
-										mysql_query(
-											'insert into photos (id_album, nm) values ('.intval($album_data['id']).', \''.$nm
-												.'\')');
-										$id_photo     = mysql_insert_id();
+										$id_photo     = $db->query('insert into photos (id_album, nm) values (?i,?string)', array($album_data['id'],$nm), 'id');
 										$tmp_name     = 'id'.$id_photo.'.jpg';
 										$foto_folder  = $album_data['foto_folder'];
 										$album_folder = $album_data['id'];
@@ -351,13 +342,13 @@ if (isset($_POST['go_ftp_upload']))
 										)
 											{
 												unlink($local_file);
-												mysql_query("update photos set img = '$tmp_name', price = '".$album_data['price']
-													."', ftp_path = '$remote_file' where id = '$id_photo'");
+	                                $db->query("update photos set img = ?string, price = ?scalar, ftp_path = ?string where id = ?i",
+		                             array($tmp_name, $album_data['price'], $remote_file, $id_photo));
 											}
 										else
 											{
 												unlink($local_file);
-												mysql_query('delete from photos where id = '.$id_photo);
+												$db->query('delete from photos where id = ?i', array($id_photo));
 												echo ('Файл на FTP'.$remote_file.' - битый!'); ?><br><?php;
 												$all--;
 											}
@@ -387,33 +378,28 @@ if (isset($_POST['go_updown']))
 	{
 		$swap_id       = 0;
 		$swap_order    = 0;
-		$id            = intval($_POST['go_updown']);
-		$current_order = intval(mysql_result(mysql_query('select order_field from albums where id = '.$id), 0));
-		if ($current_order > 0)
+		$id            = $_POST['go_updown'];
+		$current_order = $db->query('select order_field from albums where id = ?i',array($id), 'el');
+		if ($current_order)
 			{
 				if (isset($_POST['up']))
 					{
-						$rs =
-							mysql_query('select id, order_field from albums where order_field < '.$current_order
-								.' order by order_field desc limit 0, 1');
+				$rs = $db->query('select id, order_field from albums where order_field < ?i order by order_field desc limit 0, 1', array($current_order), 'row');
 					}
 				else
 					{
-						$rs =
-							mysql_query('select id, order_field from albums where order_field > '.$current_order
-								.' order by order_field asc limit 0, 1');
+				$rs = $db->query('select id, order_field from albums where order_field > ?i order by order_field asc limit 0, 1', array($current_order), 'row');
 					}
-				if (mysql_num_rows($rs) > 0)
+				if ($rs)
 					{
-						$ln         = mysql_fetch_assoc($rs);
-						$swap_id    = intval($ln['id']);
-						$swap_order = intval($ln['order_field']);
+						$swap_id    = intval($rs['id']);
+						$swap_order = intval($rs['order_field']);
 					}
 			}
 		if ($current_order > 0 && $swap_id > 0)
 			{
-				mysql_query('update albums set order_field = '.$current_order.' where id = '.$swap_id);
-				mysql_query('update albums set order_field = '.$swap_order.' where id = '.$id);
+				$db->query('update albums set order_field = ?i where id = ?i', array($current_order,$swap_id));
+				$db->query('update albums set order_field = ?i where id = ?i', array($swap_order,$id));
 			}
 	}
 
@@ -450,11 +436,7 @@ if (isset($_POST['go_updown']))
 								<div>
 									<label for="prependedInput"></label><select id="prependedInput" class="span2" name="id_category" style="margin-bottom: 0; width: 207px;">
 										<?
-//										$tmp = mysql_query('select * from categories order by id asc');
-
 										$tmp = $db->query('select * from `categories` order by id asc')->assoc();
-
-	//									while ($tmp2 = mysql_fetch_assoc($tmp))
 											foreach ($tmp as $tmp2)
 											{
 												?>
@@ -528,9 +510,9 @@ if (isset($_POST['go_updown']))
 
 if (isset($_POST['go_delete']))
 	{
-		$id           = intval($_POST['go_delete']);
-		$album_folder = mysql_result(mysql_query('select order_field from albums where id = '.$id), 0);
-		$foto_folder  = mysql_result(mysql_query('select foto_folder from albums where id = '.$id), 0);
+		$id           = $_POST['go_delete'];
+		$album_folder = $db->query('select order_field from albums where id = ?i', array($id), 'el');
+		$foto_folder  = $db->query('select foto_folder from albums where id = ?i', array($id), 'el');
 		echo "<script type='text/javascript'>
                              $(document).ready(function load() {
                              $('#static').modal('show');
@@ -570,18 +552,12 @@ if (isset($_POST['chenge_cat']))
 	{
 		$_SESSION['current_cat'] = intval($_POST['id']);
 	}
-/*$rs_cat = mysql_query('select DISTINCT c.nm, c.id
-  		      from categories c, albums a 
-  		    	where  c.id = a.id_category							      
-  		      order by a.order_field asc   ');*/
-
 $rs_cat = $db->query('select DISTINCT c.nm, c.id
   		      from categories c, albums a
   		    	where  c.id = a.id_category
   		      order by a.order_field asc' )->assoc();
-
-/*if (mysql_num_rows($rs_cat) > 0)
-	{*/
+if ($rs_cat)
+	{
 		if (isset($_SESSION['current_cat']))
 			{
 				$current_c = intval($_SESSION['current_cat']);
@@ -618,7 +594,7 @@ $rs_cat = $db->query('select DISTINCT c.nm, c.id
 		</div>
 
 	<?
-//	}
+	}
 
 if (isset($_POST['chenge_album']))
 	{
@@ -627,19 +603,13 @@ if (isset($_POST['chenge_album']))
 
 if (isset($_SESSION['current_cat']))
 	{
-		/*$rs = mysql_query('select c.nm, a.*
-  		      from categories c, albums a 
-  		      where  c.id = a.id_category
-  		      and  a.id_category = '.intval($_SESSION['current_cat']).'
-  		      order by a.order_field asc');*/
 		$rs = $db->query('select c.nm, a.*
   		      from categories c, albums a
   		      where  c.id = a.id_category
   		      and  a.id_category = '.intval($_SESSION['current_cat']).'
   		      order by a.order_field asc' )->assoc();
-
-		/*if (mysql_num_rows($rs) > 0)
-			{*/
+		if ($rs)
+			{
 				if (isset($_SESSION['current_album']))
 					{
 						$current = intval($_SESSION['current_album']);
@@ -654,7 +624,6 @@ if (isset($_SESSION['current_cat']))
 						<form id="myForm2" action="index.php" method="post">
 							<select id="appendedInputButton" class="span3" style=" margin-left: 100px; height: 28px;" name="id">
 								<?
-						//		while ($ln = mysql_fetch_assoc($rs))
 									foreach ($rs as $ln)
 									{
 										?>
@@ -671,12 +640,9 @@ if (isset($_SESSION['current_cat']))
 
 				<?
 				if (isset($_SESSION['current_album'])):
-	//					$rs = mysql_query('select * from albums where id = '.intval($_SESSION['current_album']));
-
-						$rs = $db->query('select * from albums where id = ?', array($_SESSION['current_album']), 'assoc');
-						/*if (mysql_num_rows($rs) > 0)
-							{*/
-	//							while ($ln = mysql_fetch_assoc($rs))
+						$rs = $db->query('select * from albums where id = ?i', array($_SESSION['current_album']), 'assoc');
+						if ($rs)
+							{
 									foreach ($rs as $ln)
 									{
 										$_SESSION['id_category'] = $ln['id_category'];
@@ -759,8 +725,6 @@ if (isset($_SESSION['current_cat']))
 																									<select id="id_category" class="span3" name="id_category">
 																										<?
 																										$tmp = $db->query('select * from `categories` order by id asc', null,'assoc');
-//																										$tmp = mysql_query('select * from categories order by id asc');
-//																										while ($tmp2 = mysql_fetch_assoc($tmp))
 																										foreach ($tmp as $tmp2)
 																											{
 																										 ?>
@@ -867,9 +831,9 @@ if (isset($_SESSION['current_cat']))
 										</div>
 									<?
 								}
-	//						}
+							}
 				endif;
-//			}
+	   	}
 	}
 ?>
 	<div style="clear: both; display: block; height: 100px;"></div>
