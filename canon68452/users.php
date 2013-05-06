@@ -5,15 +5,15 @@ define('RECORDS_PER_PAGE', 10);
 
 if (isset($_POST['update_balans']))
     {
-        $id = intval($_POST['update_balans']);
+        $id = $_POST['update_balans'];
         $balans = floatval($_POST['balans']);
-        mysql_query("update users set balans = '$balans' where id = $id");
+        $db->query('update users set balans = ?scalar where id = ?i', array($balans, $id));
     }
 
 if (isset($_POST['delete_user']))
     {
-        $id = intval($_POST['delete_user']);
-        mysql_query("delete from users where id = $id");
+        $id = $_POST['delete_user'];
+	    $db->query('delete from users where id = ?i',array($id));
     }
 
 $pg = isset($_GET['pg']) ? intval($_GET['pg']) : 1;
@@ -23,10 +23,10 @@ if ($pg < 1)
 	}
 $start = ($pg - 1) * RECORDS_PER_PAGE;
 
-$rs = mysql_query('SELECT  SQL_CALC_FOUND_ROWS u.* FROM  users u order by id desc limit '.$start.', '.RECORDS_PER_PAGE);
-if (mysql_num_rows($rs) > 0)
+$rs = $db->query('SELECT  SQL_CALC_FOUND_ROWS u.* FROM  users u order by id desc limit ?i, ?i', array($start,RECORDS_PER_PAGE), 'assoc');
+if ($rs)
 {
-$record_count = intval(mysql_result(mysql_query('SELECT  FOUND_ROWS() as cnt'), 0));
+$record_count = intval($db->query('SELECT FOUND_ROWS() as cnt',null, 'el'));
 ?>
 
 <table class="table table-striped table-bordered table-condensed span12">
@@ -48,7 +48,8 @@ $record_count = intval(mysql_result(mysql_query('SELECT  FOUND_ROWS() as cnt'), 
 
     <tbody>
     <?
-    while ($ln = mysql_fetch_assoc($rs))
+
+	    foreach ($rs as $ln)
         {
             ?>
             <tr class="warning">
@@ -84,8 +85,10 @@ $record_count = intval(mysql_result(mysql_query('SELECT  FOUND_ROWS() as cnt'), 
                 </td>
                 <?
                 // купил - общее количество
-                $rez_vsego = mysql_query("SELECT SQL_CALC_FOUND_ROWS order_items.id_photo FROM  orders JOIN  creative_ls.order_items ON  orders.id = order_items.id_order && orders.id_user = ".$ln['id']." ORDER BY order_items.id_photo ASC "); // общее количество купленных фотографий с названиями
-                $foto_zak = mysql_result(mysql_query("SELECT FOUND_ROWS()"), 0); // количество записей о купленных фотографиях в базе
+                $rez_vsego = $db->query("SELECT SQL_CALC_FOUND_ROWS order_items.id_photo FROM  orders JOIN  creative_ls.order_items ON
+                orders.id = order_items.id_order && orders.id_user = ?i ORDER BY order_items.id_photo ASC ",
+	                array($ln['id']), 'row'); // общее количество купленных фотографий с названиями
+                $foto_zak = intval($db->query("SELECT FOUND_ROWS()",null, 'el')); // количество записей о купленных фотографиях в базе
 
                 // кнопка с заказами - детально (удаленные альбомы пропускаются)
                 ?>
@@ -98,29 +101,40 @@ $record_count = intval(mysql_result(mysql_query('SELECT  FOUND_ROWS() as cnt'), 
                                 <button class="btn btn-success dropdown-toggle" data-toggle="dropdown"><?=$foto_zak.' шт'?>
                                     <span class="caret"></span></button>
                                 <?
-                                $rez_fakt = mysql_query("SELECT SQL_CALC_FOUND_ROWS albums.foto_folder, photos.id_album , photos.img , albums.nm AS anm , photos.nm AS pnm
+                                $rez_fakt = $db->query("SELECT SQL_CALC_FOUND_ROWS albums.foto_folder, photos.id_album , photos.img , albums.nm AS anm , photos.nm AS pnm
 	FROM  orders JOIN  creative_ls.order_items JOIN creative_ls.photos  JOIN creative_ls.albums ON
-	orders.id = order_items.id_order && orders.id_user = ".$ln['id']." && photos.id = order_items.id_photo && photos.id_album = albums.id
-	ORDER BY order_items.id_photo ASC "); // общее количество купленных фотографий без удаленных фотографий
-                                $udal = $foto_zak - mysql_result(mysql_query("SELECT FOUND_ROWS()"), 0);
+	orders.id = order_items.id_order && orders.id_user = ?i && photos.id = order_items.id_photo && photos.id_album = albums.id
+	ORDER BY order_items.id_photo ASC ", array($ln['id']), 'assoc'); // общее количество купленных фотографий без удаленных фотографий
+                                $udal = $foto_zak - intval($db->query("SELECT FOUND_ROWS()",null, 'el'));
                                 ?>
                                 <ul class="dropdown-menu pull-right"><?
                                     if ($rez_fakt)
                                         {
-                                                ?>
+                                               ?>
                                             <li class="span11">
-                                                <?
-	                                            foreach($rez_fakt as $ln_foto)
-                                                {
+	                                            <?
+	                                        foreach($rez_fakt as $ln_foto)
+		                                        {
+	                                        $source = ($_SERVER['DOCUMENT_ROOT'].$ln_foto['foto_folder'].$ln_foto['id_album'].'/'.$ln_foto['img']);
+	                                        $sz = getimagesize($source);
+	                                        if(intval($sz[0]) > intval($sz[1]))
+		                                        $sz_string = 'width="160px"';
+	                                        else
+		                                        $sz_string = 'height="160px"';
+
                                                 ?>
-                                                    <li class="span2" style="margin-left: 10px; width: 126px; height: 240px;">
-                                                        <a class="thumbnail" style="padding-left: 4px; padding-right: 4px; width: 120px;" href="<?= $ln_foto['foto_folder'].$ln_foto['id_album'].'/'.$ln_foto['img']?>">
-                                                            <img href="<?=$ln_foto['foto_folder'].$ln_foto['id_album'].'/'.$ln_foto['img']?>" src="<?=$ln_foto['foto_folder'].$ln_foto['id_album'].'/'.$ln_foto['img']?>" alt="<?= $ln_foto['pnm'] ?>" title="<?= $ln_foto['pnm'] ?>" <?=$sz_string?> />
-                                                            <h6 style="margin-top: 0; margin-bottom: 0;">Фото
-                                                                № <?=$ln_foto['pnm']?></h6>
-                                                            Альбом:<br> <?=$ln_foto['anm']?>
-                                                        </a>
-                                                    </li>
+													    <li class="span2" style="margin-left: 10px; width: 126px; height: 240px;">
+
+													     <a class="thumbnail" style="padding-left: 4px; padding-right: 4px; width: 120px;"
+														  href="<?= $ln_foto['foto_folder'].$ln_foto['id_album'].'/'.$ln_foto['img']?>">
+
+														 <img href="<?=$ln_foto['foto_folder'].$ln_foto['id_album'].'/'.$ln_foto['img']?>"
+														 src="<?=$ln_foto['foto_folder'].$ln_foto['id_album'].'/'.$ln_foto['img']?>"
+														 alt="<?= $ln_foto['pnm'] ?>" title="<?= $ln_foto['pnm'] ?>" <?=$sz_string?> />
+
+                                            <h6 style="margin-top: 0; margin-bottom: 0;">Фото № <?=$ln_foto['pnm']?></h6>Альбом:<br> <?=$ln_foto['anm']?>
+                                            </a>
+                                            </li>
                                                 <?
                                                 }
                                                 ?>
