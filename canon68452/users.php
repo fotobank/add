@@ -80,7 +80,7 @@ $record_count = intval($db->query('SELECT FOUND_ROWS() as cnt',null, 'el'));
 	             <td style="text-align: left; vertical-align: middle"><?=$ln['skype']?></td>
 	             <td style="text-align: left; vertical-align: middle"><?=$ln['phone']?></td>
 	             <td style="text-align: left; vertical-align: middle">
-		             <a class="map"  href="/canon68452/map.php"><?=$ln['ip']?></a>
+		             <a class="map"  href="/map.php"><?=$ln['ip']?></a>
 	             </td>
                 <td style="text-align: left; vertical-align: middle"><?=date('H:i d.m.Y', $ln['timestamp'])?></td>
                 <td style="text-align: center; vertical-align: middle"><?=($ln['status'] == 1) ? 'да' : 'нет';?></td>
@@ -109,7 +109,8 @@ $record_count = intval($db->query('SELECT FOUND_ROWS() as cnt',null, 'el'));
 			            </div>
 	            </td>
 
-	            <td style="text-align: center; vertical-align: middle"><?=$ln['ip_vhod'];?></td>
+	            <td style="text-align: center; vertical-align: middle">
+		            <a class="map"  href="/map.php"><?=$ln['ip_vhod'];?></a></td>
 	            <td style="text-align: left; vertical-align: middle"><?=($ln['time_vhod'] != 0) ? date('H:i d.m.Y', $ln['time_vhod']) : '------';?></td>
 	            <td style="text-align: center; vertical-align: middle"><?=$ln['action'];?></td>
 
