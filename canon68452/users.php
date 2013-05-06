@@ -6,7 +6,7 @@ define('RECORDS_PER_PAGE', 25);
 if (isset($_POST['update_balans']))
     {
         $id = $_POST['update_balans'];
-        $balans = floatval($_POST['balans']);
+        $balans = $_POST['balans'];
         $db->query('update users set balans = ?scalar where id = ?i', array($balans, $id));
     }
 

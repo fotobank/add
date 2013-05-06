@@ -812,7 +812,7 @@ else:
 						<td>
 
 							<?
-							$rs = $db->query('select * from `categories` order by `id` asc',null,'assoc:id');
+							$rs = $db->query('select * from `categories` order by `id_num` asc',null,'assoc:id');
  							foreach ($rs as $ln)
 								{
 									/**
