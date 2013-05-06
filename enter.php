@@ -1,6 +1,7 @@
 <?php
 include (dirname(__FILE__).'/inc/config.php');
 include (dirname(__FILE__).'/inc/func.php');
+include (dirname(__FILE__).'/inc/lib_ouf.php');
 
 if(isset($_POST['login']))
 {
@@ -16,12 +17,17 @@ if(isset($_POST['login']))
     {
     	err_exit('Login не активирован! Активируйте свой профиль с помощью письма, пришедшего на Ваш E-mail!', '/index.php');
     }
-    else
+	    elseif ($udata['block'] == 0)
+		    {
+			    err_exit('Аккаунт заблокирован!', '/index.php');
+		    }
+       else
     {
       $_SESSION['logged'] = true;
       $_SESSION['userid'] = intval($udata['id']);
       $_SESSION['user'] = $udata['login'];
       $_SESSION['us_name'] = $udata['us_name'];
+	   $db->query('update users set ip_vhod = ?string, time_vhod =?i where id = ?i', array(Get_IP(),time(),$udata['id']));
       ok_exit('Вы успешно вошли на сайт!', '/index.php');
     }
   }

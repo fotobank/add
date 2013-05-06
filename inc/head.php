@@ -282,7 +282,8 @@
 								<tr></tr>
 								<tr>
 									<td>
-										<input data-placement="left" rel="tooltip" class="vhod" name="submit" type="submit" value="вход" title="Добро пожаловать!" data-original-title="Tooltip on left">
+										<input data-placement="left" rel="tooltip" class="vhod" name="submit" type="submit" value="вход" title="Добро пожаловать!"
+											data-original-title="Tooltip on left">
 									</td>
 
 									<td>

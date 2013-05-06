@@ -10,6 +10,21 @@ if (isset($_POST['update_balans']))
         $db->query('update users set balans = ?scalar where id = ?i', array($balans, $id));
     }
 
+if (isset($_POST['update_level']))
+	{
+		$id = $_POST['update_level'];
+		$level = intval($_POST['level']);
+		$db->query('update users set level = ?i where id = ?i', array($level, $id));
+	}
+
+if (isset($_POST['checkbox']))
+	{
+		$id = $_POST['checkbox'];
+		$block = $_POST['block'];
+		$block = ($block == 0) ? 1 : 0;
+		$db->query('update users set block = ?i where id = ?i', array($block, $id));
+	}
+
 if (isset($_POST['delete_user']))
     {
         $id = $_POST['delete_user'];
@@ -38,9 +53,14 @@ $record_count = intval($db->query('SELECT FOUND_ROWS() as cnt',null, 'el'));
         <td><b>E-mail</b></td>
 	     <td><b>Skype</b></td>
 	     <td><b>Телефон</b></td>
-	     <td><b>Ip</b></td>
-        <td><b>Регистр.</b></td>
+	     <td><b>Ip регистр.</b></td>
+        <td><b>t регистр.</b></td>
         <td><b>Подтв.рег.</b></td>
+	     <td><b>Бан</b></td>
+	     <td><b>Уровень</b></td>
+	     <td><b>Ip захода</b></td>
+	     <td><b>t захода</b></td>
+	     <td><b>Подписка</b></td>
         <td><b>Баланс</b></td>
         <td><b>Заказы</b></td>
         <td><b>Удалить</b></td>
@@ -62,26 +82,46 @@ $record_count = intval($db->query('SELECT FOUND_ROWS() as cnt',null, 'el'));
 	             <td style="text-align: left; vertical-align: middle">
 		             <a class="map"  href="/canon68452/map.php"><?=$ln['ip']?></a>
 	             </td>
-                <td width="12%" style="text-align: left; vertical-align: middle"><?=date('H:i d.m.Y', $ln['timestamp'])?></td>
-                <? if ($ln['status'] == 1)
-                    {
-                        $podtw = 'да';
-                    }
-                else
-                    {
-                        $podtw = 'нет';
-                    } ?>
-                <td style="text-align: center; vertical-align: middle"><?=$podtw?></td>
+                <td style="text-align: left; vertical-align: middle"><?=date('H:i d.m.Y', $ln['timestamp'])?></td>
+                <td style="text-align: center; vertical-align: middle"><?=($ln['status'] == 1) ? 'да' : 'нет';?></td>
+
+<!--	            <td style="text-align: center; vertical-align: middle">--><?//=($ln['block'] == 1) ? 'нет' : 'да';?><!--</td>-->
+	            <td style="text-align: center; vertical-align: middle">
+
+	            <div class="slideThree">
+		            <input id="<?=$ln['id']?>" type='checkbox' NAME='block' VALUE='<?=$ln['block']?>'
+			         onClick="ajaxPostQ('/canon68452/index.php','','<?= 'checkbox='.$ln['id'].'&block='.$ln['block'] ?>')"
+			            <?if ($ln['block'])
+			            {
+				            echo 'checked="checked"';
+			            }?> /> <label for="<?=$ln['id']?>"></label>
+	            </div>
+
+	            </td>
+	            <td style="text-align: center">
+			            <div class="input-append">
+				            <form action="index.php?pg=<?= $pg ?>" method="post" style="margin-bottom: 0; margin-top: 10px;">
+					            <label for="appendedInputButton"></label><input id="appendedInputButton" style="height: 16px; padding-top: 2px;
+                                 padding-bottom: 3px; width: 40px;" class="span1" type="text" name="level" value="<?= $ln['level'] ?>"/>
+					            <input class="btn btn-primary" type="hidden" name="update_level" value="<?= $ln['id'] ?>"/>
+					            <input class="btn-mini btn-primary" type="submit" value="ok"/>
+				            </form>
+			            </div>
+	            </td>
+
+	            <td style="text-align: center; vertical-align: middle"><?=$ln['ip_vhod'];?></td>
+	            <td style="text-align: left; vertical-align: middle"><?=($ln['time_vhod'] != 0) ? date('H:i d.m.Y', $ln['time_vhod']) : '------';?></td>
+	            <td style="text-align: center; vertical-align: middle"><?=$ln['action'];?></td>
+
                 <td style="text-align: center">
-                    <div class="controls">
                         <div class="input-append">
                             <form action="index.php?pg=<?= $pg ?>" method="post" style="margin-bottom: 0; margin-top: 10px;">
-                                <label for="appendedInputButton"></label><input id="appendedInputButton" style="height: 18px; padding-top: 2px; padding-bottom: 3px; width: 80px;" class="span1" type="text" name="balans" value="<?= $ln['balans'] ?>"/>
+                                <label for="appendedInputButton"></label><input id="appendedInputButton" style="height: 16px; padding-top: 2px;
+                                 padding-bottom: 3px; width: 60px;" class="span1" type="text" name="balans" value="<?= $ln['balans'] ?>"/>
                                 <input class="btn btn-primary" type="hidden" name="update_balans" value="<?= $ln['id'] ?>"/>
-                                <input class="btn-small btn-primary" type="submit" value="применить"/>
+                                <input class="btn-mini btn-primary" type="submit" value="ok"/>
                             </form>
                         </div>
-                    </div>
                 </td>
                 <?
                 // купил - общее количество
