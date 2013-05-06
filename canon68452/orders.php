@@ -4,10 +4,10 @@
     define('RECORDS_PER_PAGE', 20);
     if(isset($_POST['delete_order']))
     {
-	$id = intval($_POST['delete_order']);
-	mysql_query("delete from orders where id = '$id'");
-	mysql_query("delete from order_items where id_order = '$id'");
-	mysql_query("delete from download_photo where id_order = '$id'");
+	$id = $_POST['delete_order'];
+	$db->query("delete from orders where id = ?i", array($id));
+	$db->query("delete from order_items where id_order = ?i", array($id));
+	$db->query("delete from download_photo where id_order = ?i", array($id));
     }
 
 $pg = isset($_GET['pg']) ? intval($_GET['pg']) : 1;
@@ -18,19 +18,19 @@ if ($pg < 1)
 $start = ($pg - 1) * RECORDS_PER_PAGE;
 
 
-    $rs = mysql_query('select SQL_CALC_FOUND_ROWS r.*, u.login, u.us_name
+    $rs = $db->query('select SQL_CALC_FOUND_ROWS r.*, u.login, u.us_name
                      from orders r, users u
                     where u.id = r.id_user
-                    order by id desc limit '.$start.', '.RECORDS_PER_PAGE);
+                    order by id desc limit ?i, ?i', array($start,RECORDS_PER_PAGE), 'assoc');
 	?>	
     <div class="tabbable tabs-left">
     <ul class="nav nav-tabs">								
   	<?				
-    if(mysql_num_rows($rs) > 0)
+    if($rs)
     {
-	$record_count = intval(mysql_result(mysql_query('select FOUND_ROWS() as cnt'), 0));
+	$record_count = intval($db->query('SELECT FOUND_ROWS() as cnt',null, 'el'));
 	$n=1;
-    while($ln = mysql_fetch_assoc($rs))
+foreach ($rs as $ln)
     {
 	if ($n==1)
 	{
@@ -47,15 +47,15 @@ $start = ($pg - 1) * RECORDS_PER_PAGE;
     ?>
     </ul>
     <?
-    $rs = mysql_query('select SQL_CALC_FOUND_ROWS r.*, u.login, u.us_name
+    $rs = $db->query('select SQL_CALC_FOUND_ROWS r.*, u.login, u.us_name
                      from orders r, users u
                     where u.id = r.id_user
-                    order by id desc limit '.$start.', '.RECORDS_PER_PAGE);
+	                 order by id desc limit ?i, ?i', array($start,RECORDS_PER_PAGE), 'assoc');
     ?><div class="tab-content"><?
-    if(mysql_num_rows($rs) > 0)
+    if($rs)
     {  
     $n=1;
-    while($ln = mysql_fetch_assoc($rs))
+ foreach ($rs as $ln)
     {
     if ($n==1)
 	{
@@ -91,13 +91,13 @@ $start = ($pg - 1) * RECORDS_PER_PAGE;
     </td>
   	</tr>		
 	<?								 		 									   
-	$tmp = mysql_query('select o.*, p.img, a.nm AS anm, p.nm AS pnm, p.price, p.id_album, a.foto_folder
+	$tmp = $db->query('select o.*, p.img, a.nm AS anm, p.nm AS pnm, p.price, p.id_album, a.foto_folder
   		                from download_photo o, photos p, albums a
-  		                where p.id = o.id_photo and p.id_album = a.id and o.id_order = '.$ln['id']);
+  		                where p.id = o.id_photo and p.id_album = a.id and o.id_order = ?i', array($ln['id']),'assoc');
 		
 	$sum = 0;
 	$kol = 0;
-  	while($tmp2 = mysql_fetch_assoc($tmp))
+	   foreach ($tmp as $tmp2)
   	{	
   	$sum+= $tmp2['price'];
 	$kol++;
@@ -123,10 +123,10 @@ $start = ($pg - 1) * RECORDS_PER_PAGE;
 	$sum = $sum.' грн.';
 	if ($kol == 0)
 	{
-	mysql_query('select SQL_CALC_FOUND_ROWS o.id_order
+		$db->query('select SQL_CALC_FOUND_ROWS o.id_order
   		                from order_items o
-  		                where o.id_order = '.$ln['id']);
-	$kol = mysql_result(mysql_query("SELECT FOUND_ROWS()"), 0);
+  		                where o.id_order = ?i', array($ln['id']),'assoc');
+	$kol = $db->query("SELECT FOUND_ROWS()",null, 'el');
 	$sum = 'фотографии удаленны из базы';
 	}
   	?>	  	

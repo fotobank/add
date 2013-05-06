@@ -1,7 +1,7 @@
 <?
 if (!isset($_SESSION['admin_logged'])) die();
 
-define('RECORDS_PER_PAGE', 10);
+define('RECORDS_PER_PAGE', 25);
 
 if (isset($_POST['update_balans']))
     {
