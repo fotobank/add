@@ -1,5 +1,4 @@
 <?php
-
 // Преобразование Windows 1251 -> Unicode
   function win2uni($s)
   {
@@ -66,52 +65,55 @@ function imageresize($outfile,$infile,$neww,$newh,$quality,$warermark,$ip_marker
 		     }			  
                }			        
 			$img_o = imagecreatetruecolor($w_n, $h_n);	
-			imagecopyresampled($img_o,$im,0,0,$x_o,0,$w_n,$h_n,$w_o,$h_o);						
-	    						
+			imagecopyresampled($img_o,$im,0,0,$x_o,0,$w_n,$h_n,$w_o,$h_o);
+
 	if ($ip_marker == 1)
 		  {			
-            $iTextColor = imagecolorallocate($img_o, 250, 250, 250); // Определяем цвет текста
-            $sIP = $_SERVER['REMOTE_ADDR']; // Определяем IP посетителя	
-		    // $infile = iconv('utf-8', 'cp1251', $infile);
-			$zap = mysql_escape_string(basename ($infile));
-			$rs = mysql_result (mysql_query("SELECT nm FROM photos WHERE img = '$zap' "), 0);			
-			$text = win2uni("Ваш IP-adress: {$sIP}, {$rs} - ({$w_n} x {$h_n})");
-            //imagestring($img_o, 3, $w_n/2-140, $h_n*0.05, $text, $iTextColor); // Рисуем текст
+         $iTextColor = imagecolorallocate($img_o, 250, 250, 250); // Определяем цвет текста
+			$sIP = Get_IP(); // Определяем IP посетителя
+				  // $infile = iconv('utf-8', 'cp1251', $infile);
+			$zap = basename ($infile);
+			$db = go\DB\Storage::getInstance()->get('db-for-data');
+			$rs = $db->query('SELECT nm FROM photos WHERE img = ?string',array($zap), 'el');
+			$text = win2uni("Ваш IP-adress: {$sIP}, фото номер {$rs} - ({$w_n} x {$h_n})");
+      //  imagestring($img_o, 3, $w_n/2-240, $h_n*0.05, $text, $iTextColor); // Рисуем текст
 			
 			define('WIDTH', $w_n);
             define('HEIGHT', $h_n);
             define('FONT_NAME', 'LUA.TTF');
-            define('FONT_SIZE', 10); 
+            define('FONT_SIZE', 12);
   
             $coord = imagettfbbox(
             FONT_SIZE,  // размер шрифта
             0,          // угол наклона шрифта (0 = не наклоняем)
             FONT_NAME,  // имя шрифта, а если точнее, ttf-файла
             $text       // собственно, текст
-            ); 			
-	        $width = $coord[2] - $coord[0];
-            $height = $coord[1] - $coord[7]; 		
-	        $X = (WIDTH - $width) / 2;
-            $Y = (HEIGHT + $height) / 30; 
+            );
+
+	         $width = $coord[2] - $coord[0];
+            $height = $coord[1] - $coord[7];
+	         $X = (WIDTH - $width) / 2;
+            $Y = (HEIGHT + $height) / 20;
+
           imagettftext(
             $img_o,      // как всегда, идентификатор ресурса
             FONT_SIZE,   // размер шрифта
             0,           // угол наклона шрифта
             $X, $Y,      // координаты (x,y), соответствующие левому нижнему
-                 // углу первого символа
-            $iTextColor,    // цвет шрифта
+                         // углу первого символа
+            $iTextColor, // цвет шрифта
             FONT_NAME,   // имя ttf-файла
             $text
-            );  				
+            );
           }              			 
 	if ($warermark == 1)
 		  {			   
-            $aWmImgInfo = getimagesize ("img/vz.png");         
+            $aWmImgInfo = getimagesize ("img/vz.png");
 		  if (is_array($aWmImgInfo) && count($aWmImgInfo)) {
                //  Создаем изображение водяного знака
-			$rWmImage = imagecreatefrompng("img/vz.png"); 
+			   $rWmImage = imagecreatefrompng("img/vz.png");
 			   // Копируем изображение водяного знака на изображение источник
-            imagecopy($img_o, $rWmImage, $w_n/2-$aWmImgInfo[0]/2 , $h_n*0.6, 0, 0, $aWmImgInfo[0], $aWmImgInfo[1]); 
+            imagecopy($img_o, $rWmImage, $w_n/2-$aWmImgInfo[0]/2 , $h_n*0.5, 0, 0, $aWmImgInfo[0], $aWmImgInfo[1]);
             }			
           }		 		  
     if ($sharping == 1)

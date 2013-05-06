@@ -18,22 +18,19 @@ function deleteDir($dir)
       }
 }
 
-
-
    if (isset($_POST['confirm_del']))
       {
       if ($_POST['confirm_del'] != '0')
          {
-         $id = intval($_POST['confirm_id']);
+         $id = $_POST['confirm_id'];
          $patch = $_POST['confirm_del'];
          deleteDir($patch);
-         mysql_query('delete from photos where id_album = '.$id);
-         $album_foto = mysql_result(mysql_query('select img from albums where id = '.$id), 0);
+         $db->query('delete from photos where id_album = ?i', array($id));
+         $album_foto = $db->query('select img from albums where id = ?i', array($id), 'el');
          unlink("../images/$album_foto");
-         mysql_query('delete from albums where id = '.$id);
+	      $db->query('delete from albums where id = ?i', array($id));
          }
       ok_exit('Удален каталог: ' .$_POST['confirm_del'], '../canon68452/index.php');
       }
-
    session_destroy();
 ?>

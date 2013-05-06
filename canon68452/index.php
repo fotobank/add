@@ -23,27 +23,20 @@
 				}
 		}
 
-
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//RU" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns:Логин="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1251"/>
-<meta name="description" content="Админка сайта Creative L.S." />
-<meta name="keywords" content="Управление сайта Creative L.S." />
-<meta name="author" content="webmaster" />
-<title>Админка</title>
-<?
-
 	error_reporting(E_ALL);
 	ini_set('display_errors', 1);
+
+	$time  = microtime();
+	$time  = explode(' ', $time);
+	$time  = $time[1] + $time[0];
+	$startTime = $time;
+	$startMem = intval(memory_get_usage() / 1024); //Используемая память в начале
 
 	// обработка ошибок
 	include (dirname(__FILE__).'/../inc/lib_mail.php');
 	include (dirname(__FILE__).'/../inc/lib_ouf.php');
 	include (dirname(__FILE__).'/../inc/lib_errors.php');
 	$error_processor = Error_Processor::getInstance();
-
 
 	/**
 	 *  Тесты для проверки Error_Processor
@@ -60,17 +53,16 @@
 	//	 	imagine_function( );
 
 
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//RU" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:Логин="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251"/>
+<meta name="description" content="Админка сайта Creative L.S." />
+<meta name="keywords" content="Управление сайта Creative L.S." />
+<meta name="author" content="webmaster" />
+<title>Админка</title>
 
-
-	$time  = microtime();
-	$time  = explode(' ', $time);
-	$time  = $time[1] + $time[0];
-	$startTime = $time;
-	$startMem = intval(memory_get_usage() / 1024); //Используемая память в начале
-
-
-
-	?>
 
 	<link rel="shortcut icon" href="/img/ico_nmain.gif"/>
 	<link rel="stylesheet" href="/css/bootstrap.css" type="text/css"/>
