@@ -19,34 +19,32 @@ if (isset($_POST['go_add']) && isset($_SESSION['current_album']) && intval($_SES
 		if (isset($_FILES['preview']) && $_FILES['preview']['size'] > 0)
 			{
 				$ext   = strtolower(substr($_FILES['preview']['name'], 1 + strrpos($_FILES['preview']['name'], ".")));
-				$nm    = mysql_escape_string($_POST['nm']);
+				$nm    = $_POST['nm'];
 				$price = floatval($_POST['price']);
 				if (empty($nm))
 					{
 						$nm = '-----';
 					}
-				mysql_query(
-					'insert into photos (id_album, nm) values ('.intval($_SESSION['current_album']).', \''.$nm.'\')');
-				$foto_folder =
-					mysql_result(mysql_query(
-						'select foto_folder from albums where id = '.intval($_SESSION['current_album']).'  '),
-						0);
-				if (mysql_errno() > 0)
-					{
-						die('Ошибка MySQL!');
-					}
-				$id_photo    = mysql_insert_id();
+				try {
+				$id_photo    = $db->query('insert into photos (id_album, nm) values (?i,?string)', array($_SESSION['current_album'],$nm), 'id');
+				$foto_folder = $db->query('select foto_folder from albums where id = ?i',array($_SESSION['current_album']).'el');
+				} catch (go\DB\Exceptions\Query $e) {
+					echo 'SQL-query: '.$e->getQuery()."\n";
+					echo 'Error description: '.$e->getError()."\n";
+					echo 'Error code: '.$e->getErrorCode()."\n";
+					die('Ошибка MySQL!');
+				}
 				$img         = 'id'.$id_photo.'.'.$ext;
 				$target_name = $_SERVER['DOCUMENT_ROOT'].$foto_folder.intval($_SESSION['current_album']).'/'.$img;
-				//	die ($_SERVER['DOCUMENT_ROOT'].$foto_folder.intval($_SESSION['current_album']).'/'.$img);
+
 				if (move_uploaded_file($_FILES['preview']['tmp_name'], $target_name))
 					{
-						mysql_query("update photos set img = '$img', price = '$price' where id = '$id_photo'");
+						$db->query('update photos set img = ?string, price = ?scalar where id = ?i',array($img,$price,$id_photo));
 					}
 				else
 					{
-						mysql_query('delete from photos where id = '.$id_photo);
-						//		die('Error uploading file!');
+						$db->query('delete from photos where id = ?i', array($id_photo));
+						die('Error uploading file!');
 					}
 
 			}
@@ -54,12 +52,10 @@ if (isset($_POST['go_add']) && isset($_SESSION['current_album']) && intval($_SES
 
 if (isset($_POST['go_turn']))
 	{
-		$id          = intval($_POST['go_turn']);
-		$povorot     = intval($_POST['povorot']);
-		$img_name    = mysql_result(mysql_query('select img from photos where id = '.$id), 0);
-		$foto_folder =
-			mysql_result(mysql_query('select foto_folder from albums where id = '.intval($_SESSION['current_album']).'  '),
-				0);
+		$id          = $_POST['go_turn'];
+		$povorot     = $_POST['povorot'];
+		$img_name    = $db->query('select `img` from photos where `id` = ?i',array($id), 'el');
+		$foto_folder = $db->query('select `foto_folder` from albums where `id` = ?i', array($_SESSION['current_album']).'el');
 		$source      = $_SERVER['DOCUMENT_ROOT'].$foto_folder.intval($_SESSION['current_album']).'/'.$img_name;
 		$tmp_file    = $_SERVER['DOCUMENT_ROOT'].'/tmp/'.$img_name;
 		$ext         = strtolower(substr($source, strrpos($source, '.') + 1));
@@ -104,8 +100,8 @@ if (isset($_POST['go_turn']))
 
 if (isset($_POST['chenge_album'])) $_SESSION['current_album'] = intval($_POST['album_id']);
 
-$rs = mysql_query('select * from albums order by order_field asc');
-if (mysql_num_rows($rs) > 0)
+$rs = $db->query('select * from albums order by order_field asc', null, 'assoc:order_field');
+if ($rs)
 	{
 		if (isset($_SESSION['current_album']))
 			{
@@ -121,7 +117,7 @@ if (mysql_num_rows($rs) > 0)
 				<form action="index.php" method="post">
 					<select id="appendedInputButton" class="span3" name="album_id" style="height: 28px;">
 						<?
-						while ($ln = mysql_fetch_assoc($rs))
+							foreach ($rs as $ln)
 							{
 								?>
 								<option value="<?= $ln['id'] ?>" <?=(
@@ -146,21 +142,17 @@ if (isset($_SESSION['current_album'])):
 				$pg = 1;
 			}
 		$start = ($pg - 1) * RECORDS_PER_PAGE;
-		$rs =
-			mysql_query('SELECT SQL_CALC_FOUND_ROWS * FROM photos where id_album = '.intval($_SESSION['current_album'])
-				.'  order by id asc limit '.$start.', '.RECORDS_PER_PAGE);
+		$rs = $db->query('SELECT SQL_CALC_FOUND_ROWS * FROM photos where `id_album` = ?i order by `id` asc limit ?i, ?i',
+			              array(($_SESSION['current_album']),$start,RECORDS_PER_PAGE), 'assoc');
 		// $rs = mysql_query('select * from photos where id_album = '.intval($_SESSION['current_album']).' order by id asc');
-		if (mysql_num_rows($rs) > 0)
+		if ($rs)
 			{
-				$record_count = intval(mysql_result(mysql_query('select FOUND_ROWS() as cnt'), 0));
-				$foto_folder  =
-					mysql_result(mysql_query(
-						'select foto_folder from albums where id = '.intval($_SESSION['current_album']).'  '),
-						0);
+				$record_count = intval($db->query('select FOUND_ROWS() as cnt', null, 'el'));
+				$foto_folder  = $db->query('select foto_folder from albums where id = ?i',array($_SESSION['current_album']),'el');
 				?>
 				<ul class="thumbnails" style="margin-left: -15px;">
 					<?
-					while ($ln = mysql_fetch_assoc($rs))
+						foreach ($rs as $ln)
 						{
 							?>
 						<div class="ramka" style="width: 135px; height: 290px; float: left; left: 0px; margin-left: 5px; ">
@@ -227,7 +219,7 @@ if (isset($_SESSION['current_album'])):
 			}
 		else
 			{
-				?>
+			?>
 				В этом альбоме нет фотографий
 			<?
 			}
