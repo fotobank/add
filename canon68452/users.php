@@ -105,12 +105,12 @@ $record_count = intval(mysql_result(mysql_query('SELECT  FOUND_ROWS() as cnt'), 
                                 $udal = $foto_zak - mysql_result(mysql_query("SELECT FOUND_ROWS()"), 0);
                                 ?>
                                 <ul class="dropdown-menu pull-right"><?
-                                    if (mysql_num_rows($rez_fakt) > 0)
+                                    if ($rez_fakt)
                                         {
                                                 ?>
                                             <li class="span11">
                                                 <?
-                                            while ($ln_foto = mysql_fetch_assoc($rez_fakt))
+	                                            foreach($rez_fakt as $ln_foto)
                                                 {
                                                 ?>
                                                     <li class="span2" style="margin-left: 10px; width: 126px; height: 240px;">
