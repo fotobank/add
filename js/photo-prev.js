@@ -105,7 +105,6 @@ function goVote(voteprice, idPhoto) {
                     }
                     else {
                        dhtmlx.message({ text: "Ваш голос добавлен", expire: 10000, type: "addgolos" });
-
                         preview(idPhoto);
                     }
                 })
