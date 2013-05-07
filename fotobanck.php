@@ -356,9 +356,8 @@
 									Голосов:<span class="badge badge-warning"> <span id="<?= substr(trim($ln['img']),
 											2,
 											-4) ?>" style="font-size: x-small; font-family: 'Open Sans', sans-serif; "><?=$ln['votes']?></span>
-                                                                    </span><br>Рейтинг: <?echo str_repeat('<img src="img/reyt.png"/>',
-										floor($ln['votes'] / 5));?>
-                                                        </span></figcaption>
+                 </span><div style="width: 146px;"> Рейтинг: <?echo str_repeat('<img src="img/reyt.png"/>', floor($ln['votes'] / 5));?>
+                                                 </div></span></figcaption>
 						</figure>
 					</div>
 					<?
