@@ -37,11 +37,11 @@ if ($id > 0)
                 ?>
 
                 <? if ($left_id): ?>
-                <div class="left_pointer2" onClick="preview(<?=$left_id?>);"></div>
+                <div class="left_pointer2" onClick="preview('<?=$left_id?>');"></div>
             <? endif; ?>
 
                 <? if ($right_id): ?>
-                <div class="right_pointer2" onClick="preview(<?=$right_id?>);"></div>
+                <div class="right_pointer2" onClick="preview('<?=$right_id?>');"></div>
             <? endif; ?>
 
 
@@ -66,7 +66,7 @@ if ($id > 0)
                             <tr>
                                 <td align="left">
                                     <? if ($left_id): ?>
-                                        <div class="left_pointer" onClick="preview(<?=$left_id?>);"></div>
+                                        <div class="left_pointer" onClick="preview('<?=$left_id?>');"></div>
                                     <? else: ?>
                                         <div class="pointer_hidden" onClick="hidePreview();"></div>
                                     <? endif; ?>
@@ -82,7 +82,7 @@ if ($id > 0)
 
                                 <td align="right">
                                     <? if ($right_id): ?>
-                                        <div class="right_pointer" onClick="preview(<?=$right_id?>);">
+                                        <div class="right_pointer" onClick="preview('<?=$right_id?>');">
                                     <? else: ?>
                                         <div class="pointer_hidden" onClick="hidePreview();"></div>
                                     <? endif; ?>

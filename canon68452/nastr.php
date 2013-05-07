@@ -7,18 +7,18 @@ if(isset($_POST['go_update']))
 	foreach($_POST as $i => $v)
 	{
 		if($i != 'go_update')
-		  mysql_query('update nastr set param_value = \''.mysql_escape_string($v).'\' where param_name = \''.mysql_escape_string($i).'\'');
+		  $db->query('update nastr set `param_value` = (?string) where `param_name` = (?string)', array($v,$i));
 	}
 }
 
-$rs = mysql_query('select * from nastr order by id asc');
-if(mysql_num_rows($rs) > 0)
+$rs = $db->query('select * from nastr order by id asc', null, 'assoc');
+if($rs)
 {
 	?>
 	<form action="index.php" method="post">
   	<table border="0">
     	<?
-    	while($ln = mysql_fetch_assoc($rs))
+	      foreach($rs as $ln)
     	{
     	?>
     	<tr>

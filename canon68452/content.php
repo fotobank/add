@@ -4,18 +4,17 @@ if(!isset($_SESSION['admin_logged']))
 
 if(isset($_POST['go_update']))
 {
-  $id = intval($_POST['go_update']);
-  $content = mysql_escape_string($_POST['content']);
-  $namecont = mysql_escape_string($_POST['namecont']);
-  mysql_query("update content set txt = '$content' where id = $id");
+  $id = $_POST['go_update'];
+  $content = $_POST['content'];
+  $db->query("update content set txt = ?string where id = ?i", array($content,$id));
 }
 
 if(isset($_POST['chenge_kontent']))
    {
    $_SESSION['current_kontent'] = intval($_POST['id']);
    }
-   $rs = mysql_query('select * from content order by id asc');
-if(mysql_num_rows($rs) > 0)
+   $rs = $db->query('select * from content order by id asc', null, 'assoc');
+if($rs)
  {
   if(isset($_SESSION['current_kontent'])) {
    $current = intval($_SESSION['current_kontent']); }
@@ -28,7 +27,7 @@ if(mysql_num_rows($rs) > 0)
   <form action="index.php" method="post">
    <select id="appendedInputButton" class="span3" name="id" style="height: 28px;">
    <?
- while($ln = mysql_fetch_assoc($rs))
+	 foreach($rs as $ln)
    {
    ?>
    <option value="<?=$ln['id']?>" <?=($current == $ln['id'] ? 'selected="selected"' : '')?>> <?=$ln['namecont']?></option>
@@ -44,10 +43,10 @@ if(mysql_num_rows($rs) > 0)
 <?
 }
 if(isset($_SESSION['current_kontent'])): 
-   $rs = mysql_query('select * from content where id = '.intval($_SESSION['current_kontent']));
-if(mysql_num_rows($rs) > 0)
+   $rs = $db->query('select * from content where id = ?i', array($_SESSION['current_kontent']), 'assoc');
+if($rs)
 {
-  while($ln = mysql_fetch_assoc($rs))
+	  foreach($rs as $ln)
   	{
 ?>
  <form action="index.php" method="post" >
@@ -98,8 +97,8 @@ if(isset($_POST['chenge_kontent2']))
    {
    $_SESSION['current_kontent2'] = intval($_POST['id']);
    }
-   $rs2 = mysql_query('select * from content order by id asc');
-  if(mysql_num_rows($rs2) > 0)
+   $rs2 = $db->query('select * from content order by id asc', null, 'assoc');
+  if($rs2)
 {
   if(isset($_SESSION['current_kontent2'])) {
    $current = intval($_SESSION['current_kontent2']); }
@@ -111,7 +110,7 @@ if(isset($_POST['chenge_kontent2']))
   <form id="myForm1" action="index.php" method="post">
    <select id="appendedInputButton" class="span3" name="id" style="height: 28px;"  onChange="$('#myForm1').trigger('submit');">
    <?
- while($ln = mysql_fetch_assoc($rs2))
+	 foreach($rs2 as $ln)
    {
    ?>
    <option value="<?=$ln['id']?>" <?=($current == $ln['id'] ? 'selected="selected"' : '')?>> <?=$ln['namecont']?></option>
@@ -127,10 +126,10 @@ if(isset($_POST['chenge_kontent2']))
 <?
 }
 if(isset($_SESSION['current_kontent2'])): 
-   $rs2 = mysql_query('select * from content where id = '.intval($_SESSION['current_kontent2']));
-if(mysql_num_rows($rs2) > 0)
+   $rs2 = $db->query('select * from content where id = ?i', array($_SESSION['current_kontent2']), 'assoc');
+if($rs2)
 {
-  while($ln = mysql_fetch_assoc($rs2))
+	  foreach($rs2 as $ln)
   	{
 ?>
  <form method="post" action="index.php" style="margin: 0 0 120px 20px;">

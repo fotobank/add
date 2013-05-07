@@ -511,7 +511,7 @@ if (isset($_POST['go_updown']))
 if (isset($_POST['go_delete']))
 	{
 		$id           = $_POST['go_delete'];
-		$album_folder = $db->query('select order_field from albums where id = ?i', array($id), 'el');
+		$album_folder = $id;
 		$foto_folder  = $db->query('select foto_folder from albums where id = ?i', array($id), 'el');
 		echo "<script type='text/javascript'>
                              $(document).ready(function load() {
@@ -786,12 +786,12 @@ if (isset($_SESSION['current_cat']))
 																		</tr>
 																		<tr>
 																			<td align="center">
-																				<form action="index.php" name="go_ftp_upload" method="post" style="margin-bottom: 0;" target="hiddenframe" onsubmit="document.getElementById('<?= $ln['order_field'] ?>').innerHTML='Подождите, идёт загрузка...'; return true;">
+																				<form action="index.php" name="go_ftp_upload" method="post" style="margin-bottom: 0;" target="hiddenframe" onsubmit="document.getElementById('<?= $ln['id'] ?>').innerHTML='Подождите, идёт загрузка...'; return true;">
 																					<input class="btn btn-success" type="hidden" name="go_ftp_upload" value="<?= $ln['id'] ?>"/>
 
-																					<div id="<?= $ln['order_field'] ?>"></div>
-																					<div id="<?= $ln['order_field'] ?>bar"></div>
-																					<div id="<?= $ln['order_field'] ?>err"></div>
+																					<div id="<?= $ln['id'] ?>"></div>
+																					<div id="<?= $ln['id'] ?>bar"></div>
+																					<div id="<?= $ln['id'] ?>err"></div>
 																					<input class="btn-small btn-success" type="submit" value="Добавить с FTP"/><br/>
 																				</form>
 																			</td>
@@ -804,7 +804,7 @@ if (isset($_SESSION['current_cat']))
 															</tr>
 															<tr>
 																<td align="center" style="margin: 10px;">Папка альбома:
-																	"..<?=$ln['foto_folder']?><?=$ln['order_field']?>"
+																	"..<?=$ln['foto_folder']?><?=$ln['id']?>"
 																	<form action="index.php" method="post" style="margin: 10px;">
 																		<input class="btn btn-primary" type="hidden" name="go_delete" value="<?= $ln['id'] ?>"/>
 																		<input class="btn-small btn-danger dropdown-toggle" type="submit" value="удалить  альбом"/>

@@ -13,11 +13,12 @@ else
 {
   if($id > 0)
   {
-    $rs = $db->query('select id from photos where id = ?i', array($id), 'el');
+    $rs = $db->query('select id_album from photos where id = ?i', array($id), 'el');
     if($rs)
     {
       $balans = floatval($db->query('select balans from users where id = ?i', array($_SESSION['userid']), 'el'));
-      $vote_price = floatval(get_param('vote_price'));
+   //   $vote_price = floatval(get_param('vote_price'));
+	   $vote_price = $db->query('select id_album from photos where id = ?i', array($id), 'el');
       if($vote_price <= $balans)
       {
 	      $db->query('insert into votes (id_user, id_photo) values (?i,?i)',array($_SESSION['userid'], $id));

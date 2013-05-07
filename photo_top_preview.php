@@ -41,11 +41,11 @@ if (isset($_SESSION['current_album'])):
 								?>
 
 								<? if ($left_id): ?>
-								<div class="left_pointer2" onClick="previewTop(<?= $left_id ?>);"></div>
+								<div class="left_pointer2" onClick="previewTop('<?= $left_id ?>');"></div>
 							<? endif; ?>
 
 								<? if ($right_id): ?>
-								<div class="right_pointer2" onClick="previewTop(<?= $right_id ?>);"></div>
+								<div class="right_pointer2" onClick="previewTop('<?= $right_id ?>');"></div>
 							<? endif; ?>
 
 
@@ -71,7 +71,7 @@ if (isset($_SESSION['current_album'])):
 											<tr>
 												<td align="left">
 
-													<div class="left_pointer" onClick="previewTop(<?= $left_id ?>);"></div>
+													<div class="left_pointer" onClick="previewTop('<?= $left_id ?>');"></div>
 
 												</td>
 												<td valign="top" width="33%" align="left">
@@ -86,7 +86,7 @@ if (isset($_SESSION['current_album'])):
 
 												<td align="right">
 
-													<div class="right_pointer" onClick="previewTop(<?= $right_id ?>);">
+													<div class="right_pointer" onClick="previewTop('<?= $right_id ?>');">
 
 
 												</td>
@@ -128,4 +128,3 @@ endif;
 
 	})
 </script>
-
