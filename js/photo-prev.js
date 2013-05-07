@@ -89,8 +89,9 @@ function basketAdd(idPhoto) {
 }
 
 
-function goVote(event, idPhoto) {
-    var voteprice = document.vote_price.id1.value;
+function goVote(voteprice, idPhoto) {
+    if (voteprice != 0)
+    {
     dhtmlx.confirm({
         type: "confirm",
         text: "Цена одного голоса " + voteprice + " гр.<br> Проголосовать?",
@@ -103,14 +104,29 @@ function goVote(event, idPhoto) {
                         humane.error(ans.msg);
                     }
                     else {
-                        dhtmlx.message({ text: "Ваш голос добавлен", expire: 10000, type: "addgolos" });
-                        humane.info("Ваш голос успешно добавлен");
+                       dhtmlx.message({ text: "Ваш голос добавлен", expire: 10000, type: "addgolos" });
+
                         preview(idPhoto);
                     }
                 })
             }
         }
     });
+    }
+    else
+    {
+        $.post('go_Vote.php', {'id': idPhoto}, function (data) {
+            var ans = JSON.parse(data);
+            if (ans.status == 'ERR') {
+                humane.timeout = (8000);
+                humane.error(ans.msg);
+            }
+            else {
+                humane.success("Ваш голос успешно добавлен");
+                preview(idPhoto);
+            }
+        })
+    }
 }
 
 

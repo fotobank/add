@@ -103,12 +103,15 @@ if (isset($_POST['go_add']))
 							{
 								$nm = 'Без имени';
 							}
-						try {
-						$id_album = $db->query('insert into `albums` (nm) VALUES (?string)',array($nm), 'id');
-						} catch (go\DB\Exceptions\Exception $e) {
-							die('Ошибка при работе с базой данных');
-						}
-						$db->query('insert into `accordions` (id_album) VALUES (?scalar)',array($id_album));
+						try
+							{
+								$id_album = $db->query('insert into `albums` (nm) VALUES (?string)', array($nm), 'id');
+							}
+						catch (go\DB\Exceptions\Exception $e)
+							{
+								die('Ошибка при работе с базой данных');
+							}
+						$db->query('insert into `accordions` (id_album) VALUES (?scalar)', array($id_album));
 						$img         = 'id'.$id_album.'.'.$ext;
 						$target_name = $_SERVER['DOCUMENT_ROOT'].'/images/'.$img;
 						$file_load   = $_SERVER['DOCUMENT_ROOT'].'/tmp/'.$img;
@@ -121,8 +124,8 @@ if (isset($_POST['go_add']))
 									== 'true'
 								)
 									{
-	                        $db->query('update albums set id_category = ?i, img = ?, order_field = ?i, descr = ?, foto_folder = ? where id = ?i',
-		                                 array($id_category,$img,$id_album,$descr, $foto_folder,$id_album));
+										$db->query('update albums set id_category = ?i, img = ?, order_field = ?i, descr = ?, foto_folder = ? where id = ?i',
+											array($id_category, $img, $id_album, $descr, $foto_folder, $id_album));
 										mkdir('../'.$foto_folder.$id_album, 0777, true) or die($php_errormsg);
 										unlink($file_load);
 										$_SESSION['current_album'] = $id_album;
@@ -169,7 +172,7 @@ if (isset($_POST['go_edit_name']))
 			{
 				$nm = '-----';
 			}
-		$db->query('update albums set nm = ? where id = ?i',array($nm,$id));
+		$db->query('update albums set nm = ? where id = ?i', array($nm, $id));
 	}
 
 
@@ -179,7 +182,7 @@ if (isset($_POST['go_edit_descr']))
 	{
 		$id    = $_POST['go_edit_descr'];
 		$descr = $_POST['descr'];
-		$db->query('update albums set descr = ? where id = ?i', array($descr,$id));
+		$db->query('update albums set descr = ? where id = ?i', array($descr, $id));
 	}
 
 
@@ -187,21 +190,47 @@ if (isset($_POST['go_edit_descr']))
 
 if (isset($_POST['go_edit_nastr']))
 	{
-		$watermark   = (int)isset($_REQUEST['watermark']);
-		$ip_marker   = (int)isset($_REQUEST['ip_marker']);
-		$sharping    = (int)isset($_REQUEST['sharping']);
-		$quality     = $_POST['quality'];
-		$id          = $_POST['go_edit_nastr'];
-		$price       = $_POST['price'];
-		$id_category = $_POST['id_category'];
-		$pass        = $_POST['pass'];
-		$ftp_folder  = $_POST['ftp_folder'];
-		$foto_folder = $_POST['foto_folder'];
-		$db->query(
-			'update albums set price = ?scalar, id_category = ?i, pass = ?string, quality = ?i, ftp_folder = ?string, foto_folder = ?string,
-			 watermark = ?scalar, ip_marker = ?scalar, sharping = ?scalar where id = ?i',
-			array($price,$id_category,$pass,$quality,$ftp_folder,$foto_folder,$watermark,$ip_marker,$sharping,$id));
-		$db->query('update photos set price = \''.$price.'\' where id_album = '.$id);
+		$watermark    = isset($_REQUEST['watermark']);
+		$ip_marker    = isset($_REQUEST['ip_marker']);
+		$sharping     = isset($_REQUEST['sharping']);
+		$quality      = $_POST['quality'];
+		$id           = $_POST['go_edit_nastr'];
+		$price        = $_POST['price'];
+		$id_category  = $_POST['id_category'];
+		$pass         = $_POST['pass'];
+		$ftp_folder   = $_POST['ftp_folder'];
+		$foto_folder  = $_POST['foto_folder'];
+		$vote_price   = $_POST['vote_price'];
+		$vote_time    = $_POST['vote_time'];
+		$vote_time_on = isset($_REQUEST['vote_time_on']);
+		$db->query('update albums set
+		price = ?f,
+		id_category = ?i,
+		pass = ?string,
+		quality = ?i,
+		ftp_folder = ?string,
+		foto_folder = ?string,
+		watermark = ?b,
+		ip_marker = ?b,
+		sharping = ?b,
+		vote_price = ?f,
+		vote_time = ?i,
+		vote_time_on = ?b  where
+		id = ?i',
+			array($price,
+			      $id_category,
+			      $pass,
+			      $quality,
+			      $ftp_folder,
+			      $foto_folder,
+			      $watermark,
+			      $ip_marker,
+			      $sharping,
+			      $vote_price,
+			      $vote_time,
+			      $vote_time_on,
+			      $id));
+		$db->query('update photos set price = ?f where id_album = ?i', array($price,$id));
 		$_SESSION['current_album'] = $id;
 		$_SESSION['current_cat']   = $id_category;
 	}
@@ -217,14 +246,14 @@ if (isset($_POST['go_edit_nastr']))
 if (isset($_POST['go_ftp_upload']))
 	{
 		//600x450
-		$id = $_POST['go_ftp_upload'];
+		$id         = $_POST['go_ftp_upload'];
 		$album_data = $db->query('select * from albums where id = ?i', array($id), 'row');
 		if ($album_data)
 			{
 				//Выбираем данные по альбому и настройки FTP-сервера
-				$ftp_host   = get_param('ftp_host');
-				$ftp_user   = get_param('ftp_user');
-				$ftp_pass   = get_param('ftp_pass');
+				$ftp_host = get_param('ftp_host');
+				$ftp_user = get_param('ftp_user');
+				$ftp_pass = get_param('ftp_pass');
 				// mysql_set_charset("utf8");
 				if ($ftp_host && $ftp_user && $ftp_pass)
 					{
@@ -319,8 +348,11 @@ if (isset($_POST['go_ftp_upload']))
 												die('Не могу загрузить файл: '.$remote_file.' -> '.$local_file);
 											}
 										//Создаем запись в БД
-										$nm = substr($f_name, 0, strrpos($f_name, '.'));
-										$id_photo     = $db->query('insert into photos (id_album, nm) values (?i,?string)', array($album_data['id'],$nm), 'id');
+										$nm           = substr($f_name, 0, strrpos($f_name, '.'));
+										$id_photo     =
+											$db->query('insert into photos (id_album, nm) values (?i,?string)',
+												array($album_data['id'], $nm),
+												'id');
 										$tmp_name     = 'id'.$id_photo.'.jpg';
 										$foto_folder  = $album_data['foto_folder'];
 										$album_folder = $album_data['id'];
@@ -342,8 +374,8 @@ if (isset($_POST['go_ftp_upload']))
 										)
 											{
 												unlink($local_file);
-	                                $db->query("update photos set img = ?string, price = ?scalar, ftp_path = ?string where id = ?i",
-		                             array($tmp_name, $album_data['price'], $remote_file, $id_photo));
+												$db->query("update photos set img = ?string, price = ?scalar, ftp_path = ?string where id = ?i",
+													array($tmp_name, $album_data['price'], $remote_file, $id_photo));
 											}
 										else
 											{
@@ -379,16 +411,22 @@ if (isset($_POST['go_updown']))
 		$swap_id       = 0;
 		$swap_order    = 0;
 		$id            = $_POST['go_updown'];
-		$current_order = $db->query('select order_field from albums where id = ?i',array($id), 'el');
+		$current_order = $db->query('select order_field from albums where id = ?i', array($id), 'el');
 		if ($current_order)
 			{
 				if (isset($_POST['up']))
 					{
-				$rs = $db->query('select id, order_field from albums where order_field < ?i order by order_field desc limit 0, 1', array($current_order), 'row');
+						$rs =
+							$db->query('select id, order_field from albums where order_field < ?i order by order_field desc limit 0, 1',
+								array($current_order),
+								'row');
 					}
 				else
 					{
-				$rs = $db->query('select id, order_field from albums where order_field > ?i order by order_field asc limit 0, 1', array($current_order), 'row');
+						$rs =
+							$db->query('select id, order_field from albums where order_field > ?i order by order_field asc limit 0, 1',
+								array($current_order),
+								'row');
 					}
 				if ($rs)
 					{
@@ -398,8 +436,8 @@ if (isset($_POST['go_updown']))
 			}
 		if ($current_order > 0 && $swap_id > 0)
 			{
-				$db->query('update albums set order_field = ?i where id = ?i', array($current_order,$swap_id));
-				$db->query('update albums set order_field = ?i where id = ?i', array($swap_order,$id));
+				$db->query('update albums set order_field = ?i where id = ?i', array($current_order, $swap_id));
+				$db->query('update albums set order_field = ?i where id = ?i', array($swap_order, $id));
 			}
 	}
 
@@ -437,7 +475,7 @@ if (isset($_POST['go_updown']))
 									<label for="prependedInput"></label><select id="prependedInput" class="span2" name="id_category" style="margin-bottom: 0; width: 207px;">
 										<?
 										$tmp = $db->query('select * from `categories` order by id asc')->assoc();
-											foreach ($tmp as $tmp2)
+										foreach ($tmp as $tmp2)
 											{
 												?>
 												<option value="<?= $tmp2['id'] ?>"
@@ -555,7 +593,7 @@ if (isset($_POST['chenge_cat']))
 $rs_cat = $db->query('select DISTINCT c.nm, c.id
   		      from categories c, albums a
   		    	where  c.id = a.id_category
-  		      order by a.order_field asc' )->assoc();
+  		      order by a.order_field asc')->assoc();
 if ($rs_cat)
 	{
 		if (isset($_SESSION['current_cat']))
@@ -578,8 +616,8 @@ if ($rs_cat)
 				<form id="myForm1" action="index.php" method="post">
 					<select id="appendedInputButton" class="span3" name="id" style="height: 28px;">
 						<?
-//						while ($ln_cat = mysql_fetch_assoc($rs_cat))
-							foreach ($rs_cat as $ln_cat)
+						//						while ($ln_cat = mysql_fetch_assoc($rs_cat))
+						foreach ($rs_cat as $ln_cat)
 							{
 								?>
 								<option value="<?= $ln_cat['id'] ?>" <?=(
@@ -607,7 +645,7 @@ if (isset($_SESSION['current_cat']))
   		      from categories c, albums a
   		      where  c.id = a.id_category
   		      and  a.id_category = '.intval($_SESSION['current_cat']).'
-  		      order by a.order_field asc' )->assoc();
+  		      order by a.order_field asc')->assoc();
 		if ($rs)
 			{
 				if (isset($_SESSION['current_album']))
@@ -624,7 +662,7 @@ if (isset($_SESSION['current_cat']))
 						<form id="myForm2" action="index.php" method="post">
 							<select id="appendedInputButton" class="span3" style=" margin-left: 100px; height: 28px;" name="id">
 								<?
-									foreach ($rs as $ln)
+								foreach ($rs as $ln)
 									{
 										?>
 										<option value="<?= $ln['id'] ?>" <?=(
@@ -643,197 +681,231 @@ if (isset($_SESSION['current_cat']))
 						$rs = $db->query('select * from albums where id = ?i', array($_SESSION['current_album']), 'assoc');
 						if ($rs)
 							{
-									foreach ($rs as $ln)
+								foreach ($rs as $ln)
 									{
 										$_SESSION['id_category'] = $ln['id_category'];
 										?>
 										<div style="border-bottom: 0 none; margin-bottom: 120px;">
-											<table border="0">
-												<tr>
-													<td valign="top">
-														<table border="2">
-															<tr>
-																<td align="center" style="height: 120px;">
-																	<img src="/images/<?= $ln['img'] ?>" alt="-" width="100px" height="100px"/>
+										<table border="0">
+										<tr>
+										<td valign="top">
+										<table border="2">
+										<tr>
+											<td align="center" style="height: 120px;">
+												<img src="/images/<?= $ln['img'] ?>" alt="-" width="100px" height="100px"/>
 
-																	<div class="controls">
-																		<div class="input-append">
-																			<form action="index.php" method="post">
-																				<label for="appendedInputButton"></label>
-																				<input id="appendedInputButton" type="text" name="nm" value="<?= $ln['nm'] ?>" style="height: 22px; margin-top: 20px;"/>
-																				<input class="btn btn-primary" type="hidden" name="go_edit_name" value="<?= $ln['id'] ?>"/>
-																				<input class="btn btn-primary" type="submit" value="переименовать" style="margin-top: 20px;"/>
-																			</form>
-																		</div>
-																	</div>
-																</td>
-																<td rowspan="3" align="center">
-																	<form action="index.php" method="post" style="margin: 0 0 -20px 0;">
-																		<label>
-																			<textarea rows="12" cols="35" name="descr" style="width: 346px; height: 210px;">
-																				<?=$ln['descr']?>
-																			</textarea> </label><br/>
-																		<input class="btn btn-primary" type="hidden" name="go_edit_descr" value="<?= $ln['id'] ?>"/>
-																		<input class="btn-small btn-primary" type="submit" value="сохранить" style="margin-bottom: 10px;">
-																	</form>
-																</td>
-																<td rowspan="3">
-																	<table border="0">
-																		<tr>
-																			<td>
-																				<form action="index.php" method="post" style="margin: 5px;">
-																					<table border="0">
-																						<tr>
-																							<td>
-																								<div class="input-prepend">
-																									<label for="price" class="add-on">Цена за фото (гр.):&nbsp;&nbsp;</label>
-																									<input id="price" class="span2" type="text" NAME="price" VALUE="<?= $ln['price'] ?>"/>
-																								</div>
-																							</td>
-																							<td>
-																								<div class="slideThree">
-																									<input id="slideThree1" type='checkbox' NAME='watermark' VALUE='yes'
-																										<?if ($ln['watermark'])
-																										{
-																											echo 'checked="checked"';
-																										} ?> /> <label for="slideThree1"></label>
-																								</div>
-																								Водяной знак
-																							</td>
-																						</tr>
-																						<tr>
-																							<td>
-																								<div class="input-prepend">
-																									<label for="quality" class="add-on">Качество .jpg (%):&nbsp;&nbsp;&nbsp;</label>
-																									<input id="quality" class="span2" type="text" NAME="quality" VALUE="<?= $ln['quality'] ?>"/>
-																								</div>
-																							</td>
-																							<td>
-																								<div class="slideThree">
-																									<input id="slideThree2" type='checkbox' NAME='ip_marker' VALUE='yes' <?if ($ln['ip_marker'])
-																										{
-																											echo 'checked="checked"';
-																										}?> /> <label for="slideThree2"></label>
-																								</div>
-																								IP надпись
-																							</td>
-																						</tr>
-																						<tr>
-																							<td colspan="2">
-																								<div class="input-prepend">
-																									<label for="id_category" class="add-on">Категория: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-																									<select id="id_category" class="span3" name="id_category">
-																										<?
-																										$tmp = $db->query('select * from `categories` order by id asc', null,'assoc');
-																										foreach ($tmp as $tmp2)
-																											{
-																										 ?>
-																												<option value="<?= $tmp2['id'] ?>" <?=( $tmp2['id']
-																													== $ln['id_category'] ? 'selected="selected"' : '')?>><?=$tmp2['nm']?></option>
-																										  <?
-																											}
-																										  ?>
-																									</select>
-																								</div>
-																							</td>
-																						</tr>
-																						<tr>
-																							<td>
-																								<div class="input-prepend">
-																									<label for="pass" class="add-on">Пароль на альбом:&nbsp;&nbsp;</label>
-																									<input id="pass" class="span2" type="text" NAME="pass" VALUE="<?= $ln['pass'] ?>"/>
-																								</div>
-																							</td>
-																						</tr>
-																						<tr>
-																							<td>
-																								<div class="input-prepend">
-																									<label for="foto_folder" class="add-on">Папка фотобанка:&nbsp;&nbsp;&nbsp;</label>
-																									<input id="foto_folder" class="span2" type="text" NAME="foto_folder" VALUE="<?= $ln['foto_folder'] ?>"/>
-																								</div>
-																							</td>
-																							<td>
-																								<div class="slideThree">
-																									<input id="slideThree3" type='checkbox' NAME='sharping' VALUE='yes' <?if ($ln['sharping'])
-																										{
-																											echo 'checked="checked"';
-																										}?> /> <label for="slideThree3"></label>
-																								</div>
-																								Добавить резкость
-																							</td>
-																						</tr>
-																						<tr>
-																							<td colspan="2">
-																								<input id="ftpFold" type="hidden" name="ftpFold" value="<?= $ln['ftp_folder'] ?>"/>
-																								<div class="input-prepend">
-																								<label id='refresh' title='Обновить папки' for="upFTP" class="add-on" onclick='sendFtp();'>
-																									Папка uploada FTP:</label>
-																										<select id= "upFTP" class="span3" NAME="ftp_folder">
-																											<option value="<?= $ln['ftp_folder'] ?>"><?= $ln['ftp_folder'] ?></option>
-																										</select>
-																								</div>
-																							</td>
-																						</tr>
-																						<tr>
-																							<td colspan="2" align="center">
-																								<input class="btn btn-primary" type="hidden" name="go_edit_nastr" value="<?= $ln['id'] ?>"/>
-																								<input class="btn-small btn-primary" type="submit" value="сохранить"/>
-																							</td>
-																						</tr>
-																					</table>
-																				</form>
-																			</td>
-																		</tr>
-																		<tr>
-																			<td align="center">
-																				<form action="index.php" name="go_ftp_upload" method="post" style="margin-bottom: 0;" target="hiddenframe" onsubmit="document.getElementById('<?= $ln['id'] ?>').innerHTML='Подождите, идёт загрузка...'; return true;">
-																					<input class="btn btn-success" type="hidden" name="go_ftp_upload" value="<?= $ln['id'] ?>"/>
-
-																					<div id="<?= $ln['id'] ?>"></div>
-																					<div id="<?= $ln['id'] ?>bar"></div>
-																					<div id="<?= $ln['id'] ?>err"></div>
-																					<input class="btn-small btn-success" type="submit" value="Добавить с FTP"/><br/>
-																				</form>
-																			</td>
-																			<td>
-																				<iframe id="hiddenframe" name="hiddenframe" style="width:0; height:0; border:0"></iframe>
-																			</td>
-																		</tr>
-																	</table>
-																</td>
-															</tr>
-															<tr>
-																<td align="center" style="margin: 10px;">Папка альбома:
-																	"..<?=$ln['foto_folder']?><?=$ln['id']?>"
-																	<form action="index.php" method="post" style="margin: 10px;">
-																		<input class="btn btn-primary" type="hidden" name="go_delete" value="<?= $ln['id'] ?>"/>
-																		<input class="btn-small btn-danger dropdown-toggle" type="submit" value="удалить  альбом"/>
-																	</form>
-																</td>
-															</tr>
-															<tr>
-																<td align="center" style="height: 30px;">
-																	<form action="index.php" method="post" style="margin: 0;">
-																		<div class="btn-toolbar">
-																			<div class="btn-group">
-																				<input type="hidden" name="go_updown" value="<?= $ln['id'] ?>"/>
-																				<input class="btn-small btn-info" type="submit" name="up" value="поднять"/>
-																				<input class="btn-small btn-info" type="submit" name="down" value="опустить"/>
+												<div class="controls">
+													<div class="input-append">
+														<form action="index.php" method="post">
+															<label for="appendedInputButton"></label>
+															<input id="appendedInputButton" type="text" name="nm" value="<?= $ln['nm'] ?>" style="height: 22px; margin-top: 20px;"/>
+															<input class="btn btn-primary" type="hidden" name="go_edit_name" value="<?= $ln['id'] ?>"/>
+															<input class="btn btn-primary" type="submit" value="переименовать" style="margin-top: 20px;"/>
+														</form>
+													</div>
+												</div>
+											</td>
+											<td rowspan="3" align="center">
+												<form action="index.php" method="post" style="margin: 0 0 -20px 0;">
+													<label>
+														<textarea rows="12" cols="35" name="descr" style="width: 346px; height: 210px;">
+															<?=$ln['descr']?>
+														</textarea> </label><br/>
+													<input class="btn btn-primary" type="hidden" name="go_edit_descr" value="<?= $ln['id'] ?>"/>
+													<input class="btn-small btn-primary" type="submit" value="сохранить" style="margin-bottom: 10px;">
+												</form>
+											</td>
+											<td rowspan="3">
+												<table border="0">
+													<tr>
+														<td>
+															<form action="index.php" method="post" style="margin: 5px;">
+																<table border="0">
+																	<tr>
+																		<td>
+																			<div class="input-prepend">
+																				<label for="price" class="add-on">Цена за фото (гр.):&nbsp;&nbsp;&nbsp;</label>
+																				<input id="price" class="span2" type="text" NAME="price" VALUE="<?= $ln['price'] ?>"/>
 																			</div>
-																		</div>
-																	</form>
-																</td>
-															</tr>
-														</table>
-													</td>
-												</tr>
-											</table>
+																		</td>
+																		<td>
+																			<div class="slideThree">
+																				<input id="slideThree1" type='checkbox' NAME='watermark' VALUE='yes'
+																					<?if ($ln['watermark'])
+																					{
+																						echo 'checked="checked"';
+																					} ?> /> <label for="slideThree1"></label>
+																			</div>
+																			Водяной знак
+																		</td>
+																	</tr>
+																	<tr>
+																		<td>
+																			<div class="input-prepend">
+																				<label for="quality" class="add-on">Качество .jpg (%):&nbsp;&nbsp;&nbsp;&nbsp;</label>
+																				<input id="quality" class="span2" type="text" NAME="quality" VALUE="<?= $ln['quality'] ?>"/>
+																			</div>
+																		</td>
+																		<td>
+																			<div class="slideThree">
+																				<input id="slideThree2" type='checkbox' NAME='ip_marker' VALUE='yes' <?if ($ln['ip_marker'])
+																					{
+																						echo 'checked="checked"';
+																					}?> /> <label for="slideThree2"></label>
+																			</div>
+																			IP надпись
+																		</td>
+																	</tr>
+																	<tr>
+																		<td colspan="2">
+																			<div class="input-prepend">
+																				<label for="id_category" class="add-on">Категория: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+																				<select id="id_category" class="span3" name="id_category">
+																					<?
+																					$tmp =
+																						$db->query('select * from `categories` order by id asc',
+																							NULL,
+																							'assoc');
+																					foreach ($tmp as $tmp2)
+																						{
+																							?>
+																							<option value="<?= $tmp2['id'] ?>" <?=($tmp2['id']
+																								== $ln['id_category'] ? 'selected="selected"' : '')?>><?=$tmp2['nm']?></option>
+																						<?
+																						}
+																					?>
+																				</select>
+																			</div>
+																		</td>
+																	</tr>
+																	<tr>
+																		<td>
+																			<div class="input-prepend">
+																				<label for="pass" class="add-on">Пароль на альбом:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+																				<input id="pass" class="span2" type="text" NAME="pass" VALUE="<?= $ln['pass'] ?>"/>
+																			</div>
+																		</td>
+																	</tr>
+																	<tr>
+																		<td>
+																			<div class="input-prepend">
+																				<label for="foto_folder" class="add-on">Папка фотобанка:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+																				<input id="foto_folder" class="span2" type="text" NAME="foto_folder" VALUE="<?= $ln['foto_folder'] ?>"/>
+																			</div>
+																		</td>
+																		<td>
+																			<div class="slideThree">
+																				<input id="slideThree3" type='checkbox' NAME='sharping' VALUE='yes' <?if ($ln['sharping'])
+																					{
+																						echo 'checked="checked"';
+																					}?> /> <label for="slideThree3"></label>
+																			</div>
+																			Добавить резкость
+																		</td>
+																	</tr>
+
+
+																	<tr>
+																		<td>
+																			<div class="input-prepend">
+																				<label for="foto_folder" class="add-on">Цена голоса (грн.):&nbsp;&nbsp;</label>
+																				<input id="foto_folder" class="span2" type="text" NAME="vote_price" VALUE="<?= $ln['vote_price'] ?>"/>
+																			</div>
+																		</td>
+																	</tr>
+
+																	<tr>
+																		<td>
+																			<div class="input-prepend">
+																				<label for="foto_folder" class="add-on">t голосования
+																					(мин):</label>
+																				<input id="foto_folder" class="span2" type="text" NAME=" vote_time" VALUE="<?= $ln['vote_time'] ?>"/>
+																			</div>
+																		</td>
+																		<td>
+																			<div class="slideThree">
+																				<input id="slideThree4" type='checkbox' NAME='vote_time_on' VALUE='yes' <?if ($ln['vote_time_on'])
+																					{
+																						echo 'checked="checked"';
+																					}?> /> <label for="slideThree4"></label>
+																			</div>
+																			Голосование по времени
+																		</td>
+																	</tr>
+
+																	<tr>
+																		<td colspan="2">
+																			<input id="ftpFold" type="hidden" name="ftpFold" value="<?= $ln['ftp_folder'] ?>"/>
+
+																			<div class="input-prepend">
+																				<label id='refresh' title='Обновить папки' for="upFTP" class="add-on" onclick='sendFtp();'>
+																					Папка uploada FTP:&nbsp;</label>
+																				<select id="upFTP" class="span3" NAME="ftp_folder">
+																					<option value="<?= $ln['ftp_folder'] ?>"><?= $ln['ftp_folder'] ?></option>
+																				</select>
+																			</div>
+																		</td>
+																	</tr>
+																	<tr>
+																		<td colspan="2" align="center">
+																			<input class="btn btn-primary" type="hidden" name="go_edit_nastr" value="<?= $ln['id'] ?>"/>
+																			<input class="btn-small btn-primary" type="submit" value="сохранить"/>
+																		</td>
+																	</tr>
+																</table>
+															</form>
+														</td>
+													</tr>
+													<tr>
+														<td align="center">
+															<form action="index.php" name="go_ftp_upload" method="post" style="margin-bottom: 0;" target="hiddenframe" onsubmit="document.getElementById('<?= $ln['id'] ?>').innerHTML='Подождите, идёт загрузка...'; return true;">
+																<input class="btn btn-success" type="hidden" name="go_ftp_upload" value="<?= $ln['id'] ?>"/>
+
+																<div id="<?= $ln['id'] ?>"></div>
+																<div id="<?= $ln['id'] ?>bar"></div>
+																<div id="<?= $ln['id'] ?>err"></div>
+																<input class="btn-small btn-success" type="submit" value="Добавить с FTP"/><br/>
+															</form>
+														</td>
+														<td>
+															<iframe id="hiddenframe" name="hiddenframe" style="width:0; height:0; border:0"></iframe>
+														</td>
+													</tr>
+												</table>
+											</td>
+										</tr>
+										<tr>
+											<td align="center" style="margin: 10px;">Папка альбома:
+												"..<?=$ln['foto_folder']?><?=$ln['id']?>"
+												<form action="index.php" method="post" style="margin: 10px;">
+													<input class="btn btn-primary" type="hidden" name="go_delete" value="<?= $ln['id'] ?>"/>
+													<input class="btn-small btn-danger dropdown-toggle" type="submit" value="удалить  альбом"/>
+												</form>
+											</td>
+										</tr>
+										<tr>
+											<td align="center" style="height: 30px;">
+												<form action="index.php" method="post" style="margin: 0;">
+													<div class="btn-toolbar">
+														<div class="btn-group">
+															<input type="hidden" name="go_updown" value="<?= $ln['id'] ?>"/>
+															<input class="btn-small btn-info" type="submit" name="up" value="поднять"/>
+															<input class="btn-small btn-info" type="submit" name="down" value="опустить"/>
+														</div>
+													</div>
+												</form>
+											</td>
+										</tr>
+										</table>
+										</td>
+										</tr>
+										</table>
 										</div>
 									<?
-								}
+									}
 							}
 				endif;
-	   	}
+			}
 	}
 ?>
-	<div style="clear: both; display: block; height: 100px;"></div>
+<div style="clear: both; display: block; height: 100px;"></div>

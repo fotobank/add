@@ -80,7 +80,11 @@ if (isset($_SESSION['current_album'])):
 													floatval($photo_data['price']) > 0 ? $photo_data['price'].'грн.' : 'бесплатно')?>
 												</td>
 												<td valign="top" width="33%" align="right">
-													<input type="button" value="Голосовать" style="cursor: pointer;" onClick="goVote(event, <?= $photo_data['id'] ?>);"/><br/>
+													<?
+													$id_album = isset($_SESSION['current_album']) ? $_SESSION['current_album'] : null;
+													$vote_price = floatval($db->query('select vote_price from albums where id = ?i', array($id_album), 'el'));
+													?>
+													<input type="button" value="Голосовать" style="cursor: pointer;" onClick="goVote('<?=$vote_price?>','<?=$photo_data['id']?>');"/><br/>
 													Голосов: (<?=$photo_data['votes']?>)
 												</td>
 

@@ -36,13 +36,6 @@
 
 
 ?>
-	<form name=vote_price  style="margin-bottom: 0;">
-		<?
-		$vote_price = floatval(get_param('vote_price'));
-		?>
-		<input type=hidden name=id1 value="<?= htmlspecialchars($vote_price); ?>">
-	</form>
-
 
 	<div id="main">
 	<script type="text/javascript" src="/js/photo-prev.js"></script>

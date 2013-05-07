@@ -73,6 +73,7 @@ function get_f($text,$tag)
 // $address can be IP-address or hostname
 function Get_Whois($address)
 {
+	$res = '';
   if (empty($address)) return 'No search key specified';
   $socket = fsockopen ("whois.ripe.net", 43, $errno, $errstr);
   if (!$socket) {
@@ -187,26 +188,6 @@ function explode_date($date)
   return $date_obj;
 }
 
-// Reads content of ini-file
-// $ignore_sections: ignore sections ("[Something]")
-function read_ini($file_name, $ignore_sections = FALSE)
-{
-  $dump = file($file_name);
-  foreach ($dump as $val) {
-    if (trim($val) != '') {
-      if (substr($val,0,1) == '[') {
-        $first_index = trim(substr($val,1,strlen($val)-4));
-      } else {
-        preg_match ("/(.*?)=/", $val, $tmp_index);
-        preg_match ("/=(.*?)$/", $val, $tmp_value);
-        if ($ignore_sections) $out[$tmp_index[1]] = $tmp_value[1];
-        else $out[$first_index][$tmp_index[1]] = $tmp_value[1];
-      }
-    }
-  }
-  return($out);
-}
-
 // Delete all files in specified folder and also the folder
 function delete_files($folder)
 {
@@ -223,18 +204,13 @@ function delete_files($folder)
   }
 }
 
-// Return "breadcrumbs"
-// Example: $breadcrumbs = array('soft.php'=>'Software', 'cms/index.php'=>'Ardzo.CMS', ''=>'Order');
-function get_breadcrumbs($breadcrumbs, $divider = ' &rarr; ', $start_block = '<div class="breadcrumbs"><a href="index.php">Main page</a>', $end_block = '</div>')
-{
-  if (!empty($breadcrumbs)) {
-    $tmp = $start_block;
-    if (!is_array($breadcrumbs)) $breadcrumbs = array(''=>$breadcrumbs);
-    foreach ($breadcrumbs as $url=>$title)
-      if (empty($url)) $tmp .= $divider.$title;
-      else $tmp .= $divider.'<a href="'.$url.'">'.$title.'</a>';
-    $tmp .= $end_block;
-    return $tmp;
-  }
+	/**
+	 * @param $time
+	 * форматирование времени
+	 * @return string
+	 */
+	function showPeriod($time) {
+		return sprintf("%02d:%02d:%02d", (int)($time / 3600), (int)(($time % 3600) / 60), $time % 60);
 }
+
 ?>
