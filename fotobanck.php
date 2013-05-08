@@ -561,40 +561,42 @@
 
 
 
-	if ($may_view):
-	$idAlbum = isset($_SESSION['current_album']) ? $_SESSION['current_album'] : NULL;
-	$accordions = $db->query('SELECT * FROM accordions WHERE `id_album` = ?i || `id_album` = ?i', array($idAlbum, 1), 'assoc:id_album');
-	if ($accordions)
+	if ($may_view && isset($_SESSION['current_album'])):
+	$acc[1] = $db->query('SELECT * FROM accordions WHERE `id_album` = ?i ',array('1'), 'assoc:collapse_numer');
+	$acc[$_SESSION['current_album']] = $db->query('SELECT * FROM accordions WHERE `id_album` = ?i ',array($_SESSION['current_album']), 'assoc:collapse_numer');
+	if ($acc[$_SESSION['current_album']])
 		{
-			if($accordions[$idAlbum]['accordion_nm'] != '')
+			if($acc[$_SESSION['current_album']][1]['accordion_nm'] != '')
 				{
-					$collapse_nm = explode("][", $accordions[$idAlbum]['collapse_nm']);
-			if ($collapse_nm[0] == '') $collapse_nm = explode("][", $accordions[1]['collapse_nm']);
-					$collapse = explode("][", $accordions[$idAlbum]['collapse']);
-			if ($collapse[0] == '') $collapse = explode("][", $accordions[1]['collapse']);
 					echo "
 					<div class='profile'>
 		         <div id='garmon' class='span12 offset1'>
 			      <div class='accordion' id='accordion2'>
 					";
-					foreach ($collapse_nm as $key => $collapseData) {
-						if ($key == 0)
+					foreach ($acc[$_SESSION['current_album']] as $key => $accData) {
+						if ($key == 1)
 							{
 								$in = 'in';
 							} else {
 							$in = '';
 						   }
+
+						$collapse_nm = $acc[$_SESSION['current_album']][$key]['collapse_nm'];
+						if ($collapse_nm == 'defalt') $collapse_nm = $acc[1][$key]['collapse_nm'];
+						$collapse = $acc[$_SESSION['current_album']][$key]['collapse'];
+						if ($collapse == '') $collapse = $acc[1][$key]['collapse'];
+
 						echo "
                   <div class='accordion-group'>
 					   <div class='accordion-heading'>
 						<a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion2' href='#collapse".$key."'>
-                  ".$collapseData."
+                  ".$collapse_nm."
                   </a>
 					   </div>
 					   <div id='collapse".$key."' class='accordion-body collapse ".$in."'>
 						<div class='accordion-inner'>
 					   <p class='bukvica'><span style='font-size:11.0pt;'>
-                  ".$collapse[$key]."
+                  ".$collapse."
                   </span></p>
 						</div>
 					   </div>
@@ -605,7 +607,7 @@
 					</div>
 			      <a class='profile_bitton2' href='#'>Закрыть</a>
 		         </div></div>
-	            <div><a class='profile_bitton' href='#'>".$accordions[$idAlbum]['accordion_nm']."</a></div>
+	            <div><a class='profile_bitton' href='#'>".$acc[$_SESSION['current_album']][$key]['accordion_nm']."</a></div>
 					";
 				}
 		}
