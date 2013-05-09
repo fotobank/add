@@ -2094,7 +2094,6 @@ figure.ramka:after {
     padding: 4px; /* Размер паспарту */
     background: #fff; /* Цвет фона паспарту */
     /* Параметры рамки */
-    display: inline-block; /* Строчно-блочный элемент */
     cursor: pointer;
     margin:10px 0 80px 0;
     -webkit-transition: margin 0.2s ease-out;
@@ -2102,9 +2101,9 @@ figure.ramka:after {
     -o-transition: margin 0.2s ease-out;
 }
 
-.foto:hover {
+/*.foto:hover {
     margin-top: 4px;
-}
+}*/
 
 .foto:before,
 .foto:after {

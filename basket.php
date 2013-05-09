@@ -18,6 +18,11 @@
         else
       {
 
+	 if(isset($_POST['go_back']))
+		 {
+			 $_SESSION['print'] = 1;
+		 }
+
     if(isset($_POST['go_order']) && isset($_SESSION['basket']) && is_array($_SESSION['basket']) && count($_SESSION['basket']) > 0)
       {
 	      $mysqlErrno = 0;
@@ -49,7 +54,7 @@
       }
     if($sum > $user_balans)
       {
-       $_SESSION['order_msg'] = 'Недостаточно средств на балансе!';
+       $_SESSION['order_msg'] = 'Недостаточно средств на балансе!<br> Пополните счет или закажите печать наложенным платежом.';
 	      $db->query('delete from orders where id = ?i', array($id_order));
       }
       else
@@ -102,15 +107,25 @@
     }
    }
   }
+$_SESSION['print'] = 0;
+
   ?>
-  <div id="main"> 
-    <?
-    if(isset($_SESSION['order_msg2']))
+  <div id="main">
+<?
+if(isset($_POST['go_print']) && $_SESSION['basket'] > 0)
+{
+			  $_SESSION['print'] = 1;
+}
+
+if(isset($_SESSION['order_msg2']))
     {
     	?>
-		    <div class="drop-shadow lifted" style="margin: 50px 0 0 155px;" >
+	    <div style="position: relative">
+		    <div style="position: absolute; margin-left: auto; margin-right: auto" class="drop-shadow lifted">
 			    <div style="font-size: 22px;"><?=$_SESSION['order_msg2']?></div>
-		    </div><br><br><br><br>
+		    </div>
+	    </div>
+	    <br><br><br><br>
     	<?
     	unset($_SESSION['order_msg2']);
     }
@@ -118,12 +133,33 @@
     {
     	$_SESSION['order_msg2'] = $_SESSION['order_msg'];
     	unset($_SESSION['order_msg']);
-    }    
-    if(isset($_SESSION['basket']) && is_array($_SESSION['basket']) && count($_SESSION['basket']) > 0):            
+    }
+
+
+
+
+    if(isset($_SESSION['basket']) && is_array($_SESSION['basket']) && count($_SESSION['basket']) > 0)
+	    {
       $sum = 0;
    ?>
-   <div style="margin-top: 40px"></div>
-
+		    <?
+		    if($_SESSION['print'] == 1)
+			    {
+			 ?>
+		    <div class="drop-shadow lifted" style="margin: 20px 0 20px 250px;" >
+			    <div style="font-size: 24px;">Откорректируйте количество на каждой фотографии и нажмите далее</div>
+		    </div>
+				    <div style="clear: both;"></div>
+				    <?
+			    } else {
+				    ?>
+			    <div class="drop-shadow lifted" style="margin: 20px 0 20px 500px;" >
+				    <div style="font-size: 24px;">Ваша корзина</div>
+			    </div>
+			    <div style="clear: both;"></div>
+			    <?
+		    }
+			    ?>
 	<ul class="thumbnails">
    <?    
    foreach($_SESSION['basket'] as $ind => $val)
@@ -142,12 +178,42 @@
      <div style="width: 170px; ; height: 280px; float: left;">
      <li class="span2" style="margin-left: 30px; width: 160px; height: 300px;">
      <div class="thumbnail img-polaroid foto">
-	 <a class="del" href="basket.php?del=<?=$ind?>" style="margin-left: 140px; margin-bottom: 0px; margin-top: -12px; z-index: 1" ></a>
+	  <a class="del" href="basket.php?del=<?=$ind?>" style="margin-left: 140px; margin-bottom: 0; margin-top: -12px; z-index: 1" ></a>
 	  <img src="dir.php?num=<?=substr(($photo_data['img']),2,-4)?>" alt="<?=$photo_data['nm']?>" title="<?=$photo_data['nm']?>"><br>
-     <span class="foto_prev_nm" style="margin-top: -20px; margin-left: 0; text-align: center;">№  <?=$photo_data['nm']?></span>
-     <span class="label label-success" style="margin-left: 96px"><?=$photo_data['price']?> грн.</span>
-	 </div>
+     <span class="foto_prev_nm" style="margin-top: -20px; margin-left: 0; text-align: center;"><b>№  <?=$photo_data['nm']?></b></span>
+	     <?
+	      if($_SESSION['print'] == 1)
+		      {
+	     ?>
+	     <div style="display: inline">
+		     <div style="float: left; height: 20px; width: 152px;">
 
+			     <form action="index.php" name="go_turn" method="post" style="margin: 0;" target="hiddenframe"
+				     onsubmit="document.getElementById('<?= $ln['id'] ?>').innerHTML='Подождите, идёт загрузка...'; return true;">
+				     <input class="btn" type="hidden" name="go_turn" value="<?= $ln['id'] ?>"/>
+				     <input class="btn" type="hidden" name="povorot" value="270"/>
+				     <input class="btn-mini btn-info" type="submit" value="+" style="float:left; width: 28px; height: 18px; padding: 0 0 0 0;  margin: 0 0 0 0;"/>
+			     </form>
+			     <form action="index.php" name="go_turn" method="post" style="margin: 0;" target="hiddenframe"
+				     onsubmit="document.getElementById('<?= $ln['id'] ?>').innerHTML='Подождите, идёт загрузка...'; return true;">
+				     <input class="btn" type="hidden" name="go_turn" value="<?= $ln['id'] ?>"/>
+				     <input class="btn" type="hidden" name="povorot" value="90"/>
+				     <input class="btn-mini btn-info" type="submit" value="-" style="float:left; width: 28px; height: 18px; padding: 0 0 0 0;  margin: 0 0 0 0;"/>
+			     </form>
+			     <span class="label label-warning" style="float: left">80 шт</span>
+			     <span class="label label-success" style="float: right;"><?=$photo_data['price']?> грн</span>
+		     </div>
+	     </div>
+	     <span><b>Всего:</b></span>
+     <span class="label label-success" style="float: right; margin-right: -2px;">856.00 грн</span>
+			      <?
+		      } else {
+			      ?>
+	     <span class="label label-success" style="margin-left: 96px"><?=$photo_data['price']?> грн</span>
+		      <?
+	      }
+		      ?>
+	  </div>
      </li>   
      </div>
      <?
@@ -155,19 +221,59 @@
    }	  
 	 ?>
   </ul>
-      <div id="foto_prev">
-       <span class="label label-important" style="margin: 0 0 10px 73px"> ИТОГО: <b><?=$sum?> грн.</b></span>
-        <form action="basket.php" method="post" style="margin-bottom: -100px">
+		    <?
+		    if(isset($_SESSION['print']) &&  $_SESSION['print'] == 0)
+		    {
+			  ?>
+		    <table style="margin-top: 50px;">
+			    <tr>
+				    <td>
+       <span class="label label-important" style="margin: 0 0 10px 73px;"> ИТОГО: <b><?=$sum?> грн.</b></span>
+				    </td>
+			    </tr>
+			    <tr>
+				    <td>
+        <form action="basket.php" method="post">
           <input type="hidden" name="go_order" value="1" />
-          <input class="metall_knopka" type="submit" value="Оплатить и получить в виде файла" />
+          <input class="metall_knopka" type="submit" value="Оплатить и получить в цифровом виде" />
         </form>
-      </div>
-
-    <? else: ?>
+				    </td>
+				    <td>
+<span class="label label-important" style="text-align: center; margin-bottom: 20px; margin-left: 50px;"><b>или</b></span>
+				    </td>
+				    <td>
+					    <form action="basket.php" method="post">
+						    <input type="hidden" name="go_print" value="1" />
+		    <input class="metall_knopka" type="submit" style="margin-left: 50px;" value="Открыть форму заказ печати" />
+					    </form>
+				    </td>
+			    </tr>
+		    </table>
+		    <?
+		    }
+		    else
+			 {
+		    ?>
+				 <span class="label label-important" style="margin: 0 0 10px 55px;"> ИТОГО: <b><?=$sum?> грн.</b></span>
+               <form action="basket.php" method="post" style="float: left; margin-right: 50px;">
+					  <input type="hidden" name="go_back" value="1" />
+					  <input class="metall_knopka" type="submit" value="Назад" style="margin-top: 15px;" />
+				   </form>
+				 <form action="basket.php" method="post">
+					 <input type="hidden" name="go_back" value="1" />
+					 <input class="metall_knopka" type="submit" value="Далее" style="margin-top: 15px;" />
+				 </form>
+	        <?
+		    }
+	    }
+    else
+	    { ?>
 	    <div class="drop-shadow lifted" style="margin: 50px 0 0 480px;" >
 		    <div style="font-size: 24px;">Ваша корзина пуста!</div>
 	    </div>
-    <? endif; ?>
+    <? }
+
+		      ?>
  </div>
 
 

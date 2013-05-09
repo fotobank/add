@@ -962,6 +962,8 @@ if (isset($_POST['go_up_down']))
 	{
 		$id_album = $_POST['go_up_down'];
 		$id_cat   = $_POST['coll_num'];
+		if(isset($_SESSION['alb_num']) && $_SESSION['alb_num'] != 1)
+		{
 		if ($id_cat > 0)
 			{
 				if (isset($_POST['up']))
@@ -978,19 +980,22 @@ if (isset($_POST['go_up_down']))
 								array($id_album, $id_cat),
 								'el');
 					}
-			}
-		if ($id_cat > 0 && isset($swap_id) && $swap_id > 0)
-			{
-				$db->query('update accordions set collapse_numer = 0 where id_album =?i and  collapse_numer = ?i',
-					array($id_album, $swap_id));
-				$db->query('update accordions set collapse_numer = ?i where id_album =?i and  collapse_numer = ?i',
-					array($swap_id, $id_album, $id_cat));
-				$db->query('update accordions set collapse_numer = ?i where id_album =?i and  collapse_numer = 0',
-					array($id_cat, $id_album));
-				$_SESSION['current_kont'] = $swap_id;
-			}
+
+					if (isset($swap_id) && $swap_id > 0)
+						{
+							$db->query('update accordions set collapse_numer = 0 where id_album =?i and  collapse_numer = ?i',
+								array($id_album, $swap_id));
+							$db->query('update accordions set collapse_numer = ?i where id_album =?i and  collapse_numer = ?i',
+								array($swap_id, $id_album, $id_cat));
+							$db->query('update accordions set collapse_numer = ?i where id_album =?i and  collapse_numer = 0',
+								array($id_cat, $id_album));
+							$_SESSION['current_kont'] = $swap_id;
+						}
+		   }
+		}
 	}
 ?>
+<div style="clear: both"></div>
 <hr/><h3>Аккордеон:</h3>
 <?
 
@@ -1035,10 +1040,10 @@ if (isset($_SESSION['current_album']))
 					</div>
 				</div>
 				<br>
-				<div class="controls" style="float: left; height: 28px;">
+				<div class="controls" style="float: left; margin-right: 20px;">
 					<div class="input-append">
 						<form action="index.php" method="post" style="float: left">
-							<select class="span3" name="collapse_nm" style="height: 28px;">
+							<select class="span3" name="collapse_nm">
 								<?
 								$curr_razd =
 									(isset($_SESSION['collapse_numer']) && isset($_SESSION['alb_num'])) ?
@@ -1057,7 +1062,7 @@ if (isset($_SESSION['current_album']))
 							</select>
 							<input class="btn  btn-success" type="submit" value="Открыть"/>
 						</form>
-						<form action="index.php" method="post">
+						<form action="index.php" method="post" style="float: left">
 									<input type="hidden" name="go_up_down" value="<?= $rs[0]['id_album'] ?>"/>
 									<input type="hidden" name="coll_num" value="<?= $curr_razd ?>"/>
 									<input class="btn btn-info" type="submit" name="up" value="выше"/>
@@ -1099,10 +1104,10 @@ if (isset($_SESSION['collapse_numer']) && isset($_SESSION['alb_num']))
 		if ($rs)
 			{
 				?>
-				<div class="controls">
+				<div class="controls" style="margin-top: -20px;">
 					<div class="input-append">
 						<form id="txtCollName"  action="" >
-							<input style=" margin-left: 150px; float: left;" class="span3" type="text" name="nm" value="<?= $rs['collapse_nm'] ?>"/>
+							<input style="float: left; height: 24px;" class="span3" type="text" name="nm" value="<?= $rs['collapse_nm'] ?>"/>
 							<input type="hidden" name="go_edit_name_coll" value="<?= $rs['id_album'] ?>"/>
 							<input type="hidden" name="collapse_numer" value="<?= $rs['collapse_numer'] ?>"/>
 						</form>
@@ -1110,7 +1115,7 @@ if (isset($_SESSION['collapse_numer']) && isset($_SESSION['alb_num']))
 								onClick="ajaxPostQ('/canon68452/index.php','',$('#txtCollName').serialize());">Переименовать</button>
 					</div>
 				</div>
-
+<div style="clear: both"></div>
 				<form id="txtColl" action="" style="margin-bottom: 10px;">
 						<label for="txtResult"></label>
 						<textarea id="txtResult" name="txt_coll" class="tinymce" rows="25" cols="700" style="width: 950px; height: 200px;"><?=$rs['collapse']?></textarea>
@@ -1124,7 +1129,7 @@ if (isset($_SESSION['collapse_numer']) && isset($_SESSION['alb_num']))
 				{
 				?>
 				<form action="index.php" method="post">
-					<input type="hidden" name="go_del" value="<?= $_SESSION['current_album'] ?>"/>
+					<input type="hidden" name="go_del" value="<?= isset($_SESSION['current_album']) ? $_SESSION['current_album'] : NULL; ?>"/>
 					<input type="hidden" name="collapse_numer" value="<?= $_SESSION['collapse_numer'] ?>"/>
 					<input class="btn btn-danger" type="submit" value="Удалить" style="margin-left: 500px;" onclick="return confirmDelete();"/>
 				</form>

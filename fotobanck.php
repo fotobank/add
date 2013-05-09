@@ -9,10 +9,9 @@
 	define('PHOTOS_ON_PAGE', 77);
 	$Dir = DirPatc::getInst();
 	if (isset($_GET['album_id']))
-		{
+		{			
 			$_SESSION['current_album'] = intval($_GET['album_id']);
 			DirPatc::$current_album = intval($_GET['album_id']);
-
 		}
 	if (isset($_GET['back_to_albums']))
 		{
@@ -472,10 +471,7 @@
 	if ($album_data)
 		{
 			$may_view = true;
-			if (!isset($_SESSION['album_name']) || !is_array($_SESSION['album_name']))
-				{
-					$_SESSION['album_name'] = array();
-				}
+			$_SESSION['album_name'] = array();
 			$_SESSION['album_name'][$_SESSION['current_album']] = $album_data['nm'];
 			if ($album_data['pass'] != '')
 				{
@@ -530,8 +526,8 @@
 				{
 					unset($_SESSION['popitka'][$_SESSION['current_album']]);
 				}
-		} else
-
+		}
+	else
 		{
 			unset($_SESSION['current_album']);
 		}
