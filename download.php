@@ -7,7 +7,7 @@ if(!isset($_SESSION['logged']))
 if(!isset($_GET['key']))
   err_exit('Ключ не найден!', 'index.php');
 $key = $_GET['key'];
-$rs = $db->query('select * from download_photo where download_key = ?', array($key), 'row');
+$rs = $db->query('select * from download_photo where download_key = ?string', array($key), 'row');
 if(!$rs)
 {
   err_exit('Ключ не найден!', 'index.php');

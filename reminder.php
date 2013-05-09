@@ -39,4 +39,3 @@ include  'inc/captcha/cryptographp.fct.php';
 	<a class="btn btn-primary" type="reset" onClick="ajaxPostQ('/inc/SendData.php','#result',$('#reminder').serialize()); reload(0,'.<?=SID?>.');">Напомнить</a>
 	<a class="btn" data-dismiss="modal"  onClick="$('#result').empty(); setTimeout( 'returnCaptcha ()', 1000);">Закрыть</a>
 </div>
-

@@ -216,7 +216,7 @@
 					'select SQL_CALC_FOUND_ROWS p.* from photos p where id_album = ?i
 					 order by img ASC, id ASC limit ?i,'.PHOTOS_ON_PAGE,
 					array($_SESSION['current_album'], $start),'assoc');
-					$record_count = $db->query('select FOUND_ROWS() as cnt', null, 'el'); // количество записей
+					$record_count = $db->query('select FOUND_ROWS() as cnt', NULL, 'el'); // количество записей
 					if ($rs)
 						{
 							?>
@@ -543,7 +543,7 @@
 
 	parol($may_view, $ip, $ipLog, $timeout);
 
-
+	$razdel = NULL;
 	if (isset($_SESSION['current_cat']))
 		{
 			$razdel = $db->query('select nm from `categories` where id = ?i', array($_SESSION['current_cat']),'el');
@@ -560,7 +560,9 @@
 	verifyParol($may_view);
 
 
-
+	/**
+	 *  Аккордеон
+	 */
 	if ($may_view && isset($_SESSION['current_album'])):
 	$acc[1] = $db->query('SELECT * FROM accordions WHERE `id_album` = ?i ',array('1'), 'assoc:collapse_numer');
 	$acc[$_SESSION['current_album']] = $db->query('SELECT * FROM accordions WHERE `id_album` = ?i ',array($_SESSION['current_album']), 'assoc:collapse_numer');
@@ -580,12 +582,10 @@
 							} else {
 							$in = '';
 						   }
-
 						$collapse_nm = $acc[$_SESSION['current_album']][$key]['collapse_nm'];
-						if ($collapse_nm == 'defalt') $collapse_nm = $acc[1][$key]['collapse_nm'];
+						if ($collapse_nm == 'default') $collapse_nm = $acc[1][$key]['collapse_nm'];
 						$collapse = $acc[$_SESSION['current_album']][$key]['collapse'];
 						if ($collapse == '') $collapse = $acc[1][$key]['collapse'];
-
 						echo "
                   <div class='accordion-group'>
 					   <div class='accordion-heading'>
@@ -603,11 +603,13 @@
 				      </div>
 						";
 					}
+					$nameButton = ($acc[$_SESSION['current_album']][$key]['accordion_nm'] == 'default') ? $acc[1][1]['accordion_nm'] :
+						            $acc[$_SESSION['current_album']][$key]['accordion_nm'];
 				   echo "
 					</div>
 			      <a class='profile_bitton2' href='#'>Закрыть</a>
 		         </div></div>
-	            <div><a class='profile_bitton' href='#'>".$acc[$_SESSION['current_album']][$key]['accordion_nm']."</a></div>
+	            <div><a class='profile_bitton' href='#'>".$nameButton."</a></div>
 					";
 				}
 		}
@@ -664,7 +666,6 @@
 
 	<!-- тело --><!-- 4 -->
 <hr class="style-one" style="clear: both; margin-bottom: -20px; margin-top: 0"/>
-
 
 
 	<!--Вывод нумерации страниц -->   <?
@@ -806,7 +807,7 @@ else:
 						<td>
 
 							<?
-							$rs = $db->query('select * from `categories` order by `id_num` asc',null,'assoc:id');
+							$rs = $db->query('select * from `categories` order by `id_num` asc',NULL,'assoc:id');
  							foreach ($rs as $ln)
 								{
 									/**

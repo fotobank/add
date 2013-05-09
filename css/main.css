@@ -47,7 +47,7 @@ html {
     left: 0;
     margin-top: 10px;
     width: 1200px;
-    min-height: 100%;
+    /*min-height: 100%;*/
     margin-left: auto;
     margin-right: auto;
     z-index: 1;
@@ -2089,7 +2089,53 @@ figure.ramka:after {
 }
 */
 
+.foto {
+    position: relative;
+    padding: 4px; /* Размер паспарту */
+    background: #fff; /* Цвет фона паспарту */
+    /* Параметры рамки */
+    display: inline-block; /* Строчно-блочный элемент */
+    cursor: pointer;
+    margin:10px 0 80px 0;
+    -webkit-transition: margin 0.2s ease-out;
+    -moz-transition: margin 0.2s ease-out;
+    -o-transition: margin 0.2s ease-out;
+}
 
+.foto:hover {
+    margin-top: 4px;
+}
+
+.foto:before,
+.foto:after {
+    z-index: -1;
+    position: absolute;
+    content: "";
+    bottom: 15px;
+    left: 10px;
+    width: 80%;
+    top: 80%;
+    max-width:300px;
+    background: rgba(0, 0, 0, 0.7);
+    -webkit-box-shadow: 0 15px 10px rgba(0,0,0, 0.7);
+    -moz-box-shadow: 0 15px 10px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 15px 10px rgba(0, 0, 0, 0.7);
+    -webkit-transform: rotate(-3deg);
+    -moz-transform: rotate(-3deg);
+    -o-transform: rotate(-3deg);
+    -ms-transform: rotate(-3deg);
+    transform: rotate(-3deg);
+}
+
+.foto:after {
+    -webkit-transform: rotate(3deg);
+    -moz-transform: rotate(3deg);
+    -o-transform: rotate(3deg);
+    -ms-transform: rotate(3deg);
+    transform: rotate(3deg);
+    right: 10px;
+    left: auto;
+}
 
 
 #box {

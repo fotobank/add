@@ -248,5 +248,4 @@ if (isset($_SESSION['current_album'])):
 		  </tr>
 		</form>
 		-->
-
 <?endif;?>
