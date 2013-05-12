@@ -23,7 +23,7 @@
 	               'password' => 'fianit8546',
 	               'dbname'   => 'creative_ls',
 	               'charset'  => 'cp1251',
-	          //     '_debug'   => true,
+	           //    '_debug'   => true,
 	               '_debug'   => false,
 	);
 

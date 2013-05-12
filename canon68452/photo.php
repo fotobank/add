@@ -198,12 +198,12 @@ if (isset($_SESSION['current_album'])):
 												<input class="span1" id="nm<?= $ln['id'] ?>" type="text" name="nm" value="<?= $ln['nm'] ?>"
 													style="padding-top: 0; padding-bottom: 0; width: 83px; float: left;"/>
 												<button class="btn-mini" style="width: 44px; height: 20px; padding-left: 0; padding-right: 0;"
-					onclick="ajaxPostQ('/canon68452/ajax/ajaxPhoto.php', '', '<?= 'go_edit_name='.$ln['id'].'&nm=' ?>' + $('#nm<?= $ln['id'] ?>').val());">прим</button>
+					onclick="ajaxPostQ('/canon68452/ajax/ajaxPhoto.php', '', '<?= 'go_edit_name='.$ln['id'].'&nm=' ?>' + $('<?='#nm'.$ln['id'] ?>').val());">прим</button>
 											<br style="clear: both">
 												<input class="span1" id="price<?= $ln['id'] ?>" type="text" name="price" value="<?= $ln['price'] ?>"
 													style="padding-top: 0; padding-bottom: 0; width: 83px;"/>
 											<button class="btn-mini" style="width: 44px; height: 20px; padding-left: 0; padding-right: 0;"
-					onclick="ajaxPostQ('/canon68452/ajax/ajaxPhoto.php', '', '<?= 'go_edit_price='.$ln['id'].'&price=' ?>' + $('#price<?= $ln['id'] ?>').val());">прим</button>
+					onclick="ajaxPostQ('/canon68452/ajax/ajaxPhoto.php', '', '<?= 'go_edit_price='.$ln['id'].'&price=' ?>' + $('<?='#price'.$ln['id'] ?>').val());">прим</button>
 											<br style="clear: both">
 										</div>
 									</div>

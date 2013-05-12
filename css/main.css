@@ -1095,7 +1095,7 @@ and (orientation:landscape) {
     cursor: pointer;
 }
 
-a.del {
+a.del, span.del {
     position: absolute;
     background: url(../img/del.png) top left no-repeat;
     width: 20px;
@@ -1104,7 +1104,7 @@ a.del {
     float: right;
 }
 
-a.del:hover {
+a.del:hover, span.del:hover {
     background-position: bottom;
 }
 
