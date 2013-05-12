@@ -12,10 +12,25 @@
 
 	if (isset($_POST['goPecatDel']))
 		{
-			unset($_SESSION['basket'][intval($_POST['goPecatDel'])]);
-			header("Content-type: image/png");
-			echo "
-			<div style='margin:25px 0 0 5px;'>
-			<img style='width: 140px; float: left; margin-left: 5px;' src= '/img/not_foto.png'>
-			</div>";
+
+
+			if(isset($_SESSION['basket']) && is_array($_SESSION['basket']) && count($_SESSION['basket']) > 0)
+				{
+					unset($_SESSION['basket'][intval($_POST['goPecatDel'])]);
+
+							$sum = 0;
+							foreach($_SESSION['basket'] as $ind => $val)
+								{
+									$rs = $db->query('select price from photos where id = ?i', array($ind), 'el');
+									if($rs)
+										{
+											$sum+= floatval($rs);
+										}
+									else
+										{
+											unset($_SESSION['basket'][$ind]);
+										}
+								}
+					echo  "ИТОГО: <b>$sum гривен</b>";
+	      	}
 		}

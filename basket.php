@@ -5,7 +5,6 @@
 		function goKorzDel(idName) {
 	$('#ramka'+idName).empty().html("<div style='margin:25px 0 0 5px;'><img style='width: 140px; float: left; margin-left: 5px;' src= '/img/not_foto.png'></div>';");
 	$('#iTogo').empty().load('/inc/ajaxPecatDel.php', {goPecatDel: idName });
-
 		}
 	</script>
 <?
@@ -241,7 +240,7 @@ if(isset($_SESSION['order_msg2']))
 		    <table style="margin-top: 50px;">
 			    <tr>
 				    <td>
-       <span id="itogo" class="label label-important" style="margin: 0 0 10px 73px;"> ИТОГО: <b><?=$sum?> грн.</b></span>
+       <span id="iTogo" class="label label-important" style="margin: 0 0 10px 73px;"> ИТОГО: <b><?=$sum?> гривен</b></span>
 				    </td>
 			    </tr>
 			    <tr>
@@ -267,7 +266,7 @@ if(isset($_SESSION['order_msg2']))
 		    else
 			 {
 		    ?>
-				 <span id="iTogo" class="label label-important" style="margin: 0 0 10px 55px;"> ИТОГО: <b><?=$sum?> грн.</b></span>
+				 <span id="iTogo" class="label label-important" style="margin: 0 0 10px 55px;"> ИТОГО: <b><?=$sum?> гривен</b></span>
                <form action="basket.php" method="post" style="float: left; margin-right: 50px;">
 					  <input type="hidden" name="go_back" value="1" />
 					  <input class="metall_knopka" type="submit" value="Назад" style="margin-top: 15px;" />
