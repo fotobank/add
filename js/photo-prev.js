@@ -80,7 +80,7 @@ function basketAdd(idPhoto) {
         else {
        //     humane.success(["Файл добавлен в корзину"]);
             dhtmlx.message({
-                text: "Фотография добавленна в корзину",
+                text: "Фотография<br> добавлена в корзину",
                 expire:15000,
                 type:"addfoto" // 'customCss' - css класс
             });

@@ -76,9 +76,9 @@ function returnCaptcha () {
 }
 
 
-function goKorzDel(idName) {
+function goKorzDel(idName, srt) {
     $('#ramka'+idName).empty().html("<div style='margin:25px 0 0 5px;'><img style='width: 140px; float: left; margin-left: 5px;' src= '/img/not_foto.png'></div>';");
-    $('#iTogo').empty().load('/inc/ajaxZakazDel.php', {goZakazDel: idName });
+    $('#iTogo').empty().load('/inc/ajaxZakazDel.php', {goZakazDel: idName , str: srt });
 }
 
 

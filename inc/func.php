@@ -236,22 +236,31 @@ function digit_to_string($dig){
 				{
 					$basket = '';
 					$key    = 0;
-					$coll   = array();
+					$koll   = array();
 					foreach ($_SESSION['basket'] as $ind => $val)
 						{
 							$basket .= $ind.',';
-							$coll[$key] = $val;
+							$koll[$key] = $val;
 							$key++;
 						}
 					$basket = substr($basket, 0, strlen($basket) - 1);
 					$db = go\DB\Storage::getInstance()->get('db-for-data');
 					$rs     = $db->query('SELECT * FROM `photos` WHERE `id` IN ('.$basket.')')->assoc();
 					$sum    = array();
+					$sum['pecat'] = 0;
+					$sum['pecat_A4'] = 0;
+					$sum['koll'] = 0;
+					$sum['price'] = 0;
+					$sum['file'] = 0;
 					if ($rs)
 						{
 							foreach ($rs as $key => $val)
 								{
-									$sum['pecat'] += floatval($rs[$key]['pecat']) * intval($coll[$key]);
+									$sum['file']   = $key+1; // кол-во заказанных файлов
+									$sum['price'] += floatval($rs[$key]['price']); // цена за все заказанные файлы
+									$sum['pecat'] += floatval($rs[$key]['pecat']) * intval($koll[$key]);  // цена за печать 13x18
+									$sum['pecat_A4'] += floatval($rs[$key]['pecat_A4']) * intval($koll[$key]); // цена за печать A4
+									$sum['koll'] += intval($koll[$key]); // кол-во фото для печати
 								}
 							return $sum;
 						}
