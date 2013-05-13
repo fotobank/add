@@ -225,4 +225,45 @@ function digit_to_string($dig){
     }
   return $str;
 }
+
+	/**
+	 * Подсчет суммы заказа в корзине
+	 * @return float|int
+	 */
+	function iTogo()
+		{
+			if ($_SESSION['basket'])
+				{
+					$basket = '';
+					$key    = 0;
+					$coll   = array();
+					foreach ($_SESSION['basket'] as $ind => $val)
+						{
+							$basket .= $ind.',';
+							$coll[$key] = $val;
+							$key++;
+						}
+					$basket = substr($basket, 0, strlen($basket) - 1);
+					$db = go\DB\Storage::getInstance()->get('db-for-data');
+					$rs     = $db->query('SELECT `price` FROM `photos` WHERE `id` IN ('.$basket.')')->assoc();
+					$sum    = 0;
+					if ($rs)
+						{
+							foreach ($rs as $key => $val)
+								{
+									$sum += floatval($rs[$key]['price']) * intval($coll[$key]);
+								}
+
+							return $sum;
+						}
+
+					return $sum;
+				}
+			else
+				{
+					$sum = 0;
+
+					return $sum;
+				}
+		}
 ?>

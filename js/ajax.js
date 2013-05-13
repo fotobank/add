@@ -75,6 +75,13 @@ function returnCaptcha () {
     reload('kontakti.cfg.php','.<?=SID?>.')
 }
 
+
+function goKorzDel(idName) {
+    $('#ramka'+idName).empty().html("<div style='margin:25px 0 0 5px;'><img style='width: 140px; float: left; margin-left: 5px;' src= '/img/not_foto.png'></div>';");
+    $('#iTogo').empty().load('/inc/ajaxZakazDel.php', {goZakazDel: idName });
+}
+
+
 function getCaptca() {
 
  //  $(" .loadCaptca").load("/inc/captcha/captcha.html");

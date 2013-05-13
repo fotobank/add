@@ -78,7 +78,7 @@ function basketAdd(idPhoto) {
             humane.error(ans.msg);
         }
         else {
-            humane.success(["Файл добавлен в корзину"]);
+       //     humane.success(["Файл добавлен в корзину"]);
             dhtmlx.message({
                 text: "Фотография добавленна в корзину",
                 expire:15000,

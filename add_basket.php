@@ -1,5 +1,8 @@
 <?php
 include (dirname(__FILE__).'/inc/config.php');
+
+	if(isset($_POST['id']))
+		{
 ob_start();
 $id = $_POST['id'];
 $status = 'ERR';
@@ -16,8 +19,14 @@ else
     if($rs)
     {
       if(!isset($_SESSION['basket']))
+	      {
         $_SESSION['basket'] = array();
         $_SESSION['basket'][$id] = 1;
+	      }
+      else
+	      {
+		   $_SESSION['basket'][$id]++;
+         }
         $status = 'OK';
     }
   }
@@ -25,4 +34,5 @@ else
 ob_end_clean();
 echo json_encode(array('status' => $status, 'msg' => $msg));
 $db->close(true);
+		}
 ?>

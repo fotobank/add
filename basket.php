@@ -1,11 +1,46 @@
 <?php
     include (dirname(__FILE__).'/inc/head.php');
+
 ?>
-	<script language=JavaScript type="text/javascript">
-		function goKorzDel(idName) {
-	$('#ramka'+idName).empty().html("<div style='margin:25px 0 0 5px;'><img style='width: 140px; float: left; margin-left: 5px;' src= '/img/not_foto.png'></div>';");
-	$('#iTogo').empty().load('/inc/ajaxPecatDel.php', {goPecatDel: idName });
-		}
+<script language=JavaScript type="text/javascript">
+
+function ajaxAdd(data) {
+
+				$.ajax({
+					type: "POST",
+					header: ('Content-Type: application/json; charset=utf-8;'),
+					url: '/inc/ajaxZakazDel.php',
+					data: data,
+
+					error:function(XHR) {
+						alert(" Ошибка: "+XHR.status+ "  " + XHR.statusText);
+					},
+					statusCode: {
+						404: function() {
+							alert("Страница не найдена");
+						}
+					},
+
+					success: function (html) {
+//  alert (html);
+						var ans = JSON.parse(html);
+						if (ans.add == 1) {
+						dhtmlx.message({
+							text: "Фотография № "+ans.id+"<br> добавленна в корзину",
+							expire:9000,
+							type:"addfoto" // 'customCss' - css класс
+						});
+						} else {
+							dhtmlx.message({
+								text: "Фотография № "+ans.id+"<br> удалена из корзины",
+								expire:12000
+							});
+						}
+
+				//		$(idName).empty().append(html);
+					}
+				});
+			}
 	</script>
 <?
 
@@ -53,7 +88,7 @@
         $rs = $db->query('select price from photos where id = ?i', array($ind), 'el');
     if($rs)
       {
-        $sum+= floatval($rs);
+        $sum+= floatval($rs)*intval($val);
       }
         else
       {
@@ -188,7 +223,7 @@ if(isset($_SESSION['order_msg2']))
 	     <li class="span2" style="margin-left: 30px; width: 160px; height: 300px;">
      <div class="thumbnail img-polaroid foto">
 	     <span class="del"  style="margin-left: 140px; margin-bottom: 0; margin-top: -12px; z-index: 1"
-		     onclick="goKorzDel('<?=$photo_data['id']?>');"
+onclick="goKorzDel('<?=$photo_data['id']?>');"
 		  ></span>
 	  <img src="dir.php?num=<?=substr(($photo_data['img']),2,-4)?>" alt="<?=$photo_data['nm']?>" title="<?=$photo_data['nm']?>"><br>
      <span class="foto_prev_nm" style="margin-top: -20px; margin-left: 0; text-align: center;"><b>№  <?=$photo_data['nm']?></b></span>
@@ -199,24 +234,30 @@ if(isset($_SESSION['order_msg2']))
 	     <div style="display: inline">
 		     <div style="float: left; height: 20px; width: 152px;">
 
-			     <form action="index.php" name="go_turn" method="post" style="margin: 0;" target="hiddenframe"
-				     onsubmit="document.getElementById('<?= $photo_data['id'] ?>').innerHTML='Подождите, идёт загрузка...'; return true;">
-				     <input class="btn" type="hidden" name="go_turn" value="<?= $photo_data['id'] ?>"/>
-				     <input class="btn" type="hidden" name="povorot" value="270"/>
-				     <input class="btn-mini btn-info" type="submit" value="+" style="float:left; width: 28px; height: 18px; padding: 0 0 0 0;  margin: 0 0 0 0;"/>
-			     </form>
-			     <form action="index.php" name="go_turn" method="post" style="margin: 0;" target="hiddenframe"
-				     onsubmit="document.getElementById('<?= $photo_data['id'] ?>').innerHTML='Подождите, идёт загрузка...'; return true;">
-				     <input class="btn" type="hidden" name="go_turn" value="<?= $photo_data['id'] ?>"/>
-				     <input class="btn" type="hidden" name="povorot" value="90"/>
-				     <input class="btn-mini btn-info" type="submit" value="-" style="float:left; width: 28px; height: 18px; padding: 0 0 0 0;  margin: 0 0 0 0;"/>
-			     </form>
-			     <span class="label label-warning" style="float: left">80 шт</span>
+
+
+
+				     <button class="btn-mini btn-info"
+                 onclick="ajaxAdd('goZakazAdd='+'<?= $photo_data['id'] ?>'+'&add='+'1');"
+					     style="float:left; width: 28px; height: 18px; padding: 0 0 0 0;  margin: 0 0 0 0;">+</button>
+
+
+
+
+
+				     <button class="btn-mini btn-info"
+                 onclick="ajaxAdd('goZakazAdd='+'<?= $photo_data['id'] ?>'+'&add='+'-1');"
+					     style="float:left; width: 28px; height: 18px; padding: 0 0 0 0;  margin: 0 0 0 0;">-</button>
+
+
+
+
+			     <span id="<?='koll'.$photo_data['id'] ?>" class="label label-warning" style="float: left">80 шт</span>
 			     <span class="label label-success" style="float: right;"><?=$photo_data['price']?> грн</span>
 		     </div>
 	     </div>
 	     <span><b>Всего:</b></span>
-     <span class="label label-success" style="float: right; margin-right: -2px;">856.00 грн</span>
+     <span id="<?='fSumm'.$photo_data['id'] ?>" class="label label-success" style="float: right; margin-right: -2px;">856.00 грн</span>
 			      <?
 		      } else {
 			      ?>
@@ -240,7 +281,7 @@ if(isset($_SESSION['order_msg2']))
 		    <table style="margin-top: 50px;">
 			    <tr>
 				    <td>
-       <span id="iTogo" class="label label-important" style="margin: 0 0 10px 73px;"> ИТОГО: <b><?=$sum?> гривен</b></span>
+       <span id="iTogo" class="label label-important" style="margin: 0 0 10px 73px;"> ИТОГО: <b><?=$sum?> гривень</b></span>
 				    </td>
 			    </tr>
 			    <tr>
@@ -266,7 +307,7 @@ if(isset($_SESSION['order_msg2']))
 		    else
 			 {
 		    ?>
-				 <span id="iTogo" class="label label-important" style="margin: 0 0 10px 55px;"> ИТОГО: <b><?=$sum?> гривен</b></span>
+				 <span id="iTogo" class="label label-important" style="margin: 50px 0 0 50px;"> ИТОГО: <b><?=$sum?> гривень</b></span>
                <form action="basket.php" method="post" style="float: left; margin-right: 50px;">
 					  <input type="hidden" name="go_back" value="1" />
 					  <input class="metall_knopka" type="submit" value="Назад" style="margin-top: 15px;" />
