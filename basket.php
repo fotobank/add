@@ -252,12 +252,13 @@ onclick="goKorzDel('<?=$photo_data['id']?>');"
 
 
 
-			     <span id="<?='koll'.$photo_data['id'] ?>" class="label label-warning" style="float: left">80 шт</span>
-			     <span class="label label-success" style="float: right;"><?=$photo_data['price']?> грн</span>
+			     <span id="<?='koll'.$photo_data['id'] ?>" class="label label-warning" style="float: left; margin-left: 2px;"><?=$_SESSION['basket'][$photo_data['id']]?> шт</span>
+			     <span class="label label-success" style="float: right;"><?=$photo_data['pecat']?> грн</span>
 		     </div>
 	     </div>
 	     <span><b>Всего:</b></span>
-     <span id="<?='fSumm'.$photo_data['id'] ?>" class="label label-success" style="float: right; margin-right: -2px;">856.00 грн</span>
+        <span id="<?='fSumm'.$photo_data['id'] ?>" class="label label-success" style="float: right; margin-right: -2px;">
+	        <?=floatval($_SESSION['basket'][$photo_data['id']]*$photo_data['pecat'])?> грн</span>
 			      <?
 		      } else {
 			      ?>
@@ -307,7 +308,7 @@ onclick="goKorzDel('<?=$photo_data['id']?>');"
 		    else
 			 {
 		    ?>
-				 <span id="iTogo" class="label label-important" style="margin: 50px 0 0 50px;"> ИТОГО: <b><?=$sum?> гривень</b></span>
+				 <span id="iTogo" class="label label-important" style="margin: 50px 0 0 50px;"> ИТОГО: <b><?=$sum['pecat'] = iTogo();?> гривень</b></span>
                <form action="basket.php" method="post" style="float: left; margin-right: 50px;">
 					  <input type="hidden" name="go_back" value="1" />
 					  <input class="metall_knopka" type="submit" value="Назад" style="margin-top: 15px;" />

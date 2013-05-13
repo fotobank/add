@@ -245,24 +245,21 @@ function digit_to_string($dig){
 						}
 					$basket = substr($basket, 0, strlen($basket) - 1);
 					$db = go\DB\Storage::getInstance()->get('db-for-data');
-					$rs     = $db->query('SELECT `price` FROM `photos` WHERE `id` IN ('.$basket.')')->assoc();
-					$sum    = 0;
+					$rs     = $db->query('SELECT * FROM `photos` WHERE `id` IN ('.$basket.')')->assoc();
+					$sum    = array();
 					if ($rs)
 						{
 							foreach ($rs as $key => $val)
 								{
-									$sum += floatval($rs[$key]['price']) * intval($coll[$key]);
+									$sum['pecat'] += floatval($rs[$key]['pecat']) * intval($coll[$key]);
 								}
-
 							return $sum;
 						}
-
 					return $sum;
 				}
 			else
 				{
 					$sum = 0;
-
 					return $sum;
 				}
 		}

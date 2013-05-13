@@ -11,15 +11,13 @@
 	include (dirname(__FILE__).'/func.php');
 
 
-
-
-	if (isset($_POST['goZakazDel']))
+if(isset($_POST['goZakazDel']))
 		{
 			if(isset($_SESSION['basket']) && is_array($_SESSION['basket']) && count($_SESSION['basket']) > 0)
 				{
 					unset($_SESSION['basket'][intval($_POST['goZakazDel'])]);
-					$sum = iTogo();
-					echo  "ИТОГО: <b>$sum гривень</b>";
+					$sum['pecat'] = iTogo();
+					echo  "ИТОГО: <b>".$sum['pecat']." гривень</b>";
 	      	}
 		}
 
@@ -31,6 +29,7 @@ if(isset($_POST['goZakazAdd']))
 			{
 
 
+				$sum = iTogo();
+				echo json_encode(array('iTogo' => $sum, '#fSumm'.$id => $fSumm, '#fkoll'.$id => $koll, 'id' => $id, 'add' => $add));
 			}
-		echo json_encode(array('iTogo' => $iTogo, '#fSumm'.$id => $fSumm, '#fkoll'.$id => $koll, 'id' => $id, 'add' => $add));
 	}
