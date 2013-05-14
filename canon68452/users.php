@@ -108,11 +108,61 @@ $record_count = intval($db->query('SELECT FOUND_ROWS() as cnt',null, 'el'));
 				            </form>
 			            </div>
 	            </td>
+	            <?
+	            $action = $db->query('SELECT `time_vhod`, `ip_vhod` FROM `actions` WHERE `id_user` =?i ORDER BY `time_vhod` DESC LIMIT 1',array($ln['id']),'row');
+	            $rs = $db->query('SELECT `id_subs`, `time_subs` FROM `subs_user_on` WHERE `id_user` =?i',array($ln['id']),'assoc');
+	            ?>
+	            <td style="text-align: center; vertical-align: middle">
+		            <a class="map"  href="/map.php"><?=$action['ip_vhod'];?></a></td>
+	            <td style="text-align: left; vertical-align: middle"><?=($action['time_vhod'] != 0) ? date('H:i d.m.Y', $action['time_vhod']) : '------';?></td>
 
 	            <td style="text-align: center; vertical-align: middle">
-		            <a class="map"  href="/map.php"><?=$ln['ip_vhod'];?></a></td>
-	            <td style="text-align: left; vertical-align: middle"><?=($ln['time_vhod'] != 0) ? date('H:i d.m.Y', $ln['time_vhod']) : '------';?></td>
-	            <td style="text-align: center; vertical-align: middle"><?=$ln['action'];?></td>
+		            <?
+		            if($rs)
+			            {
+				            ?>
+				            <div class="btn-group">
+						            <ul class="dropdown-menu pull-right">
+							            <li class="span8"> </li>
+							            <?
+							            $key = 0;
+							            foreach ($rs as $data)
+								            {
+									            $subs = $db->query('SELECT * FROM `subs` WHERE `id` =?i',array($data['id_subs']),'row');
+									            ?>
+									            <li class="span2" style="clear: both;margin-left: 10px;">
+											         <b>Акция № <?=$data['id_subs']?> подписка:  <?=$data['time_subs']?></b><br>
+										            <b>Название акции:</b> <?=$subs['nm']?><br>
+										            <b>Время проведения:</b> с <?=$subs['time_in']?> до <?=$subs['time_out']?><br>
+											         <b>Время выполнения для одноразовой акции:</b> <?=$subs['time_act']?><br>
+										            <b>Повторять через каждые</b> <?=$subs['time']?> часов <br>
+										            <b>Событие альбома для выполнения условия: <?=$subs['id_album_event']?></b><br>
+											         <b>Событие usera для выполнения условия: <?=$subs['id_user_event']?></b><br>
+												      <b>Режим:</b> <?=$subs['mode']?><br>
+													   <b>Описание:</b> <?=$subs['spec']?><br>
+														<b>Первый количественный аргумент акции a1:</b> <?=$subs['a1']?><br>
+										            <b>Второй количественный аргумент акции a2:</b> <?=$subs['a2']?><br>
+										            <b>Третий количественный аргумент акции a3:</b> <?=$subs['a3']?><br>
+										            <b>Описание зависимостей аргументов a1, a2, a3 в программе:</b> <?=$subs['txt']?><br>
+												      <b>Привязка к компонентам сайта: <?=$subs['var']?></b><br>
+														<b>Условие выполнения:</b> <?=$subs['order']?><br>
+										            <b>Статус выполнения:</b> <?=$subs['status']?><br><br>
+									            </li>
+								            <?
+									            $key++;
+								            }
+							            ?>
+						            </ul>
+					            <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+						            <?=$key?> шт
+						            <span class="caret"></span>
+					            </button>
+				            </div>
+			            <?
+			            }
+		            ?>
+
+	            </td>
 
                 <td style="text-align: center">
                         <div class="input-append">

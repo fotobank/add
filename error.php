@@ -65,13 +65,6 @@ END;
 	<p><?=$body?></p>
 	<?= $GLOBALS['SERVER_SIGNATURE'] ?>
 
-
-
-
-
-
-
-
 <?php
 //	include ('inc/footer.php');
 ?>

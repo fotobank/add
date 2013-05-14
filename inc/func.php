@@ -239,9 +239,12 @@ function digit_to_string($dig){
 					$koll   = array();
 					foreach ($_SESSION['basket'] as $ind => $val)
 						{
+							if($ind != "ramka" and $ind != "mat_gl" and $ind != "format" )
+								{
 							$basket .= $ind.',';
 							$koll[$key] = $val;
 							$key++;
+						      }
 						}
 					$basket = substr($basket, 0, strlen($basket) - 1);
 					$db = go\DB\Storage::getInstance()->get('db-for-data');
@@ -252,15 +255,26 @@ function digit_to_string($dig){
 					$sum['koll'] = 0;
 					$sum['price'] = 0;
 					$sum['file'] = 0;
+					$sum['arrA4'] = array();
+					$sum['arr13'] = array();
+					$sum['A4'] = array();
+					$sum['13'] = array();
+					$sum['name'] = array();
 					if ($rs)
 						{
 							foreach ($rs as $key => $val)
 								{
 									$sum['file']   = $key+1; // кол-во заказанных файлов
-									$sum['price'] += floatval($rs[$key]['price']); // цена за все заказанные файлы
+									$sum['price'] += floatval($rs[$key]['price']); // цена за все скачанные файлы
 									$sum['pecat'] += floatval($rs[$key]['pecat']) * intval($koll[$key]);  // цена за печать 13x18
 									$sum['pecat_A4'] += floatval($rs[$key]['pecat_A4']) * intval($koll[$key]); // цена за печать A4
 									$sum['koll'] += intval($koll[$key]); // кол-во фото для печати
+									$sum['arr13'] += array($key => floatval($rs[$key]['pecat']) * intval($koll[$key])); // массив фото 13x18 - цена * кол-во
+									$sum['arrA4'] += array($key => floatval($rs[$key]['pecat_A4']) * intval($koll[$key])); // массив фото 20x30 - цена * кол-во
+									$sum['13'] += array($key => floatval($rs[$key]['pecat'])); // массив фото 13x18 - цена
+									$sum['A4'] += array($key => floatval($rs[$key]['pecat_A4'])); // массив фото 20x30 - цена
+									$sum['name'] += array($key);
+
 								}
 							return $sum;
 						}

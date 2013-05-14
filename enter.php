@@ -27,7 +27,7 @@ if(isset($_POST['login']))
       $_SESSION['userid'] = intval($udata['id']);
       $_SESSION['user'] = $udata['login'];
       $_SESSION['us_name'] = $udata['us_name'];
-	   $db->query('update users set ip_vhod = ?string, time_vhod =?i where id = ?i', array(Get_IP(),time(),$udata['id']));
+	   $db->query('INSERT INTO `actions`(`ip_vhod`, `time_vhod`, `id_user`) VALUES (?string, ?i ,?i)', array(Get_IP(),time(),$udata['id']));
       ok_exit('Вы успешно вошли на сайт!', '/index.php');
     }
   }

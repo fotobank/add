@@ -75,11 +75,92 @@ function returnCaptcha () {
     reload('kontakti.cfg.php','.<?=SID?>.')
 }
 
-
+//корзина
 function goKorzDel(idName, srt) {
     $('#ramka'+idName).empty().html("<div style='margin:25px 0 0 5px;'><img style='width: 140px; float: left; margin-left: 5px;' src= '/img/not_foto.png'></div>';");
     $('#iTogo').empty().load('/inc/ajaxZakazDel.php', {goZakazDel: idName , str: srt });
 }
+
+
+function ajaxAdd(data) {
+
+    $.ajax({
+        type: "POST",
+        header: ('Content-Type: application/json; charset=utf-8;'),
+        url: '/inc/ajaxZakazDel.php',
+        data: data,
+
+        error:function(XHR) {
+            alert(" Ошибка: "+XHR.status+ "  " + XHR.statusText);
+        },
+        statusCode: {
+            404: function() {
+                alert("Страница не найдена");
+            }
+        },
+
+        success: function (html) {
+//  alert (html);
+            var ans = JSON.parse(html);
+            if (ans.add == 1) {
+                dhtmlx.message({
+                    text: "Фотография № "+ans.nm+"<br> добавленна в корзину",
+                    expire:9000,
+                    type:"addfoto" // 'customCss' - css класс
+                });
+            } else {
+                dhtmlx.message({
+                    text: "Фотография № "+ans.nm+"<br> удалена из корзины",
+                    expire:12000
+                });
+            }
+            if(ans.fDel == 1) {
+                $('#ramka'+ans.id).empty().html("<div style='margin:25px 0 0 5px;'><img style='width: 140px; float: left; margin-left: 5px;' src= '/img/not_foto.png'></div>';")
+            } else {
+                $('#fKoll'+ans.id).empty().append(ans.fKoll+' шт');
+                $('#fSumm'+ans.id).empty().append(ans.fSumm+' гр');
+            }
+            $('#iTogo').empty().append('ИТОГО: '+ans.sum+'  гривень - '+ans.prKoll+' фото (13x18 см)');
+        }
+    });
+}
+
+
+function ajaxFormat(data) {
+
+    $.ajax({
+        type: "POST",
+        header: ('Content-Type: application/json; charset=utf-8;'),
+        url: '/inc/ajaxZakazDel.php',
+        data: data,
+
+        error:function(XHR) {
+            alert(" Ошибка: "+XHR.status+ "  " + XHR.statusText);
+        },
+        statusCode: {
+            404: function() {
+                alert("Страница не найдена");
+            }
+        },
+
+        success: function (html) {
+  alert (html);
+     //       var ans = JSON.parse(html);
+// alert (ans);
+                dhtmlx.message({
+                    text: "Размер фотографий изменен на <br> "+ans.format+" см",
+                    expire:9000,
+                    type:"addfoto"
+                });
+
+           //     $('#fKoll'+ans.id).empty().append(ans.fKoll+' шт');
+           //     $('#fSumm'+ans.id).empty().append(ans.fSumm+' гр');
+
+            $('#iTogo').empty().append('ИТОГО: '+ans.sum+'  гривень - '+ans.prKoll+' фото ('+ans.format+' см)');
+        }
+    });
+}
+
 
 
 function getCaptca() {

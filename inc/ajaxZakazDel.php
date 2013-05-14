@@ -48,12 +48,7 @@ if(isset($_POST['goZakazAdd']))
 								$fDel = 1;
 							}
 				   }
-//				$sum['file']
-//				$sum['price']
-//				$sum['pecat']
-//				$sum['pecat_A4']
-//				$sum['koll']
-				$rs = $db->query('SELECT * FROM `photos` WHERE `id` = ?i',array($id),'row'); // выводимое название фотографии
+				$rs = $db->query('SELECT * FROM `photos` WHERE `id` = ?i',array($id),'row');
 				$print = iTogo();
 				$sum = $print['pecat']; // кол-во денег для всех напечатанных фото
 				$fSumm = intval($_SESSION['basket'][$id])*intval($rs['pecat']); // кол-во денег для напечатанных фото одного номера
@@ -62,3 +57,30 @@ if(isset($_POST['goZakazAdd']))
 				echo json_encode(array('sum' => $sum, 'fSumm' => $fSumm, 'fKoll'=> $koll, 'id' => $id, 'add' => $add, 'nm' => $rs['nm'], 'fDel' => $fDel, 'prKoll' => $prKoll));
 			}
 	}
+
+
+	if(isset($_POST['goFormat']))
+		{
+			$format = trim($_POST['format']);
+			if(isset($_SESSION['basket']) && is_array($_SESSION['basket']) && count($_SESSION['basket']) > 0)
+				{
+					$print = iTogo();
+					$prKoll = $print['koll']; // общее кол-во фото для печати
+					$name = $print['name']; //имена фотографий в массиве
+           if ($format == '10x15' || $format == '13x18')
+	         {
+		         $sum = $print['pecat']; // кол-во денег для всех напечатанных фото 13x18
+		         $fSumm = $print['arr13']; // цена за все фото одного номера в массиве
+		         $pr = $print['13']; //цена за одно фото одного номера в массиве
+		 //        echo json_encode(array('format' => $format,'sum' => $sum, 'prKoll' => $prKoll, 'summArr' => $fSumm,'prArr' => $pr, 'nameArr' => $name));
+		         echo ('format=');
+	         } elseif ($format == '20x30')
+	         {
+		         $sum = $print['pecat_A4']; // кол-во денег для всех напечатанных фото A4
+		         $fSumm = $print['arrA4']; // цена за все фото одного номера в массиве
+		         $prA4 = $print['A4']; //цена за одно фото одного номера в массиве
+		   //      echo json_encode(array('format' => $format,'sum' => $sum, 'prKoll' => $prKoll, 'summArr' => $fSumm,'prArr' => $prA4, 'nameArr' => $name));
+		         echo ('format=');
+	         }
+				}
+		}

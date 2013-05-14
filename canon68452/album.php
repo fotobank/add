@@ -616,7 +616,6 @@ if ($rs_cat)
 				<form id="myForm1" action="index.php" method="post">
 					<select id="appendedInputButton" class="span3" name="id" style="height: 28px;">
 						<?
-						//						while ($ln_cat = mysql_fetch_assoc($rs_cat))
 						foreach ($rs_cat as $ln_cat)
 							{
 								?>
@@ -625,7 +624,8 @@ if ($rs_cat)
 							<?
 							}
 						?>
-					</select> <input class="btn btn-success" type="hidden" name="chenge_cat" value="1"/>
+					</select>
+					<input class="btn btn-success" type="hidden" name="chenge_cat" value="1"/>
 					<input class="btn btn-success" type="submit" value="открыть"/>
 				</form>
 			</div>
