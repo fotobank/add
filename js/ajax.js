@@ -144,11 +144,11 @@ function ajaxFormat(data) {
         },
 
         success: function (html) {
-  alert (html);
-     //       var ans = JSON.parse(html);
+ alert (html);
+            var ans = JSON.parse(html);
 // alert (ans);
                 dhtmlx.message({
-                    text: "Размер фотографий изменен на <br> "+ans.format+" см",
+                    text: "Выбран формат: <br> "+ans.format+" см",
                     expire:9000,
                     type:"addfoto"
                 });

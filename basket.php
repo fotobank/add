@@ -186,7 +186,7 @@ if(isset($_SESSION['basket']) && is_array($_SESSION['basket']) && count($_SESSIO
       {
      ?>
      <div style="width: 170px; ; height: 290px; float: left;">
-	     <div id="<?='ramka'.$photo_data['id'] ?>"
+	     <div id="<?='ramka'.$photo_data['id'] ?>">
 	     <li class="span2" style="margin-left: 30px; width: 160px; height: 300px;">
      <div class="thumbnail img-polaroid foto">
 	     <span class="del"  style="margin-left: 140px; margin-bottom: 0; margin-top: -12px; z-index: 1"
@@ -194,7 +194,7 @@ if(isset($_SESSION['basket']) && is_array($_SESSION['basket']) && count($_SESSIO
 	  <img src="dir.php?num=<?=substr(($photo_data['img']),2,-4)?>" alt="<?=$photo_data['nm']?>" title="<?=$photo_data['nm']?>"><br>
      <span class="foto_prev_nm" style="margin-top: -20px; margin-left: 0; text-align: center;"><b>№  <?=$photo_data['nm']?></b></span>
 	     <?
-if(isset($_SESSION['print']) && $_SESSION['print'] == 1)
+   if(isset($_SESSION['print']) && $_SESSION['print'] == 1)
 		   {
 	     ?>
 	     <div style="display: inline">
@@ -205,7 +205,8 @@ if(isset($_SESSION['print']) && $_SESSION['print'] == 1)
 				     <button class="btn-mini btn-info"
                  onclick="ajaxAdd('goZakazAdd='+'<?= $photo_data['id'] ?>'+'&add='+'-1');"
 					     style="float:left; width: 28px; height: 18px; padding: 0 0 0 0;  margin: 0 0 0 0;">-</button>
-			     <span id="<?='fKoll'.$photo_data['id'] ?>" class="label label-warning" style="float: left; margin-left: 2px;"><?=$_SESSION['basket'][$photo_data['id']]?> шт</span>
+			     <span id="<?='fKoll'.$photo_data['id'] ?>" class="label label-warning" style="float: left; margin-left: 2px;">
+				     <?=$_SESSION['basket'][$photo_data['id']]?> шт</span>
 			     <span class="label label-success" style="float: right;"><?=$photo_data['pecat']?> грн</span>
 		     </div>
 	     </div>
@@ -254,7 +255,7 @@ if(isset($_SESSION['print']) && $_SESSION['print'] == 1)
 				    <td>
 					    <form action="basket.php" method="post">
 						    <input type="hidden" name="go_print" value="1" />
-		    <input class="metall_knopka" type="submit" style="margin-left: 50px;" value="Открыть форму заказа печати" />
+		                <input class="metall_knopka" type="submit" style="margin-left: 50px;" value="Открыть форму заказа печати" />
 					    </form>
 				    </td>
 			    </tr>
@@ -274,13 +275,15 @@ if(isset($_SESSION['print']) && $_SESSION['print'] == 1)
 			<form name="printMail" method="post" action="<?php echo basename(__FILE__); ?>" enctype="multipart/form-data" id="printMail">
 			 <label id="pr_Name1" style="position: absolute; left: 0; top: 32px; width: 160px; height: 14px; z-index: 0; text-align: left;" for="format">
 				 <span style="color:#000000;font-family:Arial,serif;font-size:14px;">Размер фотографии:</span> </label>
-			 <select id="format" style="position: absolute; left: 142px; top: 30px; width: 204px; height: 25px; z-index: 1;" size="1" name="format">
+			 <select id="format" style="position: absolute; left: 142px; top: 30px; width: 204px; height: 25px; z-index: 1;" size="1"
+				 onchange="ajaxFormat('goFormat='+ $(' #printMail').value);return false;"
+				 name="format">
 				 <?
 				 foreach ($fFormat as $format)
 					 {
 				 ?>
-				 <option value='<?=$format?>' <?=($_SESSION['basket']['format'] == $format ? 'selected="selected"' : '')?>
-					 onclick="ajaxFormat('goFormat='+'<?= $_SESSION['basket']['format'] ?>');"
+				 <option class="goFormat" value='<?=$format?>' <?=($_SESSION['basket']['format'] == $format ? 'selected="selected"' : '')?>
+
 					 ><?=$format?> см</option>
 				 <?
 					 }
@@ -322,6 +325,9 @@ if(isset($_SESSION['print']) && $_SESSION['print'] == 1)
 </div>
 								 </div>
 							 </div>
+
+
+
 
 	        <?
 		    } elseif(isset($_SESSION['print']) &&  $_SESSION['print'] == 2)
@@ -369,6 +375,7 @@ if(isset($_SESSION['print']) && $_SESSION['print'] == 1)
 						    </form>
 					    </div>
 				    </div>
+
 
 
 				    <table style="margin-top: 50px;margin-left: 44px;">

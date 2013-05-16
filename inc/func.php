@@ -259,7 +259,7 @@ function digit_to_string($dig){
 					$sum['arr13'] = array();
 					$sum['A4'] = array();
 					$sum['13'] = array();
-					$sum['name'] = array();
+					$sum['id'] = array();
 					if ($rs)
 						{
 							foreach ($rs as $key => $val)
@@ -269,12 +269,11 @@ function digit_to_string($dig){
 									$sum['pecat'] += floatval($rs[$key]['pecat']) * intval($koll[$key]);  // цена за печать 13x18
 									$sum['pecat_A4'] += floatval($rs[$key]['pecat_A4']) * intval($koll[$key]); // цена за печать A4
 									$sum['koll'] += intval($koll[$key]); // кол-во фото для печати
-									$sum['arr13'] += array($key => floatval($rs[$key]['pecat']) * intval($koll[$key])); // массив фото 13x18 - цена * кол-во
-									$sum['arrA4'] += array($key => floatval($rs[$key]['pecat_A4']) * intval($koll[$key])); // массив фото 20x30 - цена * кол-во
-									$sum['13'] += array($key => floatval($rs[$key]['pecat'])); // массив фото 13x18 - цена
-									$sum['A4'] += array($key => floatval($rs[$key]['pecat_A4'])); // массив фото 20x30 - цена
-									$sum['name'] += array($key);
-
+									$sum['arr13'][] = (floatval($rs[$key]['pecat']) * intval($koll[$key])); // массив фото 13x18 - цена * кол-во
+									$sum['arrA4'][] = floatval($rs[$key]['pecat_A4']) * intval($koll[$key]); // массив фото 20x30 - цена * кол-во
+									$sum['13'][] = floatval($rs[$key]['pecat']); // массив фото 13x18 - цена
+									$sum['A4'][] = floatval($rs[$key]['pecat_A4']); // массив фото 20x30 - цена
+									$sum['id'][] = $val['id'];
 								}
 							return $sum;
 						}

@@ -14,7 +14,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=windows-1251"/>
 		<meta name="google-site-verification" content="uLdE_lzhCOntN_AaTM1_sQNmIXFk1-Dsi5AWS0bKIgs"/>
-		  <link href='http://fonts.googleapis.com/css?family=Lobster|Comfortaa:700|Jura:600&subset=cyrillic,cyrillic-ext' rel='stylesheet' type='text/css'>
+<!--		  <link href='http://fonts.googleapis.com/css?family=Lobster|Comfortaa:700|Jura:600&subset=cyrillic,cyrillic-ext' rel='stylesheet' type='text/css'>-->
 		<?
 
 		// обработка ошибок
@@ -22,6 +22,7 @@
 		include ($_SERVER['DOCUMENT_ROOT'].'/inc/lib_ouf.php');
 		include ($_SERVER['DOCUMENT_ROOT'].'/inc/lib_errors.php');
 		$error_processor = Error_Processor::getInstance();
+		require_once (__DIR__.'/lib/jQueryPhp/jQuery.php');
 
 		/**
 		 *  Тесты для проверки Error_Processor
@@ -50,12 +51,10 @@
 					<hr class="style-one" style=" margin-bottom: -20px; margin-top: 10px"/>
 			   <?
 			}
-
 		include ($_SERVER['DOCUMENT_ROOT'].'/inc/title.php');
 		$cryptinstall = '/inc/captcha/cryptographp.fct.php';
 		include  'captcha/cryptographp.fct.php';
 		?>
-
 		<!--[if lt IE 9]>
 		<script>
 			document.createElement('header');
@@ -67,7 +66,8 @@
 			document.createElement('figure');
 			document.createElement('figcaption');
 			document.createElement('span');
-		</script>   <![endif]-->
+		</script>
+		<![endif]-->
 
 
 		<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="/favicon.ico"/>
@@ -143,6 +143,7 @@
 			}
 		</script>
 
+
 		<script language=JavaScript type="text/javascript">
 
 			function smile(str) {
@@ -201,6 +202,8 @@
 				});
 			});
 		</script>
+
+
 
 	</head>
 <body>
@@ -311,6 +314,16 @@
 	<div id="popup">
 		<legend>Пополнение счета</legend>
 		<a class="close2" href="#"></a>
+		<!--<form method="POST" action="https://merchant.webmoney.ru/lmi/payment.asp">
+			<input type="hidden" name="LMI_PAYMENT_NO" value="1">
+			<input type="hidden" name="LMI_PAYMENT_AMOUNT" value="0.05">
+			<input type="hidden" name="LMI_PAYMENT_DESC" value="код пополнения Super Mobile">
+			<input type="hidden" name="LMI_PAYEE_PURSE" value="Z155771820786">
+			<input type="hidden" name="id" value="345">
+			Укажите email для обратной связи: <input type="text" name="email" size="15">
+			<input type="submit" value="Перейти к оплате">
+		</form>-->
+<!--		http://owebmoney.ru/merchant.shtml - инструкция -->
 	</div>
 
 
@@ -515,6 +528,11 @@
 		 })(jQuery)*/
 
 	</script>
+
+	<NOSCRIPT >
+		<br><br>
+		<hfooter style="color: #d64d5c; margin-left: 200px;">Внимание! Для полноценной работы сайта, вам нужен браузер с поддержкой JavaScript!</hfooter>
+	</NOSCRIPT>
 
 	<!--Голова конец-->
 
