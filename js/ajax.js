@@ -75,11 +75,14 @@ function returnCaptcha () {
     reload('kontakti.cfg.php','.<?=SID?>.')
 }
 
+
+
 //корзина
 function goKorzDel(idName, srt) {
-    $('#ramka'+idName).empty().html("<div style='margin:25px 0 0 5px;'><img style='width: 140px; float: left; margin-left: 5px;' src= '/img/not_foto.png'></div>';");
+    $('#ramka'+idName).empty().html("<div style='margin:25px 0 0 35px;'><img style='width: 140px; float: left; margin-left: 5px;' src= '/img/not_foto.png'></div>");
     $('#iTogo').empty().load('/inc/ajaxZakazDel.php', {goZakazDel: idName , str: srt });
 }
+
 
 
 function ajaxAdd(data) {
@@ -115,7 +118,7 @@ function ajaxAdd(data) {
                 });
             }
             if(ans.fDel == 1) {
-                $('#ramka'+ans.id).empty().html("<div style='margin:25px 0 0 5px;'><img style='width: 140px; float: left; margin-left: 5px;' src= '/img/not_foto.png'></div>';")
+                $('#ramka'+ans.id).empty().html("<div style='margin:25px 0 0 35px;'><img style='width: 140px; float: left; margin-left: 5px;' src= '/img/not_foto.png'></div>")
             } else {
                 $('#fKoll'+ans.id).empty().append(ans.fKoll+' шт');
                 $('#fSumm'+ans.id).empty().append(ans.fSumm+' гр');
@@ -144,7 +147,7 @@ function ajaxFormat(data) {
         },
 
         success: function (html) {
- alert (html);
+// alert (html);
             var ans = JSON.parse(html);
 // alert (ans);
                 dhtmlx.message({

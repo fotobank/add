@@ -16,14 +16,22 @@ if(isset($_POST['goZakazDel']))
 			if(isset($_SESSION['basket']) && is_array($_SESSION['basket']) && count($_SESSION['basket']) > 0)
 				{
 					unset($_SESSION['basket'][intval($_POST['goZakazDel'])]);
-					$print = iTogo();
-					if(trim($_POST['str']) == '1')
+    $print = iTogo();
+	 $format = $_SESSION['basket']['format'];
+					if(trim($_POST['str']) == '1' || trim($_POST['str']) == '2')
 						{
-					echo "ИТОГО: ".$print['pecat']." гривень - ".$print['koll']." фото (13x18 см)";
+					    	if ($format == '10x15' || $format == '13x18')
+								{
+					            echo "ИТОГО: ".$print['pecat']." гривень (".$print['koll']." фото ".$format."см)";
+						      }
+						    elseif ($format == '20x30')
+						      {
+							      echo "ИТОГО: ".$print['pecat_A4']." гривень (".$print['koll']." фото ".$format."см)";
+					      	}
 						}
-					else
+					 elseif(trim($_POST['str']) == '0')
 						{
-						echo "ИТОГО: ".$print['price']." гривень - ".$print['file']." фото";
+						echo "ИТОГО: ".$print['price']." гривень (".$print['file']." фото 13x18см)";
 				      }
 	      	}
 		}
@@ -32,6 +40,7 @@ if(isset($_POST['goZakazAdd']))
 	{
 		$id = intval($_POST['goZakazAdd']);
 		$add = intval($_POST['add']);
+		$format = $_SESSION['basket']['format'];
 		$fDel = 0;
 		if(isset($_SESSION['basket']) && is_array($_SESSION['basket']) && count($_SESSION['basket']) > 0)
 			{
@@ -50,11 +59,24 @@ if(isset($_POST['goZakazAdd']))
 				   }
 				$rs = $db->query('SELECT * FROM `photos` WHERE `id` = ?i',array($id),'row');
 				$print = iTogo();
-				$sum = $print['pecat']; // кол-во денег для всех напечатанных фото
-				$fSumm = intval($_SESSION['basket'][$id])*intval($rs['pecat']); // кол-во денег для напечатанных фото одного номера
-				$koll = $_SESSION['basket'][$id]; // кол-во фото для печати (13x18)
-				$prKoll = $print['koll']; // общее кол-во фото для печати (13x18)
-				echo json_encode(array('sum' => $sum, 'fSumm' => $fSumm, 'fKoll'=> $koll, 'id' => $id, 'add' => $add, 'nm' => $rs['nm'], 'fDel' => $fDel, 'prKoll' => $prKoll));
+				$prKoll = $print['koll']; // общее кол-во фото для печати
+				$koll = $_SESSION['basket'][$id]; // кол-во фото для печати
+
+				if ($format == '10x15' || $format == '13x18')
+					{
+						$sum = $print['pecat']; // кол-во денег для всех напечатанных фото 13x18
+						$fSumm = $print['arr13'][$id]; // цена за все фото одного номера в массиве // кол-во денег для напечатанных фото одного номера 13x18
+						$pr = $print['13'][$id]; //цена за одно фото одного номера в массиве
+	echo json_encode(array('pr' => $pr,'sum' => $sum, 'fSumm' => $fSumm, 'fKoll'=> $koll, 'id' => $id, 'add' => $add,
+	                       'nm' => $rs['nm'], 'fDel' => $fDel, 'prKoll' => $prKoll));
+					} elseif ($format == '20x30')
+					{
+						$sum = $print['pecat_A4']; // кол-во денег для всех напечатанных фото A4
+						$fSumm = $print['arrA4'][$id]; // цена за все фото одного номера в массиве
+						$prA4 = $print['A4'][$id]; //цена за одно фото одного номера в массиве
+	echo json_encode(array('pr' => $prA4, 'sum' => $sum, 'fSumm' => $fSumm, 'fKoll'=> $koll, 'id' => $id, 'add' => $add,
+	                       'nm' => $rs['nm'], 'fDel' => $fDel, 'prKoll' => $prKoll));
+					}
 			}
 	}
 
@@ -62,6 +84,7 @@ if(isset($_POST['goZakazAdd']))
 	if(isset($_POST['goFormat']))
 		{
 			$format = trim($_POST['goFormat']);
+			$_SESSION['basket']['format'] =  $format;
 			if(isset($_SESSION['basket']) && is_array($_SESSION['basket']) && count($_SESSION['basket']) > 0)
 				{
 					$print = iTogo();

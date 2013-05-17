@@ -197,6 +197,8 @@ if (isset($_POST['go_edit_nastr']))
 		$quality      = $_POST['quality'];
 		$id           = $_POST['go_edit_nastr'];
 		$price        = $_POST['price'];
+		$pecat        = $_POST['pecat'];
+		$pecat_A4     = $_POST['pecat_A4'];
 		$id_category  = $_POST['id_category'];
 		$pass         = $_POST['pass'];
 		$ftp_folder   = $_POST['ftp_folder'];
@@ -206,6 +208,8 @@ if (isset($_POST['go_edit_nastr']))
 		$vote_time_on = isset($_REQUEST['vote_time_on']);
 		$db->query('update albums set
 		price = ?f,
+		pecat = ?f,
+		pecat_A4 = ?f,
 		id_category = ?i,
 		pass = ?string,
 		quality = ?i,
@@ -219,6 +223,8 @@ if (isset($_POST['go_edit_nastr']))
 		vote_time_on = ?b  where
 		id = ?i',
 			array($price,
+			      $pecat,
+			      $pecat_A4,
 			      $id_category,
 			      $pass,
 			      $quality,
@@ -231,12 +237,10 @@ if (isset($_POST['go_edit_nastr']))
 			      $vote_time,
 			      $vote_time_on,
 			      $id));
-		$db->query('update photos set price = ?f where id_album = ?i', array($price, $id));
+		$db->query('update photos set price = ?f, pecat = ?f, pecat_A4 = ?f where id_album = ?i', array($price,$pecat,$pecat_A4, $id));
 		$_SESSION['current_album'] = $id;
 		$_SESSION['current_cat']   = $id_category;
 	}
-
-
 
 /*
   Todo    go_ftp_upload
@@ -742,6 +746,22 @@ if (isset($_SESSION['current_cat']))
 																	<tr>
 																		<td>
 																			<div class="input-prepend">
+																				<label for="pecat" class="add-on">10x15, 13x18 (гр.):&nbsp;&nbsp;&nbsp;</label>
+																				<input id="pecat" class="span2" type="text" NAME="pecat" VALUE="<?= $ln['pecat'] ?>"/>
+																			</div>
+																		</td>
+																	</tr>
+																	<tr>
+																		<td>
+																			<div class="input-prepend">
+																				<label for="pecat_A4" class="add-on">Печать A4 (гр.):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+																				<input id="pecat_A4" class="span2" type="text" NAME="pecat_A4" VALUE="<?= $ln['pecat_A4'] ?>"/>
+																			</div>
+																		</td>
+																	</tr>
+																	<tr>
+																		<td>
+																			<div class="input-prepend">
 																				<label for="quality" class="add-on">Качество .jpg (%):&nbsp;&nbsp;&nbsp;&nbsp;</label>
 																				<input id="quality" class="span2" type="text" NAME="quality" VALUE="<?= $ln['quality'] ?>"/>
 																			</div>
@@ -803,8 +823,6 @@ if (isset($_SESSION['current_cat']))
 																			Добавить резкость
 																		</td>
 																	</tr>
-
-
 																	<tr>
 																		<td>
 																			<div class="input-prepend">

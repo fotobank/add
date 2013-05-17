@@ -166,57 +166,79 @@ if(isset($_SESSION['basket']) && is_array($_SESSION['basket']) && count($_SESSIO
 			    <div style="clear: both;"></div>
 			    <?
 	   }
+		    if(!isset($_SESSION['basket']['format'])) $_SESSION['basket']['format'] = '13x18';
+ $print=iTogo();
+ $format = $_SESSION['basket']['format'];
+		    if ($format == '10x15' || $format == '13x18')
+			    {
+				    $sum = $print['pecat']; // кол-во денег для всех напечатанных фото 13x18
+
+			    } elseif ($format == '20x30')
+			    {
+				    $sum = $print['pecat_A4']; // кол-во денег для всех напечатанных фото A4
+
+			    }
    if(isset($_SESSION['print']) && $_SESSION['print'] == 0 || isset($_SESSION['print']) && $_SESSION['print'] == 1)
      {
-			    ?>
+	?>
 	<ul class="thumbnails">
-   <?    
+   <?
    foreach($_SESSION['basket'] as $ind => $val)
    {
-	   $photo_data = $db->query('select * from photos where id = ?i', array($ind), 'row');
 
-    if(!$photo_data)
+    if(!isset($print['id'][$ind]) || $print['id'][$ind] != $ind)
       {
     if($ind != "ramka" and $ind != "mat_gl" and $ind != "format" )
 	   {
-        unset($_SESSION['basket'][$ind]);
+        unset($_SESSION['basket'][$ind]); // чистка от мусора
       }
       }
         else
       {
      ?>
      <div style="width: 170px; ; height: 290px; float: left;">
-	     <div id="<?='ramka'.$photo_data['id'] ?>">
+	     <div id="<?='ramka'.$ind ?>">
 	     <li class="span2" style="margin-left: 30px; width: 160px; height: 300px;">
      <div class="thumbnail img-polaroid foto">
 	     <span class="del"  style="margin-left: 140px; margin-bottom: 0; margin-top: -12px; z-index: 1"
-		     onclick="goKorzDel('<?=$photo_data['id']?>', '<?=$_SESSION['print']?>');" ></span>
-	  <img src="dir.php?num=<?=substr(($photo_data['img']),2,-4)?>" alt="<?=$photo_data['nm']?>" title="<?=$photo_data['nm']?>"><br>
-     <span class="foto_prev_nm" style="margin-top: -20px; margin-left: 0; text-align: center;"><b>№  <?=$photo_data['nm']?></b></span>
+		     onclick="goKorzDel('<?=$ind?>','<?=$_SESSION['print']?>');" ></span>
+	  <img src="dir.php?num=<?=$ind?>" alt="<?=$print['nm'][$ind]?>" title="<?=$print['nm'][$ind]?>"><br>
+     <span class="foto_prev_nm" style="margin-top: -20px; margin-left: 0; text-align: center;"><b>№  <?=$print['nm'][$ind]?></b></span>
+
 	     <?
    if(isset($_SESSION['print']) && $_SESSION['print'] == 1)
 		   {
-	     ?>
+			   if ($format == '10x15' || $format == '13x18')
+				   {
+					   $pr = $print['13'][$ind]; //цена за одно фото одного номера в массиве
+					   $fSumm = $print['arr13'][$ind]; // стоимость всех напечатанных фото одного номера 13x18
+				   } elseif ($format == '20x30')
+				   {
+					   $pr = $print['A4'][$ind]; //цена за одно фото одного номера в массиве
+					   $fSumm = $print['arrA4'][$ind]; // цена за все фото одного номера в массиве
+				   }
+
+			   ?>
 	     <div style="display: inline">
 		     <div style="float: left; height: 20px; width: 152px;">
 				     <button class="btn-mini btn-info"
-                 onclick="ajaxAdd('goZakazAdd='+'<?= $photo_data['id'] ?>'+'&add='+'1');"
+                 onclick="ajaxAdd('goZakazAdd='+'<?= $ind ?>'+'&add='+'1');"
 					     style="float:left; width: 28px; height: 18px; padding: 0 0 0 0;  margin: 0 0 0 0;">+</button>
 				     <button class="btn-mini btn-info"
-                 onclick="ajaxAdd('goZakazAdd='+'<?= $photo_data['id'] ?>'+'&add='+'-1');"
+                 onclick="ajaxAdd('goZakazAdd='+'<?= $ind ?>'+'&add='+'-1');"
 					     style="float:left; width: 28px; height: 18px; padding: 0 0 0 0;  margin: 0 0 0 0;">-</button>
-			     <span id="<?='fKoll'.$photo_data['id'] ?>" class="label label-warning" style="float: left; margin-left: 2px;">
-				     <?=$_SESSION['basket'][$photo_data['id']]?> шт</span>
-			     <span class="label label-success" style="float: right;"><?=$photo_data['pecat']?> грн</span>
+			     <span id="<?='fKoll'.$ind ?>" class="label label-warning" style="float: left; margin-left: 2px;">
+				     <?=$_SESSION['basket'][$ind]?> шт</span>
+			     <span class="label label-success" style="float: right;"><?=isset($pr)?$pr:null;?> грн</span>
 		     </div>
 	     </div>
 	     <span><b>Всего:</b></span>
-        <span id="<?='fSumm'.$photo_data['id'] ?>" class="label label-success" style="float: right; margin-right: -2px;">
-	        <?=floatval($_SESSION['basket'][$photo_data['id']]*$photo_data['pecat'])?> грн</span>
+        <span id="<?='fSumm'.$ind ?>" class="label label-success" style="float: right; margin-right: -2px;">
+	        <?=isset($fSumm)?$fSumm:null;?> грн</span>
 			      <?
 		  } elseif(isset($_SESSION['print']) && $_SESSION['print'] == 0) {
 			      ?>
-	     <span class="label label-success" style="margin-left: 96px"><?=$photo_data['price']?> грн</span>
+	     <span class="label label-success" style="margin-left: 96px"><?=$print['cena_file'][$ind]?> грн</span>
 		      <?
 	      }
 		      ?>
@@ -226,13 +248,12 @@ if(isset($_SESSION['basket']) && is_array($_SESSION['basket']) && count($_SESSIO
      </div>
      <?
      }
-   }	  
+   }
 	 ?>
 	</ul>
    <?
      }
 
- $print=iTogo();
 		    if(isset($_SESSION['print']) &&  $_SESSION['print'] == 0)
 		    {
 			  ?>
@@ -269,20 +290,32 @@ if(isset($_SESSION['basket']) && is_array($_SESSION['basket']) && count($_SESSIO
 		       if(!isset($_SESSION['basket']['format']))	$_SESSION['basket']['format'] = '13x18';
              $fFormat = array('10x15','13x18','20x30');
 				 $fBum = array('глянцевая','матовая');
+
 		    ?>
+				 <script>
+					 $(document).ready(function(){
+						 $('#format ').change(function(){
+							 ajaxFormat('goFormat='+ $('#format').val());
+							 return false;
+						 });
+					 });
+					 $(document).ajaxStart(function(){
+						 $('#loading').show();
+					 }).ajaxStop(function(){
+							 $('#loading').hide();
+						 });
+				 </script>
 		<div id="form_reg" style="position: relative; width: 380px; height: 176px; z-index: 12; margin-bottom: 0; margin-top: 40px;">
 		 <div id="pr_Form" style="position:absolute;left:24px;top:-10px;width:280px;z-index:12;">
 			<form name="printMail" method="post" action="<?php echo basename(__FILE__); ?>" enctype="multipart/form-data" id="printMail">
 			 <label id="pr_Name1" style="position: absolute; left: 0; top: 32px; width: 160px; height: 14px; z-index: 0; text-align: left;" for="format">
 				 <span style="color:#000000;font-family:Arial,serif;font-size:14px;">Размер фотографии:</span> </label>
-			 <select id="format" style="position: absolute; left: 142px; top: 30px; width: 204px; height: 25px; z-index: 1;" size="1"
-				 onchange="ajaxFormat('goFormat='+ $(' #printMail').value);return false;"
-				 name="format">
+			 <select id="format" style="position: absolute; left: 142px; top: 30px; width: 204px; height: 25px; z-index: 1;" size="1" name="format">
 				 <?
 				 foreach ($fFormat as $format)
 					 {
 				 ?>
-				 <option class="goFormat" value='<?=$format?>' <?=($_SESSION['basket']['format'] == $format ? 'selected="selected"' : '')?>
+				 <option value='<?=$format?>' <?=($_SESSION['basket']['format'] == $format ? 'selected="selected"' : '')?>
 
 					 ><?=$format?> см</option>
 				 <?
@@ -312,13 +345,21 @@ if(isset($_SESSION['basket']) && is_array($_SESSION['basket']) && count($_SESSIO
 					 style="position:absolute;left:145px;top:94px;z-index:3;"/>
 				<input class="metall_knopka" type="submit" style="position: absolute; left: 273px; top: 153px; z-index: 13;" value="Далее" data-original-title="" title="">
 			 </form>
-			  <span id="iTogo" class="label label-important" style="position:absolute;left:60px;top:128px;z-index:0;text-align:left;">
-                     ИТОГО: <?=$print['pecat']?> гривень - <?=$print['koll']?> фото (13x18 см)</span>
+			  <span id="iTogo" class="label label-important" style="position:absolute;top:128px;z-index:0;text-align:left;">
+
+
+                     ИТОГО: <?=$print['pecat']?> гривень  <?=$print['koll']?> фото (13x18 см)</span>
+
+
+						 <div id="loading" style="display: none;position:absolute;left:290px;top:132px;z-index:0;text-align:left;">
+							 <img src="inc/lib/jQueryPhp/images/ajax-loader.gif">
+						 </div>
 <div style="position:absolute;left:0;top:138px;z-index:0;text-align:left;">
 									 <form action="basket.php" method="post" style="float: left;">
 										 <input type="hidden" name="go_back" value="1" />
 										 <input class="metall_knopka" type="submit" value="Назад" style="margin-top: 15px;" />
 									 </form>
+
 									 <form action="basket.php" method="post"  style="float: right; margin-right: -265px;">
 
 									 </form>
