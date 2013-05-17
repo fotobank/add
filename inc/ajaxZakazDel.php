@@ -10,31 +10,17 @@
 	include (dirname(__FILE__).'/config.php');
 	include (dirname(__FILE__).'/func.php');
 
+   $print = iTogo();
 
 if(isset($_POST['goZakazDel']))
 		{
 			if(isset($_SESSION['basket']) && is_array($_SESSION['basket']) && count($_SESSION['basket']) > 0)
 				{
-					unset($_SESSION['basket'][intval($_POST['goZakazDel'])]);
-    $print = iTogo();
-	 $format = $_SESSION['basket']['format'];
-					if(trim($_POST['str']) == '1' || trim($_POST['str']) == '2')
-						{
-					    	if ($format == '10x15' || $format == '13x18')
-								{
-					            echo "ИТОГО: ".$print['pecat']." гривень (".$print['koll']." фото ".$format."см)";
-						      }
-						    elseif ($format == '20x30')
-						      {
-							      echo "ИТОГО: ".$print['pecat_A4']." гривень (".$print['koll']." фото ".$format."см)";
-					      	}
-						}
-					 elseif(trim($_POST['str']) == '0')
-						{
-						echo "ИТОГО: ".$print['price']." гривень (".$print['file']." фото 13x18см)";
-				      }
+				// 	unset($_SESSION['basket'][intval($_POST['goZakazDel'])]);
+	echo summa($print);
 	      	}
 		}
+
 
 if(isset($_POST['goZakazAdd']))
 	{
@@ -44,7 +30,6 @@ if(isset($_POST['goZakazAdd']))
 		$fDel = 0;
 		if(isset($_SESSION['basket']) && is_array($_SESSION['basket']) && count($_SESSION['basket']) > 0)
 			{
-
 				if($add == '1')
 					{
 						$_SESSION['basket'][$id]++;
@@ -58,7 +43,6 @@ if(isset($_POST['goZakazAdd']))
 							}
 				   }
 				$rs = $db->query('SELECT * FROM `photos` WHERE `id` = ?i',array($id),'row');
-				$print = iTogo();
 				$prKoll = $print['koll']; // общее кол-во фото для печати
 				$koll = $_SESSION['basket'][$id]; // кол-во фото для печати
 
@@ -87,7 +71,6 @@ if(isset($_POST['goZakazAdd']))
 			$_SESSION['basket']['format'] =  $format;
 			if(isset($_SESSION['basket']) && is_array($_SESSION['basket']) && count($_SESSION['basket']) > 0)
 				{
-					$print = iTogo();
 					$prKoll = $print['koll']; // общее кол-во фото для печати
 					$id = $print['id'];
 
@@ -106,6 +89,5 @@ if(isset($_POST['goZakazAdd']))
 	         } else {
 	           echo json_encode($format);
            }
-
           }
 		}
