@@ -3,6 +3,7 @@
 	include  (dirname(__FILE__).'/inc/head.php');
 	include  (dirname(__FILE__).'/inc/ip-ban.php');
 	include  (dirname(__FILE__).'/inc/dirPatc.php');
+	// include  (dirname(__FILE__).'/inc/lib/dtimediff/diftimer_class.php'); // подсчет времени между двум€ событи€ми
 
 	$ip = Get_IP(); // Ip пользовател€
 	// оличество фоток на странице
@@ -219,10 +220,9 @@
 					if ($rs)
 						{
 							?>
-							<!-- 3 -->
+<!-- 3 -->
 							<hr class="style-one" style="margin-top: 10px; margin-bottom: -20px;">
 							<?
-		//					while ($ln = mysql_fetch_assoc($rs))
 								foreach ($rs as $ln)
 								{
 									$source = ($_SERVER['DOCUMENT_ROOT'].fotoFolder().$ln['id_album'].'/'.$ln['img']);
@@ -652,15 +652,15 @@
 	top5($may_view, $rs, $ln, $source, $sz, $sz_string);
 	?>
 
-
 	<!-- ¬ывод фото в альбом -->
 	<div id=foto-ajax>
 		<?
+
 		fotoPage($may_view, $current_page, $record_count);
 		?>
 	</div>
 
-	<!-- тело --><!-- 4 -->
+<!-- тело --><!-- 4 -->
 <hr class="style-one" style="clear: both; margin-bottom: -20px; margin-top: 0"/>
 
 

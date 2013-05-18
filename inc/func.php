@@ -246,10 +246,12 @@ function digit_to_string($dig){
 							$key++;
 						      }
 						}
-					$basket = substr($basket, 0, strlen($basket) - 1);
+					if($basket !='')
+						{
+					$basket = substr($basket, 0, strlen($basket) - 1); // отрезаем последний символ от строки
 					$db = go\DB\Storage::getInstance()->get('db-for-data');
-					$rs     = $db->query('SELECT * FROM `photos` WHERE `id` IN ('.$basket.')')->assoc();
-					$sum    = array();
+					$rs = $db->query('SELECT * FROM `photos` WHERE `id` IN ('.$basket.')')->assoc();
+					$sum = array();
 					$sum['pecat'] = 0;
 					$sum['pecat_A4'] = 0;
 					$sum['koll'] = 0;
@@ -281,36 +283,47 @@ function digit_to_string($dig){
 							return $sum;
 						}
 					return $sum;
+				     }
+					unset ($_SESSION['basket']);
+					return false;
 				}
 			else
 				{
-					$sum = 0;
-					return $sum;
+					return false;
 				}
 		}
 
 	/**
-	 * @param $print
-	 *
-	 * @return string
+	 * @return null|string
 	 */
-	function summa($print)
+	function summa()
 		{
-			$format = $_SESSION['basket']['format'];
-			if (trim($_POST['str']) == '1' || trim($_POST['str']) == '2')
+			    $print = iTogo();
+			if ($print)
+				{
+			    $format = $_SESSION['basket']['format'];
+			    $rt = NULL;
+			if (isset($_SESSION['print']))
+				{
+			if ($_SESSION['print'] == '1' || $_SESSION['print'] == '2')
 				{
 					if ($format == '10x15' || $format == '13x18')
 						{
-							return "ИТОГО: ".$print['pecat']." гривень (".$print['koll']." фото ".$format."см)";
+							$rt = "ИТОГО: ".$print['pecat']." гривень (".$print['koll']." фото ".$format."см)";
 						}
 					elseif ($format == '20x30')
 						{
-							return "ИТОГО: ".$print['pecat_A4']." гривень (".$print['koll']." фото ".$format."см)";
+							$rt = "ИТОГО: ".$print['pecat_A4']." гривень (".$print['koll']." фото ".$format."см)";
 						}
 				}
-			elseif (trim($_POST['str']) == '0')
+			 elseif ($_SESSION['print'] == 0)
 				{
-					return "ИТОГО: ".$print['price']." гривень (".$print['file']." фото 13x18см)";
+					$rt = "ИТОГО: ".$print['price']." гривень (".$print['file']." фото 13x18см)";
 				}
+				}
+			 return $rt;
+				} else {
+			 return false;
+			}
 		}
 ?>

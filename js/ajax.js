@@ -80,9 +80,15 @@ function returnCaptcha () {
 //корзина
 function goKorzDel(idName, srt) {
     $('#ramka'+idName).empty().html("<div style='margin:25px 0 0 35px;'><img style='width: 140px; float: left; margin-left: 5px;' src= '/img/not_foto.png'></div>");
-    $('#iTogo').empty().load('/inc/ajaxZakazDel.php', {goZakazDel: idName , str: srt });
+    $('#iTogo').empty().load('/inc/ajaxZakazDel.php', {goZakazDel: idName , str: srt }, function(data){
+//     alert(data);
+          if(!data)
+          {
+   $('#clearStr').empty().html("<div class='drop-shadow lifted' style='margin: 50px 0 0 480px;'><div style='font-size: 24px;'>Ваша корзина пуста!</div></div>");
+          }
+    }
+    );
 }
-
 
 
 function ajaxAdd(data) {
@@ -118,12 +124,16 @@ function ajaxAdd(data) {
                 });
             }
             if(ans.fDel == 1) {
+                if(!ans.prKoll)
+                {
+     $('#clearStr').empty().html("<div class='drop-shadow lifted' style='margin: 50px 0 0 480px;'><div style='font-size: 24px;'>Ваша корзина пуста!</div></div>");
+                }
                 $('#ramka'+ans.id).empty().html("<div style='margin:25px 0 0 35px;'><img style='width: 140px; float: left; margin-left: 5px;' src= '/img/not_foto.png'></div>")
             } else {
                 $('#fKoll'+ans.id).empty().append(ans.fKoll+' шт');
-                $('#fSumm'+ans.id).empty().append(ans.fSumm+' гр');
+                $('#fSumm'+ans.id).empty().append(ans.fSumm+' грн');
             }
-            $('#iTogo').empty().append('ИТОГО: '+ans.sum+'  гривень - '+ans.prKoll+' фото (13x18 см)');
+            $('#iTogo').empty().append('ИТОГО: '+ans.sum+'  гривень  ('+ans.prKoll+' фото '+ans.format+' см)');
         }
     });
 }
@@ -149,22 +159,33 @@ function ajaxFormat(data) {
         success: function (html) {
 // alert (html);
             var ans = JSON.parse(html);
-// alert (ans);
                 dhtmlx.message({
                     text: "Выбран формат: <br> "+ans.format+" см",
                     expire:9000,
                     type:"addfoto"
                 });
-
-           //     $('#fKoll'+ans.id).empty().append(ans.fKoll+' шт');
-           //     $('#fSumm'+ans.id).empty().append(ans.fSumm+' гр');
-
-            $('#iTogo').empty().append('ИТОГО: '+ans.sum+'  гривень - '+ans.prKoll+' фото ('+ans.format+' см)');
+            $.each( ans.prArr, function(i, n){
+                     $('#fCena'+i).empty().append(n+' грн');
+            });
+            $.each( ans.summArr, function(i, n){
+                $('#fSumm'+i).empty().append(n+' грн');
+            });
+            $('#iTogo').empty().append('ИТОГО: '+ans.sum+'  гривень  ('+ans.prKoll+' фото '+ans.format+' см)');
         }
     });
 }
 
-
+// jQuery PHP обертка
+jQuery.extend({
+    php: function (url, params) {
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: params,
+            dataType : "json"
+        })
+    }
+});
 
 function getCaptca() {
 

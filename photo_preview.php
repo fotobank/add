@@ -5,6 +5,7 @@ include (dirname(__FILE__).'/inc/func.php');
 header('Content-type: text/html; charset=windows-1251');
 
 if (isset($_SESSION['current_album'])):
+
 $id = $_GET['id'];
 if ($id > 0)
     {

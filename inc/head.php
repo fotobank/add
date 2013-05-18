@@ -22,7 +22,6 @@
 		include ($_SERVER['DOCUMENT_ROOT'].'/inc/lib_ouf.php');
 		include ($_SERVER['DOCUMENT_ROOT'].'/inc/lib_errors.php');
 		$error_processor = Error_Processor::getInstance();
-		require_once (__DIR__.'/lib/jQueryPhp/jQuery.php');
 
 		/**
 		 *  Тесты для проверки Error_Processor
@@ -102,6 +101,7 @@
 		<!--        <link href="/js/humane/themes/libnotify.css" rel="stylesheet" type="text/css"/>-->
 		<!--        <link href="/js/humane/themes/bigbox.css" rel="stylesheet" type="text/css"/>-->
 		<script type="text/javascript" src="/js/humane/humane.js"></script>
+
 
 		<link href="/css/main.css" rel="stylesheet" type="text/css"/>
 		<?
@@ -537,7 +537,6 @@
 	<!--Голова конец-->
 
 <?
-
 
 if ($value == '/gb/index.php'): ?>
 		<div id="main">

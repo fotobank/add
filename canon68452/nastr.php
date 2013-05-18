@@ -15,15 +15,16 @@ $rs = $db->query('select * from nastr order by id asc', null, 'assoc');
 if($rs)
 {
 	?>
-	<form action="index.php" method="post">
-  	<table border="0">
+
+	<form action="index.php" method="post" >
+	  <table border="0" style="float: left;margin-bottom: 100px;">
     	<?
 	      foreach($rs as $ln)
     	{
     	?>
     	<tr>
     	  <td><?=$ln['param_descr']?></td>
-    	  <td><input type="text" name="<?=$ln['param_name']?>" value="<?=$ln['param_value']?>" style="margin-bottom: 10px;"  />
+    	  <td><input type="text" name="<?=$ln['param_name']?>" value="<?=$ln['param_value']?>" style="margin-bottom: 10px; width: 600px;"  />
     	</tr>
     	<?
     	}
@@ -31,7 +32,7 @@ if($rs)
 	    <tr>
 	      <td colspan="2" align="center">
 	        <input class="btn  btn-success" type="hidden" name="go_update" value="1" />
-	        <input class="btn btn-success" type="submit" value="Применить" style="margin-top: 5px; margin-left: 20px;">
+	        <input class="btn btn-success" type="submit" value="Применить" style="margin-top: 15px; margin-left: 20px;">
 	      </td>
 	    </tr>
 	  </table>
