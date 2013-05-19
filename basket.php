@@ -375,7 +375,6 @@
 						</form>
 			  <span id="iTogo" class="label label-important" style="position:absolute;top:128px;z-index:0;text-align:left;">
                      <?= summa()?></span>
-
 						<div id="loading" style="display: none;position:absolute;left:290px;top:132px;z-index:0;text-align:left;">
 						  <img src="/img/ajax-loader.gif">
 						</div>
@@ -385,7 +384,6 @@
 							 <input class="metall_knopka" type="submit" value="Назад" style="margin-top: 15px;"/>
 						  </form>
 						  <form action="basket.php" method="post" style="float: right; margin-right: -265px;">
-
 						  </form>
 						</div>
 					 </div>
@@ -393,7 +391,7 @@
 
 				<?
 				}
-			 elseif (isset($_SESSION['print']) && $_SESSION['print'] == 2)
+			 elseif (isset($_SESSION['print']) && $_SESSION['print'] == 2)  // страница выбора способа оплаты
 				{
 				   $rs = $db->query('select * from nastr order by id asc', null, 'assoc');
 	          	$spOpl = array();
@@ -404,51 +402,109 @@
 				   $poctRash = 'плюс почтовые расходы';
 				  if($rs)
 					 {
-							 foreach($rs as $i => $v)
+							 foreach($rs as $v)
 								{
-		                    $iN = substr($i, 0, strlen($i) - 1);
-	                    	  if($iN == 'oplata') 	  $spOpl[]      = $i;
-								  if($iN == 'dostavka')   $spDost[]     = $i;
-								  if($iN == 'adr_pecat')  $adr_pecat[]  = $i;
-								  if($iN == 'nm_pocta')   $nm_pocta[]   = $i;
-								  if($iN == 'http_pocta') $http_pocta[] = $i;
+		                    $vN = substr($v['param_name'], 0, strlen($v['param_name']) - 1);
+	                    	  if($vN == 'oplata') 	  $spOpl[]      = $v['param_value'];
+								  if($vN == 'dostavka')   $spDost[]     = $v['param_value'];
+								  if($vN == 'adr_pecat')  $adr_pecat[]  = $v['param_value'];
+								  if($vN == 'nm_pocta')   $nm_pocta[]   = $v['param_value'];
+								  if($vN == 'http_pocta') $http_pocta[] = $v['param_value'];
 								}
 				 	}
-
+				  $rs = $db->query('select * from users where id =?i', array($_SESSION['userid']), 'row');
 				  ?>
 				  <div id="form_reg" style="position: relative;width:380px;height:510px;display: inline-block;">
 					 <div id="pr_Form" style="position: relative; width: 350px;height: auto; left: 10px;">
 						<form name="printMail" method="post" action="<?php echo basename(__FILE__); ?>" enctype="multipart/form-data" id="Form1">
 
-						  <label id="pr_Name1" style="position: relative; width: 114px; height: 14px; text-align: left; margin-top: 20px;float: left;" for="Combobox3">
+						  <label id="pr_Name1" style="position: relative; width: 114px; height: 14px; text-align: left; margin-top: 24px;float: left;" for="Combobox3">
 							 <span style="color:#000000;font-family:Arial,serif;font-size:14px;float: left;">Способ оплаты:</span>
 						  </label>
-						  <select id="Combobox3" class="inp_f_reg" style="position: relative; width: 214px; height: 25px; float: right; margin-top: 20px;" size="1" name="Combobox"> </select>
+						  <select id="Combobox3" class="inp_f_reg" style="position: relative; width: 214px; float: right; margin-top: 20px;" size="1" name="Combobox3">
+							 <?
+							 foreach ($spOpl as $opl)
+								{
+								  ?>
+								  <option value='<?= $opl ?>' <?=(
+								  $opl ? 'selected="selected"' : '')?>><?=$opl?></option>
+								<?
+								}
+							 ?>
+						  </select>
 
-						  <label for="Combobox1" id="pr_Name2" style="position:relative;width:114px;height:14px;text-align:left; margin-top: 20px;float: left;">
+						  <label for="Combobox1" id="pr_Name2" style="position:relative;width:114px;height:14px;text-align:left; margin-top: 25px;float: left;">
 							 <span style="color:#000000;font-family:Arial,serif;font-size:14px;">Доставка:</span></label>
-						  <select name="Combobox1" class="inp_f_reg" size="1" id="Combobox1" style="position:relative;width:214px;height:25px;float: right;"> </select>
+						  <select name="Combobox1" class="inp_f_reg" size="1" id="Combobox1" style="position:relative;width:214px;float: right;">
+							 <?
+							 foreach ($spDost as $dost)
+								{
+								  ?>
+								  <option value='<?= $dost ?>' <?=(
+								  $dost ? 'selected="selected"' : '')?>><?=$dost?></option>
+								<?
+								}
+							 ?>
+						  </select>
 
-						  <label id="pr_Name3" style="position:relative;width:314px;height:14px;text-align:center;float:left;margin-left: 25px;">
+						  <label id="pr_Name1" style="position: relative; width: 114px; height: 14px; text-align: left; margin-top: 25px;float: left;" for="Combobox32">
+							 <span style="color:#000000;font-family:Arial,serif;font-size:14px;float: left;">Почта:</span>
+						  </label>
+						  <select id="Combobox32" class="inp_f_reg" style="position: relative; width: 214px; float: right;" size="1" name="Combobox32">
+							 <?
+							 foreach ($nm_pocta as $nPocta)
+								{
+								  ?>
+								  <option value='<?= $nPocta ?>' <?=(
+								  $nPocta ? 'selected="selected"' : '')?>><?=$nPocta?></option>
+								<?
+								}
+							 ?>
+						  </select>
+						  <label id="pr_Name1" style="position: relative; width: 114px; height: 14px; text-align: left; margin-top: 25px;float: left;" for="Combobox31">
+							 <span style="color:#000000;font-family:Arial,serif;font-size:14px;float: left;">Адрес студии:</span>
+						  </label>
+						  <select id="Combobox31" class="inp_f_reg" style="position: relative; width: 214px; float: right;" size="1" name="Combobox31">
+							 <?
+							 foreach ($adr_pecat as $aPecat)
+								{
+								  ?>
+								  <option value='<?= $aPecat ?>' <?=(
+								  $aPecat ? 'selected="selected"' : '')?>><?=$aPecat?></option>
+								<?
+								}
+							 ?>
+						  </select>
+
+						  <label id="pr_Name3" style="position:relative;width:314px;height:14px;text-align:center;float:left;margin-left: 25px;"
+							data-placement="right" title="Если получать заказ планируете не Вы, измените эти данные на данные Вашего представителя">
 							 <span style="color:#000000;font-family:Arial,serif;font-size:16px;">Контактные данные получателя:</span></label>
 
 						  <div id="pr_Clear1" style="clear: both;">
 							 <label id="pr_Name4" style="position: relative; width: 120px; height: 28px; text-align: left; float: left; margin-top: 10px;" for="Editbox1">
 								<span style="color:#000000;font-family:Arial,serif;font-size:14px;">Имя:</span> </label>
-							 <input id="Editbox1" class="inp_f_reg" type="text" value="" name="Editbox1" style="position: relative; width: 200px; height: 23px; line-height: 23px;
-							     float: right; margin-top: 10px;" data-original-title="" title="">
+							 <input id="Editbox1" class="inp_f_reg" type="text" value="<?= $rs['us_name']?>" name="Editbox1" style="position: relative; width: 200px; height: 23px; line-height: 23px;
+							     float: right; margin-top: 10px;" data-placement="right" title="Имя получателя заказа">
 						  </div>
 						  <div id="pr_Clear2" style="clear: both;">
 							 <label id="pr_Name5" style="position: relative; width: 120px; height: 28px; text-align: left; float: left;" for="Editbox2">
 								<span style="color:#000000;font-family:Arial,serif;font-size:14px;">Фамилия:</span> </label>
-							 <input id="Editbox2" class="inp_f_reg" type="text" value="" name="Editbox2" style="position: relative; width: 200px; height: 23px; line-height: 23px;
-							     float: right;" data-original-title="" title="">
+							 <input id="Editbox2" class="inp_f_reg" type="text" value="<?= $rs['us_surname']?>" name="Editbox2"
+							  style="position: relative; width: 200px; height: 23px; line-height: 23px;
+							     float: right;"  data-placement="right" title="Фамилия получателя заказа">
 						  </div>
 						  <div id="pr_Clear3" style="clear: both;">
 							 <label id="pr_Name6" style="position: relative; width: 120px; height: 28px; text-align: left; float: left;" for="Editbox3">
 								<span style="color:#000000;font-family:Arial,serif;font-size:14px;">Телефон:</span> </label>
-							 <input id="Editbox3" class="inp_f_reg" type="text" value="" name="Editbox3" style="position: relative; width: 200px; height: 23px; line-height: 23px;
-							     float: right;" data-original-title="" title="">
+							 <input id="Editbox3" class="inp_f_reg" type="text" value="<?= $rs['phone']?>" name="Editbox3" style="position: relative;
+							 width: 200px; height: 23px; line-height: 23px;float: right;" data-placement="right" title="Контактный телефон">
+						  </div>
+
+						  <div id="pr_Clear31" style="clear: both;">
+							 <label id="pr_Name61" style="position: relative; width: 120px; height: 28px; text-align: left; float: left;" for="Editbox31">
+								<span style="color:#000000;font-family:Arial,serif;font-size:14px;">E-mail:</span> </label>
+							 <input id="Editbox31" class="inp_f_reg" type="text" value="<?= $rs['email']?>" name="Editbox31" style="position: relative;
+							 width: 200px; height: 23px; line-height: 23px;float: right;" data-placement="right" title="Почтовый ящик для подтверждения заказа">
 						  </div>
 
 						  <div id="pr_Clear4" style="clear: both;">

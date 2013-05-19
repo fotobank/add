@@ -170,7 +170,7 @@
 
 		<script type="text/javascript">
 			$(document).ready(function () {
-				$(".vhod ,.registracia, input, textarea").tooltip();
+				$(".vhod ,.registracia, input, textarea, label").tooltip();
 			});
 
 			$("a[rel=popover]")
