@@ -11,6 +11,7 @@
 	 }
   else
 	 {
+		$_SESSION['zakaz'] = array();
 		if (isset($_POST['go_back']))
 		  {
 			 $_SESSION['print'] = 1;
@@ -209,7 +210,8 @@
 								  <div id="<?= 'ramka'.$ind ?>">
 									 <li class="span2" style="margin-left: 30px; width: 160px; height: 300px;">
 										<div class="thumbnail img-polaroid foto">
-										  <span class="del" style="margin-left: 140px; margin-bottom: 0; margin-top: -12px; z-index: 1" onclick="goKorzDel('<?= $ind ?>','<?= $_SESSION['print'] ?>');"></span>
+										  <span class="del" style="margin-left: 140px; margin-bottom: 0; margin-top: -12px; z-index: 1"
+											onclick="goKorzDel('<?= $ind ?>','<?= $_SESSION['print'] ?>');"></span>
 										  <img src="dir.php?num=<?= $ind ?>" alt="<?= $print['nm'][$ind] ?>" title="<?= $print['nm'][$ind] ?>"><br>
 										  <span class="foto_prev_nm" style="margin-top: -20px; margin-left: 0; text-align: center;"><b>№  <?=$print['nm'][$ind]?></b></span>
 
@@ -272,7 +274,8 @@
 			 if (isset($_SESSION['print']) && $_SESSION['print'] == 0)
 				{
 				  ?>
-				  <table style="margin-top: 50px;">
+				  <div id="form_bask" style="margin-bottom: 0px; padding-top: 20px; height: 76px; width: 656px; margin-left: 270px;">
+				  <table>
 					 <tr>
 						<td>
 						  <span id="iTogo" class="label label-important" style="margin: 0 0 10px 0;"><?= summa()?></span>
@@ -282,7 +285,7 @@
 						<td>
 						  <form action="basket.php" method="post">
 							 <input type="hidden" name="go_order" value="1"/>
-							 <input class="metall_knopka" type="submit" value="Оплатить и получить в цифровом виде"/>
+							 <input class="btn btn-primary" type="submit" value="Оплатить и получить в цифровом виде"/>
 						  </form>
 						</td>
 						<td>
@@ -291,11 +294,12 @@
 						<td>
 						  <form action="basket.php" method="post">
 							 <input type="hidden" name="go_print" value="1"/>
-							 <input class="metall_knopka" type="submit" style="margin-left: 50px;" value="Открыть форму заказа печати"/>
+							 <input class="btn btn-primary" type="submit" style="margin-left: 50px;" value="Открыть форму заказа печати"/>
 						  </form>
 						</td>
 					 </tr>
 				  </table>
+				  </div>
 				<?
 				}
 			 elseif (isset($_SESSION['print']) && $_SESSION['print'] == 1)
@@ -332,7 +336,7 @@
 				  <div id="form_reg" style="position: relative; width: 380px; height: 176px; z-index: 12; margin-bottom: 0; margin-top: 40px;">
 					 <div id="pr_Form" style="position:absolute;left:24px;top:-10px;width:280px;z-index:12;">
 						<form name="printMail" method="post" action="<?php echo basename(__FILE__); ?>" enctype="multipart/form-data" id="printMail">
-						  <label id="pr_Name1" style="position: absolute; left: 0; top: 32px; width: 160px; height: 14px; z-index: 0; text-align: left;" for="format">
+						  <label id="pr_format" style="position: absolute; left: 0; top: 32px; width: 160px; height: 14px; z-index: 0; text-align: left;" for="format">
 							 <span style="color:#000000;font-family:Arial,serif;font-size:14px;">Размер фотографии:</span>
 						  </label>
 						  <select id="format" style="position: absolute; left: 142px; top: 30px; width: 204px; height: 25px; z-index: 1;" size="1" name="format">
@@ -349,7 +353,7 @@
 								}
 							 ?>
 						  </select>
-						  <label id="pr_Name2" style="position: absolute; left: 0; top: 64px; width: 114px; height: 14px; z-index: 0; text-align: left;" for="mat_gl">
+						  <label id="pr_mat_gl" style="position: absolute; left: 0; top: 64px; width: 114px; height: 14px; z-index: 0; text-align: left;" for="mat_gl">
 							 <span style="color:#000000;font-family:Arial,serif;font-size:14px;">Тип бумаги:</span></label>
 						  <select id="mat_gl" style="position: absolute; left: 142px; top: 62px; width: 204px; height: 25px; z-index: 1;" size="1" name="mat_gl">
 							 <?
@@ -362,7 +366,7 @@
 								}
 							 ?>
 						  </select>
-						  <label id="pr_Name3" style="position:absolute;left:0;top:94px;width:114px;height:14px;z-index:2;text-align:left;" for="ramka">
+						  <label id="pr_ramka" style="position:absolute;left:0;top:94px;width:114px;height:14px;z-index:2;text-align:left;" for="ramka">
 							 <span style="color:#000000;font-family:Arial,serif;font-size:14px;">Белая рамка:</span></label>
 						  <input type="hidden" name="ramka" value="0"/>
 						  <input type="checkbox" id="ramka" name="ramka" value="1"
@@ -371,7 +375,7 @@
 								echo 'checked="checked"';
 							 } ?>
 							style="position:absolute;left:145px;top:94px;z-index:3;"/>
-						  <input class="metall_knopka" type="submit" style="position: absolute; left: 273px; top: 153px; z-index: 13;" value="Далее" data-original-title="" title="">
+						  <input class="btn btn-primary" type="submit" style="position: absolute; left: 273px; top: 153px; z-index: 13;" value="Далее" data-original-title="" title="">
 						</form>
 			  <span id="iTogo" class="label label-important" style="position:absolute;top:128px;z-index:0;text-align:left;">
                      <?= summa()?></span>
@@ -381,7 +385,7 @@
 						<div style="position:absolute;left:0;top:138px;z-index:0;text-align:left;">
 						  <form action="basket.php" method="post" style="float: left;">
 							 <input type="hidden" name="go_back" value="1"/>
-							 <input class="metall_knopka" type="submit" value="Назад" style="margin-top: 15px;"/>
+							 <input class="btn btn-primary" type="submit" value="Назад" style="margin-top: 15px;"/>
 						  </form>
 						  <form action="basket.php" method="post" style="float: right; margin-right: -265px;">
 						  </form>
@@ -393,78 +397,129 @@
 				}
 			 elseif (isset($_SESSION['print']) && $_SESSION['print'] == 2)  // страница выбора способа оплаты
 				{
+?>
+<!--<script type="text/javascript" src="/js/jquery/jquery-plus-jquery-ui.js"></script>   <!--для настройки-->
+		<script type="text/javascript" src="/js/jquery/jquery-ui.js"></script>
+		<link rel="stylesheet" href="/js/jquery/themes/base/minified/jquery-ui.min.css" type="text/css" media="screen"/>
+		<!--		<link rel="stylesheet" href="/js/jquery/themes/base/minified/jquery.ui.theme.min.css" type="text/css" media="screen"/>-->
+
+<!--  <script type="text/javascript" src="/js/ixedit/ixedit.js"></script>-->
+<!--  <link rel="stylesheet" href="/js/ixedit/ixedit.css" type="text/css" media="screen"/>-->
+
+
+	<script type="text/javascript" src="/js/zakazPecat.js"></script>
+
+
+
+				 <?
 				   $rs = $db->query('select * from nastr order by id asc', null, 'assoc');
 	          	$spOpl = array();
 				   $spDost = array();
 				   $adr_pecat = array();
-				   $nm_pocta = array();
-				   $http_pocta = array();
+				   $pocta = array();
 				   $poctRash = 'плюс почтовые расходы';
+				   $nPocta = '';
 				  if($rs)
 					 {
 							 foreach($rs as $v)
 								{
-		                    $vN = substr($v['param_name'], 0, strlen($v['param_name']) - 1);
-	                    	  if($vN == 'oplata') 	  $spOpl[]      = $v['param_value'];
-								  if($vN == 'dostavka')   $spDost[]     = $v['param_value'];
-								  if($vN == 'adr_pecat')  $adr_pecat[]  = $v['param_value'];
-								  if($vN == 'nm_pocta')   $nm_pocta[]   = $v['param_value'];
-								  if($vN == 'http_pocta') $http_pocta[] = $v['param_value'];
+
+	                    	  if($v['param_name'] == 'oplata') 	   $spOpl[$v['param_index']]      = $v['param_value'];
+								  if($v['param_name'] == 'dostavka')   $spDost[$v['param_index']]     = $v['param_value'];
+								  if($v['param_name'] == 'adr_pecat')  $adr_pecat[$v['param_index']]  = $v['param_value'];
+								  if($v['param_name'] == 'nm_pocta')
+									 {
+									   $nPocta = $v['param_value'];
+										$pocta[$nPocta]  = $v['param_value'];
+									 }
+								  if($v['param_name'] == 'http_pocta') $pocta[$nPocta] = $v['param_value'];
+
 								}
+
+						 $spOpl[]     = 'выбрать';
+						 $spDost[]    = 'выбрать';
+						 $adr_pecat[] = 'выбрать';
+			   	 	 $pocta['выбрать']  = 'выбрать';
 				 	}
 				  $rs = $db->query('select * from users where id =?i', array($_SESSION['userid']), 'row');
 				  ?>
-				  <div id="form_reg" style="position: relative;width:380px;height:510px;display: inline-block;">
-					 <div id="pr_Form" style="position: relative; width: 350px;height: auto; left: 10px;">
-						<form name="printMail" method="post" action="<?php echo basename(__FILE__); ?>" enctype="multipart/form-data" id="Form1">
+				  <div id="form_bask" style="display: none;">
+					 <div id="prFormOpl" style="position: relative; width: 350px;left: 10px;">
+						<form  id="formOpl" name="printMail" method="post" action="<?php echo basename(__FILE__); ?>"
+						 enctype="multipart/form-data" style="margin-bottom: 40px;">
 
-						  <label id="pr_Name1" style="position: relative; width: 114px; height: 14px; text-align: left; margin-top: 24px;float: left;" for="Combobox3">
-							 <span style="color:#000000;font-family:Arial,serif;font-size:14px;float: left;">Способ оплаты:</span>
+						  <label id="pr_opl" style="position: relative; width: 114px; height: 14px; text-align: left; margin-top: 24px;float: left;" for="opl">
+							 <span style="float: left;">Способ оплаты:</span>
 						  </label>
-						  <select id="Combobox3" class="inp_f_reg" style="position: relative; width: 214px; float: right; margin-top: 20px;" size="1" name="Combobox3">
+						  <select id="opl" class="inp_f_reg" style="position: relative; width: 214px; float: right; margin-top: 20px;" size="1" name="opl">
 							 <?
 							 foreach ($spOpl as $opl)
 								{
 								  ?>
-								  <option value='<?= $opl ?>' <?=(
-								  $opl ? 'selected="selected"' : '')?>><?=$opl?></option>
+								  <option value='<?= $opl ?>' <?=($opl ? 'selected="selected"' : '')?>><?=$opl?></option>
 								<?
 								}
 							 ?>
 						  </select>
 
-						  <label for="Combobox1" id="pr_Name2" style="position:relative;width:114px;height:14px;text-align:left; margin-top: 25px;float: left;">
-							 <span style="color:#000000;font-family:Arial,serif;font-size:14px;">Доставка:</span></label>
-						  <select name="Combobox1" class="inp_f_reg" size="1" id="Combobox1" style="position:relative;width:214px;float: right;">
-							 <?
-							 foreach ($spDost as $dost)
-								{
-								  ?>
-								  <option value='<?= $dost ?>' <?=(
-								  $dost ? 'selected="selected"' : '')?>><?=$dost?></option>
-								<?
-								}
-							 ?>
-						  </select>
+						  <div id="clear_txtOpl" style="clear: both;">
+							 <label id="pr_txtOpl" for="txtOpl"></label>
+							 <span class="ttext_blue" style="font-size:10px; float: right;">укажите удобный Вам способ оплаты</span>
+							 <textarea id="txtOpl" class="inp_f_reg" title="в некоторых случаях потребуется предоплата" data-original-title="" name="txtOpl" rows="5" cols="32" style="width: 336px; height: 80px;
+						   margin-top: 10px;"></textarea>
+						  </div>
 
-						  <label id="pr_Name1" style="position: relative; width: 114px; height: 14px; text-align: left; margin-top: 25px;float: left;" for="Combobox32">
-							 <span style="color:#000000;font-family:Arial,serif;font-size:14px;float: left;">Почта:</span>
-						  </label>
-						  <select id="Combobox32" class="inp_f_reg" style="position: relative; width: 214px; float: right;" size="1" name="Combobox32">
-							 <?
-							 foreach ($nm_pocta as $nPocta)
-								{
-								  ?>
-								  <option value='<?= $nPocta ?>' <?=(
-								  $nPocta ? 'selected="selected"' : '')?>><?=$nPocta?></option>
+						  <div id="clear_dost" style="clear: both;">
+							 <label for="dost" id="pr_dost" style="position:relative;width:114px;height:14px;text-align:left; margin-top: 5px;float: left;">
+								<span>Доставка:</span></label>
+							 <select  id="dost" name="dost" class="inp_f_reg" size="1" style="position: relative; width: 214px; float: right;">
 								<?
-								}
-							 ?>
-						  </select>
-						  <label id="pr_Name1" style="position: relative; width: 114px; height: 14px; text-align: left; margin-top: 25px;float: left;" for="Combobox31">
-							 <span style="color:#000000;font-family:Arial,serif;font-size:14px;float: left;">Адрес студии:</span>
+								foreach ($spDost as $dost)
+								  {
+									 ?>
+									 <option value='<?= $dost ?>' <?=(
+									 $dost ? 'selected="selected"' : '')?>><?=$dost?></option>
+								  <?
+								  }
+								?>
+							 </select>
+						  </div>
+
+
+						  <div id="clear_txtDost" style="clear: both;">
+						  <label id="pr_txtDost" for="txtDost"></label>
+						  <span class="ttext_blue" style="font-size:10px; float: right;">укажите свой способ доставки</span>
+						  <textarea id="txtDost" class="inp_f_reg" title="например: заберу заказ при личной встрече и т.д." data-original-title="" name="txtDost" rows="5" cols="32" style="width: 336px; height: 80px;
+						   margin-top: 10px;"></textarea>
+						  </div>
+
+
+						  <div id="clear_nPocta" style="clear: both;">
+							 <label id="pr_nPocta" style="position: relative; width: 114px; height: 14px; text-align: left; margin-top: 5px;float: left;" for="nPocta">
+								<span style="float: left;">Почта:</span>
+							 </label>
+							 <select id="nPocta" class="inp_f_reg" style="position: relative; width: 214px; float: right;" size="1" name="nPocta"
+                     onchange="hPocta()">
+								<?
+								foreach ($pocta as $key => $nPocta)
+								  {
+									 ?>
+									 <option value='<?= $key.'|'.$nPocta ?>' <?=(
+									 $nPocta ? 'selected="selected"' : '')?>><?=$key?></option>
+								  <?
+								  }
+								?>
+							 </select>
+							 <div id="clear_a" style="clear: both;">
+								<span id="httpPocta" style="margin-bottom: 15px;"></span>
+							</div>
+						  </div>
+
+						  <div id="clear_aPecat" style="clear: both;">
+						  <label id="pr_aPecat" style="position: relative; width: 114px; height: 14px; text-align: left; margin-top: 5px;float: left;" for="aPecat">
+							 <span style="float: left;">Адрес студии:</span>
 						  </label>
-						  <select id="Combobox31" class="inp_f_reg" style="position: relative; width: 214px; float: right;" size="1" name="Combobox31">
+						  <select id="aPecat" class="inp_f_reg" style="position: relative; width: 214px; float: right;" size="1" name="aPecat">
 							 <?
 							 foreach ($adr_pecat as $aPecat)
 								{
@@ -475,67 +530,84 @@
 								}
 							 ?>
 						  </select>
+                    </div>
 
-						  <label id="pr_Name3" style="position:relative;width:314px;height:14px;text-align:center;float:left;margin-left: 25px;"
+                   <div id="clear_Block">
+						  <div id="clear_polucatel">
+						  <label id="pr_pol" style="position:relative;width:314px;height:14px;text-align:center;float:left;margin-left: 25px; margin-top: 5px;"
 							data-placement="right" title="Если получать заказ планируете не Вы, измените эти данные на данные Вашего представителя">
-							 <span style="color:#000000;font-family:Arial,serif;font-size:16px;">Контактные данные получателя:</span></label>
-
-						  <div id="pr_Clear1" style="clear: both;">
-							 <label id="pr_Name4" style="position: relative; width: 120px; height: 28px; text-align: left; float: left; margin-top: 10px;" for="Editbox1">
-								<span style="color:#000000;font-family:Arial,serif;font-size:14px;">Имя:</span> </label>
-							 <input id="Editbox1" class="inp_f_reg" type="text" value="<?= $rs['us_name']?>" name="Editbox1" style="position: relative; width: 200px; height: 23px; line-height: 23px;
-							     float: right; margin-top: 10px;" data-placement="right" title="Имя получателя заказа">
+							 <span style="font-size:18px;">Контактные данные получателя:</span></label>
 						  </div>
-						  <div id="pr_Clear2" style="clear: both;">
-							 <label id="pr_Name5" style="position: relative; width: 120px; height: 28px; text-align: left; float: left;" for="Editbox2">
-								<span style="color:#000000;font-family:Arial,serif;font-size:14px;">Фамилия:</span> </label>
-							 <input id="Editbox2" class="inp_f_reg" type="text" value="<?= $rs['us_surname']?>" name="Editbox2"
+
+
+						  <div id="clear_us_name" style="clear: both;">
+							 <label id="pr_us_name" style="position: relative; width: 120px; height: 28px; text-align: left; float: left; margin-top: 10px;" for="us_name">
+								<span>Имя:</span> </label>
+							 <input id="us_name" class="inp_f_reg" type="text" value="<?= $rs['us_name']?>" name="Editbox3" style="position: relative; width: 200px; height: 23px; line-height: 23px;
+							     float: right; margin-top: 10px;"
+							  data-placement="right" title="Имя получателя заказа">
+						  </div>
+						  <div id="clear_us_surname" style="clear: both;">
+							 <label id="us_surname" style="position: relative; width: 120px; height: 28px; text-align: left; float: left;" for="us_surname">
+								<span>Фамилия:</span> </label>
+							 <input id="us_surname" class="inp_f_reg" type="text" value="<?= $rs['us_surname']?>" name="us_surname"
 							  style="position: relative; width: 200px; height: 23px; line-height: 23px;
 							     float: right;"  data-placement="right" title="Фамилия получателя заказа">
 						  </div>
-						  <div id="pr_Clear3" style="clear: both;">
-							 <label id="pr_Name6" style="position: relative; width: 120px; height: 28px; text-align: left; float: left;" for="Editbox3">
-								<span style="color:#000000;font-family:Arial,serif;font-size:14px;">Телефон:</span> </label>
-							 <input id="Editbox3" class="inp_f_reg" type="text" value="<?= $rs['phone']?>" name="Editbox3" style="position: relative;
+						  <div id="clear_phone" style="clear: both;">
+							 <label id="pr_phone" style="position: relative; width: 120px; height: 28px; text-align: left; float: left;" for="phone">
+								<span >Телефон:</span> </label>
+							 <input id="phone" class="inp_f_reg" type="text" value="<?= $rs['phone']?>" name="phone" style="position: relative;
 							 width: 200px; height: 23px; line-height: 23px;float: right;" data-placement="right" title="Контактный телефон">
 						  </div>
 
-						  <div id="pr_Clear31" style="clear: both;">
-							 <label id="pr_Name61" style="position: relative; width: 120px; height: 28px; text-align: left; float: left;" for="Editbox31">
-								<span style="color:#000000;font-family:Arial,serif;font-size:14px;">E-mail:</span> </label>
-							 <input id="Editbox31" class="inp_f_reg" type="text" value="<?= $rs['email']?>" name="Editbox31" style="position: relative;
+						  <div id="clear_email" style="clear: both;">
+							 <label id="pr_email" style="position: relative; width: 120px; height: 28px; text-align: left; float: left;" for="email">
+								<span>E-mail:</span> </label>
+							 <input id="email" class="inp_f_reg" type="text" value="<?= $rs['email']?>" name="Editbox6" style="position: relative;
 							 width: 200px; height: 23px; line-height: 23px;float: right;" data-placement="right" title="Почтовый ящик для подтверждения заказа">
 						  </div>
 
-						  <div id="pr_Clear4" style="clear: both;">
-							 <label for="pr_adress" id="pr_Name7" style="position:relative;width:120px;height:52px;text-align:left;float: left; margin-top: 10px;">
-								<span style="color:#000000;font-family:Arial,serif;font-size:14px;">Адрес почтового отделения </span><span style="color:#000000;font-family:Arial,serif;font-size:12px;">(или получателя если доставка на дом):</span></label>
-							 <textarea id="pr_adress" cols="32" rows="5" style="position: relative; width: 205px; height: 80px; float: right; margin-top: 10px;"
-							  name="pr_adress" data-original-title="" title="" >Почтовый индекс, страна, город, улица, дом, квартира.</textarea>
+						  <div id="clear_adress" style="clear: both;">
+							 <label for="adress" id="pr_adress" style="position:relative;width:120px;height:52px;text-align:left;float: left; margin-top: 10px;">
+								<span>Адрес почтового отделения </span>
+								<span style="font-size:12px;">(или получателя если доставка на дом):</span></label>
+							 <textarea class="inp_f_reg" id="adress" cols="32" rows="5" style="position: relative; width: 205px; height: 80px; float: right; margin-top: 10px;"
+							  name="adress" data-original-title="" title="почтовый индекс, страна, город, улица, дом, квартира" ></textarea>
 						  </div>
 
-						  <div id="pr_Clear4" style="clear: both;">
-							 <input id="Checkbox1" type="checkbox" style="float: left; margin: 15px 0 0 60px;" value="on" name="" data-original-title="" title="">
-							 <label id="pr_Name3" for="Checkbox1">
-								<a style="color: rgb(0, 0, 0); font-family: Arial,serif; font-size: 14px; float: right; width: 260px; margin-top: 10px; margin-left: 10px;">
-								  Мне больше 18 лет</a>
-							 </label>
 
-						  <div id="pr_Clear4" style="clear: both;">
-							 <input id="Checkbox1" type="checkbox" style="float: left; margin: 15px 0 0 60px;" value="on" name="" data-original-title="" title="">
-							 <label id="pr_Name3" for="Checkbox1">
-								<a style="color: rgb(0, 0, 0); font-family: Arial,serif; font-size: 14px; float: right; width: 260px; margin-top: 10px; margin-left: 10px;">
-								  С действующими на сайте правилами ознакомлен(на) и согласен(а)</a>
-							 </label>
 
+
+						  <div id="clear_a" style="clear: both;">
+						  <a href="" onclick="return false;"><span class="ttext_blue" style="font-size:10px; float: right;">Добавить комментарий к заказу</span></a>
 						  </div>
 
-						  <span id="iTogo" class="label label-important" style="position: relative; margin: 20px 0 20px 0;"><?= summa().' '.$poctRash?></span><br>
-						  <input class="metall_knopka" type="submit" style="position: relative; float: right;" value="Заказать" data-original-title="" title="">
+
+						  <div id="clear_comment" style="clear: both;display: none;">
+							 <label id="pr_comment" for="comment"> </label>
+								<textarea class="inp_f_reg" id="comment" title="комментарии к заказу" data-original-title="" name="comment" rows="5" cols="32" style="width: 336px; height: 80px; margin-top: 10px;"></textarea>
+						  </div>
+
+
+
+						  <div id="clear_okei" style="clear: both;">
+							 <input id="okei" type="checkbox" style="float: left; margin: 15px 0 0 60px;" value="on" name="okei" data-original-title="" title="">
+							 <label id="pr_okei" for="okei">
+								<div style="font-size: 12px; float: right; width: 260px; margin-top: 10px; margin-left: 10px;">
+								  Подтвердить заказ <br>(подтверждая заказ, я соглашаюсь с
+								 <a href="" onclick="return false;" ><span class="ttext_blue" style="font-size:12px;"> пользовательским соглашением)</span></a></div>
+							 </label>
+						  </div>
+                    </div>
+						  <span id="iTogo" class="label label-important" style="margin: 20px 0 10px -10px;"><?= summa().' '.$poctRash?></span><br>
+						  <div id="clear_zakazat">
+						  <input id="metall_kn" class="btn btn-success" type="submit" style="position: relative;float: right;width: 140px;" value="Заказать" data-original-title="" title="">
+				        </div>
 						</form>
-					 <form action="basket.php" method="post" style="position:relative;">
+					 <form action="basket.php" method="post" style="position: absolute;margin-top: -40px;">
 						<input type="hidden" name="go_print" value="1"/>
-						<input class="metall_knopka" type="submit"  value="Назад" data-original-title="" title="">
+						<input class="btn btn-primary" type="submit"  value="Назад" data-original-title="" title="">
 					 </form>
 					 </div>
 				  </div>

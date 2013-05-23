@@ -26,6 +26,8 @@ if(isset($_POST['goZakazDel'])) // кнопка удаления фотографий из корзины
 		}
 
 
+
+
 if(isset($_POST['goZakazAdd'])) // изменение количества фотографий в корзине
 	{
 		$id = intval($_POST['goZakazAdd']);

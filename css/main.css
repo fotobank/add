@@ -604,6 +604,22 @@ a.gb_act {
     margin-bottom: 20px;
 }
 
+#form_bask {
+    width: 380px;
+    font-family:Arial,serif;
+    padding-top: 10px;
+    margin-left: 50px;
+    display: block;
+    background: #e7e1cf;
+    border-radius: 14px;
+    border: #aaaaaa ridge 2px;
+    color: #000000;
+    font-size: 14px;
+    padding-left: 10px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
 #form_act {
     position: relative;
     top: 10%;
@@ -781,9 +797,9 @@ a.gb_act {
 
 #fb_alb_nameP {
     position: absolute;
-    left: 20px;
+    left: 30px;
     top: 148px;
-    width: 135px;
+    width: 128px;
     height: 16px;
     color: #000066;
     font-family: "Comic Sans MS", cursive;

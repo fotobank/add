@@ -91,6 +91,19 @@ function goKorzDel(idName, srt) {
 }
 
 
+//подписка
+function goPodpiska(album) {
+
+    $('#podpiska').empty().load('/inc/ajaxPodpiska.php', {album: album }, function(data){
+//     alert(data);
+            if(data)
+            {
+                $('#podpiska').empty().html(data);
+            }
+        });
+ }
+
+
 function ajaxAdd(data) {
 
     $.ajax({
@@ -334,6 +347,17 @@ function ajaxGet(url, idName)
 
 
 
+function hPocta(){
+
+    var data =  $('#nPocta').val().split('|');
+    if (data[0] != 'выбрать')
+    {
+    var val = "<p style='font-size:12px;'>Обращаем Ваше внимание, что при выборе наложенного платежа заказчик оплачивает пересылку фотографий в одну сторону и денег в другую. С ценами на почтовые услуги Вы можете ознакомиться кликнув по ссылке.</p><a href= '" + data[1] +"' class='ttext_blue' style='font-size:10px; float: right;' target='_blank'>Расчет стоимости пересылки в почтовой службе  '"+ data[0] +"' </a>";
+    $(' #httpPocta ').empty().html(val);
+    }
+
+}
+
 
 /*
  Todo    - Автоочистка текстового поля при получении фокуса
@@ -363,6 +387,6 @@ function ajaxGet(url, idName)
 
 $(function () {
     // привязываем плагин ко всем элементам с id "#email, #login"
-    $(' .autoclear, .inp_f_reg ').autoClear();
+    $('.autoclear, .inp_f_reg').autoClear();
 });
 

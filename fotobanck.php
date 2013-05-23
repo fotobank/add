@@ -52,7 +52,7 @@
 
 				<div style="ttext_white">
 					На данный альбом установлен пароль. Если у Вас нет пароля для входа или он утерян , пожалуйста свяжитесь
-					с фотографом через email в разделе <a href="kontakty.php"><span class="ttext_blue">"Контакты"</span>.</a>
+					с администратором сайта через email в разделе <a href="kontakty.php"><span class="ttext_blue">"Контакты"</span>.</a>
 				</div>
 				<br/>
 
@@ -87,12 +87,16 @@
 
 
 	<!-- запрет доступа к альбому -->
+	<?
+	if (isset($_SESSION['popitka']) && isset($_SESSION['current_album']) && isset($_SESSION['popitka'][$_SESSION['current_album']]) &&
+	 $_SESSION['popitka'][$_SESSION['current_album']] == -10) // проверка и вывод времени бана
+	{
+	?>
 	<div id="zapret" class="modal hide fade" tabindex="-1" data-replace="true" style=" margin-top: -180px;">
 		<div class="err_msg">
 			<div class="modal-header">
-				<h3 style="color:#fd0001">Доступ к альбому "<? if (
-						isset($_SESSION['current_album']) and isset($_SESSION['album_name'])
-					)
+				<h3 style="color:#fd0001">Доступ к альбому "
+				  <? if (isset($_SESSION['current_album']) and isset($_SESSION['album_name']) and isset( $_SESSION['album_name'][$_SESSION['current_album']]))
 						{
 							echo $_SESSION['album_name'][$_SESSION['current_album']];
 						} ?>" заблокирован!</h3>
@@ -106,7 +110,9 @@
 			</div>
 		</div>
 	</div>
-
+	<?
+	}
+	?>
 
 
 	<?
@@ -641,21 +647,26 @@
 				<img src="album_id.php?num=<?= substr(($album_data['img']),
 					2,-4) ?>" width="130px" height="124px" alt="-"/>
 			</div>
-			<div id="fb_alb_nameP"></div>
+<!--			<div id="fb_alb_nameP">--><?//=$album_data['nm']?><!--</div>-->
 		</div>
 		<?=$album_data['descr']?>
 	</div>
 
-
-	<!-- вывод топ 5  -->
 	<?
+  if(isset($_SESSION['current_album']))
+	 {
+  $event = $db->query('select `event` from `albums` where `id` =?i', array($_SESSION['current_album']), 'el');
+//		отключение показа фотографий в альбоме
+  if ($event == 'on')
+	 {
+
+//		<!-- вывод топ 5  -->
 	top5($may_view, $rs, $ln, $source, $sz, $sz_string);
 	?>
 
 	<!-- Вывод фото в альбом -->
 	<div id=foto-ajax>
 		<?
-
 		fotoPage($may_view, $current_page, $record_count);
 		?>
 	</div>
@@ -685,7 +696,26 @@
 	$CountToShow = PHOTOS_ON_PAGE;
 	//include 'pages.php';
 
+	 }
+	  else {
+//	 подписка на альбом (когда альбом появится в категории)
+?>
+	 <div class="cont-list" style="margin-left: 50%;"><div class="drop-shadow curved curved-vt-2">
+							<h3><span style="color: #c95030">Подписка на альбом</span></h3>
+						</div></div>
+		 <div class="drop-shadow lifted" style="padding: 15px 25px 15px 25px; width: 700px; position: relative;margin-left: 70px; margin-top: 80px;">
+		 <p>
+			Фотографии с данного альбома проходят цветовую коррекцию и обработку. Мы их обязательно выложим, как только она закончится.
+			Если Вы желаете по завершению процесса получить почтовое уведомление, кликните внизу по ссылке (сообщение придет на
+			Ваш E-mail один раз, после чего подписка аннулируется автоматически).</p>
 
+		<a href="#" class="ttext_blue" style="font-size:12px;position: relative;margin-left: 200px;"
+		 onclick="goPodpiska('<?= $_SESSION['current_album'] ?>'); return false"> Сообщить мне когда фотографии будут доступны</a>
+			</div>
+  <div id="podpiska" style="padding: 15px 25px 15px 25px; width: 70px; position: relative;margin-left: 250px; margin-top: 80px;"></div>
+<?
+  }
+	 }
 endif;
 /**
  * @todo <!-- Вывод альбомов в разделах -->
@@ -740,6 +770,8 @@ else:
 						$h = 0;
 							foreach ($rs as $ln)
 							{
+							  if($ln['on_off'] != 'off')
+								 {
 								$top  = $h * 1 + 20;
 								$left = $i * 250;
 								?>
@@ -747,9 +779,8 @@ else:
 									<div class="div_t">
 										<div class="div_fb3" style="top:<?= $top ?>px; left:<?= $left ?>px;">
 											<a href="fotobanck.php?album_id=<?= $ln['id'] ?>">
-												<img src="album_id.php?num=<?= substr(($ln['img']),
-													2,
-													-4) ?>" id="album_<?= $ln['id'] ?>_2" alt="<?= $ln['nm'] ?>" title="Просмотр" class="img3"/>
+												<img src="album_id.php?num=<?= substr(($ln['img']),2,-4) ?>"
+												 id="album_<?= $ln['id'] ?>_2" alt="<?= $ln['nm'] ?>" title="Просмотр" class="img3"/>
 											</a> <br> <span class="prev_name"><?=$ln['nm']?></span>
 										</div>
 									</div>
@@ -773,6 +804,7 @@ else:
 										</table>
 									<?
 									}
+								}
 							}
 						if ($i != 0)
 							{

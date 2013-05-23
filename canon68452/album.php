@@ -206,6 +206,8 @@ if (isset($_POST['go_edit_nastr']))
 		$vote_price   = $_POST['vote_price'];
 		$vote_time    = $_POST['vote_time'];
 		$vote_time_on = isset($_REQUEST['vote_time_on']);
+	   $event = (trim($_POST['event']) == 'on')?'on':'off';
+	   $on_off = (trim($_POST['on_off']) == 'on')?'on':'off';
 		$db->query('update albums set
 		price = ?f,
 		pecat = ?f,
@@ -220,7 +222,9 @@ if (isset($_POST['go_edit_nastr']))
 		sharping = ?b,
 		vote_price = ?f,
 		vote_time = ?i,
-		vote_time_on = ?b  where
+		vote_time_on = ?b,
+		event = ?,
+		on_off = ?  where
 		id = ?i',
 			array($price,
 			      $pecat,
@@ -236,6 +240,8 @@ if (isset($_POST['go_edit_nastr']))
 			      $vote_price,
 			      $vote_time,
 			      $vote_time_on,
+					$event,
+					$on_off,
 			      $id));
 		$db->query('update photos set price = ?f, pecat = ?f, pecat_A4 = ?f where id_album = ?i', array($price,$pecat,$pecat_A4, $id));
 		$_SESSION['current_album'] = $id;
@@ -447,7 +453,24 @@ if (isset($_POST['go_updown']))
 
 
 ?>
-<div id="long" class="modal hide fade in animated fadeInDown" tabindex="-1" data-replace="true" data-keyboard="false" data-backdrop="static" tabindex="-1" aria-hidden="false">
+
+<div style="float: left;">
+  <div class="slideThree" >
+	 <input id="slideThree1" type='checkbox' NAME='watermark' VALUE='yes'
+	  <?if (isset($ln['watermark']))
+		{
+		  echo 'checked="checked"';
+		} ?> /> <label for="slideThree1"></label>
+  </div>
+  Включить фотобанк
+</div>
+
+
+
+<!-- создать альбом-->
+
+<div id="long" class="modal hide fade in animated fadeInDown" tabindex="-1" data-replace="true" data-keyboard="false"
+ data-backdrop="static" tabindex="-1" aria-hidden="false">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
 		<h3>Создать альбом:</h3>
@@ -547,8 +570,11 @@ if (isset($_POST['go_updown']))
 		<p>4.Перед изменением <b>папки в фотобанке</b> для закаченного альбома необходимо сначала создать папку на
 			сервере! </p>
 	</div>
-</div><?
+</div>
 
+
+
+<?
 
 if (isset($_POST['go_delete']))
 	{
@@ -734,13 +760,13 @@ if (isset($_SESSION['current_cat']))
 																		</td>
 																		<td>
 																			<div class="slideThree">
-																				<input id="slideThree1" type='checkbox' NAME='watermark' VALUE='yes'
-																					<?if ($ln['watermark'])
+																				<input id="slideThree2" type='checkbox' NAME='on_off' VALUE='on'
+																					<?if ($ln['on_off'] == 'on')
 																					{
 																						echo 'checked="checked"';
-																					} ?> /> <label for="slideThree1"></label>
+																					} ?> /> <label for="slideThree2"></label>
 																			</div>
-																			Водяной знак
+																			Включить альбом
 																		</td>
 																	</tr>
 																	<tr>
@@ -750,6 +776,16 @@ if (isset($_SESSION['current_cat']))
 																				<input id="pecat" class="span2" type="text" NAME="pecat" VALUE="<?= $ln['pecat'] ?>"/>
 																			</div>
 																		</td>
+																	  <td>
+																		 <div class="slideThree">
+																			<input id="slideThree3" type='checkbox' NAME='event' VALUE='on'
+																			 <?if ($ln['event'] == 'on')
+																			  {
+																				 echo 'checked="checked"';
+																			  } ?> /> <label for="slideThree3"></label>
+																		 </div>
+																		 Показ фотографий в альбоме
+																	  </td>
 																	</tr>
 																	<tr>
 																		<td>
@@ -758,6 +794,16 @@ if (isset($_SESSION['current_cat']))
 																				<input id="pecat_A4" class="span2" type="text" NAME="pecat_A4" VALUE="<?= $ln['pecat_A4'] ?>"/>
 																			</div>
 																		</td>
+																	  <td>
+																		 <div class="slideThree">
+																			<input id="slideThree4" type='checkbox' NAME='watermark' VALUE='yes'
+																			 <?if ($ln['watermark'])
+																			  {
+																				 echo 'checked="checked"';
+																			  } ?> /> <label for="slideThree4"></label>
+																		 </div>
+																		 Водяной знак
+																	  </td>
 																	</tr>
 																	<tr>
 																		<td>
@@ -768,10 +814,10 @@ if (isset($_SESSION['current_cat']))
 																		</td>
 																		<td>
 																			<div class="slideThree">
-																				<input id="slideThree2" type='checkbox' NAME='ip_marker' VALUE='yes' <?if ($ln['ip_marker'])
+																				<input id="slideThree5" type='checkbox' NAME='ip_marker' VALUE='yes' <?if ($ln['ip_marker'])
 																					{
 																						echo 'checked="checked"';
-																					}?> /> <label for="slideThree2"></label>
+																					}?> /> <label for="slideThree5"></label>
 																			</div>
 																			IP надпись
 																		</td>

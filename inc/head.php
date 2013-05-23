@@ -80,10 +80,7 @@
 
 		<script src="/js/jquery.js"></script>
 		<script src="/js/bootstrap.min.js"></script>
-		<script src="/js/main.js"></script>
-		<script type="text/javascript" src="/js/ajax.js"></script>
 
-		<!--        <script src="/js/no-copy.js"></script>-->
 
 
 		<link href="/css/animate.css" rel="stylesheet" type="text/css"/>
@@ -102,11 +99,15 @@
 		<!--        <link href="/js/humane/themes/bigbox.css" rel="stylesheet" type="text/css"/>-->
 		<script type="text/javascript" src="/js/humane/humane.js"></script>
 
-
 		<link href="/css/main.css" rel="stylesheet" type="text/css"/>
+
+	  <script src="/js/main.js"></script>
+	  <script type="text/javascript" src="/js/ajax.js"></script>
+	  <!--        <script src="/js/no-copy.js"></script>-->
+
+
+
 		<?
-
-
 		if (strstr($_SERVER['PHP_SELF'], 'folder_for_prototype')): ?>
 			<script type="text/javascript" src="/js/prototype.js"></script>
 			<script type="text/javascript" src="/js/scriptaculous.js?load=effects"></script>
