@@ -37,8 +37,12 @@
 				  $order = iTogo();
 				  if ($order['price'] > $user_balans)
 					 {
-						$_SESSION['order_msg']
-						 = 'Недостаточно средств на балансе!<br> Пополните счет или закажите печать наложенным платежем.';
+						?>
+						<script type='text/javascript'>
+						  humane.timeout = 6000;
+						  humane.error("Недостаточно средств на балансе!<br> Пополните счет или закажите печать наложенным платежем.");
+						</script>
+						<?
 						$db->query('delete from orders where id = ?i', array($id_order));
 					 }
 				  else
@@ -74,22 +78,33 @@
 							 $db->query('delete from orders where id = ?i', array($id_order));
 							 $db->query('delete from order_items where id_order = ?i', array($id_order));
 							 $db->query('delete from download_photo where id_order = ?i', array($id_order));
-							 $_SESSION['order_msg']  = 'Ошибка отправки письма со ссылками! Возможно сайт перегружен. Пожалуйста, зайдите позже.';
+							 ?>
+							 <script type='text/javascript'>
+								humane.timeout = 6000;
+								humane.error("Ошибка отправки подтверждения! Возможно сайт перегружен. Пожалуйста, зайдите позже.");
+							 </script>
+							 <?
 							 trigger_error("Ошибка отправки письма со ссылками!");
 						  }
 						else
 						  {
 							 $_SESSION['basket'] = array();
 							 $_SESSION['zakaz'] = array();
-							 $_SESSION['order_msg']= 'Заказ оплачен! Вам на E-mail отправлено письмо со списком ссылок для скачивания фото!';
+							 ?>
+							 <script type='text/javascript'>
+								humane.timeout = 6000;
+								humane.success("Заказ оплачен! Вам на E-mail отправлено письмо со списком ссылок для скачивания фото!");
+							 </script>
+							 <?
 							 $db->query('update users set balans = balans - ?f where id = ?i', array($order['price'], $id_user));
 							 trigger_error("Произведена покупка фотографий!");
 						  }
-						?>
+						/**/?><!--
 						<script type="text/javascript">
 						  location.replace("basket.php?1=1");
 						</script>
-					 <?
+					 --><?/*
+						die();*/
 					 }
 				}
 		  }
@@ -197,22 +212,26 @@ if (isset($_POST['okei']) && isset($_SESSION['basket']) && is_array($_SESSION['b
 						{
 						  $db->query('delete from `print` where `id` = ?i', array($id_order));
 						  $db->query('delete from `order_print` where `id_print` = ?i', array($id_order));
-						  $_SESSION['order_msg'] = 'Ошибка отправки подтверждения! Возможно сайт перегружен. Пожалуйста, зайдите позже.';
+						  ?>
+						  <script type='text/javascript'>
+						  humane.timeout = 6000;
+						  humane.error("Ошибка отправки подтверждения! Возможно сайт перегружен. Пожалуйста, зайдите позже.");
+						  </script>
+						  <?
 						  trigger_error("Ошибка отправки письма подтверждения!");
 						}
 					 else
 						{
                     $_SESSION['basket'] = array();
 						  $_SESSION['zakaz'] = array();
-						  $_SESSION['order_msg'] = 'Спасибо, на Ваш E-mail отправлено письмо для проверки и подтверждения заказа.';
+						  ?>
+						  <script type='text/javascript'>
+							 humane.timeout = 6000;
+							 humane.success("Спасибо, на Ваш E-mail отправлено письмо для проверки и подтверждения заказа.");
+						  </script>
+						  <?
 						}
-					/* */?><!--
-					 <div class="drop-shadow lifted" style="margin: 50px 0 0 200px;">
-						<div style="font-size: 24px;">Вам на E-mail отправлено письмо для подтверждения заказа. Проверьте,
-						  пожалуйста, почту.
-						</div>
-					 </div>
-				  --><?
+
 
 			 } catch (go\DB\Exceptions\Query $e) {
 				$err  = 'SQL-query: '.$e->getQuery()."\n";
@@ -227,25 +246,6 @@ if (isset($_POST['okei']) && isset($_SESSION['basket']) && is_array($_SESSION['b
   <?
 		  }
 
-
-if (isset($_SESSION['order_msg2']))
-{
-			 ?>
-			 <div style="position: relative">
-				<div style="margin-top: 50px; margin-left: 150px;" class="drop-shadow lifted">
-				  <div style="font-size: 22px;"><?=$_SESSION['order_msg2']?></div>
-				</div>
-			 </div>
-			 <br><br><br><br>
-			 <?
-			 unset($_SESSION['order_msg2']);
-}
-
-if (isset($_SESSION['order_msg']))
- {
-			 $_SESSION['order_msg2'] = $_SESSION['order_msg'];
-			 unset($_SESSION['order_msg']);
-}
 
 
 

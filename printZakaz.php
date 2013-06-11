@@ -8,7 +8,7 @@
  */
 
   set_time_limit(0);
-  ini_set("display_errors","1");
+ // ini_set("display_errors","1");
   ignore_user_abort(1);
   require_once (__DIR__.'/inc/config.php');
   require_once (__DIR__.'/inc/func.php');
@@ -51,7 +51,7 @@ else
 	 else
 		{
 		      $balans = $user_balans - $data['summ'];
-		  if ($balans < 0 && $data['id_nal'] != 'наложенный платеж')
+		  if ($balans < 0 && $data['id_nal'] != 'наложенный платеж' && intval($data['zakaz']) != 1)
 			 {
 				$_SESSION['order_msg'] = 'Недостаточно средств на балансе! Необходимо  '.$data['summ'].' гр. Пополните свой счет на сайте любым<br> доступным Вам способом.
 				 Или сделайте новый заказ наложенным платежом.';
@@ -158,7 +158,7 @@ else
 		  /* todo: обработка заказа на FTP */
 		  $http = new http;
 		  /*todo: собрать заказ */
-		  $zakazPrint = $http->post($_SERVER['HTTP_HOST'].'/inc/sobrZakaz.php', array('idZakaz' => $data['id']));
+		  $zakazPrint = $http->post('http://'.$_SERVER['HTTP_HOST'].'/inc/sobrZakaz.php', array('idZakaz' => $data['id']));
 
 		  /*todo:  SMS о поступлении заказа */
 		  $zakaz = iconv ('windows-1251', 'utf-8',
@@ -171,7 +171,7 @@ else
 			 '-'.
 			 $koll.' шт. на сумму '.
 			 $data['summ'].'гр.');
-	 	  $sendSMS = $http->post($_SERVER['HTTP_HOST'].'/inc/sendSMS.php', array('sendSMS' => $zakaz, 'number' => '+380949477070'));
+	 	    $sendSMS = $http->post('http://'.$_SERVER['HTTP_HOST'].'/inc/sendSMS.php', array('sendSMS' => $zakaz, 'number' => '+380949477070'));
 		  /* todo: проверка - результат отправки */
 		  // echo $sendSMS;
 		}
@@ -181,10 +181,12 @@ else
 
 
 /* todo: тест - собрать заказ */
- //  $http = new http;
- //  $http->post($_SERVER['HTTP_HOST'].'/inc/sobrZakaz.php', array('idZakaz' => $data['id']));
+//   $http = new http;
+//   $result = $http->post('http://'.$_SERVER['HTTP_HOST'].'/inc/sobrZakaz.php', array('idZakaz' => $data['id']));
+//  echo $result;
+
  //  $zakaz = iconv ('windows-1251', 'utf-8', 'Тестовое сообщение');
- //  $sendSMS = $http->post($_SERVER['HTTP_HOST'].'/inc/sendSMS.php', array('sendSMS' => $zakaz, 'number' => '+380949477070'));
+ //  $sendSMS = $http->post('http://'.$_SERVER['HTTP_HOST'].'/inc/sendSMS.php', array('sendSMS' => $zakaz, 'number' => '+380949477070'));
 /* todo: проверка - результат отправки */
  //  echo  iconv ('utf-8','windows-1251', $sendSMS);
 
