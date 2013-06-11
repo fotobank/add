@@ -20,7 +20,6 @@ include (dirname(__FILE__).'/../inc/i_resize.php');
 
 <?
 
-
 // Функция, подсчитывающая количество файлов $dir
 function get_ftp_size($ftp_handle, $dir, $global_size = 0)
 	{
@@ -206,8 +205,8 @@ if (isset($_POST['go_edit_nastr']))
 		$vote_price   = $_POST['vote_price'];
 		$vote_time    = $_POST['vote_time'];
 		$vote_time_on = isset($_REQUEST['vote_time_on']);
-	   $event = (trim($_POST['event']) == 'on')?'on':'off';
-	   $on_off = (trim($_POST['on_off']) == 'on')?'on':'off';
+	   $event = (isset($_POST['event']) == 'on')?'on':'off';
+	   $on_off = (isset($_POST['on_off']) == 'on')?'on':'off';
 		$db->query('update albums set
 		price = ?f,
 		pecat = ?f,
@@ -262,9 +261,9 @@ if (isset($_POST['go_ftp_upload']))
 		if ($album_data)
 			{
 				//Выбираем данные по альбому и настройки FTP-сервера
-				$ftp_host = get_param('ftp_host');
-				$ftp_user = get_param('ftp_user');
-				$ftp_pass = get_param('ftp_pass');
+				$ftp_host = get_param('ftp_host',0);
+				$ftp_user = get_param('ftp_user',0);
+				$ftp_pass = get_param('ftp_pass',0);
 				// mysql_set_charset("utf8");
 				if ($ftp_host && $ftp_user && $ftp_pass)
 					{
@@ -861,10 +860,10 @@ if (isset($_SESSION['current_cat']))
 																		</td>
 																		<td>
 																			<div class="slideThree">
-																				<input id="slideThree3" type='checkbox' NAME='sharping' VALUE='yes' <?if ($ln['sharping'])
+																				<input id="slideThree6" type='checkbox' NAME='sharping' VALUE='yes' <?if ($ln['sharping'])
 																					{
 																						echo 'checked="checked"';
-																					}?> /> <label for="slideThree3"></label>
+																					}?> /> <label for="slideThree6"></label>
 																			</div>
 																			Добавить резкость
 																		</td>
@@ -888,10 +887,10 @@ if (isset($_SESSION['current_cat']))
 																		</td>
 																		<td>
 																			<div class="slideThree">
-																				<input id="slideThree4" type='checkbox' NAME='vote_time_on' VALUE='yes' <?if ($ln['vote_time_on'])
+																				<input id="slideThree7" type='checkbox' NAME='vote_time_on' VALUE='yes' <?if ($ln['vote_time_on'])
 																					{
 																						echo 'checked="checked"';
-																					}?> /> <label for="slideThree4"></label>
+																					}?> /> <label for="slideThree7"></label>
 																			</div>
 																			Голосование по времени
 																		</td>

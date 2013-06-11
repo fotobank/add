@@ -25,21 +25,45 @@ function get_f($text,$tag)
   return $ret[0];
 }
 
-// Return IP-address of user
-/*function Get_IP()
-{
-  $ip = getenv("HTTP_X_FORWARDED_FOR");
-  if (!$ip) {
-    $ip = getenv("REMOTE_ADDR");
-  } else {
-    $tmp = ",";
-    if (strlen(strstr($ip,$tmp)) != 0) {
-      $ips = explode($tmp,$ip);
-      $ip = $ips[count($ips)-1];
-    }
+  /**
+	* Возвращает безопасное значение, с удаленным html и php кодом
+	* @param string $in_Val - исходное значение
+	* @param int $trim_Val - если больше 0, то оставляет только указанное количество символов
+	* @param bool $u_Case - если true, то возвращает заглавные буквы
+	* @param bool $trim_symbols - если true, то возвращает только цифры до первой буквы
+	* @return string
+	*/
+  function GetFormValue($in_Val, $trim_Val = 0, $u_Case = false, $trim_symbols=false) {
+	 $ret = trim(addslashes(htmlspecialchars(strip_tags($in_Val))));
+	 if ($trim_Val)
+		$ret = substr($ret, 0, $trim_Val);
+	 if ($u_Case)
+		$ret = strtoupper($ret);
+
+	 if ($trim_symbols) {
+		$my_len = strlen($ret);
+		for ($pos = 0; $pos<$my_len;$pos++) {
+		  if (!is_numeric(substr($ret,$pos,1))) {
+			 $ret = substr($ret,0,$pos);
+			 break;
+		  }
+		}
+	 }
+	 return $ret;
   }
-  return trim($ip);
-}*/
+
+
+// Функция экранирования переменных
+  function quote_smart($value,$link) {
+	 //если magic_quotes_gpc включена - используем stripslashes
+	 if (get_magic_quotes_gpc()) {
+		$value = stripslashes($value);
+	 }
+	 //экранируем
+	 $value = mysql_real_escape_string($value,$link);
+	 return $value;
+  }
+
 
 
 	function Get_IP()
@@ -176,17 +200,6 @@ function authenticate($message)
   Header( "HTTP/1.0 401 Unauthorized");
 }
 
-// Explode date in format YYYY-MM-DD HH:MM:SS in object
-function explode_date($date)
-{
-  $date_obj->year = substr($date,0,4);
-  $date_obj->month = substr($date,5,2);
-  $date_obj->day = substr($date,8,2);
-  $date_obj->hour = substr($date,11,2);
-  $date_obj->minutes = substr($date,14,2);
-  $date_obj->seconds = substr($date,17,2);
-  return $date_obj;
-}
 
 // Delete all files in specified folder and also the folder
 function delete_files($folder)

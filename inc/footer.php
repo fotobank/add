@@ -38,7 +38,8 @@
 	$error_processor->err_proc("", "w", "");
 	//	$error_processor->err_proc("", "am", "");
    ?>
-		Используемая память в начале: <?=$startMem?> Кбайт;
+	   Версия PHP: <?=phpversion()?>;
+	   Используемая память в начале: <?=$startMem?> Кбайт;
 		Память в конце: <?=intval(memory_get_usage() / 1024)?> Кбайт;
 		Пик: <?=intval(memory_get_peak_usage() / 1024)?> Кбайт;
 		<?

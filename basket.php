@@ -11,30 +11,25 @@
 	 }
   else
 	 {
-		$_SESSION['zakaz'] = array();
+
 		if (isset($_POST['go_back']))
 		  {
 			 $_SESSION['print'] = 1;
 		  }
-		if (isset($_POST['go_order']) && isset($_SESSION['basket']) && is_array($_SESSION['basket'])
-		 && count($_SESSION['basket']) > 0
-		)
+		if (isset($_POST['go_order']) && isset($_SESSION['basket']) && is_array($_SESSION['basket']) && count($_SESSION['basket']) > 0)
 		  {
 			 $mysqlErrno = 0;
 			 $id_order   = 0;
 			 try
 				{
-				  $id_order = $db->query('insert into orders (id_user, dt) values (?i,?i)',
-					 array($_SESSION['userid'], time()),
-					 'id');
+				  $id_order = $db->query('insert into orders (id_user, dt) values (?i,?i)', array($_SESSION['userid'], time()),'id');
 				}
 			 catch (go\DB\Exceptions\Query $e)
 				{
 				  trigger_error("
 			                  'SQL-query: ".$e->getQuery()."\n'
                            'Error description: ".$e->getError()."\n'
-                           'Error code: ".$e->getErrorCode()."\n'
-		       ");
+                           'Error code: ".$e->getErrorCode()."\n'");
 				  $mysqlErrno = 1;
 				}
 			 if ($mysqlErrno == 0)
@@ -79,17 +74,15 @@
 							 $db->query('delete from orders where id = ?i', array($id_order));
 							 $db->query('delete from order_items where id_order = ?i', array($id_order));
 							 $db->query('delete from download_photo where id_order = ?i', array($id_order));
-							 $_SESSION['order_msg']
-							  = 'Ошибка отправки письма со ссылками! Возможно сайт перегружен. Пожалуйста, зайдите позже.';
+							 $_SESSION['order_msg']  = 'Ошибка отправки письма со ссылками! Возможно сайт перегружен. Пожалуйста, зайдите позже.';
 							 trigger_error("Ошибка отправки письма со ссылками!");
 						  }
 						else
 						  {
 							 $_SESSION['basket'] = array();
-							 $_SESSION['order_msg']
-														= 'Заказ оплачен! Вам на E-mail отправлено письмо со списком ссылок для скачивания фото!';
-							 $db->query('update users set balans = balans - ?f where id = ?i',
-								array($order['price'], $id_user));
+							 $_SESSION['zakaz'] = array();
+							 $_SESSION['order_msg']= 'Заказ оплачен! Вам на E-mail отправлено письмо со списком ссылок для скачивания фото!';
+							 $db->query('update users set balans = balans - ?f where id = ?i', array($order['price'], $id_user));
 							 trigger_error("Произведена покупка фотографий!");
 						  }
 						?>
@@ -100,7 +93,164 @@
 					 }
 				}
 		  }
-		$_SESSION['print'] = 0;
+
+if (isset($_POST['okei']) && isset($_SESSION['basket']) && is_array($_SESSION['basket']) && count($_SESSION['basket']) > 0 )
+		  {
+
+			 $id_user = intval($_SESSION['userid']);
+			 $name = $_POST['us_name'];
+			 $subname = $_POST['us_surname'];
+			 $phone = $_POST['phone'];
+			 $email = $_POST['email'];
+			 $adr_poluc = $_POST['adress'];
+			 $adr_studii = $_POST['aPecat'];
+
+//			  $tmp = explode('|',$_POST['nPocta']);
+//			  $nPocta = $tmp[0];
+			 $nPocta = $_POST['nPocta'];
+			 $id_nal = $_POST['opl'];
+			 $id_dost = $_POST['dost'];
+			 $user_dost = $_POST['txtDost'];
+			 $user_opl = $_POST['txtOpl'];
+			 $ramka = $_SESSION['zakaz']['ramka'];
+			 $mat_gl = $_SESSION['zakaz']['mat_gl'];
+			 $format = $_SESSION['zakaz']['format'];
+			 $comm = $_POST['comment'];
+			 $zakaz = 0;
+	       $tm  = time();
+			 $order = iTogo();
+			 $summ = NULL;
+			 if ($order)
+				{
+				  $format = $_SESSION['zakaz']['format'];
+				  if ($format == '10x15' || $format == '13x18')
+					 {
+						$summ = $order['pecat'];
+					 }
+				  elseif ($format == '20x30')
+					 {
+						$summ = $order['pecat_A4'];
+					 }
+				}
+
+			 $pattern = 'INSERT INTO `print`(`dt`,`id_user`,`name`,`subname`,`phone`,`email`,`adr_poluc`,`adr_studii`,`nPocta`,`id_nal`,`id_dost`,`user_dost`,
+                  `user_opl`,`ramka`,`mat_gl`,`format`,`comm`, `summ`,`zakaz`)
+                  VALUES (?i, ?i, ?string, ?string, ?string, ?string, ?string, ?string, ?string, ?string, ?string, ?string, ?string, ?b, ?string, ?string, ?string, ?f, ?b)';
+			 $data    = array($tm, $id_user,$name,$subname,$phone,$email,$adr_poluc,$adr_studii,$nPocta,$id_nal,$id_dost,$user_dost,$user_opl,$ramka,$mat_gl,$format,$comm,
+									 $summ,$zakaz);
+			 try {
+				$id_order = $db->query($pattern, $data)->id(); // номер заказа
+				if($id_order)
+				  {
+					 foreach ($_SESSION['basket'] as $ind => $val)
+						{
+								$db ->query('INSERT INTO `order_print`(`id_print`,`id_photo`,`koll`) VALUES (?i,?i,?i)',array($id_order,$ind,$val));
+						}
+				  }
+
+					 $key      = sha1(md5($id_order.md5($tm.mt_rand(1, 10000))));
+					 $db->query('UPDATE `print` SET `key` = ?string WHERE id = ?i', array($key,$id_order));
+					 $album_name = '';
+					 foreach($_SESSION['album_name'] as $val)
+						{
+                $album_name = $val;
+						}
+
+					 $title     = 'Фотографии Creative line studio';
+					 $headers   = "Content-type: text/plain; charset=windows-1251\r\n";
+					 $headers .= "From: Администрация Creative line studio \r\n";
+					 $subject = '=?koi8-r?B?'.base64_encode(convert_cyr_string($title, "w", "k")).'?=';
+
+
+					 $letter  = "Здравствуйте, ".$name."!\r\n";
+					 $letter .= "Вы или кто - то от Вашего имени сделал заказ печати фотографий на сайте http://".$_SERVER['HTTP_HOST']."\r\n";
+					 $letter .= "Если заказ сделан не Вами, просто удалите это письмо.\r\n\r\n";
+					 $letter .= "Заказ № ".$id_order." \r\n";
+					 $letter .= "Дата заказа: ".date('d.m.Y  H.i', $tm)."\r\n";
+					 $letter .= "Имя получателя: ".$name."\r\n";
+					 $letter .= "Фамилия получателя: ".$subname."\r\n";
+					 $letter .= "Номер телефона получателя: ".$phone."\r\n";
+					 $letter .= "Размер фотографий:\t ".$format." см.\r\n";
+					 $letter .= "Бумага ".$mat_gl."\r\n";
+					 $letter .= ($id_nal == 'другое') ? "Способ оплаты выбранный пользователем: '".$user_opl.",\r\n":"Способ оплаты: ".$id_nal."\r\n";
+					 $letter .= ($id_dost == 'другое') ? "Способ доставки выбранный пользователем: '".$user_dost.",\r\n":"Вид доставки: ".$id_dost."\r\n";
+					 if($id_dost == 'Самовывоз из почтового отделения Вашего города' || $id_dost == 'Доставка до двери почтовой службой (кроме Одессы)')
+						{
+						  $letter .= "Наименование службы доставки: ".$nPocta.",\r\n";
+						  $letter .= "Адрес почтового отделения или получателя:\r\n ".$adr_poluc."\r\n";
+						}
+					 if($id_dost == 'Самовывоз из студии (в Одессе)') $letter .= "Адрес студии для получения фотографий: '".$adr_studii.",\r\n";
+					 $letter .= "Примечание пользователя:\r\n".$comm."\r\n";
+					 $letter .= "\r\nНазвание альбома: '".$album_name."'\r\n";
+					 $letter .= "Номер и количество фотографий:\r\n";
+					 foreach ($_SESSION['basket'] as $ind => $val)
+						{
+						  $name = $db->query('select `nm` from `photos` where id =?i',array($ind),'el');
+						  $letter .= "Фотография № ".$name." - ".$val."шт.\r\n";
+						}
+					 $letter .= "К оплате: ".$summ."гр. (".str_digit_str($summ)."гр.)\r\n\r\n";
+					 $letter .= "Подтвердить заказ:  ";
+					 $letter .= 'http://'.$_SERVER['HTTP_HOST']."/printZakaz.php?key=$key";
+					 $letter .= "\r\nВНИМАНИЕ! Для подтверждения заказа необходимо сначала залогиниться на сайте! Ссылка действительна 48 часов!\r\n";
+					 // Отправляем письмо
+					 if (!mail($email, $subject, $letter, $headers))
+						{
+						  $db->query('delete from `print` where `id` = ?i', array($id_order));
+						  $db->query('delete from `order_print` where `id_print` = ?i', array($id_order));
+						  $_SESSION['order_msg'] = 'Ошибка отправки подтверждения! Возможно сайт перегружен. Пожалуйста, зайдите позже.';
+						  trigger_error("Ошибка отправки письма подтверждения!");
+						}
+					 else
+						{
+                    $_SESSION['basket'] = array();
+						  $_SESSION['zakaz'] = array();
+						  $_SESSION['order_msg'] = 'Спасибо, на Ваш E-mail отправлено письмо для проверки и подтверждения заказа.';
+						}
+					/* */?><!--
+					 <div class="drop-shadow lifted" style="margin: 50px 0 0 200px;">
+						<div style="font-size: 24px;">Вам на E-mail отправлено письмо для подтверждения заказа. Проверьте,
+						  пожалуйста, почту.
+						</div>
+					 </div>
+				  --><?
+
+			 } catch (go\DB\Exceptions\Query $e) {
+				$err  = 'SQL-query: '.$e->getQuery()."\n";
+				$err .= 'Error description: '.$e->getError()."\n";
+				$err .= 'Error code: '.$e->getErrorCode()."\n";
+				trigger_error($err);
+			 }
+	 ?>
+	 <script type="text/javascript">
+		location.replace("basket.php?1=1");
+	 </script>
+  <?
+		  }
+
+
+if (isset($_SESSION['order_msg2']))
+{
+			 ?>
+			 <div style="position: relative">
+				<div style="margin-top: 50px; margin-left: 150px;" class="drop-shadow lifted">
+				  <div style="font-size: 22px;"><?=$_SESSION['order_msg2']?></div>
+				</div>
+			 </div>
+			 <br><br><br><br>
+			 <?
+			 unset($_SESSION['order_msg2']);
+}
+
+if (isset($_SESSION['order_msg']))
+ {
+			 $_SESSION['order_msg2'] = $_SESSION['order_msg'];
+			 unset($_SESSION['order_msg']);
+}
+
+
+
+$_SESSION['print'] = 0;
+
 		?>
 		<div id="main">
 		<?
@@ -112,33 +262,9 @@
 		if (isset($_POST['mat_gl']) && count($_SESSION['basket']) > 0)
 		  {
 			 $_SESSION['print']            = 2;
-			 $_SESSION['basket']['ramka']  = trim($_POST['ramka']);
-			 $_SESSION['basket']['mat_gl'] = trim($_POST['mat_gl']);
-			 $_SESSION['basket']['format'] = trim($_POST['format']);
-		  }
-
-		if (isset($_POST['go_mail']) && count($_SESSION['basket']) > 0)
-		  {
-			 $_SESSION['print'] = 3;
-		  }
-
-
-		if (isset($_SESSION['order_msg2']))
-		  {
-			 ?>
-			 <div style="position: relative">
-				<div style="margin-top: 50px; margin-left: 150px;" class="drop-shadow lifted">
-				  <div style="font-size: 22px;"><?=$_SESSION['order_msg2']?></div>
-				</div>
-			 </div>
-			 <br><br><br><br>
-			 <?
-			 unset($_SESSION['order_msg2']);
-		  }
-		if (isset($_SESSION['order_msg']))
-		  {
-			 $_SESSION['order_msg2'] = $_SESSION['order_msg'];
-			 unset($_SESSION['order_msg']);
+			 $_SESSION['zakaz']['ramka']  = trim($_POST['ramka']);
+			 $_SESSION['zakaz']['mat_gl'] = trim($_POST['mat_gl']);
+			 $_SESSION['zakaz']['format'] = trim($_POST['format']);
 		  }
 
 		?>
@@ -173,20 +299,13 @@
 				  <div style="clear: both;"></div>
 				<?
 				}
-			 if (!isset($_SESSION['basket']['format']))
+			 if (!isset($_SESSION['zakaz']['format']))
 				{
-				  $_SESSION['basket']['format'] = '13x18';
+				  $_SESSION['zakaz']['format'] = '13x18';
 				}
 			 $print = iTogo();
-			 $format = $_SESSION['basket']['format'];
-			 if ($format == '10x15' || $format == '13x18')
-				{
-				  $sum = $print['pecat']; // кол-во денег для всех напечатанных фото 13x18
-				}
-			 elseif ($format == '20x30')
-				{
-				  $sum = $print['pecat_A4']; // кол-во денег для всех напечатанных фото A4
-				}
+			 $format = $_SESSION['zakaz']['format'];
+
 			 if (
 				isset($_SESSION['print']) && $_SESSION['print'] == 0 || isset($_SESSION['print']) && $_SESSION['print'] == 1
 			 )
@@ -198,10 +317,7 @@
 						{
 						  if (!isset($print['id'][$ind]) || $print['id'][$ind] != $ind)
 							 {
-								if ($ind != "ramka" and $ind != "mat_gl" and $ind != "format")
-								  {
 									 unset($_SESSION['basket'][$ind]); // чистка от мусора
-								  }
 							 }
 						  else
 							 {
@@ -239,17 +355,13 @@
 													 <button class="btn-mini btn-info" onclick="ajaxAdd('goZakazAdd='+'<?= $ind ?>'+'&add='+'-1');" style="float:left; width: 28px; height: 18px; padding: 0 0 0 0;  margin: 0 0 0 0;">
 														-
 													 </button>
-			     <span id="<?= 'fKoll'.$ind ?>" class="label label-warning" style="float: left; margin-left: 2px;">
-				     <?=$_SESSION['basket'][$ind]?> шт</span> <span id="<?=
-													 'fCena'
-													  .$ind ?>" class="label label-success" style="float: right;"><?=isset($pr) ? $pr : NULL;?>
-														грн</span>
+			                           <span id="<?= 'fKoll'.$ind ?>" class="label label-warning" style="float: left; margin-left: 2px;">
+					                      <?=$_SESSION['basket'][$ind]?> шт</span> <span id="<?='fCena'.$ind ?>"
+													  class="label label-success" style="float: right;"><?=isset($pr) ? $pr : NULL;?>грн</span>
 												  </div>
 												</div>
 												<span><b>Всего:</b></span>
-												<span id="<?= 'fSumm'
-												 .$ind ?>" class="label label-success" style="float: right; margin-right: -2px;">
-	        <?=isset($fSumm) ? $fSumm : NULL;?> грн</span>
+												<span id="<?= 'fSumm'.$ind ?>" class="label label-success" style="float: right; margin-right: -2px;"><?=isset($fSumm) ? $fSumm : NULL;?> грн</span>
 											 <?
 											 }
 										  elseif (isset($_SESSION['print']) && $_SESSION['print'] == 0)
@@ -274,7 +386,7 @@
 			 if (isset($_SESSION['print']) && $_SESSION['print'] == 0)
 				{
 				  ?>
-				  <div id="form_bask" style="margin-bottom: 0px; padding-top: 20px; height: 76px; width: 656px; margin-left: 270px;">
+				  <div id="form_bask" style="margin-bottom: 0; padding-top: 20px; height: 76px; width: 667px; margin-left: 270px;">
 				  <table>
 					 <tr>
 						<td>
@@ -304,17 +416,17 @@
 				}
 			 elseif (isset($_SESSION['print']) && $_SESSION['print'] == 1)
 				{
-				  if (!isset($_SESSION['basket']['ramka']))
+				  if (!isset($_SESSION['zakaz']['ramka']))
 					 {
-						$_SESSION['basket']['ramka'] = 0;
+						$_SESSION['zakaz']['ramka'] = 0;
 					 }
-				  if (!isset($_SESSION['basket']['mat_gl']))
+				  if (!isset($_SESSION['zakaz']['mat_gl']))
 					 {
-						$_SESSION['basket']['mat_gl'] = 'глянцевая';
+						$_SESSION['zakaz']['mat_gl'] = 'глянцевая';
 					 }
-				  if (!isset($_SESSION['basket']['format']))
+				  if (!isset($_SESSION['zakaz']['format']))
 					 {
-						$_SESSION['basket']['format'] = '13x18';
+						$_SESSION['zakaz']['format'] = '13x18';
 					 }
 				  $fFormat = array('10x15', '13x18', '20x30');
 				  $fBum    = array('глянцевая', 'матовая');
@@ -345,7 +457,7 @@
 								{
 								  ?>
 								  <option value='<?= $format ?>' <?=(
-								  $_SESSION['basket']['format'] == $format ? 'selected="selected"' : '')?>
+								  $_SESSION['zakaz']['format'] == $format ? 'selected="selected"' : '')?>
 
 									><?=$format?> см
 								  </option>
@@ -361,7 +473,7 @@
 								{
 								  ?>
 								  <option value='<?= $bum ?>' <?=(
-								  $_SESSION['basket']['mat_gl'] == $bum ? 'selected="selected"' : '')?>><?=$bum?></option>
+								  $_SESSION['zakaz']['mat_gl'] == $bum ? 'selected="selected"' : '')?>><?=$bum?></option>
 								<?
 								}
 							 ?>
@@ -370,7 +482,7 @@
 							 <span style="color:#000000;font-family:Arial,serif;font-size:14px;">Белая рамка:</span></label>
 						  <input type="hidden" name="ramka" value="0"/>
 						  <input type="checkbox" id="ramka" name="ramka" value="1"
-							<? if ($_SESSION['basket']['ramka'])
+							<? if ($_SESSION['zakaz']['ramka'])
 							 {
 								echo 'checked="checked"';
 							 } ?>
@@ -398,17 +510,22 @@
 			 elseif (isset($_SESSION['print']) && $_SESSION['print'] == 2)  // страница выбора способа оплаты
 				{
 ?>
-<!--<script type="text/javascript" src="/js/jquery/jquery-plus-jquery-ui.js"></script>   <!--для настройки-->
-		<script type="text/javascript" src="/js/jquery/jquery-ui.js"></script>
-		<link rel="stylesheet" href="/js/jquery/themes/base/minified/jquery-ui.min.css" type="text/css" media="screen"/>
-		<!--		<link rel="stylesheet" href="/js/jquery/themes/base/minified/jquery.ui.theme.min.css" type="text/css" media="screen"/>-->
-
-<!--  <script type="text/javascript" src="/js/ixedit/ixedit.js"></script>-->
-<!--  <link rel="stylesheet" href="/js/ixedit/ixedit.css" type="text/css" media="screen"/>-->
 
 
-	<script type="text/javascript" src="/js/zakazPecat.js"></script>
+<!--		для работы		  -->
 
+<script type="text/javascript" src="/js/jquery/jquery-ui.js"></script>
+<link rel="stylesheet" href="/js/jquery/themes/base/minified/jquery-ui.min.css" type="text/css" media="screen"/>
+<script type="text/javascript" src="/js/zakazPecat.js"></script>
+<link rel="stylesheet" href="/js/jquery/themes/base/minified/jquery.ui.theme.min.css" type="text/css" media="screen"/>
+<script language='javascript' src="/js/form-validator/formvalidator.class.js"></script>
+
+
+<!--		 для настройки-->
+
+<!--<script type="text/javascript" src="/js/jquery/jquery-plus-jquery-ui.js"></script>-->
+<!--<script type="text/javascript" src="/js/ixedit/ixedit.js"></script>-->
+<!--<link rel="stylesheet" href="/js/ixedit/ixedit.css" type="text/css" media="screen"/>-->
 
 
 				 <?
@@ -423,7 +540,6 @@
 					 {
 							 foreach($rs as $v)
 								{
-
 	                    	  if($v['param_name'] == 'oplata') 	   $spOpl[$v['param_index']]      = $v['param_value'];
 								  if($v['param_name'] == 'dostavka')   $spDost[$v['param_index']]     = $v['param_value'];
 								  if($v['param_name'] == 'adr_pecat')  $adr_pecat[$v['param_index']]  = $v['param_value'];
@@ -435,7 +551,6 @@
 								  if($v['param_name'] == 'http_pocta') $pocta[$nPocta] = $v['param_value'];
 
 								}
-
 						 $spOpl[]     = 'выбрать';
 						 $spDost[]    = 'выбрать';
 						 $adr_pecat[] = 'выбрать';
@@ -445,7 +560,7 @@
 				  ?>
 				  <div id="form_bask" style="display: none;">
 					 <div id="prFormOpl" style="position: relative; width: 350px;left: 10px;">
-						<form  id="formOpl" name="printMail" method="post" action="<?php echo basename(__FILE__); ?>"
+						<form  id="formOpl" name="validatedform"  method="post" action="<?php echo basename(__FILE__); ?>"
 						 enctype="multipart/form-data" style="margin-bottom: 40px;">
 
 						  <label id="pr_opl" style="position: relative; width: 114px; height: 14px; text-align: left; margin-top: 24px;float: left;" for="opl">
@@ -485,14 +600,12 @@
 							 </select>
 						  </div>
 
-
 						  <div id="clear_txtDost" style="clear: both;">
 						  <label id="pr_txtDost" for="txtDost"></label>
 						  <span class="ttext_blue" style="font-size:10px; float: right;">укажите свой способ доставки</span>
 						  <textarea id="txtDost" class="inp_f_reg" title="например: заберу заказ при личной встрече и т.д." data-original-title="" name="txtDost" rows="5" cols="32" style="width: 336px; height: 80px;
 						   margin-top: 10px;"></textarea>
 						  </div>
-
 
 						  <div id="clear_nPocta" style="clear: both;">
 							 <label id="pr_nPocta" style="position: relative; width: 114px; height: 14px; text-align: left; margin-top: 5px;float: left;" for="nPocta">
@@ -539,33 +652,32 @@
 							 <span style="font-size:18px;">Контактные данные получателя:</span></label>
 						  </div>
 
-
 						  <div id="clear_us_name" style="clear: both;">
 							 <label id="pr_us_name" style="position: relative; width: 120px; height: 28px; text-align: left; float: left; margin-top: 10px;" for="us_name">
 								<span>Имя:</span> </label>
-							 <input id="us_name" class="inp_f_reg" type="text" value="<?= $rs['us_name']?>" name="Editbox3" style="position: relative; width: 200px; height: 23px; line-height: 23px;
-							     float: right; margin-top: 10px;"
-							  data-placement="right" title="Имя получателя заказа">
+							 <input id="us_name" class="inp_f_reg required" type="text" value="<?= $rs['us_name']?>" name="us_name" style="position: relative; width: 200px;
+							  height: 23px; line-height: 23px; float: right; margin-top: 10px;" data-placement="right" title="Имя получателя заказа" maxlength="20">
 						  </div>
 						  <div id="clear_us_surname" style="clear: both;">
 							 <label id="us_surname" style="position: relative; width: 120px; height: 28px; text-align: left; float: left;" for="us_surname">
 								<span>Фамилия:</span> </label>
-							 <input id="us_surname" class="inp_f_reg" type="text" value="<?= $rs['us_surname']?>" name="us_surname"
+							 <input id="us_surname" class="inp_f_reg required" type="text" value="<?= $rs['us_surname']?>" name="us_surname"
 							  style="position: relative; width: 200px; height: 23px; line-height: 23px;
-							     float: right;"  data-placement="right" title="Фамилия получателя заказа">
+							     float: right;"  data-placement="right" title="Фамилия получателя заказа" maxlength="20">
 						  </div>
+
 						  <div id="clear_phone" style="clear: both;">
 							 <label id="pr_phone" style="position: relative; width: 120px; height: 28px; text-align: left; float: left;" for="phone">
 								<span >Телефон:</span> </label>
-							 <input id="phone" class="inp_f_reg" type="text" value="<?= $rs['phone']?>" name="phone" style="position: relative;
-							 width: 200px; height: 23px; line-height: 23px;float: right;" data-placement="right" title="Контактный телефон">
+							 <input id="phone" class="inp_f_reg numberValidator" type="text" value="<?= $rs['phone']?>" name="phone" style="position: relative;
+							 width: 200px; height: 23px; line-height: 23px;float: right;" data-placement="right" title="Контактный телефон" maxlength="20">
 						  </div>
 
 						  <div id="clear_email" style="clear: both;">
 							 <label id="pr_email" style="position: relative; width: 120px; height: 28px; text-align: left; float: left;" for="email">
 								<span>E-mail:</span> </label>
-							 <input id="email" class="inp_f_reg" type="text" value="<?= $rs['email']?>" name="Editbox6" style="position: relative;
-							 width: 200px; height: 23px; line-height: 23px;float: right;" data-placement="right" title="Почтовый ящик для подтверждения заказа">
+							 <input id="email" class="inp_f_reg emailValidator required" type="text" value="<?= $rs['email']?>" name="email" style="position: relative;
+							 width: 200px; height: 23px; line-height: 23px;float: right;" data-placement="right" title="Почтовый ящик для подтверждения заказа" maxlength="20">
 						  </div>
 
 						  <div id="clear_adress" style="clear: both;">
@@ -573,23 +685,17 @@
 								<span>Адрес почтового отделения </span>
 								<span style="font-size:12px;">(или получателя если доставка на дом):</span></label>
 							 <textarea class="inp_f_reg" id="adress" cols="32" rows="5" style="position: relative; width: 205px; height: 80px; float: right; margin-top: 10px;"
-							  name="adress" data-original-title="" title="почтовый индекс, страна, город, улица, дом, квартира" ></textarea>
+							  name="adress" data-original-title="" title="почтовый индекс, страна, город, улица, дом, квартира" maxlength="512"></textarea>
 						  </div>
-
-
-
 
 						  <div id="clear_a" style="clear: both;">
 						  <a href="" onclick="return false;"><span class="ttext_blue" style="font-size:10px; float: right;">Добавить комментарий к заказу</span></a>
 						  </div>
 
-
 						  <div id="clear_comment" style="clear: both;display: none;">
 							 <label id="pr_comment" for="comment"> </label>
-								<textarea class="inp_f_reg" id="comment" title="комментарии к заказу" data-original-title="" name="comment" rows="5" cols="32" style="width: 336px; height: 80px; margin-top: 10px;"></textarea>
+								<textarea class="inp_f_reg" id="comment" title="комментарии к заказу" data-original-title="" name="comment" rows="5" cols="32" style="width: 336px; height: 80px; margin-top: 10px;" maxlength="512"></textarea>
 						  </div>
-
-
 
 						  <div id="clear_okei" style="clear: both;">
 							 <input id="okei" type="checkbox" style="float: left; margin: 15px 0 0 60px;" value="on" name="okei" data-original-title="" title="">
@@ -602,7 +708,8 @@
                     </div>
 						  <span id="iTogo" class="label label-important" style="margin: 20px 0 10px -10px;"><?= summa().' '.$poctRash?></span><br>
 						  <div id="clear_zakazat">
-						  <input id="metall_kn" class="btn btn-success" type="submit" style="position: relative;float: right;width: 140px;" value="Заказать" data-original-title="" title="">
+						  <input id="metall_kn" class="btn btn-success" type="submit" style="position: relative;float: right;width: 140px;"
+							value="Заказать" data-original-title="" title="">
 				        </div>
 						</form>
 					 <form action="basket.php" method="post" style="position: absolute;margin-top: -40px;">
@@ -611,118 +718,12 @@
 					 </form>
 					 </div>
 				  </div>
-
+				  <script language='javascript'>
+					 var formvalidator = new FormValidator("validatedform");
+					 formvalidator.initValidation();
+				  </script>
 				<?
 		  }
-
-			 elseif (isset($_SESSION['print']) && $_SESSION['print'] == 3)
-				{
-				  if (isset($_POST['go_mail']) && isset($_SESSION['basket']) && is_array($_SESSION['basket'])
-					&& count($_SESSION['basket']) > 0
-				  )
-					 {
-						$mysqlErrno  = 0;
-						$id_order    = 0;
-						$mat_gl      = '';
-						$ramka       = '';
-						$phone       = '';
-						$id_pocta    = '';
-						$adress_otpr = '';
-						$order       = '';
-						$id_nal      = '';
-						try
-						  {
-							 $id_order = $db->query('insert into print_order (mat_gl,ramka,id_user,dt,phone,id_pocta,order,adress_otpr,id_nal)
-							     values (?,?i,?i,?i,?string,?i,?f,?string,?i)',
-								array($mat_gl, $ramka, $_SESSION['userid'], time(), $phone, $id_pocta, $order, $adress_otpr,
-										$id_nal),
-								'id');
-						  }
-						catch (go\DB\Exceptions\Query $e)
-						  {
-							 trigger_error("
-			                  'SQL-query: ".$e->getQuery()."\n'
-                           'Error description: ".$e->getError()."\n'
-                           'Error code: ".$e->getErrorCode()."\n'
-		                                 ");
-							 $mysqlErrno = 1;
-						  }
-						if ($mysqlErrno == 0)
-						  {
-							 $order = iTogo();
-							 if ($order['pecat'] > $user_balans)
-								{
-								  $_SESSION['order_msg']
-									= 'Недостаточно средств на балансе!<br> Пополните счет или закажите печать наложенным платежем.';
-								  $db->query('delete from orders where id = ?i', array($id_order));
-								}
-							 else
-								{
-								  $tm           = time();
-								  $download_ids = array();
-								  $id_user      = intval($_SESSION['userid']);
-								  foreach ($_SESSION['basket'] as $ind => $val)
-									 {
-										$id_item           = $db->query('insert into order_items (id_order, id_photo) values (?i,?i)',
-										  array($id_order, $ind),
-										  'id');
-										$key               = md5($id_item.$tm.$id_order.mt_rand(1, 10000));
-										$id                = intval($db->query('insert into download_photo (id_user, id_order, id_order_item, id_photo, dt_start, download_key)
-                                values (?i,?i,?i,?i,?i,?string)',
-										  array($id_user, $id_order, $id_item, $ind, $tm, $key),
-										  'id'));
-										$download_ids[$id] = $key;
-									 }
-								  $user_data = $db->query('select * from users where id = ?i', array($id_user), 'row');
-								  $title     = 'Фотографии Creative line studio';
-								  $headers   = "Content-type: text/plain; charset=windows-1251\r\n";
-								  $headers .= "From: Администрация Creative line studio \r\n";
-								  $subject = '=?koi8-r?B?'.base64_encode(convert_cyr_string($title, "w", "k")).'?=';
-								  $letter  = "Здравствуйте, $user_data[us_name]!\r\n";
-								  $letter .= "Вам предоставлен доступ для скачивания следующих фото:.\r\n\r\n";
-								  foreach ($download_ids as $ind => $val)
-									 {
-										$letter .= 'http://'.$_SERVER['HTTP_HOST']."/download.php?key=$val\r\n";
-									 }
-								  $letter .= "\r\nВНИМАНИЕ! Для скачивания фотографий сначала нужно залогиниться на сайте! Ссылки действительны 48 часов!\r\n";
-								  // Отправляем письмо
-								  if (!mail($user_data['email'], $subject, $letter, $headers))
-									 {
-										$db->query('delete from orders where id = ?i', array($id_order));
-										$db->query('delete from order_items where id_order = ?i', array($id_order));
-										$db->query('delete from download_photo where id_order = ?i', array($id_order));
-										$_SESSION['order_msg']
-										 = 'Ошибка отправки письма со ссылками! Возможно сайт перегружен. Пожалуйста, зайдите позже.';
-										trigger_error("Ошибка отправки письма со ссылками!");
-									 }
-								  else
-									 {
-										$_SESSION['basket'] = array();
-										$_SESSION['order_msg']
-																  = 'Заказ оплачен! Вам на E-mail отправлено письмо со списком ссылок для скачивания фото!';
-										$db->query('update users set balans = balans - ?f where id = ?i',
-										  array($order['price'], $id_user));
-										trigger_error("Произведена покупка фотографий!");
-									 }
-								  ?>
-								  <script type="text/javascript">
-									 location.replace("basket.php?1=1");
-								  </script>
-								<?
-								}
-						  }
-					 }
-		
-				  ?>
-
-
-				  <div class="drop-shadow lifted" style="margin: 50px 0 0 150px;">
-					 <div style="font-size: 24px;">Вам на E-mail отправлено письмо для подтверждения заказа. Проверьте,
-						пожалуйста, почту.
-					 </div>
-				  </div>
-				<?
-        }
 		  }
 		else
 		  {

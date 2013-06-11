@@ -60,7 +60,7 @@ function ajaxPostQ(url, idName,  data) {
          },
         // ¬ыводим то что вернул PHP
         success: function (html) {
-            //предварительно очищаем нужный элемент страницы
+//           alert(html);
             $(idName).empty().append(html);
          }
     });

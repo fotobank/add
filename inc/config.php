@@ -25,6 +25,7 @@
 	               'charset'  => 'cp1251',
 	           //    '_debug'   => true,
 	               '_debug'   => false,
+						'_lazy'    => false,
 	);
 
 	$db = go\DB\DB::create($params, 'mysql');

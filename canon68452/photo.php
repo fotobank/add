@@ -1,12 +1,4 @@
 <?php
-function send_img($id, $res_foto)
-	{
-
-		echo '<script type="text/javascript">';
-		echo'window.parent.document.getElementById("'.$id.'").innerHTML=\'<img style="width: 120px; float: left;" src="'
-			.$res_foto.'?t='.time().'">\';';
-		echo '</script>';
-	}
 
 if (!isset($_SESSION['admin_logged']))
 	{
@@ -50,53 +42,6 @@ if (isset($_POST['go_add']) && isset($_SESSION['current_album']) && intval($_SES
 			}
 	}
 
-if (isset($_POST['go_turn']))
-	{
-		$id          = $_POST['go_turn'];
-		$povorot     = intval($_POST['povorot']);
-		$img_name    = $db->query('select img from photos where id = ?i',array($id), 'el');
-		$foto_folder = $db->query('select foto_folder from albums where id = ?i', array($_SESSION['current_album']),'el');
-		$source      = $_SERVER['DOCUMENT_ROOT'].$foto_folder.intval($_SESSION['current_album']).'/'.$img_name;
-		$tmp_file    = $_SERVER['DOCUMENT_ROOT'].'/tmp/'.$img_name;
-		$ext         = strtolower(substr($source, strrpos($source, '.') + 1));
-		rename($source, $tmp_file);
-		switch ($ext)
-		{
-			default:
-			case 'jpg':
-			case 'jpeg':
-					$img = imagecreatefromJPEG($tmp_file);
-					break;
-			case 'gif':
-					$img = imagecreatefromGIF($tmp_file);
-					break;
-			case 'png':
-					$img = imagecreatefromPNG($tmp_file);
-					break;
-		}
-		$result = imagerotate($img, $povorot, 0);
-		switch ($ext)
-		{
-			default:
-			case 'jpg':
-			case 'jpeg':
-					imagejpeg($result, $source);
-					break;
-			case 'gif':
-					imagegif($result, $source);
-					break;
-			case 'png':
-					imagepng($result, $source);
-					break;
-		}
-		$res_foto = $foto_folder.intval($_SESSION['current_album']).'/'.$img_name;
-		send_img($id, $res_foto);
-		imagedestroy($result);
-		imagedestroy($img);
-		unlink($tmp_file);
-	}
-
-
 
 if (isset($_POST['chenge_album'])) $_SESSION['current_album'] = intval($_POST['album_id']);
 
@@ -115,7 +60,7 @@ if ($rs)
 		<div class="controls">
 			<div class="input-append">
 				<form action="index.php" method="post">
-					<select id="appendedInputButton" class="span3" name="album_id" style="height: 28px;">
+					<select id="appendedInputButton" class="span3" name="album_id" style="height: 28px; float: left;">
 						<?
 							foreach ($rs as $ln)
 							{
@@ -125,7 +70,7 @@ if ($rs)
 							<?
 							}
 						?>
-					</select> <input class="btn btn-success" type="hidden" name="chenge_album" value="1"/>
+					</select><label for="appendedInputButton"> </label><input class="btn btn-success" type="hidden" name="chenge_album" value="1"/>
 					<input class="btn  btn-success" type="submit" value="открыть" class="sub1"/>
 				</form>
 			</div>
@@ -166,32 +111,35 @@ if (isset($_SESSION['current_album'])):
 											$foto_folder.$ln['id_album'].'/'.$ln['img'] ?>?t=<?= time() ?>">
 										</div>
 										</div>
-
 									</a>
-									<div style="display: inline-block">
-										<div style="float: left; height: 20px; width: 84px; margin-left: -2px;">
-											<form action="index.php" name="go_turn" method="post" style="margin: 5px;" target="hiddenframe"
-												onsubmit="document.getElementById('<?= $ln['id'] ?>').innerHTML='Подождите, идёт загрузка...'; return true;">
-												<input class="btn" type="hidden" name="go_turn" value="<?= $ln['id'] ?>"/>
-												<input class="btn" type="hidden" name="povorot" value="270"/>
-												<input class="btn-mini btn-info" type="submit" value="^" style="float:left; width: 24px; height: 18px; padding: 0 0 0 0;  margin: 0 0 0 0;"/>
-											</form>
-											<form action="index.php" name="go_turn" method="post" style="margin: 5px;" target="hiddenframe"
-												onsubmit="document.getElementById('<?= $ln['id'] ?>').innerHTML='Подождите, идёт загрузка...'; return true;">
-												<input class="btn" type="hidden" name="go_turn" value="<?= $ln['id'] ?>"/>
-												<input class="btn" type="hidden" name="povorot" value="180"/>
-												<input class="btn-mini btn-info" type="submit" value="180" style="float:left; width: 24px; height: 18px; padding: 0 0 0 0;  margin: 0 0 0 0;"/>
-											</form>
-											<form action="index.php" name="go_turn" method="post" style="margin: 5px;" target="hiddenframe"
-												onsubmit="document.getElementById('<?= $ln['id'] ?>').innerHTML='Подождите, идёт загрузка...'; return true;">
-												<input class="btn" type="hidden" name="go_turn" value="<?= $ln['id'] ?>"/>
-												<input class="btn" type="hidden" name="povorot" value="90"/>
-												<input class="btn-mini btn-info" type="submit" value="^" style="float:left; width: 24px; height: 18px; padding: 0 0 0 0;  margin: 0 0 0 0;"/>
-											</form>
-											<iframe id="hiddenframe" name="hiddenframe" style="width:0; height:0; border:0"></iframe>
-										</div>
-									</div>
-					<button class="btn-mini" style="position: relative; width: 46px; height: 18px; padding: 0 0 0 0; margin: 0 0 5px -2px;" onclick="
+
+
+								  <div style="display: inline-block">
+									 <div style="float: left; height: 20px; width: 84px; margin-left: -2px;">
+
+
+
+
+										<button class="btn-mini btn-info" style="float:left; width: 24px; height: 18px; padding: 0 0 0 0;  margin: 0 0 0 10px;"
+										 onclick="ajaxPostQ('/canon68452/imageRotate.php', '<?= '#'.$ln['id'] ?>', '<?= 'go_turn='.$ln['id']. '&povorot='.'270' ?>');">^
+										</button>
+
+
+										  <button class="btn-mini btn-info" style="float:left; width: 24px; height: 18px; padding: 0 0 0 0;  margin: 0 0 0 0;"
+											onclick="ajaxPostQ('/canon68452/imageRotate.php', '<?= '#'.$ln['id'] ?>', '<?= 'go_turn='.$ln['id']. '&povorot='.'180' ?>');">180
+										  </button>
+
+										<button class="btn-mini btn-info" style="float:left; width: 24px; height: 18px; padding: 0 0 0 0;  margin: 0 0 0 0;"
+										 onclick="ajaxPostQ('/canon68452/imageRotate.php', '<?= '#'.$ln['id'] ?>', '<?= 'go_turn='.$ln['id']. '&povorot='.'90' ?>');">^
+										</button>
+
+
+
+									 </div>
+								  </div>
+
+
+					<button class="btn-mini" style="position: relative; width: 46px; height: 18px; padding: 0 0 0 0; margin: -15px 0 0 -2px;" onclick="
 					/*return confirmDelete();*/ ajaxPostQ('/canon68452/ajax/ajaxPhoto.php','<?= '#ramka'.$ln['id'] ?>','<?= 'go_delete='.$ln['id'] ?>'); ">удалить</button>
 									<div class="controls">
 										<div class="input-append">

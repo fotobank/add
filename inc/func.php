@@ -29,10 +29,10 @@ function ok_exit($msg = 'Операция успешно завершена', $addr = '')
 
 
 
-function get_param($param_name)
+function get_param($param_name,$param_index)
 {
 	$db = go\DB\Storage::getInstance()->get('db-for-data');
-	$rs = $db->query('select param_value from nastr where param_name = (?string)',array($param_name), 'el');
+	$rs = $db->query('select `param_value` from nastr where `param_name` = (?string) AND `param_index` = ?i',array($param_name,$param_index), 'el');
 	$value = $rs ? $rs : false;
 	return $value;
 }
@@ -239,12 +239,11 @@ function digit_to_string($dig){
 					$koll   = array();
 					foreach ($_SESSION['basket'] as $ind => $val)
 						{
-							if($ind != "ramka" and $ind != "mat_gl" and $ind != "format" )
-								{
+
 							$basket .= $ind.',';
 							$koll[$key] = $val;
 							$key++;
-						      }
+
 						}
 					if($basket !='')
 						{
@@ -295,13 +294,14 @@ function digit_to_string($dig){
 
 	/**
 	 * @return null|string
+	 * рассчет суммы заказа
 	 */
 	function summa()
 		{
 			    $print = iTogo();
 			if ($print)
 				{
-			    $format = $_SESSION['basket']['format'];
+			    $format = $_SESSION['zakaz']['format'];
 			    $rt = NULL;
 			if (isset($_SESSION['print']))
 				{
@@ -326,4 +326,33 @@ function digit_to_string($dig){
 			 return false;
 			}
 		}
+
+  function russData($mysqldate)
+  {
+# Переменная с датой из базы
+//	 $mysqldate = '2011-06-10 15:18:00';
+
+# Перевод даты из базы  в формат времени Unix
+# получается примерно такое 1307719080
+	 $time = strtotime($mysqldate);
+
+# Создаем ассоциативный массив где каждому числу месяца присваем название месяца
+	 $month_name = array( 1 => 'января', 2 => 'февраля', 3 => 'марта',
+								 4 => 'апреля', 5 => 'мая', 6 => 'июня',
+								 7 => 'июля', 8 => 'августа', 9 => 'сентября',
+								 10 => 'октября', 11 => 'ноября', 12 => 'декабря'
+	 );
+
+#Получаем название месяца, здесь используется наш созданный массив
+	 $month = $month_name[ date( 'n',$time ) ];
+
+	 $day   = date( 'j',$time ); # С помощью функции date() получаем число дня
+	 $year  = date( 'Y',$time ); # Получаем год
+	 $hour  = date( 'G',$time ); # Получаем значение часа
+	 $min   = date( 'i',$time ); # Получаем минуты
+
+	 $date = "$day $month $year, $hour:$min";  # Собираем пазл из переменных
+
+	 return $date; #Выводим преобразованную дату
+  }
 ?>

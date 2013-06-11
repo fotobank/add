@@ -1,0 +1,33 @@
+<html>
+<head>
+<script language='javascript' src="formvalidator.class.js"></script>
+<style>
+.error {
+	color:red;
+	border-color:red;
+}
+
+</style>
+</head>
+<body>
+<form method="post" action="index.php" name="validatedform">
+<table>
+<tr><td><label for="firstname">Firstname</label></td><td><input type="text" name="firstname" class="required"></td></tr>
+<tr><td><label for="lastname">Lastname</label></td><td><input type="text" name="lastname"></td></tr>
+<tr><td><label for="email">Email address</label></td><td><input type="text" name="email" class="emailValidator required"></td></tr>
+<tr><td><label for="age">Age</label></td><td><input type="text" name="age" class="numberValidator"></td></tr>
+<tr><td><label for="youtube">Youtube link</label></td><td><input type="text" name="youtube" class="youtubeValidator"></td></tr>
+<tr><td><label for="website">Web page</label></td><td><input type="text" name="website" class="linkValidator"></td></tr>
+</table>
+<input type="submit" value="Submit form">
+</form>
+
+<script language='javascript'>
+var formvalidator = new FormValidator("validatedform");
+formvalidator.registerValidator("youtubeValidator", FormValidator.ON_LEAVE, "This is not a valid youtube link!", function(str) {
+	if (str.indexOf("http://www.youtube.com/") == 0) { return true; } return false;
+});
+formvalidator.initValidation();
+</script>
+</body>
+</html>

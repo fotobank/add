@@ -175,17 +175,21 @@
 				$dt = date("Y-m-d H:i:s (T)");
 				$err =  "<EXTENSIONS ERROR> \n";
 				// заносим все выводимые данные в буфер
-				ob_start();
-				?><pre><?
-				print_r($exception);
-				?></pre><?
-				// очищаем буфер
-				$err .= ob_get_clean();
-				$err .= "\t Страница:        ".$_SERVER['REQUEST_URI']."\n";
-				$err .= "\t Дата:            ".$dt."\n";
-				$err .= "\t Ip пользователя: ".Get_IP()."\n";
-				$err .= "\t Браузер:         ".$_SERVER['HTTP_USER_AGENT']."\n";
-				$err .=  "</EXTENSIONS ERROR> \n\n";
+//				ob_start();
+//				?><!--<pre>--><?//
+//				print_r($exception);
+//		   	?><!--</pre>--><?//
+//				// очищаем буфер
+//				$err .= ob_get_clean();
+				foreach($exception as $val)
+				  {
+					 $err .= $val.'<br>';
+				  }
+			//	$err .= "\t Страница:        ".$_SERVER['REQUEST_URI']."\n";
+			//	$err .= "\t Дата:            ".$dt."\n";
+			//	$err .= "\t Ip пользователя: ".Get_IP()."\n";
+			//	$err .= "\t Браузер:         ".$_SERVER['HTTP_USER_AGENT']."\n";
+			//	$err .=  "</EXTENSIONS ERROR> \n\n";
 				$err_led = $err;
 				$error_processor = Error_Processor::getInstance();
 				$error_processor->err_proc($err,'wlm',$err_led);
@@ -295,10 +299,11 @@
 						if ($too_often == false)
 //						if ($too_often)
 						{
+						 $_HTTP_REF = isset($_SERVER['HTTP_REFERER'])?"<b>\$HTTP_REFERER:</b> ".$_SERVER['HTTP_REFERER']."<br>":'';
 								$mail_mes = "
 										<u><b>Error:</b></u><br> $err_msg<br>
 										<b>\$SERVER_NAME</b> = ".$_SERVER['SERVER_NAME']."<br>
-										<b>\$HTTP_REFERER:</b> ".$_SERVER['HTTP_REFERER']."<br>
+									       .$_HTTP_REF.
 										<b>\$REQUEST_METHOD:</b> ".$_SERVER['REQUEST_METHOD']."<br>
 										<b>\$HTTP_ACCEPT_LANGUAGE:</b> ".$_SERVER['HTTP_ACCEPT_LANGUAGE']."<br>
 									  <b>Cookie:</b><br>";

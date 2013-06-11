@@ -1,11 +1,12 @@
 <?
-	include (__DIR__.'/config.php');
-	include (__DIR__.'/func.php');
+   require_once (__DIR__.'/config.php');
+   require_once (__DIR__.'/func.php');
+   require_once (__DIR__.'/phpIni.php');
 	error_reporting(E_ALL);
 	ini_set('display_errors', 1);
 	//error_reporting(0);
-	header('Content-type: text/html; charset=windows-1251');
 
+  header('Content-type: text/html; charset=windows-1251');
 
 ?>
 
@@ -13,15 +14,14 @@
 <html xmlns:Логин="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=windows-1251"/>
-		<meta name="google-site-verification" content="uLdE_lzhCOntN_AaTM1_sQNmIXFk1-Dsi5AWS0bKIgs"/>
+<!--		<meta name="google-site-verification" content="uLdE_lzhCOntN_AaTM1_sQNmIXFk1-Dsi5AWS0bKIgs"/>-->
 <!--		  <link href='http://fonts.googleapis.com/css?family=Lobster|Comfortaa:700|Jura:600&subset=cyrillic,cyrillic-ext' rel='stylesheet' type='text/css'>-->
 		<?
-
 		// обработка ошибок
-		include ($_SERVER['DOCUMENT_ROOT'].'/inc/lib_mail.php');
-		include ($_SERVER['DOCUMENT_ROOT'].'/inc/lib_ouf.php');
-		include ($_SERVER['DOCUMENT_ROOT'].'/inc/lib_errors.php');
-		$error_processor = Error_Processor::getInstance();
+		 require_once (__DIR__.'/lib_mail.php');
+		 require_once (__DIR__.'/lib_ouf.php');
+		 require_once (__DIR__.'/lib_errors.php');
+		 $error_processor = Error_Processor::getInstance();
 
 		/**
 		 *  Тесты для проверки Error_Processor
@@ -50,9 +50,10 @@
 					<hr class="style-one" style=" margin-bottom: -20px; margin-top: 10px"/>
 			   <?
 			}
-		include ($_SERVER['DOCUMENT_ROOT'].'/inc/title.php');
+		include (__DIR__.'/title.php');
 		$cryptinstall = '/inc/captcha/cryptographp.fct.php';
 		include  'captcha/cryptographp.fct.php';
+
 		?>
 		<!--[if lt IE 9]>
 		<script>
@@ -115,37 +116,37 @@
 		<? endif; ?>
 
 		<!--- шифровка E-mail -->
-		<script language="javascript">
+		<script type="text/javascript">
 			function scrambleVideo() {
-				var p1, p2, p3, p4, p5, p6;
-				p1 = '<a href="mai';
-				p2 = 'video';
-				p3 = '">';
-				p1 += 'lto:';
-				p2 += '@';
-				p5 = '</a>';
-				p6 = 'Заказ видеосъемки';
-				p2 += 'aleks.od.ua';
-				p4 = p6;
-				document.write(p1 + p2 + p3 + p4 + p5)
+				var pa, pb, pc, pd, pe, pf;
+				pa = '<a href='+'"mai';
+				pb = 'video';
+				pc = '">';
+				pa += 'lto:';
+				pb += '@';
+				pe = '</a>';
+				pf = 'Заказ видеосъемки';
+				pb += 'aleks.od.ua';
+				pd = pf;
+				document.write(pa + pb + pc + pd + pe)
 			}
 			function scrambleFoto() {
-				var p1, p2, p3, p4, p5, p6;
-				p1 = '<a href="mai';
-				p2 = 'foto';
-				p3 = '">';
-				p1 += 'lto:';
-				p2 += '@';
-				p5 = '</a>';
-				p6 = 'Заказ фотосесии';
-				p2 += 'aleks.od.ua';
-				p4 = p6;
-				document.write(p1 + p2 + p3 + p4 + p5)
+				var pa, pb, pc, pd, pe, pf;
+				pa = '<a href='+'"mai';
+				pb = 'foto';
+				pc = '">';
+				pa += 'lto:';
+				pb += '@';
+				pe = '</a>';
+				pf = 'Заказ фотосесии';
+				pb += 'aleks.od.ua';
+				pd = pf;
+				document.write(pa + pb + pc + pd + pe)
 			}
 		</script>
 
 
-		<script language=JavaScript type="text/javascript">
+		<script type="text/javascript">
 
 			function smile(str) {
 				obj = document.Sad_Raven_Guestbook.mess;
@@ -155,16 +156,16 @@
 			function openBrWindow(theURL, winName, features) {
 				window.open(theURL, winName, features);
 			}
-			function inserttags(st_t, en_t) {
+			function inserttags(stT, enT) {
 				obj = document.Sad_Raven_Guestbook.mess;
 				obj2 = document.Sad_Raven_Guestbook;
 				if ((document.selection)) {
 					obj.focus();
-					obj2.document.selection.createRange().text = st_t + obj2.document.selection.createRange().text + en_t;
+					obj2.document.selection.createRange().text = stT + obj2.document.selection.createRange().text + enT;
 				}
 				else {
 					obj.focus();
-					obj.value += st_t + en_t;
+					obj.value += stT + enT;
 				}
 			}
 		</script>
@@ -204,7 +205,22 @@
 			});
 		</script>
 
-
+		<!--	запуск modal order -->
+		<script type="text/javascript">
+		  $(document).ready(function () {
+			 $('[data-toggle="order"]').click(function (e) {
+				e.preventDefault();
+				var url = $(this).attr('href');
+				if (url.indexOf("#") == 0) {
+				  $(url).modal('open');
+				} else {
+				  $.get(url, function (data) {
+					 $('<div id="vosst" class="modal hide fade in animated fadeInDown" style="position: absolute; top: 40%; left: 50%; z-index: 1; " data-keyboard="false" data-width="950" data-backdrop="static" tabindex="-1" aria-hidden="false">' + data + '</div>').modal();
+				  })
+				}
+			 });
+		  });
+		</script>
 
 	</head>
 <body>
@@ -246,9 +262,7 @@
 					<div id="zagol">
 						<h1><span></span>Профессиональная<br> фото и видеосъёмка <br> в Одессе </h1>
 					</div>
-
 				</div>
-
 			</td>
 			<td class="td_form_ent">
 
@@ -261,14 +275,16 @@
 	  $user_balans = $db->query('select balans from users where id = ?i',array($_SESSION['userid']),'el');
 	  ?>
 	  <span style="font-size: 12px";> Ваш баланс: </span>
-	  <span style="font-weight: bold;"><?=$user_balans?></span> гр.<br/></span></div>
+	  <span id="balans" style="font-weight: bold;"><?=$user_balans?></span> гр.<br/></span></div>
 
 						<div style="margin-top: 8px;">
 							<a class="korzina" href="/basket.php">корзина</a>
 							<a class="vihod" href="/enter.php?logout=1">выход</a>
 						</div>
 						<div style="margin-top: 8px;">
-							<a class="scet" href="#scet_form">пополнение счета</a>
+<!--					  <a class="scet" href="#scet_form">пополнение счета</a>-->
+						  <a class="scet" href="/inc/accInv.php" data-toggle="order" data-target="#">пополнение счета</a>
+
 						</div>
 
 					<? else: ?>
@@ -289,45 +305,20 @@
 										<input data-placement="left" rel="tooltip" class="vhod" name="submit" type="submit" value="вход" title="Добро пожаловать!"
 											data-original-title="Tooltip on left">
 									</td>
-
 									<td>
 										<a href="/registr.php" class="registracia" data-placement="right" data-original-title="Вы еще не зарегистрировались? Присоединяйтесь">регистрация</a>
 									</td>
 								</tr>
 							</table>
-							<!--						<a href="/reminder.php" style="color: #fff; text-decoration: none;" >Забыли пароль?</a>-->
-							<!--						onclick=" reload(0,'.-->
-							<?//=SID?><!--.'); $(document).ready(function load() {$('#vosst').modal('show'); });"-->
-							<a href="/reminder.php" style="color: #fff; text-decoration: none;" data-target="#" data-toggle="modal">Забыли
-								пароль?</a>
+							<a href="/reminder.php" style="color: #fff; text-decoration: none;" data-target="#" data-toggle="modal">Забыли пароль?</a>
 						</form>
 					<? endif; ?>
-
 				</div>
 			</td>
-
 		<tr>
 			<td></td>
 			<td>
 	</table>
-	<a href="#" class="overlay" id="scet_form"></a>
-
-	<div id="popup">
-		<legend>Пополнение счета</legend>
-		<a class="close2" href="#"></a>
-		<!--<form method="POST" action="https://merchant.webmoney.ru/lmi/payment.asp">
-			<input type="hidden" name="LMI_PAYMENT_NO" value="1">
-			<input type="hidden" name="LMI_PAYMENT_AMOUNT" value="0.05">
-			<input type="hidden" name="LMI_PAYMENT_DESC" value="код пополнения Super Mobile">
-			<input type="hidden" name="LMI_PAYEE_PURSE" value="Z155771820786">
-			<input type="hidden" name="id" value="345">
-			Укажите email для обратной связи: <input type="text" name="email" size="15">
-			<input type="submit" value="Перейти к оплате">
-		</form>-->
-<!--		http://owebmoney.ru/merchant.shtml - инструкция -->
-	</div>
-
-
 
 	<?
 
@@ -484,8 +475,13 @@
 
 	</div>
 
+<!--[if lt IE 7]>
+  <p class="chromeframe">Вы используете устаревший браузер. Для включения всех возможностей данного сайта необходимо обновить браузер.
+  <a href="http://browsehappy.com/">Обновите свой браузер сейчас</a>или
+  <a href="http://www.google.com/chromeframe/?redirect=true">установите расширение Google Chrome Frame</a>для просмотра этого сайта.</p>
+<![endif]-->
 
-	<script language=JavaScript type="text/javascript">
+	<script type="text/javascript">
 		/* $(document).ready(function () {
 		 *//*$('#fixed_menu').on('mouseenter', function(){
 		 $('#main_menu').show();
@@ -536,10 +532,11 @@
 	</NOSCRIPT>
 
 	<!--Голова конец-->
-
 <?
 
-if ($value == '/gb/index.php'): ?>
+
+
+  if ($value == '/gb/index.php'): ?>
 		<div id="main">
 	<table width=<?= $TABWIDTH ?> border=2 cellspacing=0 cellpadding=2>
 		<tr>

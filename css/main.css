@@ -2549,3 +2549,9 @@ hr.style-one:before {
     -o-transform:rotate(3deg);
     transform:rotate(3deg);
 }
+
+/*error validator*/
+.error {
+    color:red;
+    border-color:red;
+}

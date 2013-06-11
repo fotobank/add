@@ -43,9 +43,9 @@
 
 	if (isset($_POST['ftpDir']))
 		{
-			$ftp_host = get_param('ftp_host');
-			$ftp_user = get_param('ftp_user');
-			$ftp_pass = get_param('ftp_pass');
+			$ftp_host = get_param('ftp_host',0);
+			$ftp_user = get_param('ftp_user',0);
+			$ftp_pass = get_param('ftp_pass',0);
 			// mysql_set_charset("utf8");
 			if ($ftp_host && $ftp_user && $ftp_pass)
 				{

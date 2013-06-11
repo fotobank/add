@@ -32,7 +32,7 @@ if(isset($_POST['goZakazAdd'])) // изменение количества фотографий в корзине
 	{
 		$id = intval($_POST['goZakazAdd']);
 		$add = intval($_POST['add']);
-		$format = $_SESSION['basket']['format'];
+		$format = $_SESSION['zakaz']['format'];
 		$fDel = 0;
 		if(isset($_SESSION['basket']) && is_array($_SESSION['basket']) && count($_SESSION['basket']) > 0)
 			{
@@ -76,7 +76,7 @@ if(isset($_POST['goZakazAdd'])) // изменение количества фотографий в корзине
 		{
 			$print = iTogo();
 			$format = trim($_POST['goFormat']);
-			$_SESSION['basket']['format'] =  $format;
+			$_SESSION['zakaz']['format'] =  $format;
 			if(isset($_SESSION['basket']) && is_array($_SESSION['basket']) && count($_SESSION['basket']) > 0)
 				{
 					$prKoll = $print['koll']; // общее кол-во фото для печати

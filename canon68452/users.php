@@ -109,15 +109,27 @@ $record_count = intval($db->query('SELECT FOUND_ROWS() as cnt',null, 'el'));
 			            </div>
 	            </td>
 	            <?
-	            $action = $db->query('SELECT `time_vhod`, `ip_vhod` FROM `actions` WHERE `id_user` =?i ORDER BY `time_vhod` DESC LIMIT 1',array($ln['id']),'row');
-	            $rs = $db->query('SELECT `id_subs`, `time_subs` FROM `subs_user_on` WHERE `id_user` =?i',array($ln['id']),'assoc');
+	            $action = $db->query("SELECT time_event , ip FROM actions WHERE id_user =?i ORDER BY time_event DESC LIMIT 1",array($ln['id']),'row');
+			 if($action)
+				  {
 	            ?>
 	            <td style="text-align: center; vertical-align: middle">
-		            <a class="map"  href="/map.php"><?=$action['ip_vhod'];?></a></td>
-	            <td style="text-align: left; vertical-align: middle"><?=($action['time_vhod'] != 0) ? date('H:i d.m.Y', $action['time_vhod']) : '------';?></td>
-
+		            <a class="map"  href="/map.php"><?=$action['ip'];?></a></td>
+	            <td style="text-align: left; vertical-align: middle"><?= russData($action['time_event'])?></td>
+				  <?
+              }
+				  else
+					 {
+						?>
+						<td style="text-align: center; vertical-align: middle">
+						  <a class="map"  href="/map.php">------</a></td>
+						<td style="text-align: left; vertical-align: middle">------</td>
+					 <?
+					 }
+				  ?>
 	            <td style="text-align: center; vertical-align: middle">
 		            <?
+					  $rs = $db->query('SELECT `id_subs`, `time_subs` FROM `subs_user_on` WHERE `id_user` =?i',array($ln['id']),'assoc');
 		            if($rs)
 			            {
 				            ?>

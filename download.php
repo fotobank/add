@@ -31,9 +31,9 @@ else
     else
     {
       $photo_data = $rs;
-      $ftp_host = get_param('ftp_host');
-      $ftp_user = get_param('ftp_user');
-      $ftp_pass = get_param('ftp_pass');
+      $ftp_host = get_param('ftp_host',0);
+      $ftp_user = get_param('ftp_user',0);
+      $ftp_pass = get_param('ftp_pass',0);
       if($ftp_host && $ftp_user && $ftp_pass)
       {
 	    //Если в хосте присутствует порт - выделим его

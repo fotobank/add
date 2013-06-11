@@ -6,7 +6,8 @@ include (dirname(__FILE__).'/inc/head.php');
 	<script src="/js/calkul.js"></script>
 
 <div id="main">
-
+  <h2>Раздел в разработке</h2>
+<!--
 	<div id="calculate">
 		<div id="header"><p>Перед Вами - свадебный калькулятор. С помощью него Вы сможете примерно рассчитать расходы на это торжественное событие. Все цены указанные ниже - средние. Каждая свадьба - это уникальное событие и потому стоимость, определенная с помощью свадебного калькулятора может несколько отличаться от реальных расходов. </p></div>
 
@@ -135,6 +136,7 @@ include (dirname(__FILE__).'/inc/head.php');
 			<div id="count_price"><p>Итого: <span></span> руб.</p></div>
 		</form>
 	</div>
+	-->
 <div id="cont_fb">
 	<? echo $db->query('select txt from content where id = ?i',array(3),'el'); ?>
 </div>

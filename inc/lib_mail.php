@@ -101,7 +101,7 @@ class Mail_sender {
   // Sends letter
   function send_letter()
   {
-    foreach ($this -> to as $to) {
+    foreach ($this->to as $to) {
       @mail($to, $this->subj, "", $this->mime);
     }
   }

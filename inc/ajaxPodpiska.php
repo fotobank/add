@@ -6,7 +6,7 @@
  * Time: 0:14
  * To change this template use File | Settings | File Templates.
  */
-
+  header('Content-type: text/html; charset=windows-1251');
   // обработка ошибок
   include (dirname(__FILE__).'/lib_mail.php');
   include (dirname(__FILE__).'/lib_ouf.php');
@@ -14,7 +14,6 @@
   $error_processor = Error_Processor::getInstance();
   include (dirname(__FILE__).'/config.php');
   include (dirname(__FILE__).'/func.php');
-
 
 
   if(isset($_POST['album']))  //подписка на сообщение о готовности альбома

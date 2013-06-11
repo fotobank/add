@@ -1,13 +1,13 @@
 <?php
 /**
- * РРЅС‚РµСЂС„РµР№СЃ РѕР±СЉРµРєС‚РѕРІ, РІРѕР·РІСЂР°С‰Р°РµРјС‹С… РІ РІРёРґРµ СЂРµР·СѓР»СЊС‚Р°С‚Р° Р·Р°РїСЂРѕСЃР°
+ * Интерфейс объектов, возвращаемых в виде результата запроса
  *
  * @example $result = $db->query($pattern, $data);
- * РћР±СЉРµРєС‚ $result РёРЅРєР°РїСЃСѓР»РёСЂСѓРµС‚ РІ СЃРµР±Рµ РєРѕРЅРєСЂРµС‚РЅСѓСЋ СЂРµР°Р»РёР·Р°С†РёСЋ РєСѓСЂСЃРѕСЂР°.
- * РќР°РїСЂРёРјРµСЂ, РґР»СЏ mysql-РґСЂР°Р№РІРµСЂР° СЌС‚Рѕ РјРѕР¶РµС‚ Р±С‹С‚СЊ mysqli_result-РѕР±СЉРµРєС‚.
+ * Объект $result инкапсулирует в себе конкретную реализацию курсора.
+ * Например, для mysql-драйвера это может быть mysqli_result-объект.
  *
  * @package go\DB
- * @author  Р“СЂРёРіРѕСЂСЊРµРІ РћР»РµРі aka vasa_c
+ * @author  Григорьев Олег aka vasa_c
  */
 
 namespace go\DB;
@@ -15,61 +15,61 @@ namespace go\DB;
 interface Result extends \IteratorAggregate
 {
     /**
-     * Р Р°Р·РѕР±СЂР°С‚СЊ СЂРµР·СѓР»СЊС‚Р°С‚ РІ СЃРѕРѕС‚РІРµС‚СЃС‚РІРёРё СЃ С„РѕСЂРјР°С‚РѕРј
+     * Разобрать результат в соответствии с форматом
      *
      * @throws \go\DB\Exceptions\Fetch
-     *         РѕС€РёР±РєР° РїСЂРё СЂР°Р·Р±РѕСЂРµ
+     *         ошибка при разборе
      *
      * @param string $fetch
-     *        С„РѕСЂРјР°С‚ СЂР°Р·Р±РѕСЂР°
+     *        формат разбора
      * @return mixed
-     *         СЂРµР·СѓР»СЊС‚Р°С‚ РІ Р·Р°РґР°РЅРЅРѕРј С„РѕСЂРјР°С‚Рµ
+     *         результат в заданном формате
      */
     public function fetch($fetch);
 
     /**
-     * РћС‡РёСЃС‚РёС‚СЊ СЂРµР·СѓР»СЊС‚Р°С‚
+     * Очистить результат
      */
     public function free();
 
     /**
-     * РњР°СЃСЃРёРІ Р°СЃСЃРѕС†РёР°С‚РёРІРЅС‹С… РјР°СЃСЃРёРІРѕРІ
+     * Массив ассоциативных массивов
      *
      * @throws \go\DB\Exceptions\UnexpectedFetch
      *
      * @param string $param [optional]
-     *        РїРѕР»Рµ, РёСЃРїРѕР»СЊР·СѓРµРјРѕРµ РІ РєР°С‡РµСЃС‚РІРµ РёРЅРґРµРєСЃР°
-     *        РЅРµ СѓРєР°Р·Р°РЅРѕ - РїРѕСЂСЏРґРєРѕРІС‹Р№ РјР°СЃСЃРёРІ
+     *        поле, используемое в качестве индекса
+     *        не указано - порядковый массив
      * @return array
      */
     public function assoc($param = null);
 
     /**
-     * РњР°СЃСЃРёРІ РїРѕСЂСЏРґРєРѕРІС‹С… РјР°СЃСЃРёРІРѕРІ
+     * Массив порядковых массивов
      *
      * @throws \go\DB\Exceptions\UnexpectedFetch
      *
      * @param int $param [optional]
-     *        РЅРѕРјРµСЂ РїРѕР»СЏ, РёСЃРїРѕР»СЊР·СѓРµРјРѕРіРѕ РІ РєР°С‡РµСЃС‚РІРµ РёРЅРґРµРєСЃР°
-     *        РЅРµ СѓРєР°Р·Р°РЅРѕ - РїРѕСЂСЏРґРєРѕРІС‹Р№ РјР°СЃСЃРёРІ
+     *        номер поля, используемого в качестве индекса
+     *        не указано - порядковый массив
      * @return array
      */
     public function numerics($param = null);
 
     /**
-     * РњР°СЃСЃРёРІ РѕР±СЉРµРєС‚РѕРІ
+     * Массив объектов
      *
      * @throws \go\DB\Exceptions\UnexpectedFetch
      *
      * @param string $param [optional]
-     *        РїРѕР»Рµ, РёСЃРїРѕР»СЊР·СѓРµРјРѕРµ РІ РєР°С‡РµСЃС‚РІРµ РёРЅРґРµРєСЃР°
-     *        РЅРµ СѓРєР°Р·Р°РЅРѕ - РїРѕСЂСЏРґРєРѕРІС‹Р№ РјР°СЃСЃРёРІ
+     *        поле, используемое в качестве индекса
+     *        не указано - порядковый массив
      * @return array
      */
     public function objects($param = null);
 
     /**
-     * РњР°СЃСЃРёРІ Р·РЅР°С‡РµРЅРёР№
+     * Массив значений
      *
      * @throws \go\DB\Exceptions\UnexpectedFetch
      *
@@ -78,7 +78,7 @@ interface Result extends \IteratorAggregate
     public function col($param = null);
 
     /**
-     * РЎРїРёСЃРѕРє РїРµСЂРµРјРµРЅРЅС‹С… (РїРµСЂРІРѕРµ РїРѕР»Рµ - РёРјСЏ РїРµСЂРµРµРЅРЅРѕР№, РІС‚РѕСЂРѕРµ - Р·РЅР°С‡РµРЅРёРµ)
+     * Список переменных (первое поле - имя переенной, второе - значение)
      *
      * @throws \go\DB\Exceptions\UnexpectedFetch
      *
@@ -87,7 +87,7 @@ interface Result extends \IteratorAggregate
     public function vars($param = null);
 
     /**
-     * РС‚РµСЂР°С‚РѕСЂ РїРѕ assoc
+     * Итератор по assoc
      *
      * @throws \go\DB\Exceptions\UnexpectedFetch
      *
@@ -97,7 +97,7 @@ interface Result extends \IteratorAggregate
     public function iassoc($param = null);
 
     /**
-     * РС‚РµСЂР°С‚РѕСЂ РїРѕ numerics
+     * Итератор по numerics
      *
      * @throws \go\DB\Exceptions\UnexpectedFetch
      *
@@ -107,7 +107,7 @@ interface Result extends \IteratorAggregate
     public function inumerics($param = null);
 
     /**
-     * РС‚РµСЂР°С‚РѕСЂ РїРѕ objects
+     * Итератор по objects
      *
      * @throws \go\DB\Exceptions\UnexpectedFetch
      *
@@ -117,7 +117,7 @@ interface Result extends \IteratorAggregate
     public function iobjects($param = null);
 
     /**
-     * РС‚РµСЂР°С‚РѕСЂ РїРѕ vars
+     * Итератор по vars
      *
      * @throws \go\DB\Exceptions\UnexpectedFetch
      *
@@ -126,7 +126,7 @@ interface Result extends \IteratorAggregate
     public function ivars($param = null);
 
     /**
-     * РС‚РµСЂР°С‚РѕСЂ РїРѕ col
+     * Итератор по col
      *
      * @throws \go\DB\Exceptions\UnexpectedFetch
      *
@@ -135,7 +135,7 @@ interface Result extends \IteratorAggregate
     public function icol($param = null);
 
     /**
-     * РђСЃСЃРѕС†РёР°С‚РёРІРЅС‹Р№ РјР°СЃСЃРёРІ РїРѕ РѕРґРЅРѕР№ СЃС‚СЂРѕРєРµ (РЅРµС‚ СЃС‚СЂРѕРєРё - NULL)
+     * Ассоциативный массив по одной строке (нет строки - NULL)
      *
      * @throws \go\DB\Exceptions\UnexpectedFetch
      *
@@ -144,7 +144,7 @@ interface Result extends \IteratorAggregate
     public function row($param = null);
 
     /**
-     * РџРѕСЂСЏРґРєРѕРІС‹Р№ РјР°СЃСЃРёРІ РїРѕ РѕРґРЅРѕР№ СЃС‚СЂРѕРєРµ (РЅРµС‚ СЃС‚СЂРѕРєРё - NULL)
+     * Порядковый массив по одной строке (нет строки - NULL)
      *
      * @throws \go\DB\Exceptions\UnexpectedFetch
      *
@@ -153,7 +153,7 @@ interface Result extends \IteratorAggregate
     public function numeric($param = null);
 
     /**
-     * РћРґРЅР° СЃС‚СЂРѕРєР° РІ РІРёРґРµ РѕР±СЉРµРєС‚Р° (РЅРµС‚ СЃС‚СЂРѕРєРё - NULL)
+     * Одна строка в виде объекта (нет строки - NULL)
      *
      * @throws \go\DB\Exceptions\UnexpectedFetch
      *
@@ -162,7 +162,7 @@ interface Result extends \IteratorAggregate
     public function object($param = null);
 
     /**
-     * РћРґРЅРѕ Р·РЅР°С‡РµРЅРёРµ РёР· СЃС‚СЂРѕРєРё (РЅРµС‚ СЃС‚СЂРѕРєРё - NULL)
+     * Одно значение из строки (нет строки - NULL)
      *
      * @throws \go\DB\Exceptions\UnexpectedFetch
      *
@@ -171,7 +171,7 @@ interface Result extends \IteratorAggregate
     public function el($param = null);
 
     /**
-     * РћРґРЅРѕ Р·РЅР°С‡РµРЅРёРµ РёР· СЃС‚СЂРѕРєРё РІ РІРёРґРµ bool (РЅРµС‚ СЃС‚СЂРѕРєРё - NULL)
+     * Одно значение из строки в виде bool (нет строки - NULL)
      *
      * @throws \go\DB\Exceptions\UnexpectedFetch
      *
@@ -180,7 +180,7 @@ interface Result extends \IteratorAggregate
     public function bool($param = null);
 
     /**
-     * РљРѕР»РёС‡РµСЃС‚РІРѕ СЃС‚СЂРѕРє РІ СЂРµР·СѓР»СЊС‚Р°С‚Рµ
+     * Количество строк в результате
      *
      * @throws \go\DB\Exceptions\UnexpectedFetch
      *
@@ -189,21 +189,21 @@ interface Result extends \IteratorAggregate
     public function num($param = null);
 
     /**
-     * РџРѕСЃР»РµРґРЅРёР№ AUTO_INCREMENT
+     * Последний AUTO_INCREMENT
      *
      * @return int
      */
     public function id($param = null);
 
     /**
-     * РљРѕР»РёС‡РµСЃС‚РІРѕ Р·Р°С‚СЂРѕРЅСѓС‚С‹С… Р·Р°РїСЂРѕСЃРѕРј СЃС‚СЂРѕРє
+     * Количество затронутых запросом строк
      * 
      * @return int
      */
     public function ar($param = null);
 
     /**
-     * Р’РЅСѓС‚СЂРµРЅРЅСЏСЏ СЂРµР°Р»РёР·Р°С†РёСЏ СЂРµР·СѓР»СЊС‚Р°С‚Р°
+     * Внутренняя реализация результата
      *
      * @return mixed
      */

@@ -566,6 +566,10 @@
 	 *  Аккордеон
 	 */
 	if ($may_view && isset($_SESSION['current_album'])):
+	$event = $db->query('select `event` from `albums` where `id` =?i', array($_SESSION['current_album']), 'el');
+	//		отключение аккордеона если фотографии не показываются
+	if ($event == 'on')
+	{
 	$acc[1] = $db->query('SELECT * FROM accordions WHERE `id_album` = ?i ',array('1'), 'assoc:collapse_numer');
 	$acc[$_SESSION['current_album']] = $db->query('SELECT * FROM accordions WHERE `id_album` = ?i ',array($_SESSION['current_album']), 'assoc:collapse_numer');
 	if ($acc[$_SESSION['current_album']])
@@ -615,6 +619,8 @@
 					";
 				}
 		}
+	}
+
 	?>
 	</div>
 	<script language=JavaScript type="text/javascript">
