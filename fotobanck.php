@@ -7,7 +7,7 @@
 
 	$ip = Get_IP(); // Ip пользователя
 	//Количество фоток на странице
-	define('PHOTOS_ON_PAGE', 77);
+	define('PHOTOS_ON_PAGE', 42);
 	$Dir = DirPatc::getInst();
 	if (isset($_GET['album_id']))
 		{			
@@ -38,7 +38,7 @@
 ?>
 
 	<div id="main">
-<!--	<script type="text/javascript" src="/js/photo-prev.js"></script>-->
+	<script type="text/javascript" src="/js/photo-prev.js"></script>
 
 
 	<!-- ввод пароля -->

@@ -103,7 +103,6 @@
 	  <script src="/js/main.js"></script>
 	  <script type="text/javascript" src="/js/ajax.js"></script>
 	  <script type="text/javascript" src="/js/no-copy.js"></script>
-	  <script type="text/javascript" src="/js/photo-prev.js"></script>
 
 
 
