@@ -140,8 +140,6 @@ else
 		  $letter .= "<b>К оплате:</b> ".$data['summ']."гр. (".str_digit_str($data['summ'])."гр.)<br><br>";
 		  $letter .= ' <p>
 								 Письмо созданно '.date('Y-m-d').'.
-								 <br>
-								 Это письмо создал робот, please don\'t reply!
 							 </p></body></html>';
 
 

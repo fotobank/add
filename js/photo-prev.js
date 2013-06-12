@@ -89,7 +89,7 @@ function basketAdd(idPhoto) {
 }
 
 
-function goVote(voteprice, idPhoto) {
+function goVote(balans,voteprice, idPhoto) {
     if (voteprice != 0)
     {
     dhtmlx.confirm({
@@ -97,7 +97,7 @@ function goVote(voteprice, idPhoto) {
         text: "Цена одного голоса " + voteprice + " гр.<br> Проголосовать?",
         callback: function (index) {
             if (index == true) {
-                $.post('go_Vote.php', {'id': idPhoto}, function (data) {
+                $.post('/go_Vote.php', {'id': idPhoto}, function (data) {
                     var ans = JSON.parse(data);
                     if (ans.status == 'ERR') {
                         humane.timeout = (8000);
@@ -105,6 +105,8 @@ function goVote(voteprice, idPhoto) {
                     }
                     else {
                        dhtmlx.message({ text: "Ваш голос добавлен", expire: 10000, type: "addgolos" });
+                        var newBalans = (balans - voteprice).toFixed(2);
+                        $('#balans').empty().append(newBalans);
                         preview(idPhoto);
                     }
                 })
@@ -114,7 +116,7 @@ function goVote(voteprice, idPhoto) {
     }
     else
     {
-        $.post('go_Vote.php', {'id': idPhoto}, function (data) {
+        $.post('/go_Vote.php', {'id': idPhoto}, function (data) {
             var ans = JSON.parse(data);
             if (ans.status == 'ERR') {
                 humane.timeout = (8000);
