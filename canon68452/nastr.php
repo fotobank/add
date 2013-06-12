@@ -4,10 +4,14 @@ if(!isset($_SESSION['admin_logged']))
 
 if(isset($_POST['go_update']))
 {
-	foreach($_POST as $i => $v)
+   $nam=array();
+	foreach($_POST as $i => $val)
 	{
 		if($i != 'go_update')
-		  $db->query('update nastr set `param_value` = (?string) where `param_name` = (?string)', array($v,$i));
+		  {
+		  $nam = explode("|", $i);
+		  $db->query('update `nastr` set `param_value` = ?string where `param_name` = ?string and `param_index` = ?i', array($val,$nam['0'],$nam['1']));
+		  }
 	}
 }
 
@@ -24,8 +28,10 @@ if($rs)
     	?>
     	<tr>
     	  <td><?=$ln['param_descr']?></td>
-    	  <td><input type="text" name="<?=$ln['param_name']?>" value="<?=$ln['param_value']?>" style="margin-bottom: 10px; width: 600px;"  />
-    	</tr>
+    	  <td><label>
+				<input type="text" name="<?=$ln['param_name'].'|'.$ln['param_index'] ?>" value="<?=$ln['param_value']?>" style="margin-bottom: 10px; width: 600px;"/>
+			 </label>
+		</tr>
     	<?
     	}
     	?>

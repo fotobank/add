@@ -2,9 +2,9 @@
    require_once (__DIR__.'/config.php');
    require_once (__DIR__.'/func.php');
    require_once (__DIR__.'/phpIni.php');
-	error_reporting(E_ALL);
-	ini_set('display_errors', 1);
-	//error_reporting(0);
+	//error_reporting(E_ALL);
+	//ini_set('display_errors', 1);
+	error_reporting(0);
 
   header('Content-type: text/html; charset=windows-1251');
 

@@ -10,7 +10,9 @@
 	*/
 
   set_time_limit(0);
-//  ini_set("display_errors","1");
+ // error_reporting(E_ALL);
+ // ini_set('display_errors', 1);
+  error_reporting(0);
   ignore_user_abort(1);
   include (__DIR__.'/config.php');
   include (__DIR__.'/func.php');

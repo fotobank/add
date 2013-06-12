@@ -9,7 +9,9 @@
 
 header('Content-type: text/html; charset=windows-1251');
 set_time_limit(0);
-ini_set("display_errors","1");
+  //error_reporting(E_ALL);
+  //ini_set('display_errors', 1);
+  error_reporting(0);
 ignore_user_abort(1);
 require_once (__DIR__.'/config.php');
 require_once (__DIR__.'/lib_ouf.php');
