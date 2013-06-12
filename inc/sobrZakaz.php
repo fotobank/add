@@ -16,9 +16,9 @@
   ignore_user_abort(1);
   include (__DIR__.'/config.php');
   include (__DIR__.'/func.php');
-  include (dirname(__FILE__).'/lib_mail.php');
-  include (dirname(__FILE__).'/lib_ouf.php');
-  include (dirname(__FILE__).'/lib_errors.php');
+  include (__DIR__.'/lib_mail.php');
+  include (__DIR__.'/lib_ouf.php');
+  include (__DIR__.'/lib_errors.php');
   $error_processor = Error_Processor::getInstance();
   include (__DIR__.'/lib/zn_ftp/zn_ftp.php');
 

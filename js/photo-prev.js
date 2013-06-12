@@ -97,14 +97,44 @@ function goVote(balans,voteprice, idPhoto) {
         text: "Цена одного голоса " + voteprice + " гр.<br> Проголосовать?",
         callback: function (index) {
             if (index == true) {
-                $.post('../go_Vote.php', {'id': idPhoto}, function (data) {
+
+               /* $.ajax({
+                    type: "POST",
+                    header: ('Content-Type: application/json; charset=utf-8;'),
+                    url: '/go_vote.php',
+                    data:  {'id': idPhoto},
+
+                    error:function(XHR) {
+                        alert(" Ошибка: "+XHR.status+ "  " + XHR.statusText);
+                    },
+                    statusCode: {
+                        404: function() {
+                            alert("Страница не найдена");
+                        }
+                    },
+
+                    success: function (data) {
+                        var ans = JSON.parse(data);
+                        if (ans.status == 'ERR') {
+                            humane.timeout = (8000);
+                            humane.error(ans.msg);
+                        }
+                        else {
+                            dhtmlx.message({ text: "Ваш голос добавлен", expire: 10000, type: "addgolos" });
+                            var newBalans = (balans - voteprice).toFixed(2);
+                            $('#balans').empty().append(newBalans);
+                            preview(idPhoto);
+                        }
+                    }
+                });*/
+                $.post('/go_vote.php', {'id': idPhoto}, function (data) {
                     var ans = JSON.parse(data);
                     if (ans.status == 'ERR') {
                         humane.timeout = (8000);
                         humane.error(ans.msg);
                     }
                     else {
-                       dhtmlx.message({ text: "Ваш голос добавлен", expire: 10000, type: "addgolos" });
+                       dhtmlx.message({ text: "Спасибо, Ваш голос добавлен!", expire: 10000, type: "addgolos" });
                         var newBalans = (balans - voteprice).toFixed(2);
                         $('#balans').empty().append(newBalans);
                         preview(idPhoto);
@@ -116,14 +146,14 @@ function goVote(balans,voteprice, idPhoto) {
     }
     else
     {
-        $.post('../go_Vote.php', {'id': idPhoto}, function (data) {
+        $.post('/go_vote.php', {'id': idPhoto}, function (data) {
             var ans = JSON.parse(data);
             if (ans.status == 'ERR') {
                 humane.timeout = (8000);
                 humane.error(ans.msg);
             }
             else {
-                humane.success("Ваш голос успешно добавлен");
+                humane.success("Ваш голос успешно добавлен!");
                 preview(idPhoto);
             }
         })

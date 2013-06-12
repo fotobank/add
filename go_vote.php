@@ -29,7 +29,6 @@ else
 		    {
 			    $msg = 'Вы уже голосовали за эту фотографию!<br>Следующее голосование будет возможно через '.showPeriod($time_ost).' минут!';
 		    }
-
 	    elseif(floatval($vote['vote_price']) <= $balans)
       {
 	      $db->query('insert into votes (id_user, id_photo) values (?i,?i)',array($_SESSION['userid'], $id));
@@ -41,8 +40,6 @@ else
       {
         $msg = 'На Вашем счете недостаточно денег!';
       }
-
-
     }
   }
 }
