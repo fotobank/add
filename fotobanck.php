@@ -38,7 +38,7 @@
 ?>
 
 	<div id="main">
-	<script type="text/javascript" src="/js/photo-prev.js"></script>
+<!--	<script type="text/javascript" src="/js/photo-prev.js"></script>-->
 
 
 	<!-- ввод пароля -->
