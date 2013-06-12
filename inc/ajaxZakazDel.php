@@ -7,6 +7,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
+  header('Content-type: text/html; charset=windows-1251');
 	// обработка ошибок
 	include (dirname(__FILE__).'/lib_mail.php');
 	include (dirname(__FILE__).'/lib_ouf.php');

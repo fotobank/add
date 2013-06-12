@@ -98,7 +98,7 @@ function goVote(balans,voteprice, idPhoto) {
         callback: function (index) {
             if (index == true) {
 
-               /* $.ajax({
+                $.ajax({
                     type: "POST",
                     header: ('Content-Type: application/json; charset=utf-8;'),
                     url: '/go_vote.php',
@@ -126,20 +126,9 @@ function goVote(balans,voteprice, idPhoto) {
                             preview(idPhoto);
                         }
                     }
-                });*/
-                $.post('/go_vote.php', {'id': idPhoto}, function (data) {
-                    var ans = JSON.parse(data);
-                    if (ans.status == 'ERR') {
-                        humane.timeout = (8000);
-                        humane.error(ans.msg);
-                    }
-                    else {
-                       dhtmlx.message({ text: "Спасибо, Ваш голос добавлен!", expire: 10000, type: "addgolos" });
-                        var newBalans = (balans - voteprice).toFixed(2);
-                        $('#balans').empty().append(newBalans);
-                        preview(idPhoto);
-                    }
-                })
+                });
+               /* $.post('/go_vote.php', {'id': idPhoto}, function (data) {
+                })*/
             }
         }
     });

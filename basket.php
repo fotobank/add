@@ -40,12 +40,8 @@
 				  $order = iTogo();
 				  if ($order['price'] > $user_balans)
 					 {
-						?>
-						<script type='text/javascript'>
-						  humane.timeout = 6000;
-						  humane.error("Недостаточно средств на балансе!<br> Пополните счет или закажите печать наложенным платежем.");
-						</script>
-						<?
+
+						$_SESSION['basket_err'] = "Недостаточно средств на балансе!<br> Пополните счет или закажите печать наложенным платежем.";
 						$db->query('delete from orders where id = ?i', array($id_order));
 					 }
 				  else
@@ -66,7 +62,7 @@
 						$user_data = $db->query('select * from users where id = ?i', array($id_user), 'row');
 						$title     = 'Фотографии Creative line studio';
 						$headers   = "Content-type: text/plain; charset=windows-1251\r\n";
-						$headers .= "From: Администрация Creative line studio \r\n";
+						$headers .= "From: Creative line studio \r\n";
 						$subject = '=?koi8-r?B?'.base64_encode(convert_cyr_string($title, "w", "k")).'?=';
 						$letter  = "Здравствуйте, $user_data[us_name]!\r\n";
 						$letter .= "Вам предоставлен доступ для скачивания следующих фото:.\r\n\r\n";
@@ -81,32 +77,22 @@
 							 $db->query('delete from orders where id = ?i', array($id_order));
 							 $db->query('delete from order_items where id_order = ?i', array($id_order));
 							 $db->query('delete from download_photo where id_order = ?i', array($id_order));
-							 ?>
-							 <script type='text/javascript'>
-								humane.timeout = 6000;
-								humane.error("Ошибка отправки подтверждения! Возможно сайт перегружен. Пожалуйста, зайдите позже.");
-							 </script>
-							 <?
+							 $_SESSION['basket_err'] = "Ошибка отправки подтверждения! Возможно сайт перегружен. Пожалуйста, зайдите позже.";
 							 trigger_error("Ошибка отправки письма со ссылками!");
 						  }
 						else
 						  {
 							 $_SESSION['basket'] = array();
 							 $_SESSION['zakaz'] = array();
-							 ?>
-							 <script type='text/javascript'>
-								humane.timeout = 6000;
-								humane.success("Заказ оплачен! Вам на E-mail отправлено письмо со списком ссылок для скачивания фото!");
-							 </script>
-							 <?
+							 $_SESSION['basket_ok'] = "Заказ оплачен! Вам на E-mail отправлено письмо со списком ссылок для скачивания фото!";
 							 $db->query('update users set balans = balans - ?f where id = ?i', array($order['price'], $id_user));
 						  }
-						/**/?><!--
+						?>
 						<script type="text/javascript">
 						  location.replace("basket.php?1=1");
 						</script>
-					 --><?/*
-						die();*/
+					   <?
+						die();
 					 }
 				}
 		  }
@@ -175,7 +161,7 @@ if (isset($_POST['okei']) && isset($_SESSION['basket']) && is_array($_SESSION['b
 
 					 $title     = 'Фотографии Creative line studio';
 					 $headers   = "Content-type: text/plain; charset=windows-1251\r\n";
-					 $headers .= "From: Администрация Creative line studio \r\n";
+					 $headers .= "From: Creative line studio \r\n";
 					 $subject = '=?koi8-r?B?'.base64_encode(convert_cyr_string($title, "w", "k")).'?=';
 
 
@@ -214,24 +200,14 @@ if (isset($_POST['okei']) && isset($_SESSION['basket']) && is_array($_SESSION['b
 						{
 						  $db->query('delete from `print` where `id` = ?i', array($id_order));
 						  $db->query('delete from `order_print` where `id_print` = ?i', array($id_order));
-						  ?>
-						  <script type='text/javascript'>
-						  humane.timeout = 6000;
-						  humane.error("Ошибка отправки подтверждения! Возможно сайт перегружен. Пожалуйста, зайдите позже.");
-						  </script>
-						  <?
+						  $_SESSION['basket_err'] = "Ошибка отправки подтверждения! Возможно сайт перегружен. Пожалуйста, зайдите позже.";
 						  trigger_error("Ошибка отправки письма подтверждения!");
 						}
 					 else
 						{
                     $_SESSION['basket'] = array();
 						  $_SESSION['zakaz'] = array();
-						  ?>
-						  <script type='text/javascript'>
-							 humane.timeout = 6000;
-							 humane.success("Спасибо, на Ваш E-mail отправлено письмо для проверки и подтверждения заказа.");
-						  </script>
-						  <?
+						  $_SESSION['basket_ok'] = "Спасибо, на Ваш E-mail отправлено письмо для проверки и подтверждения заказа.";
 						}
 
 
@@ -240,15 +216,15 @@ if (isset($_POST['okei']) && isset($_SESSION['basket']) && is_array($_SESSION['b
 				$err .= 'Error description: '.$e->getError()."\n";
 				$err .= 'Error code: '.$e->getErrorCode()."\n";
 				trigger_error($err);
-			 }
-	 ?>
+
+	/* */?><!--
 	 <script type="text/javascript">
 		location.replace("basket.php?1=1");
 	 </script>
-  <?
+     --><?
 		  }
 
-
+  }
 
 
 $_SESSION['print'] = 0;
@@ -536,7 +512,7 @@ $_SESSION['print'] = 0;
 				   $spDost = array();
 				   $adr_pecat = array();
 				   $pocta = array();
-				   $poctRash = 'плюс почтовые расходы';
+				   $poctRash = '+ почтовые расходы';
 				   $nPocta = '';
 				  if($rs)
 					 {
@@ -708,7 +684,8 @@ $_SESSION['print'] = 0;
 							 </label>
 						  </div>
                     </div>
-						  <span id="iTogo" class="label label-important" style="margin: 20px 0 10px -10px;"><?= summa().' '.$poctRash?></span><br>
+						  <span id="iTogo" class="label label-important" style="margin: 20px 0 10px -10px;"><?= summa().' '?>
+							 <span id='poctRashod' class="label label-important"><?=$poctRash?></span></span><br>
 						  <div id="clear_zakazat">
 						  <input id="metall_kn" class="btn btn-success" type="submit" style="position: relative;float: right;width: 140px;"
 							value="Заказать" data-original-title="" title="">
@@ -725,19 +702,45 @@ $_SESSION['print'] = 0;
 					 formvalidator.initValidation();
 				  </script>
 				<?
+		   }
 		  }
-		  }
-		else
-		  {
+	  else
+		   {
 			 ?>
 			 <div class="drop-shadow lifted" style="margin: 50px 0 0 480px;">
 				<div style="font-size: 24px;">Ваша корзина пуста!</div>
 			 </div>
-		  <? } ?>
+			 <?
+			 }
+			 ?>
 		</div>
 		</div>
 	 <?
 	 }
+
+  if (isset($_SESSION['basket_ok']))
+	 {
+		?>
+		<script type='text/javascript'>
+		  humane.timeout = 6000;
+		  humane.success("<?=$_SESSION['basket_ok']?>");
+		</script>
+		<?
+		unset($_SESSION['basket_ok']);
+	 }
+
+
+  if (isset($_SESSION['basket_err']))
+	 {
+		?>
+		<script type='text/javascript'>
+		  humane.timeout = 6000;
+		  humane.error("<?=$_SESSION['basket_err']?>");
+		</script>
+		<?
+		unset($_SESSION['basket_err']);
+	 }
+
 ?>
   <div class="end_content"></div>
   </div>

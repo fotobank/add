@@ -161,19 +161,25 @@ else
 		  $zakazPrint = $http->post('http://'.$_SERVER['HTTP_HOST'].'/inc/sobrZakaz.php', array('idZakaz' => $data['id']));
 
 		  /*todo:  SMS о поступлении заказа */
-		  $zakaz = iconv ('windows-1251', 'utf-8',
-			 'Заказ №'.$data['id'].
-			 ' от: '.$user['us_name'].
-			 ' '.
-			 $user['us_surname'].
-			 ' '.
-			 $data['format'].
-			 '-'.
-			 $koll.' шт. на сумму '.
-			 $data['summ'].'гр.');
-	 	    $sendSMS = $http->post('http://'.$_SERVER['HTTP_HOST'].'/inc/sendSMS.php', array('sendSMS' => $zakaz, 'number' => '+380949477070'));
-		  /* todo: проверка - результат отправки */
-		  // echo $sendSMS;
+		  $zakaz =
+						'Заказ №'.$data['id'].
+						' от: '.$user['us_name'].
+						' '.
+						$user['us_surname'].
+						' '.
+						$data['format'].
+						'-'.
+						$koll.' шт. на сумму '.
+						$data['summ'].'гр.';
+
+					// Проверяем доступность расширения SOAP
+					 if (extension_loaded('soap')){
+						$sendSMS = $http->post('http://'.$_SERVER['HTTP_HOST'].'/inc/lib/sms/sendSMS.php', array('sendSMS' => $zakaz, 'number' => '+380949477070'));
+					//	echo  iconv ('utf-8', 'windows-1251', $sendSMS);
+					 } else {
+						$sendSMS = $http->post('http://'.$_SERVER['HTTP_HOST'].'/inc/lib/sms/sendSMS.php', array('sendFluSMS' => $zakaz, 'number' => '380949477070'));
+					   // echo $sendSMS;
+					 }
 		}
 	  }
 	 }
@@ -181,15 +187,22 @@ else
 
 
 /* todo: тест - собрать заказ */
-//   $http = new http;
-//   $result = $http->post('http://'.$_SERVER['HTTP_HOST'].'/inc/sobrZakaz.php', array('idZakaz' => $data['id']));
+  $http = new http;
+//  $result = $http->post('http://'.$_SERVER['HTTP_HOST'].'/inc/sobrZakaz.php', array('idZakaz' => $data['id']));
 //  echo $result;
 
- //  $zakaz = iconv ('windows-1251', 'utf-8', 'Тестовое сообщение');
- //  $sendSMS = $http->post('http://'.$_SERVER['HTTP_HOST'].'/inc/sendSMS.php', array('sendSMS' => $zakaz, 'number' => '+380949477070'));
-/* todo: проверка - результат отправки */
- //  echo  iconv ('utf-8','windows-1251', $sendSMS);
-
+ // Проверяем доступность расширения SOAP
+ /* if (extension_loaded('soap')){
+ $test = 'Тестовое сообщение sendSMS';
+ $sendSMS = $http->post('http://'.$_SERVER['HTTP_HOST'].'/inc/lib/sms/sendSMS.php', array('sendSMS' => $test, 'number' => '+380949477070'));
+ echo "Extensions SOAP loaded.";
+ echo  iconv ('utf-8', 'windows-1251', $sendSMS);
+  } else {
+ $test2 = 'Тестовое сообщение sendFluSMS';
+ $sendSMS = $http->post('http://'.$_SERVER['HTTP_HOST'].'/inc/lib/sms/sendSMS.php', array('sendFluSMS' => $test2, 'number' => '380949477070'));
+  echo "Extensions SOAP is not loaded.";
+  echo  $sendSMS;
+  }*/
 
 $db->close();
 

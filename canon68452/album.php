@@ -3,7 +3,8 @@ if (!isset($_SESSION['admin_logged']))
 	{
 		die();
 	}
-include (dirname(__FILE__).'/../inc/i_resize.php');
+require_once (__DIR__.'/../inc/i_resize.php');
+
 
 /*
 	Todo    - сканирование FTP папок
@@ -120,12 +121,10 @@ if (isset($_POST['go_add']))
 								$sharping  = 1;
 								$watermark = 0;
 								$ip_marker = 0;
-								if (imageresize($target_name, $file_load, 200, 200, 75, $watermark, $ip_marker, $sharping)
-									== 'true'
-								)
+								if (imageresize($target_name, $file_load, 200, 200, 75, $watermark, $ip_marker, $sharping) == 'true')
 									{
 										$db->query('update albums set id_category = ?i, img = ?, order_field = ?i, descr = ?, foto_folder = ? where id = ?i',
-											array($id_category, $img, $id_album, $descr, $foto_folder, $id_album));
+										array($id_category, $img, $id_album, $descr, $foto_folder, $id_album));
 										mkdir('../'.$foto_folder.$id_album, 0777, true) or die($php_errormsg);
 										unlink($file_load);
 										$_SESSION['current_album'] = $id_album;
@@ -255,7 +254,7 @@ if (isset($_POST['go_edit_nastr']))
 */
 if (isset($_POST['go_ftp_upload']))
 	{
-		//600x450
+
 		$id         = $_POST['go_ftp_upload'];
 		$album_data = $db->query('select * from albums where id = ?i', array($id), 'row');
 		if ($album_data)
@@ -315,10 +314,8 @@ if (isset($_POST['go_ftp_upload']))
 						//echo 'Ответ ftp: <br><pre>', print_r($file_list,1), '</pre>';
 						// Файл существует на самом деле? Пустой список файлов с FTP!
 						if (!count($file_list))
-							// if ( !count($file_list) || ftp_size( $ftp, $file_list[0] ) == -1 )
 							{
-								$out =
-									"<div class='alert alert-error'>Заданная на FTP папка : $album_data[ftp_folder] не содержит изображений!</div>";
+								$out = "<div class='alert alert-error'>Заданная на FTP папка : $album_data[ftp_folder] не содержит изображений!</div>";
 								senderror($out, $id, '');
 								echo 'Список доступных файлов пустой!';
 								echo '<br> ответ FTP - File List: <br><pre>', print_r($file_list, 1), '</pre>';

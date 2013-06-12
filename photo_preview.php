@@ -24,7 +24,7 @@ if ($id > 0)
                     {
                         $right_id = false;
                     }
-	             $rs = $db->query('select `id` from `photos` where `id_album`= ?i and id < ?i order by `id` asc limit 0, 1',array($photo_data['id_album'], $id), 'el');
+	             $rs = $db->query('select `id` from `photos` where `id_album`= ?i and id < ?i order by `id` desc limit 0, 1',array($photo_data['id_album'], $id), 'el');
                 if ($rs)
                     {
                         $left_id = intval($rs);
@@ -33,7 +33,7 @@ if ($id > 0)
                     {
                         $left_id = false;
                     }
-            // $photo_data['nm'] = iconv('cp1251', 'utf-8', $photo_data['nm']);
+
                 $source = $_SERVER['DOCUMENT_ROOT'].fotoFolder().$photo_data['id_album'].'/'.$photo_data['img'];
                 $sz = @getimagesize($source);
                 $sz_string = 'width: '.($sz[0]).'px;';

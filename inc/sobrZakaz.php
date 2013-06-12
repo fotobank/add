@@ -45,8 +45,7 @@ else
   if ($data['id_dost'] == 'Самовывоз из студии (в Одессе)')
 	 {
 		$param_index = $db->query('SELECT `param_index` FROM `nastr` WHERE `param_value` = ?string',
-		  array($data['adr_studii']),
-		  'el');
+		  array($data['adr_studii']),'el');
 		$FTP_HOST_TO = get_param('ftp_pecat_host', $param_index);
 		$FTP_USER_TO = get_param('ftp_pecat_user', $param_index);
 		$FTP_PSWD_TO = get_param('ftp_pecat_pass', $param_index);

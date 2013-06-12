@@ -18,15 +18,69 @@
   header ('Content-type: text/html; charset=utf-8');
 
 
+
+  // ------------------------------------------------------------------------------------------//
+  // http://sms-fly.com/Info/API/
+  // сообщения должны быть UTF-8
+  /**
+	*  12коп
+	*/
+  if(isset($_POST['sendFluSMS']))
+	 {
+		$number = trim($_POST['number']);
+		$text = iconv('windows-1251', 'utf-8', htmlspecialchars(trim($_POST['sendFluSMS'])));
+		$description = iconv('windows-1251', 'utf-8', htmlspecialchars('Заказ фото'));
+	//	$start_time = date("Y-m-d H:i:s");
+	   $end_time = date("Y-m-d H:i:s", time() + 300); // плюс 5 минут
+	   $start_time = 'AUTO';
+	//	$end_time = 'AUTO';
+		$rate = 120;
+		$livetime = 24;
+		$source = 'aleks.od.ua'; // Alfaname
+		$user = '380949477070';
+		$password = 'fotoBank_27';
+
+		$myXML 	 = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
+		$myXML 	.= "<request>";
+		$myXML 	.= "<operation>SENDSMS</operation>";
+		$myXML 	.= '		<message start_time="'.$start_time.'" end_time="'.$end_time.'" livetime="'.$livetime.'" rate="'.$rate.'" desc="'.$description.'" source="'.$source.'">'."\n";
+		$myXML 	.= "		<body>".$text."</body>";
+		$myXML 	.= "		<recipient>".$number."</recipient>";
+		$myXML 	.=  "</message>";
+		$myXML 	.= "</request>";
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_USERPWD , $user.':'.$password);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_URL, 'http://sms-fly.com/api/api.php');
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: text/xml", "Accept: text/xml"));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $myXML);
+		$response = curl_exec($ch);
+		curl_close($ch);
+
+// вывод результата в браузер для удобства чтения обрамлен в textarea
+		echo '<textarea spellcheck="false" name="111" rows="25" cols="150">';
+		echo $response;
+		echo '</textarea>';
+	 }
+
+
+
+
+
+
+
+  /**
+	* 16коп
+	*/
   if(isset($_POST['sendSMS']))
 	 {
-		$zakaz = trim($_POST['sendSMS']);
+		$zakaz = iconv('windows-1251', 'utf-8', htmlspecialchars(trim($_POST['sendSMS'])));
 		$number = trim($_POST['number']);
 
-		// Проверяем доступность расширения SOAP
-		if (!extension_loaded('soap')){
-		  echo "Error!! Extensions SOAP is not loaded.";
-		}
+
 
 // Подключаемся к серверу
   $client = new SoapClient ('http://turbosms.in.ua/api/wsdl.html');
