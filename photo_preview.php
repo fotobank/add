@@ -4,7 +4,6 @@
 error_reporting(0);
 include (dirname(__FILE__).'/inc/config.php');
 include (dirname(__FILE__).'/inc/func.php');
-
 header('Content-type: text/html; charset=windows-1251');
 
 if (isset($_SESSION['current_album'])):
