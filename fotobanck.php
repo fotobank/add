@@ -281,7 +281,7 @@
 						<img style="margin: 20px 0 0 40px;" src="/img/Stop Photo Camera.png" width="348" height="350"/>
 						<!-- <h3><span style="color: #ffa500">Доступ к альбому заблокирован паролем.  <? //check($ip, $ipLog, $timeout);?></span></h3>-->
 						<?
-						if ($_SESSION['popitka'][$_SESSION['current_album']] == -10) // проверка и вывод времени бана
+						if (isset($_SESSION['popitka']) && isset($_SESSION['current_album']) && $_SESSION['popitka'][$_SESSION['current_album']] == -10) // проверка и вывод времени бана
 							{
 								echo "<script type='text/javascript'>
                                              $(document).ready(function(){

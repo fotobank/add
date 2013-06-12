@@ -97,7 +97,7 @@ function goVote(balans,voteprice, idPhoto) {
         text: "Цена одного голоса " + voteprice + " гр.<br> Проголосовать?",
         callback: function (index) {
             if (index == true) {
-                $.post('/go_Vote.php', {'id': idPhoto}, function (data) {
+                $.post('../go_Vote.php', {'id': idPhoto}, function (data) {
                     var ans = JSON.parse(data);
                     if (ans.status == 'ERR') {
                         humane.timeout = (8000);
@@ -116,7 +116,7 @@ function goVote(balans,voteprice, idPhoto) {
     }
     else
     {
-        $.post('/go_Vote.php', {'id': idPhoto}, function (data) {
+        $.post('../go_Vote.php', {'id': idPhoto}, function (data) {
             var ans = JSON.parse(data);
             if (ans.status == 'ERR') {
                 humane.timeout = (8000);

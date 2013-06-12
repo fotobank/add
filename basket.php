@@ -100,7 +100,6 @@
 							 </script>
 							 <?
 							 $db->query('update users set balans = balans - ?f where id = ?i', array($order['price'], $id_user));
-							 trigger_error("Произведена покупка фотографий!");
 						  }
 						/**/?><!--
 						<script type="text/javascript">
