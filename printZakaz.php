@@ -138,9 +138,7 @@ else
 			 }
 		  $letter .= "<b>Всего:</b> ".$koll." шт.<br>";
 		  $letter .= "<b>К оплате:</b> ".$data['summ']."гр. (".str_digit_str($data['summ'])."гр.)<br><br>";
-		  $letter .= ' <p>
-								 Письмо созданно '.date('Y-m-d').'.
-							 </p></body></html>';
+		  $letter .= '</body></html>';
 
 
 		  $mail            = new Mail_sender;
@@ -155,7 +153,7 @@ else
 		  $mail->send_letter();
 
 
-		  /* todo: обработка заказа на FTP */
+		  /* todo: обработка заказа на FTP и отправить SMS */
 		  $http = new http;
 		  /*todo: собрать заказ */
 		  $zakazPrint = $http->post('http://'.$_SERVER['HTTP_HOST'].'/inc/sobrZakaz.php', array('idZakaz' => $data['id']));
@@ -187,7 +185,7 @@ else
 
 
 /* todo: тест - собрать заказ */
-  $http = new http;
+//  $http = new http;
 //  $result = $http->post('http://'.$_SERVER['HTTP_HOST'].'/inc/sobrZakaz.php', array('idZakaz' => $data['id']));
 //  echo $result;
 

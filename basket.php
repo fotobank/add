@@ -208,6 +208,13 @@ if (isset($_POST['okei']) && isset($_SESSION['basket']) && is_array($_SESSION['b
                     $_SESSION['basket'] = array();
 						  $_SESSION['zakaz'] = array();
 						  $_SESSION['basket_ok'] = "Спасибо, на Ваш E-mail отправлено письмо для проверки и подтверждения заказа.";
+						 	?>
+						  <div class="drop-shadow lifted" style="margin: 50px 0 0 200px;">
+							 <div style="font-size: 24px;">На Ваш E-mail отправлено письмо для проверки и подтверждения заказа.<br>
+								<span style="font-size: 14px;">Проверьте, пожалуйста, почту.</span>
+							 </div>
+						  </div>
+				      	<?
 						}
 
 

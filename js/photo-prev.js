@@ -10,12 +10,11 @@ $(document).ready(function () {
 
 
 function preview(idPhoto) {
-
     $('#photo_preview').fadeTo('fast', 0.01, function () {
         $('#photo_preview').load('photo_preview.php?id=' + idPhoto, function () {
             $('#photo_preview_bg').height($(document).height()).toggleClass('hidden').fadeTo('fast', 0.7, function () {
                 $('#photo_preview').alignCenter().toggleClass('hidden').fadeTo('fast', 1).click(function(){
-                        $('#photo_preview').css('box-shadow','');
+                       $('#photo_preview').css('box-shadow','');
                 });
             });
         });
@@ -45,6 +44,7 @@ function previewTop(idPhoto) {
 
 
 //additional properties for jQuery object
+/*
 $(document).ready(function () {
     //align element in the middle of the screen
     $.fn.alignCenter = function () {
@@ -56,6 +56,49 @@ $(document).ready(function () {
         return $(this).css({'margin-left': marginLeft, 'margin-top': marginTop});
     };
 });
+*/
+
+
+$(document).ready(function () {
+    //align element in the middle of the screen
+    $.fn.alignCenter = function () {
+
+
+            // удаляем атрибуты width и height
+            $(this).removeAttr("width")
+                .removeAttr("height")
+                .css({ width: "", height: "" });
+
+
+
+        //get margin left
+        var marginLeft = -$(this).width() / 2 + 'px';
+        //get margin top
+     //   alert ($(this).height());
+        var marginTop = '0';
+      //  var marginTop = -$(this).height() / 2 + 'px';
+        if ($(this).height() < 100)
+        {
+             marginTop = - 300 + 'px';
+        } else {
+             marginTop = -$(this).height() / 2 + 'px';
+        }
+
+
+
+        // для тех браузеров, которые подгрузку с кеша не считают загрузкой, пишем следующий код
+        $(this).each(function() {
+            var src = $(this).attr('src');
+            $(this).attr('src', '');
+            $(this).attr('src', src);
+        });
+
+        //return updated element
+        return $(this).css({'margin-left': marginLeft, 'margin-top': marginTop});
+
+    };
+});
+
 
 
 function hidePreview() {
