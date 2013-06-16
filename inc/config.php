@@ -1,5 +1,11 @@
 <?php
+   require_once(__DIR__.'/../core/secure/linkObfuscator.php');
 	session_start();
+   if(!isset($_SESSION['referralSeed'])) $_SESSION['referralSeed'] = "12345";
+   $link=new linkObfuscator($_SESSION['referralSeed']);
+   //test seed
+   //print "actual referral Seed:". $_SESSION['referralSeed'] ."<br />\n";
+
 	/*define('DB_HOST', 'localhost');
 	define('DB_NAME', 'creative_ls');
 	define('DB_USER', 'canon632');
@@ -23,7 +29,7 @@
 	               'password' => 'fianit8546',
 	               'dbname'   => 'creative_ls',
 	               'charset'  => 'cp1251',
-	           //    '_debug'   => true,
+	         //    '_debug'   => true,
 	               '_debug'   => false,
 						'_lazy'    => false,
 	);

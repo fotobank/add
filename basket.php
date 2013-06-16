@@ -2,7 +2,7 @@
   // error_reporting(E_ALL);
   // ini_set('display_errors', 1);
   error_reporting(0);
-  include (dirname(__FILE__).'/inc/head.php');
+  include (__DIR__.'/inc/head.php');
   if (!isset($_SESSION['logged']))
 	 {
 		?>
@@ -14,7 +14,6 @@
 	 }
   else
 	 {
-
 		if (isset($_POST['go_back']))
 		  {
 			 $_SESSION['print'] = 1;
@@ -192,8 +191,8 @@ if (isset($_POST['okei']) && isset($_SESSION['basket']) && is_array($_SESSION['b
 						  $letter .= "Фотография № ".$name." - ".$val."шт.\r\n";
 						}
 					 $letter .= "К оплате: ".$summ."гр. (".str_digit_str($summ)."гр.)\r\n\r\n";
-					 $letter .= "Подтвердить заказ:  ";
-					 $letter .= 'http://'.$_SERVER['HTTP_HOST']."/printZakaz.php?key=$key";
+					 $letter .= "Подтвердить или проверить заказ:  ";
+					 $letter .= 'http://'.$_SERVER['HTTP_HOST']."/security.php?key=$key";
 					 $letter .= "\r\nВНИМАНИЕ! Для подтверждения заказа необходимо сначала залогиниться на сайте! Ссылка действительна 48 часов!\r\n";
 					 // Отправляем письмо
 					 if (!mail($email, $subject, $letter, $headers))
@@ -211,7 +210,7 @@ if (isset($_POST['okei']) && isset($_SESSION['basket']) && is_array($_SESSION['b
 						 	?>
 						  <div class="drop-shadow lifted" style="margin: 50px 0 0 200px;">
 							 <div style="font-size: 24px;">На Ваш E-mail отправлено письмо для проверки и подтверждения заказа.<br>
-								<span style="font-size: 14px;">Проверьте, пожалуйста, почту.</span>
+								<span style="font-size: 18px;">Проверьте, пожалуйста, почту.</span>
 							 </div>
 						  </div>
 				      	<?
@@ -246,7 +245,7 @@ $_SESSION['print'] = 0;
 
 		if (isset($_POST['mat_gl']) && count($_SESSION['basket']) > 0)
 		  {
-			 $_SESSION['print']            = 2;
+			 $_SESSION['print']           = 2;
 			 $_SESSION['zakaz']['ramka']  = trim($_POST['ramka']);
 			 $_SESSION['zakaz']['mat_gl'] = trim($_POST['mat_gl']);
 			 $_SESSION['zakaz']['format'] = trim($_POST['format']);
@@ -296,6 +295,7 @@ $_SESSION['print'] = 0;
 			 )
 				{
 				  ?>
+
 				  <ul class="thumbnails">
 					 <?
 					 foreach ($_SESSION['basket'] as $ind => $val)
@@ -752,5 +752,5 @@ $_SESSION['print'] = 0;
   <div class="end_content"></div>
   </div>
 <?
-  include (dirname(__FILE__).'/inc/footer.php');
+  include (__DIR__.'/inc/footer.php');
 ?>

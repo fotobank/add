@@ -7,14 +7,20 @@
  * To change this template use File | Settings | File Templates.
  */
 
-  set_time_limit(0);
-  // error_reporting(E_ALL);
-  // ini_set('display_errors', 1);
-  error_reporting(0);
+   set_time_limit(0);
+   error_reporting(E_ALL);
+   ini_set('display_errors', 1);
+ // error_reporting(0);
   ignore_user_abort(1);
+  include (__DIR__.'/inc/head.php');
   require_once (__DIR__.'/inc/config.php');
   require_once (__DIR__.'/inc/func.php');
 
+
+  if ($link->referralSeed) {
+	   if($link->check($_SERVER['SCRIPT_NAME'].'?go='.trim(isset($_GET['go'])?$_GET['go']:''))){
+		// проверка кода
+	//	print "<br>checked link: ${_SERVER['REQUEST_URI']}<br />\n";
 
   if(!isset($_SESSION['logged']))
     err_exit('Для подтверждения заказа необходимо залогиниться на сайте!', 'index.php');
@@ -28,7 +34,7 @@ if(!$data)
   }
 else
   {
-	 include (__DIR__.'/inc/head.php');
+
 	 require_once (__DIR__.'/inc/lib_mail.php');
 	 require_once (__DIR__.'/inc/http.php');
 
@@ -57,13 +63,19 @@ else
 			 {
 				$_SESSION['order_msg'] = 'Недостаточно средств на балансе! Необходимо  '.$data['summ'].' гр. Пополните свой счет на сайте любым<br> доступным Вам способом.
 				 Или сделайте новый заказ наложенным платежом.';
-				?>
+				/**/?><!--
 				<script type="text/javascript">
 				  location.replace("basket.php?1=1");
 				</script>
-			 <?
-				die('Недостаточно средств на балансе! Необходимо  '.$data['summ'].' гр. Пополните свой счет на сайте любым<br> доступным Вам способом.
-				 Или сделайте новый заказ наложенным платежом.');
+			 --><?
+				/*die('Недостаточно средств на балансе! Необходимо  '.$data['summ'].' гр. Пополните свой счет на сайте любым<br> доступным Вам способом.
+				 Или сделайте новый заказ наложенным платежом.');*/
+				?>
+				<div class="drop-shadow lifted" style="margin: 150px 0 0 130px;">
+			   <div style="font-size: 24px;">Недостаточно средств на балансе! Необходимо  '<?=$data['summ']?>' гр. Пополните свой счет на сайте<br> любым доступным Вам способом.
+				  Или сделайте новый заказ наложенным платежом.</div>
+		      </div>
+				<?
 			 }
 		  else
 			 {
@@ -156,8 +168,8 @@ else
 		  /* todo: обработка заказа на FTP и отправить SMS */
 		  $http = new http;
 		  /*todo: собрать заказ */
-		  $zakazPrint = $http->post('http://'.$_SERVER['HTTP_HOST'].'/inc/sobrZakaz.php', array('idZakaz' => $data['id']));
-
+		  $zakazPrint = $http->post('http://'.$_SERVER['HTTP_HOST'].'/security.php', array('idZakaz' => $data['id']));
+echo $zakazPrint;
 		  /*todo:  SMS о поступлении заказа */
 		  $zakaz =
 						'Заказ №'.$data['id'].
@@ -203,7 +215,11 @@ else
   }*/
 
 $db->close();
-
+	 }else{
+	//	print "<br>link invalid: ${_SERVER['REQUEST_URI']} \n";
+		  include (__DIR__.'/error_.php');
+	 }
+ }
 ?>
   </div>
 <?php

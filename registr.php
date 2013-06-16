@@ -9,7 +9,7 @@
  $rPass2 = '';
  $rEmail = 'Рабочий E-mail';
  $rSkype = 'Не обязательно';
- $rPhone = 'Не обязательно';
+ $rPhone = 'Для заказа фотографий обязательно( можно ввести потом )';
  $rName_us = 'Просто имя';
  if ($_SERVER['REQUEST_METHOD'] == 'POST')
 	{

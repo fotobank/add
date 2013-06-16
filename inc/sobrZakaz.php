@@ -24,9 +24,16 @@
 
 
 
-if (isset($_POST['idZakaz']))
+
+if ($link->referralSeed) {
+if($link->check($_SERVER['SCRIPT_NAME'].'?go='.trim(isset($_GET['go'])?$_GET['go']:''))){
+  // проверка кода
+  //	print "<br>checked link: ${_SERVER['REQUEST_URI']}<br />\n";
+
+
+if (isset($_GET['idZakaz']))
 {
-  $data       = $db->query('select * from `print` where `id` = ?i', array($_POST['idZakaz']), 'row');
+  $data       = $db->query('select * from `print` where `id` = ?i', array($_GET['idZakaz']), 'row');
   $photo_data = $db->query('select * from `order_print` where `id_print` = ?i', array($data['id']), 'assoc');
 if (!$photo_data)
   {
@@ -139,5 +146,10 @@ else
   </script>
 <?
 }
+}
+}
+
+}else{
+  print "link invalid: ${_SERVER['REQUEST_URI']} \n";
 }
 }

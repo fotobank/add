@@ -237,19 +237,24 @@
 									if (intval($sz[0]) > intval($sz[1]))
 										{
 											$sz_string = 'width="155px"';
+										  $ImgWidth = intval($sz[1]);
+										  $ImgHeight = intval($sz[0]);
 										}
 									else
 										{
 											$sz_string = 'height="170px"';
+										  $ImgWidth = intval($sz[0]);
+										  $ImgHeight = intval($sz[1]);
 										}
 									?>
 									<div class="podlogka">
-										<figure class="ramka" onClick="preview(<?= $ln['id'] ?>);">
+										<figure class="ramka" onClick="preview(<?= $ln['id'] ?>, <?= $ImgWidth ?>, <?= $ImgHeight ?>);">
 											<img id="<?= substr(trim($ln['img']),
 												2,
 												-4) ?>" src="dir.php?num=<?= substr(trim($ln['img']),
 												2,
-												-4) ?>" title="За фотографию проголосовало <?= $ln['votes'] ?> человек. Нажмите для просмотра." <?=$sz_string?> />
+												-4) ?>" title="За фотографию проголосовало <?= $ln['votes'] ?> человек. Нажмите для просмотра." <?=$sz_string?>
+											   style="visibility: hidden;" />
 
 											<figcaption>№ <?=$ln['nm']?></figcaption>
 										</figure>
@@ -344,15 +349,19 @@
 					if (intval($sz[0]) > intval($sz[1]))
 						{
 							$sz_string = 'width="165px"';
+						  $ImgWidth = intval($sz[1]);
+						  $ImgHeight = intval($sz[0]);
 						}
 					else
 						{
 							$sz_string = 'height="195px"';
+				        $ImgWidth = intval($sz[0]);
+						  $ImgHeight = intval($sz[1]);
 						}
 					?>
 					<div id="foto_top">
 						<!--  <div  class="span2 offset0" >-->
-						<figure class="ramka" onClick="previewTop(<?= $ln['id'] ?>);">
+						<figure class="ramka" onClick="previewTop(<?= $ln['id'].','.$ImgWidth.','.$ImgHeight ?>);">
 
 							<span class="top_pos" style="opacity: 0;"><?=$pos_num?></span>
 							<img id="<?= substr(trim($ln['img']), 2, -4) ?>" src="dir.php?num=<?= substr(trim($ln['img']),

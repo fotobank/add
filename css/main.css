@@ -1360,7 +1360,7 @@ a.alb_usl {
     background-repeat: no-repeat;
     /* Следующие два правила откаты, в случае, если браузер не поддерживает несколько фонов. */
     background-position: bottom left;
-    background-image: url('../img/button_bg.png');
+ //   background-image: url('../img/button_bg.png');
     /* Несколько версии происхождения. Фоновые изображения определяются индивидуально в цвете классов */
     background-position: bottom left, top right, 0 0, 0 0;
     background-clip: border-box;
@@ -1444,8 +1444,10 @@ a.alb_usl {
     color: #000 !important;
     border: 1px solid #bea280 !important;
     background-color: #e38d27;
-    background-image: url('/img/button_bg.png'), url('/img/button_bg.png'), -moz-radial-gradient(center bottom, circle, rgba(232, 189, 45, 1) 0, rgba(232, 189, 45, 0) 100px), -moz-linear-gradient(#f1982f, #d4821f);
-    background-image: url('/img/button_bg.png'), url('/img/button_bg.png'), -webkit-gradient(radial, 50% 100%, 0, 50% 100%, 100, from(rgba(232, 189, 45, 1)), to(rgba(232, 189, 45, 0))), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#f1982f), to(#d4821f));
+    background-image: url('/img/button_bg.png'), url('/img/button_bg.png'), -moz-radial-gradient(center bottom, circle, rgba(232, 189, 45, 1) 0,
+    rgba(232, 189, 45, 0) 100px), -moz-linear-gradient(#f1982f, #d4821f);
+    background-image: url('/img/button_bg.png'), url('/img/button_bg.png'), -webkit-gradient(radial, 50% 100%, 0, 50% 100%, 100,
+    from(rgba(232, 189, 45, 1)), to(rgba(232, 189, 45, 0))), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#f1982f), to(#d4821f));
 }
 
 .orange.button:hover {
@@ -1513,8 +1515,8 @@ a.alb_usl {
     position: relative;
     color: #CCC;
     /* text-align:left;  */
-    top: 0px;
-    padding: 20px 0px 20px 0px;
+    top: 0;
+    padding: 20px 0 20px 0;
 
 }
 
@@ -2554,4 +2556,9 @@ hr.style-one:before {
 .error {
     color:red;
     border-color:red;
+}
+/*предзагрузка img fotonank*/
+span.preloader {
+    display: block;
+    background: url('/img/loader2.gif');
 }
