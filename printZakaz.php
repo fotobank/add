@@ -113,7 +113,7 @@ else
 						}
 	?>
 
-		  <div class="drop-shadow lifted" style="margin: 50px 0 0 400px;">
+		  <div class="drop-shadow lifted" style="margin: 150px 0 0 350px;">
 			 <div style="font-size: 24px;">Спасибо, Ваш заказ №<?=$data['id']?> принят в обработку. </div>
 		  </div>
         <?

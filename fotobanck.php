@@ -7,7 +7,7 @@
 
 	$ip = Get_IP(); // Ip пользовател€
 	// оличество фоток на странице
-	define('PHOTOS_ON_PAGE', 42);
+	define('PHOTOS_ON_PAGE', 35);
 	$Dir = DirPatc::getInst();
 	if (isset($_GET['album_id']))
 		{			
