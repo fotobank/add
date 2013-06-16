@@ -7,11 +7,15 @@
  * To change this template use File | Settings | File Templates.
  */
 
-   error_reporting(E_ALL);
-   ini_set('display_errors', 1);
-  // error_reporting(0);
+  // error_reporting(E_ALL);
+  // ini_set('display_errors', 1);
+   error_reporting(0);
   require_once (__DIR__.'/inc/config.php');
   require_once (__DIR__.'/inc/func.php');
+  include (__DIR__.'/inc/lib_mail.php');
+  include (__DIR__.'/inc/lib_ouf.php');
+  include (__DIR__.'/inc/lib_errors.php');
+  $error_processor = Error_Processor::getInstance();
 
 
   //  $link=new linkObfuscator($_SESSION['referralSeed']);
@@ -22,6 +26,9 @@
   if(!isset($_GET['key']) and !isset($_POST['idZakaz']))
 	 err_exit('Ключ не найден!', 'index.php');
 
+  if(!isset($_SESSION['logged']) and (!isset($_POST['idZakaz'])))
+	 err_exit('Введите свой логин и пароль. Гостевой доступ на данную страницу запрещен!', 'index.php');
+
   if(isset($_POST['idZakaz'])) {
 
 	 $newLink= '/inc/sobrZakaz.php';
@@ -31,9 +38,6 @@
 	 header('location: '.$newLinkObscured.'&idZakaz='.$idZakaz);
 
   }
-
-  if(!isset($_SESSION['logged']))
-	 err_exit('Введите свой логин и пароль. Гостевой доступ на данную страницу запрещен!', 'index.php');
 
 if(isset($_GET['key'])) {
 

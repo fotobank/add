@@ -150,6 +150,6 @@ else
 }
 
 }else{
-  print "link invalid: ${_SERVER['REQUEST_URI']} \n";
+ // print "link invalid: ${_SERVER['REQUEST_URI']} \n";
 }
 }

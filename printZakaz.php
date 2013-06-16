@@ -8,9 +8,9 @@
  */
 
    set_time_limit(0);
-   error_reporting(E_ALL);
-   ini_set('display_errors', 1);
- // error_reporting(0);
+ //  error_reporting(E_ALL);
+ //  ini_set('display_errors', 1);
+  error_reporting(0);
   ignore_user_abort(1);
   include (__DIR__.'/inc/head.php');
   require_once (__DIR__.'/inc/config.php');
@@ -169,7 +169,7 @@ else
 		  $http = new http;
 		  /*todo: собрать заказ */
 		  $zakazPrint = $http->post('http://'.$_SERVER['HTTP_HOST'].'/security.php', array('idZakaz' => $data['id']));
-echo $zakazPrint;
+        //echo $zakazPrint;
 		  /*todo:  SMS о поступлении заказа */
 		  $zakaz =
 						'Заказ №'.$data['id'].
