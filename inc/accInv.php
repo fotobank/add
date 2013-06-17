@@ -16,6 +16,11 @@ ignore_user_abort(1);
 require_once (__DIR__.'/config.php');
 require_once (__DIR__.'/lib_ouf.php');
 
+if ($link->referralSeed) {
+if($link->check($_SERVER['SCRIPT_NAME'].'?go='.trim(isset($_GET['go'])?$_GET['go']:''))){
+  // проверка кода
+  //	print "<br>checked link: ${_SERVER['REQUEST_URI']}<br />\n";
+
 if (!isset($_SESSION['logged']))
   {
 	 ?>
@@ -255,4 +260,9 @@ if (!isset($_SESSION['logged']))
 </div>
 </div>
 <?
+}
+}else{
+  //	print "<br>link invalid: ${_SERVER['REQUEST_URI']} \n";
+  include (__DIR__.'/../error_.php');
+}
 }

@@ -1,4 +1,5 @@
 <?
+   require (__DIR__.'/../core/dump/dump_r.php');
    require_once (__DIR__.'/config.php');
    require_once (__DIR__.'/func.php');
    require_once (__DIR__.'/phpIni.php');
@@ -271,17 +272,20 @@
   <span style="color:#bb5"><span style="font-size: 14px">Здравствуйте,</span><br> <span style="font-weight: bold;"><?=$_SESSION['us_name']?></span><br/>
 	  <?
 	  $user_balans = $db->query('select balans from users where id = ?i',array($_SESSION['userid']),'el');
+	  $_SESSION['userVer'] = (!isset($_SESSION['userVer']))? genpass(10, 2):$_SESSION['userVer'];
+	  $_SESSION['accVer'] = (!isset($_SESSION['accVer']))? genpass(10, 2):$_SESSION['accVer'];
+
 	  ?>
 	  <span style="font-size: 12px";> Ваш баланс: </span>
 	  <span id="balans" style="font-weight: bold;"><?=$user_balans?></span> гр.<br/></span></div>
 
 						<div style="margin-top: 8px;">
-							<a class="korzina" href="/basket.php">корзина</a>
-							<a class="vihod" href="/enter.php?logout=1">выход</a>
+						  <a class="korzina" style="position: absolute; top: 62px; width: 52px;" href="/basket.php">корзина</a>
+						  <a class="vihod" style="position: absolute; top: 62px; left: 80px;" href="/enter.php?logout=1">выход</a>
 						</div>
 						<div style="margin-top: 8px;">
-<!--					  <a class="scet" href="#scet_form">пополнение счета</a>-->
-						  <a class="scet" href="/inc/accInv.php" data-toggle="order" data-target="#">пополнение счета</a>
+						  <a class="scet" style="position: absolute; width: 30px; top: 88px;" data-target="#" data-toggle="order" href="<?='/security.php?acc='.$_SESSION['accVer']?>">счет</a>
+						  <a class="user" href="<?='/security.php?user='.$_SESSION['userVer']?>" style="position: absolute; width: 88px; left: 48px; top: 88px;">пользователь</a>
 
 						</div>
 

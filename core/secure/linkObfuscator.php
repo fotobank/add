@@ -30,6 +30,7 @@ class linkObfuscator
 	function _obfuscate($aLink,$aSeed)
 	{
 		$sep=(strpos('?',$aLink)===false)?'?':'&';
+	  $tes = md5($aSeed .$aLink);
 		return $aLink. $sep ."go=".md5($aSeed .$aLink);
 	}
 	
@@ -41,6 +42,8 @@ class linkObfuscator
 	function check($anObfuscatedLink)
 	{
 		$theLink=preg_replace('/(&|\?)go=(\w)+/','',$anObfuscatedLink);
+	   $thisRef = $this->referralSeed;
+	   $test = $this->_obfuscate($theLink,$this->referralSeed);
 		if($this->_obfuscate($theLink,$this->referralSeed)==$anObfuscatedLink)
 			return true;
 			

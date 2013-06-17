@@ -7,7 +7,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-   set_time_limit(0);
+  set_time_limit(0);
  //  error_reporting(E_ALL);
  //  ini_set('display_errors', 1);
   error_reporting(0);
@@ -20,7 +20,7 @@
   if ($link->referralSeed) {
 	   if($link->check($_SERVER['SCRIPT_NAME'].'?go='.trim(isset($_GET['go'])?$_GET['go']:''))){
 		// проверка кода
-	//	print "<br>checked link: ${_SERVER['REQUEST_URI']}<br />\n";
+	   //	print "<br>checked link: ${_SERVER['REQUEST_URI']}<br />\n";
 
   if(!isset($_SESSION['logged']))
     err_exit('Для подтверждения заказа необходимо залогиниться на сайте!', 'index.php');
@@ -28,6 +28,7 @@
     err_exit('Ключ не найден!', 'index.php');
   $key = $_GET['key'];
   $data = $db->query('select * from `print` where `key` = ?string', array($key), 'row');
+//		  dump_r($data);
 if(!$data)
   {
 	 err_exit('Ключ не найден!', 'index.php');
@@ -83,7 +84,7 @@ else
 				if(intval($data['zakaz']) == 1 && $data['status'] == 0) // если заказ уже был подтвержден
 				  {
 					 ?>
-					 <div class="drop-shadow lifted" style="margin: 50px 0 0 350px;">
+					 <div class="drop-shadow lifted" style="margin: 150px 0 0 350px;">
 						<div style="font-size: 24px;">Заказ №<?=$data['id']?> ждет своей очереди на выполнение.</div>
 						<div style="font-size: 24px;">По его готовности Вы получите уведомление.</div>
 					 </div><br><br><br><br><br><br><br>
@@ -169,7 +170,8 @@ else
 		  $http = new http;
 		  /*todo: собрать заказ */
 		  $zakazPrint = $http->post('http://'.$_SERVER['HTTP_HOST'].'/security.php', array('idZakaz' => $data['id']));
-        //echo $zakazPrint;
+        // echo $zakazPrint;
+		  // dump_r($zakazPrint);
 		  /*todo:  SMS о поступлении заказа */
 		  $zakaz =
 						'Заказ №'.$data['id'].

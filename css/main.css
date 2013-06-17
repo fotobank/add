@@ -1912,7 +1912,7 @@ a.alb_usl {
     top: 2px;
 }
 
-.scet {
+.scet, .user {
     font: normal 12px Verdana, Geneva, sans-serif;
     font-style: normal;
     color: #000000;
@@ -1929,12 +1929,12 @@ a.alb_usl {
     -moz-border-radius: 10px 10px 10px 10px;
     -webkit-border-radius: 10px 10px 10px 10px;
     width: 40px;
-    padding: 1px 6px;
+    padding: 1px 3px;
     cursor: pointer;
     margin: 0 2px;
 }
 
-.scet:hover {
+.scet:hover, .user:hover {
     box-shadow: 0 0 5px #d1cfd1;
     -moz-box-shadow: 0 0 5px #d1cfd1;
     -webkit-box-shadow: 0 0 5px #d1cfd1;
@@ -1942,7 +1942,7 @@ a.alb_usl {
     color: #07061f;
 }
 
-.scet:active {
+.scet:active , .user:active {
     cursor: pointer;
     position: relative;
     top: 2px;

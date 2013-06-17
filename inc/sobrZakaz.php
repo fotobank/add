@@ -27,9 +27,8 @@
 
 if ($link->referralSeed) {
 if($link->check($_SERVER['SCRIPT_NAME'].'?go='.trim(isset($_GET['go'])?$_GET['go']:''))){
-  // проверка кода
+  // проверка легальности доступа
   //	print "<br>checked link: ${_SERVER['REQUEST_URI']}<br />\n";
-
 
 if (isset($_GET['idZakaz']))
 {
