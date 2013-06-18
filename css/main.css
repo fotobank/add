@@ -604,6 +604,21 @@ a.gb_act {
     margin-bottom: 20px;
 }
 
+/*страничка пользователя*/
+#userForm {
+    width:550px;
+    margin:0 auto;
+    padding:10px 15px;
+    display: block;
+    background: #e7e1cf;
+    border-radius: 14px;
+    border: #aaaaaa ridge 2px;
+    color: #000000;
+    font-size: 18px;
+    font-family: "Times New Roman", Times, serif;
+}
+
+
 #form_bask {
     width: 380px;
     font-family:Arial,serif;
@@ -852,11 +867,7 @@ a.gb_act {
 
 }
 
-/* .photo_prevyu {
-    -moz-box-shadow: 0 0 50px rgba(0,0,0,1);  Для Firefox
-   -webkit-box-shadow: 0 0 50px rgba(0,0,0,1);  Для Safari и Chrome
-   box-shadow: 0 0 50px rgba(0,0,0,1);  Параметры тени
-}  */
+
 .err_msg {
     border: 1px solid #f00;
     border-radius: 5px;
@@ -1359,7 +1370,6 @@ a.alb_usl {
     padding: 1px 30px;
     background-repeat: no-repeat;
     /* Следующие два правила откаты, в случае, если браузер не поддерживает несколько фонов. */
-    background-position: bottom left;
  //   background-image: url('../img/button_bg.png');
     /* Несколько версии происхождения. Фоновые изображения определяются индивидуально в цвете классов */
     background-position: bottom left, top right, 0 0, 0 0;
@@ -1384,7 +1394,6 @@ a.alb_usl {
     /* The first rule is a fallback, in case the browser
        does not support multiple backgrounds
     */
-    background-position: top left;
     background-position: top left, bottom right, 0 0, 0 0;
 }
 

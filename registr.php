@@ -1,5 +1,8 @@
 <?php
  include (dirname(__FILE__).'/inc/head.php');
+  if(isset($_SESSION['logged']))
+  $_SESSION['err_msg'] = 'Вы уже зарегистрированны.';
+  echo "<script>window.document.location.href='index.php'</script>";
 ?>
  <div id="main">
  <br>

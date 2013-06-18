@@ -1,0 +1,207 @@
+--------------------------------------------------------------------------------
+
+                   "ANOTHER FORM GENERATOR" USER GUIDE
+                              (ver.:0.8.1)
+                    author: Gergely "Garpeer" Aradszki
+
+--------------------------------------------------------------------------------
+
+                               Basic usage
+                               -----------
+1. Instantiate class
+2. set options (set method)
+3. add fields to the form (addFields method)
+4. bind validators to certain fields (validator method) 
+5. generate form (display method)
+6. fetch valid data (getData method) (if there are validation errors, getData
+   returns false)
+
+--------------------------------------------------------------------------------
+
+Instantiation:
+$var=new Form();
+
+Public methods:
+-set(option, value): sets the given option to given value
+-loadData(data, map): lad default values from an associative array
+-addText(str): adds a paragraph to the form with given text
+-addItem(str): adds a custom item to the form with given text
+-addField(type, id, label, mandatory, init_value, aux_params)
+-validator(field_id, validator_function, ...) bind a validator to a field
+-display(button_label, button_id) displays the form
+-getData(sanitized) get valid data after submission
+-join(fields) join fields (remove linebreaks, put in same div)
+-JSprotection(code) enable JS form protection, see "JSProtection" section
+
+--------------------------------------------------------------------------------
+
+                          Supported field types
+                          ---------------------
+
+-text: input type=text
+-password: input type=password
+-file: input type=file
+-hidden: input type=hidden
+-textarea
+-radio
+-checkbox
+-select
+-submit
+-reset
+-button
+-image
+-html5 input types: number, date, month, week, time, datetime, datetime-local
+                    email, url, range, color, search, tel
+
+--------------------------------------------------------------------------------
+
+                            Usage of addField
+                            -----------------
+Common parameters:
+addField(type, field_id, label, mandatory, init_value, aux)
+
+-type: can be text, textarea, radio, checkbox, select, file, hidden, password
+-field_id: HTML id of the field (for radio, it also sets name)
+-label: HTML label for field
+-mandatory: if true, an "*" is show after the label, and this field must be
+ filled (for file, you must write custom validator, asit can not check for file
+ upload errors)
+-init_value: initial value of the field (defaults, loaded from database, etc.)
+-aux: auxillary parameters, differs for each field type.
+
+Aux parameter:
+-text, password, hidden, file, textarea <str>: can be used to set size, class,
+ rows, cols, etc. (eg.: "class='example' size='10'")
+-radio, select, checkbox <array>: associative array of the options
+ (option name => value)
+-for checkbox, if a string is used, the class will generate a single checkbox 
+ with a name set by the aux parameter (eg.:"I accept the terms.") 
+
+Initial values:
+-text, password, hidden: initial content of the field
+-radio, select: value of selected item
+-checkbox: CSV string, values of selected items (eg.: "second, first")
+
+--------------------------------------------------------------------------------
+
+                             Usage of button
+                             ---------------
+button() is basicly a wrapper for addField. With this, you can add submit, 
+reset, image, and button elements to the form.
+
+//NOTE//: If you add an image or submit element, the last one will become the 
+main submit button of the form. This will be used to determine whether the form
+has been submitted or not.
+--------------------------------------------------------------------------------
+
+                               Validators
+                               ----------
+
+The validators class is only a sample class you can and should extend it as you
+require.
+A validator function must return FALSE, if there are no errors, or - on error - 
+it should return the error message (or at least TRUE).
+The functions can receive 3 parameters: value, args, data
+-value: the content of the field to which the validator is bound
+-args: array of additional parameters passed by the "validator" function
+-data: input array of the fields (makes the other fields data accessible,
+ so conditional validations are possible)
+--------------------------------------------------------------------------------
+
+                             Config options
+                             --------------
+
+optionName <type> explanation (default value)[optionlist]
+
+Possible values for the "set" method:
+-title <str> title of the form
+-name <str> name & id of the form
+-action <str> action attr of form
+-method <enum> method attr of form (post) [get | post]
+-class <str> class attr of form
+-validator <str> filename of the validator class (validators.php)
+-validatorClass <str> name of the validator class (Validator)
+-sanitize <bool> sanitize input (true)
+-submitMessage <str> message displayed on successful submission
+ ("Form successfully submitted!")
+-submitField <str> id of submit button
+-showDebug <bool> show exception messages
+-linebreaks <str> what to use es linebreaks
+-divs <bool> use divs to encapsulate label&field rows
+-showErrors <bool> show validation error messages
+-errorTitle <str> title of the error list
+-errorLabel <str> prepends this to the label of the invalid field
+-errorPosition <enum> specify the position of the errorbox
+ [before | after | in_before | in_after]
+ ("before" and "after" places the box outside the form element, the in_* 
+ parameters place it inside)
+-showAfterSuccess <bool> show form even after succesful submission (true)
+-cleanAfterSuccess <bool> clean the fields after succesful submission (true)
+-html5 <bool> use html5 attributes (required, placeholder)
+-placeholder <bool> use label as placeholder
+
+--------------------------------------------------------------------------------
+
+                            Usage of loadData
+                            -----------------
+
+You can define additional data with an associative array. This makes it easier
+to load data from a database record.
+
+Usage:
+(supposed that $data is an associative array, like: 
+"username"=>"john Doe", "email"=>"john@doe.com")
+
+  $form->loadData($data)
+
+This will assign the calues to the fields with corresponding ID-s.
+
+If you don't want to expose your database structure (highly advised!), you can
+make use of the 2nd parameter of loadData: mapping.
+This parameter is an associative array, mapping the database field names to form
+field names in the following scheme: "db_field_name"=>"form_field_name"
+
+  $map=Array("username"=>"name", "email"=>"mail")
+
+Using the $map is simple: $form->loadData($data, $map);
+
+//NOTE//: If you use mapping, when saving the data from the form, you must remap
+the values. For this, you can use the flipped map array.
+
+--------------------------------------------------------------------------------
+
+                              JSProtection
+                              ------------
+
+A simple protection against bots. You can set a protection code that will be
+filled in a hidden field by a small Javascript, and this code will be checked
+for by its validator. If the bot can not parse JS, you will be safe from it.
+However, the usage of this method is not advised, as many bots can parse JS, and
+also legal submissions from users without JS would be refused.
+Suggested method is using a "honeypot" input field.
+
+--------------------------------------------------------------------------------
+
+                                 addItem
+                                 -------
+
+This method can be used to add custom items to the form (HTML snippets,
+fieldsets, outputs from other classes, etc.). It can also be used for Captcha
+integration, as if you assign id & label for addItem, you can assign a validator
+to it.
+
+--------------------------------------------------------------------------------
+
+                               Sample code
+                               -----------
+
+$form->new Form();
+$form->set("title", "example form");
+$form->addField("text", "username","Name", true, "John Doe");
+$form->display();        
+$result=$form->getData();
+
+
+(A more complex example can be found in the sample.php file.)
+
+--------------------------------------------------------------------------------

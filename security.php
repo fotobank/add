@@ -64,7 +64,7 @@ if(isset($_GET['key'])) {
 
   if(isset($_GET['acc']) and $_GET['acc'] == $_SESSION['accVer']) {
   
-     $_SESSION['referralSeed']=$link->seed;
+    $_SESSION['referralSeed']=$link->seed;
 	 $newLink= '/inc/accInv.php';
 	 $newLinkObscured=$link->obfuscate(preg_replace('/(&|\?)go=(\w)+/','',$newLink));
 	 unset($_GET['acc']);
