@@ -43,7 +43,7 @@ if(isset($_GET['logout']))
 	unset($_SESSION['userid']);
 	unset($_SESSION['user']);
 	unset($_SESSION['us_name']);
-	 session_destroy();
+// session_destroy();
    destroySession();
    main_redir('/index.php');
 }

@@ -108,7 +108,7 @@
       пароль: $rPass
 
    Для активации аккаунта вам следует пройти по ссылке:
-   $_SERVER[DOCUMENT_ROOT]/activation.php?login=$rLogin&key=$key
+   http://$_SERVER[HTTP_HOST]/activation.php?login=$rLogin&key=$key
 
    Данная ссылка будет доступна в течении 5 дней.
 
