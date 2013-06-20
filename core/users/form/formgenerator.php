@@ -174,7 +174,7 @@ class Form {
         }
     }
     /**
-     * @brief saves input after successful validation
+     * @brief запись данных после успешной проверки
      */
     protected function saveValidInput() {        
         $this->validInput=$this->input;
@@ -385,7 +385,12 @@ class Form {
             if ((isset($function))&&(method_exists($this->validator, $function))) {
                 $this->fields[$field]["validator"]=$function;
                 $this->fields[$field]["args"]=func_get_args();
-            }else {
+
+				  if (isset($this->input['pass']) && isset($this->fields['pass']['args']['2']))  $this->fields['pass']['args']['2']=$this->input['pass'];
+				  if (isset($this->input['pass2']) && isset($this->fields['pass']['args']['3']))  $this->fields['pass']['args']['3']=$this->input['pass2'];
+
+            }else{
+
                 throw new Exception("Метод &quot;".$function. "&quot; не найден.");
             }
         }catch (Exception $e ){
@@ -451,7 +456,7 @@ class Form {
     }
 
     /**
-     * @brief get the input data array
+     * @brief получить массив входных данных
      */
     public function getData() {
         $values=$this->validInput;        
@@ -463,7 +468,7 @@ class Form {
     /**
      * @brief validate fields
      *
-     * the validator method has to return false if the field is valid, else it should return the error message
+     * Метод проверки должен вернуться ложным, если поле действует, иначе он должен вернуть сообщение об ошибке
      */
     protected function validateFields() {
         if ($this->fields) {
@@ -673,7 +678,7 @@ class Form {
     /**
      * @todo documentation
      */
-    protected function getFileInput(){
+  protected function getFileInput(){
         foreach ($_FILES as $id =>$file){
             $this->input[$id]=$_FILES[$id];
         }       
@@ -859,7 +864,8 @@ class Form {
 	*/
   protected function sanitize($str) {
             if ((is_string($str))&&($this->getConfig("sanitize")==true)) {
-                $str=htmlspecialchars($str,ENT_QUOTES,"utf-8");                
+           //     $str=htmlspecialchars($str,ENT_QUOTES,"utf-8");
+				  $str=GetFormValue($str);
             }        
         return $str;
     }
@@ -872,8 +878,8 @@ class Form {
 	* @param        $field
 	* @param string $msg
 	*/
-  protected function error($field, $msg="empty") {
-        if ($msg!==false and $msg!==null) {
+  protected function error($field, $msg="пустое поле") {
+        if ($msg!==false and $msg!==NULL) {
             $this->error[$field]["msg"]=$this->fields[$field]["label"] .": ". $msg;
             $this->error[$field]["link"]=$field;
         }
@@ -885,7 +891,8 @@ class Form {
         if (($this->error)&&($this->config["showErrors"]["value"])) {
             $this->errorBox = "<div class='errorbox'>";
 	    if ($this->config["errorTitle"]["value"]){
-	      $this->errorBox .= "<h4>". $this->config["errorTitle"]["value"]."</h4>\n";
+	      $this->errorBox .= "<h4 style='color: #c95030; text-shadow: none;'>". $this->config["errorTitle"]["value"]."</h4>\n";
+
 	    }
             $this->errorBox .= "<ul id='errorList'>\n";
             foreach ($this->error as $error) {

@@ -8,7 +8,8 @@
 			if ($_POST['op'] == 'out')
 				{
 					unset($_SESSION['admin_logged']);
-					session_destroy();
+				//	session_destroy();
+				   destroySession();
 					main_redir('index.php');
 				}
 			else

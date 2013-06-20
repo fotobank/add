@@ -1,19 +1,20 @@
 <?php
  include (dirname(__FILE__).'/inc/head.php');
-  if(isset($_SESSION['logged']))
+  if(isset($_SESSION['logged'])) {
   $_SESSION['err_msg'] = 'Вы уже зарегистрированны.';
   echo "<script>window.document.location.href='index.php'</script>";
+  }
 ?>
  <div id="main">
  <br>
  <?
- $rLogin = 'Псевдоним для входа';
+ $rLogin = 'Имя для входа (Login)';
  $rPass = '';
  $rPass2 = '';
  $rEmail = 'Рабочий E-mail';
  $rSkype = 'Не обязательно';
- $rPhone = 'Для заказа фотографий обязательно( можно ввести потом )';
- $rName_us = 'Просто имя';
+ $rPhone = 'Можно ввести потом';
+ $rName_us = 'Настоящее имя';
  if ($_SERVER['REQUEST_METHOD'] == 'POST')
 	{
 	 $rLogin   = trim($_POST['rLogin']);
@@ -31,7 +32,7 @@
 			{
 			 if ($rEmail != 'Рабочий E-mail')
 				{
-				 if ($rName_us != 'Просто имя' || preg_match("/[?a-zA-Zа-яА-Я0-9_-]{2,20}$/", $rName_us))
+				 if ($rName_us != 'Настоящее имя' || preg_match("/[?a-zA-Zа-яА-Я0-9_-]{2,20}$/", $rName_us))
 					{
 					 if (preg_match("/[0-9a-z_]+@[0-9a-z_^\.-]+\.[a-z]{2,3}/i", $rEmail))
 						{
@@ -39,12 +40,11 @@
 							{
 							 if ($rPass === $rPass2)
 								{
-								 if (preg_match("/^\w{3,}$/", $rPass))
+								 if (preg_match("/^[0-9a-z]+$/i", $rPass))
 									{
 									 $mdPassword = md5($rPass);
-									 $cnt        = intval($db->query('select count(*) cnt from users where login = ?string',
-										array($rLogin),
-										'el'));
+									 $cnt        = intval($db->query('select count(*) cnt from users where login = ?string',array($rLogin),'el'));
+
 									 if ($cnt <= 0)
 										{
 										 $cnt = intval($db->query('select count(*) cnt from users where email = ?string',
@@ -52,7 +52,7 @@
 											'el'));
 										 if ($cnt <= 0)
 											{
-											 if ($rPhone == 'Не обязательно')
+											 if ($rPhone == 'Можно ввести потом')
 												{
 												 $rPhone = '';
 												}
@@ -269,7 +269,7 @@ LTR;
 		<tr>
 		 <td>Телефон:</td>
 		 <td>
-			<input name="rPhone" class="inp_f_reg" type="text" title="Ваш телефон (заполнять не обязательно)" value="<?= $rPhone ?>" maxlength="20" data-placement="right">
+			<input name="rPhone" class="inp_f_reg" type="text" title="Для заказа фотографий обязательно( можно ввести потом )" value="<?= $rPhone ?>" maxlength="20" data-placement="right">
 		 </td>
 		</tr>
 		<tr>

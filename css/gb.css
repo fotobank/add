@@ -4,28 +4,50 @@
 .tb_main {
 	width:100%;
 }
+
 .tb_send_f {
-	width:50%;
-	color:#cccccc;
-	background:#110011;
-	border-radius:12px;
-	border:#777 ridge 1px;
+
+    margin: 10px 0;
+    width: 350px;
+
 }
 .send_f {
-	background:#202;
+	background: #e6e0ce;
 	width:100%;
+    color: #111111;
+    border: 1px solid #555555;
+
 }
+
+th:first-child {
+    -moz-border-radius: 6px 0 0 0;
+    -webkit-border-radius: 6px 0 0 0;
+    border-radius: 6px 0 0 0;
+}
+
+th:last-child {
+    -moz-border-radius: 0 6px 0 0;
+    -webkit-border-radius: 0 6px 0 0;
+    border-radius: 0 6px 0 0;
+}
+
+th:only-child{
+    -moz-border-radius: 6px 6px 0 0;
+    -webkit-border-radius: 6px 6px 0 0;
+    border-radius: 6px 6px 0 0;
+}
+
 a.sml {
-	color:#cccccc;
+	color: #1932c6;
 }
 a.sml:hover {
-	color:#ffffff;
+	color: #111111;
 }
 .bt_send {
-	background: #110011 url(../img/bt_rgstr.png) no-repeat center top;
+	background: #d9d9d9;
 	display:block;
 	display: inline-block; /*ie*/
-	color:#cccccc;
+	color: #111111;
 	font-weight:bold;
 	font-size:12px;
 	vertical-align:central;
@@ -34,35 +56,69 @@ a.sml:hover {
 	padding-left:5px;
 }
 .bt_send:hover {
-	background: #222 url(../img/bt_rgstr.png) no-repeat center bottom;
+	background: #c3c3c3;
 }
 .td_klmess {
-	color:#cccccc;
-	background:#222;
+	color: #111111;
+	/*background: #d7d7d7;*/
 	width:100%;
 }
 .tb_mess {
 	width:100%;
-	color:#cccccc;
-	background:#202;
-	border-radius:8px;
-	border:#555 ridge 4px;
+	color: #111111;
+	/*background:#202;*/
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+	border:#555 ridge 1px;
 	margin-top:20px;
 }
 .td_name {
 	width:100%;
-	background:#111;
+	background: #e5dfcd;
 	text-align:center;
 }
 .td_mess_txt {
-	color:#ffffff;
-	background:#111;
+	color: #111111;
+	background: #ddd7c5;
 	padding:5px;
 	font-size:16px;
 	text-align:justify;
 }
 .mees_inf {
-	background:#111;
+	background: #e5dfcd;
 	font-size:16px;
 	text-align:center;
+}
+
+.pansw {
+    color: #111111;
+    background: #d8c4c1;
+    padding:5px;
+    font-size:16px;
+    text-align:justify;
+}
+
+textarea.form2 {
+    color: #111111;
+    background: #cbcbcb;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    border: #aaa ridge 1px;
+    margin-top: 2px;
+}
+
+textarea.form2:hover {
+
+    background: #dddddd;
+}
+
+textarea.form2:active {
+
+    background: #eeeeee;
+}
+
+.p {
+    margin: 5px 10px;
 }

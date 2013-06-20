@@ -1,15 +1,15 @@
 <?php
-/**
-* Just some examples showing text/checkbox/regexp validation.
-* You should extend and improve this class to make it fit for your own needs.
-*/
+  header('Content-type: text/html; charset=windows-1251');
+  require_once (__DIR__.'/../../../inc/config.php');
+  require_once (__DIR__.'/../../../inc/func.php');
+
+
+
 class Validator {
-    /**
-     * @brief sample textValidator
-     * @param <type> $value
-     * @param <type> $args
-     *
-     * @bug getting the length of a windows-1251 strings can be problematic, since not all hosting providers support multibyte functions
+
+
+    /*
+     * ошибка получения длины Windows-1251 строк может быть проблематичным, поскольку не все хостинг-провайдеры поддерживают многобайтовые функции
      */
   /**
 	* @param $value
@@ -18,23 +18,55 @@ class Validator {
 	* @return string
 	*/
   public function textValidator($value, $args) {
+
         $min=$args[0];
         $max=$args[1];
 
-            $length=strlen(html_entity_decode($value,ENT_QUOTES, "windows-1251"));
+            $length=mb_strlen($value, 'cp1251');
+
             if (($min)&&($length<$min)) {
-                return("слишком коротко (min. $min chars)");
+                return("слишком коротко (мин. $min символов)");
             }
             if (($max)&&($length>$max)) {
-                return("слишком длинно (max. $max chars)");
+                return("слишком длинно (макс. $max символов)");
             }
-
 	   return false;
     }
-    /**
-     * @brief sample termValidator
-     * @param <type> $value     
-     */
+
+
+  /**
+	* @param $value
+	* @param $args
+	*
+	* @return bool|string
+	*/
+  public function passValidator($value, $args) {
+
+	 $pass1=$args[0];
+	 $pass2=$args[1];
+	 $min=$args[2];
+	 $max=$args[3];
+
+	 if($pass1 !== $pass2) return("Пароли не совпадают");
+
+	 $length=strlen(html_entity_decode($value,ENT_QUOTES, "UTF-8"));
+	 if (($min)&&($length<$min)&&($length!=0)) {
+		return("слишком коротко (мин. $min символов)");
+	 }
+	 if (($max)&&($length>$max)) {
+		return("слишком длинно (макс. $max символов)");
+	 }
+
+
+	 if (preg_match($args[4], $value) || $pass1 == '') {
+		return false;
+	 }else{
+		return $args[5];
+	 }
+
+  }
+
+
   /**
 	* @param $value
 	*
@@ -46,11 +78,9 @@ class Validator {
         }
 	   return false;
     }
-    /**
-     * @brief sample termValidator
-     * @param <type> $id
-     * @param <type> $args
-     */
+
+
+
   /**
 	* @param $value
 	* @param $args
@@ -59,12 +89,83 @@ class Validator {
 	*/
   public function regExpValidator($value, $args) {
 
-        if (preg_match($args[0], $value)) {
+	 $min=$args[0];
+	 $max=$args[1];
+	 $length=strlen(html_entity_decode($value,ENT_QUOTES, "UTF-8"));
+	 if (($min)&&($length<$min)&&($length!=0)) {
+		return("слишком коротко (мин. $min символов)");
+	 }
+	 if (($max)&&($length>$max)) {
+		return("слишком длинно (макс. $max символов)");
+	 }
+
+        if (preg_match($args[2], $value)) {
            return false;
         }else{
-            return ("Не действительный адрес электронной почты");
+            return $args[3];
         }
     }
+
+
+  /**
+	* @param $value
+	* @param $args
+	*
+	* @return bool|string
+	*/
+  public function loginValidator($value, $args) {
+
+	 $min=$args[0];
+	 $max=$args[1];
+	 $length=strlen(html_entity_decode($value,ENT_QUOTES, "UTF-8"));
+	 if (($min)&&($length<$min)&&($length!=0)) {
+		return("слишком коротко (мин. $min символов)");
+	 }
+	 if (($max)&&($length>$max)) {
+		return("слишком длинно (макс. $max символов)");
+	 }
+
+	 if (!preg_match($args[2], $value)) {
+		return $args[3];
+	 }
+
+	 $db = go\DB\Storage::getInstance()->get('db-for-data');
+	 $rs = $db->query('SELECT `id` FROM `users` WHERE `login`=?string',array($value),'el');
+
+	 if ($rs && $rs != $_SESSION['userid']) {
+		return "Пользователь с таким логином уже существует, выберите, пожалуйста, другой.";
+	 }
+
+		return false;
+  }
+
+
+  /**
+	* @param $value
+	* @param $args
+	*
+	* @return bool|string
+	*/
+  public function phoneValidator($value, $args) {
+
+	 $min=$args[0];
+	 $max=$args[1];
+	 $length=strlen(html_entity_decode($value,ENT_QUOTES, "UTF-8"));
+	 if (($min)&&($length<$min)&&($length!=0)) {
+		return("слишком коротко (мин. $min символов)");
+	 }
+	 if (($max)&&($length>$max)) {
+		return("слишком длинно (макс. $max символов)");
+	 }
+
+	 if (!preg_match($args[2], $value)) {
+		return false;
+	 }else{
+		return $args[3];
+	 }
+  }
+
+
     /**
      * @brief check protection code
 	  * @param $code
@@ -73,9 +174,8 @@ class Validator {
 	  */
   public function jsProtector($code, $args){
         if ($code!=$args[0]) {
-            return ("Неправильный код защиты (JS может быть выключен, или ты не человек)");
+            return ("Неправильный код защиты (JS может быть выключен, или ты бот)");
         }
         return false;
     }
 }
-?>

@@ -3,9 +3,9 @@
    require_once (__DIR__.'/config.php');
    require_once (__DIR__.'/func.php');
    require_once (__DIR__.'/phpIni.php');
-	error_reporting(E_ALL);
-	ini_set('display_errors', 1);
-	// error_reporting(0);
+ 	error_reporting(E_ALL);
+ 	ini_set('display_errors', 1);
+// 	 error_reporting(0);
    header('Content-type: text/html; charset=windows-1251');
 
 ?>
@@ -276,7 +276,7 @@
 	  $_SESSION['accVer'] = (!isset($_SESSION['accVer']))? genpass(10, 2):$_SESSION['accVer'];
 
 	  ?>
-	  <span style="font-size: 12px";> Ваш баланс: </span>
+	  <span style="font-size: 12px;"> Ваш баланс: </span>
 	  <span id="balans" style="font-weight: bold;"><?=$user_balans?></span> гр.<br/></span></div>
 
 						<div style="margin-top: 8px;">
@@ -538,18 +538,18 @@
 
 
 
-  if ($value == '/gb/index.php'): ?>
-		<div id="main">
-	<table width=<?= $TABWIDTH ?> border=2 cellspacing=0 cellpadding=2>
+//  if ($value == '/gb/index.php'): ?>
+	<!--	<div id="main">
+	<table width=<?/*= $TABWIDTH */?> border=2 cellspacing=0 cellpadding=2>
 		<tr>
 			<td>
-				<table width=100% border=2 cellspacing=1 cellpadding=3 bgcolor=<?=$BORDER?>>
+				<table width=100% border=2 cellspacing=1 cellpadding=3 bgcolor=<?/*=$BORDER*/?>>
 					<tr>
-						<td align=center class=pdarkhead bgcolor=<?=$DARK?>><b><?=$gname?></b></td>
+						<td align=center class=pdarkhead bgcolor=<?/*=$DARK*/?>><b><?/*=$gname*/?></b></td>
 					</tr>
 				</table>
 			</td>
 		</tr>
 		<tr>
-			<td>
-<? endif; ?>
+			<td>-->
+<?// endif; ?>

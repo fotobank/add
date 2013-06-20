@@ -13,8 +13,7 @@
   error_reporting(0);
   ignore_user_abort(1);
   include (__DIR__.'/inc/head.php');
-  require_once (__DIR__.'/inc/config.php');
-  require_once (__DIR__.'/inc/func.php');
+
 
 
   if ($link->referralSeed) {

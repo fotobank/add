@@ -1,6 +1,6 @@
 <div id="footer">
     <div id="foot_JavaScript1" style="position:absolute;left:960px;top:-13px;width:269px;height:25px;z-index:10;">
-        <div style="color:#000;font-size:10px;font-family:Verdana;font-weight:normal;font-style:normal;text-decoration:none" id="copyrightnotice">
+        <div style="color:#000;font-size:10px;font-family:Verdana,serif;font-weight:normal;font-style:normal;text-decoration:none" id="copyrightnotice">
         </div>
         <script type="text/javascript">
             var now = new Date();

@@ -5,12 +5,6 @@ In this library collected functions on PHP often used on web-sites
 Additional information: http://wpdom.com, richter@wpdom.com
 */
 
-// Validation E-mail address
-function validate_email($email)
-{
-  return (eregi("^[a-z0-9._-]+@[a-z0-9._-]+.[a-z]{2,4}$", $email));
-}
-
 // Return all values (array) of specified tag from XML-fragment
 function get_fa($text,$tag)
 {
@@ -52,19 +46,38 @@ function get_f($text,$tag)
 	 return $ret;
   }
 
+// -------------------------------------------------------------
+  function cleanInput($input) {
 
-// Функция экранирования переменных
-  function quote_smart($value,$link) {
-	 //если magic_quotes_gpc включена - используем stripslashes
-	 if (get_magic_quotes_gpc()) {
-		$value = stripslashes($value);
-	 }
-	 //экранируем
-	 $value = mysql_real_escape_string($value,$link);
-	 return $value;
+	 $search = array(
+		'@<script[^>]*?>.*?</script>@si',   // javascript
+		'@<[\/\!]*?[^<>]*?>@si',            // HTML теги
+		'@<style[^>]*?>.*?</style>@siU',    // теги style
+		'@<![\s\S]*?--[ \t\n\r]*>@'         // многоуровневые комментарии
+	 );
+
+	 $output = preg_replace($search, '', $input);
+	 return $output;
   }
 
 
+  function sanitize($input) {
+	 if (is_array($input)) {
+		foreach($input as $var=>$val) {
+		  $output[$var] = sanitize($val);
+		}
+	 }
+	 else {
+		if (get_magic_quotes_gpc()) {
+		  $input = stripslashes($input);
+		}
+		$input  = cleanInput($input);
+		$output = mysql_real_escape_string($input);
+	 }
+	 return $output;
+  }
+
+//---------------------------------------------------------
 
 	function Get_IP()
 		{

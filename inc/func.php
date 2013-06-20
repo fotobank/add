@@ -1,4 +1,9 @@
 <?php
+  /**
+	* @param        $addr
+	* @param bool   $close_conn
+	* @param string $code
+	*/
 function main_redir($addr, $close_conn = true, $code = 'HTTP/1.1 303 See Other')
 {
   header($code);
@@ -11,6 +16,10 @@ function main_redir($addr, $close_conn = true, $code = 'HTTP/1.1 303 See Other')
   }
 }
 
+  /**
+	* @param string $msg
+	* @param string $addr
+	*/
 //ошибочный редирект с сообщением
 function err_exit($msg = 'Ошибка! Обратитесь к администрации.', $addr = '')
 {
@@ -19,6 +28,10 @@ function err_exit($msg = 'Ошибка! Обратитесь к администрации.', $addr = '')
   main_redir($addr);
 }
 
+  /**
+	* @param string $msg
+	* @param string $addr
+	*/
 //успешный редирект с сообщением
 function ok_exit($msg = 'Операция успешно завершена', $addr = '')
 {
@@ -27,8 +40,12 @@ function ok_exit($msg = 'Операция успешно завершена', $addr = '')
   main_redir($addr);
 }
 
-
-
+  /**
+	* @param $param_name
+	* @param $param_index
+	*
+	* @return bool|\go\DB\Result
+	*/
 function get_param($param_name,$param_index)
 {
 	$db = go\DB\Storage::getInstance()->get('db-for-data');
@@ -47,6 +64,12 @@ function fotoFolder()
       return $foto_folder;
    }
 
+  /**
+	* @param $password
+	* @param $id
+	*
+	* @return bool
+	*/
 function getPassword($password,$id){
 //	stripslashes($password);
 //	$ipassword = trim(md5($password));

@@ -1,6 +1,6 @@
 <?php
-include (dirname(__FILE__).'/inc/config.php');
 include (dirname(__FILE__).'/inc/func.php');
+include (dirname(__FILE__).'/inc/config.php');
 include (dirname(__FILE__).'/inc/lib_ouf.php');
 
 if(isset($_POST['login']))
@@ -22,6 +22,8 @@ if(isset($_POST['login']))
 		    }
        else
     {
+
+		startSession("", md5(intval($udata['id'])));
       $_SESSION['logged'] = true;
       $_SESSION['userid'] = intval($udata['id']);
       $_SESSION['user'] = $udata['login'];
@@ -41,7 +43,8 @@ if(isset($_GET['logout']))
 	unset($_SESSION['userid']);
 	unset($_SESSION['user']);
 	unset($_SESSION['us_name']);
-	session_destroy();
+	 session_destroy();
+   destroySession();
    main_redir('/index.php');
 }
 err_exit('Данные для входа не введены!', '/index.php');
