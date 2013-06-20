@@ -40,7 +40,7 @@
 							{
 							 if ($rPass === $rPass2)
 								{
-								 if (preg_match("/^[0-9a-z]+$/i", $rPass))
+								 if (preg_match("/^[0-9a-z\_\-\!\~\*\:\<\>\+\.]{8,20}$/i", $rPass))
 									{
 									 $mdPassword = md5($rPass);
 									 $cnt        = intval($db->query('select count(*) cnt from users where login = ?string',array($rLogin),'el'));
@@ -170,8 +170,7 @@ LTR;
 									}
 								 else
 									{
-									 $err_msg
-										= "В поле `Пароль` введены недопустимые символы.<br> Допускаются только латинские символы и цифры!";
+									 $err_msg = "В поле `Пароль` введены недопустимые символы<br> или длина меньше 8 символов.<br> Допускаются только английские символы, цифры и знаки<br>  . - _ ! ~ * : < > + ";
 									}
 								}
 							 else
@@ -210,12 +209,15 @@ LTR;
 		{
 		 $err_msg = "Поле `Логин` не заполнено!";
 		}
+
 	 if (isset($err_msg))
 		{
-		 echo "<script language='Javascript' type='text/javascript'>
+		  ?>
+		  <script language='Javascript' type='text/javascript'>
 				      humane.timeout = (6000);
-				      humane.error('Ошибка!<br>$err_msg');
-			         </script>";
+				      humane.error('Ошибка!<br><?=$err_msg?>');
+			         </script>
+		  <?
 		}
 	}
  ?>

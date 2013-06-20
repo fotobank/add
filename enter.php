@@ -23,7 +23,7 @@ if(isset($_POST['login']))
        else
     {
 
-		startSession("", md5(intval($udata['id'])));
+		startSession("", intval($udata['id']));
       $_SESSION['logged'] = true;
       $_SESSION['userid'] = intval($udata['id']);
       $_SESSION['user'] = $udata['login'];

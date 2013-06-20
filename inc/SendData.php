@@ -7,7 +7,7 @@
 	 * To change this template use File | Settings | File Templates.
 	 */
 	/*
-	  Todo    - ajax скрипт восстановления пароля
+	*  Todo    - ajax скрипт восстановления пароля
 	*/
 
 	// обработка ошибок

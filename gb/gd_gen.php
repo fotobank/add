@@ -1,5 +1,7 @@
 <?php
-session_start();
+require_once(__DIR__.'/../inc/secureSession.php');
+startSession();
+//session_start();
 define('SR_DENIED', true);
 if (!include ("config.inc.php")) { die("Не найден рабочий файл конфигурации"); exit; }
 $font_size = $spamcontrol_size;

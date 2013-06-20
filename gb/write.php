@@ -6,7 +6,9 @@ if ( !defined('SR_DENIED') )
 }
 if (session_id() == "")
   {
-	 session_start();
+	 //session_start();
+	 require_once(__DIR__.'/../inc/secureSession.php');
+	 startSession();
   }
 error_reporting(0);
 $mail_mess = $mess;

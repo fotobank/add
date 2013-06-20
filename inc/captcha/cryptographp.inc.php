@@ -10,8 +10,10 @@ if  ((!isset($_COOKIE['cryptcookietest'])) and ($_GET[$_GET['sn']]==""))
     exit;
     }
 
-if ($_GET[$_GET['sn']]=="") unset ($_GET['sn']); 
-session_start();
+if ($_GET[$_GET['sn']]=="") unset ($_GET['sn']);
+require_once(__DIR__.'/../../inc/secureSession.php');
+startSession();
+//session_start();
 
 
 // N'accepte que les fichiers de config du meme répertoire

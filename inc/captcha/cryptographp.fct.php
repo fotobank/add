@@ -1,9 +1,10 @@
 <?php
-
-if (session_id() == "")
-	{
-		session_start();
-	}
+/*if (session_id() == "")
+	{*/
+		//session_start();
+     require_once(__DIR__.'/../../inc/secureSession.php');
+	  startSession();
+//	}
 
 $_SESSION['cryptdir'] = dirname($cryptinstall);
 
