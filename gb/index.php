@@ -386,7 +386,7 @@ for($i = $to - 1; $i >= $from - 1; $i--)
 				$messnum=$id+1;
                 $name = replace_short($name);
                 $mess = replace($mess,"light");
-				$mess = getHTMLtags($mess);
+				    $mess = getHTMLtags($mess);
                 $url = replace($url,"dark");
                 $city = replace_short($city);
                 $answer = replace($answer,"answ");

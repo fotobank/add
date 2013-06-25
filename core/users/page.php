@@ -179,7 +179,7 @@
 		$form->set("placeholders",true);
 		$form->set("errorPosition", "in_before"); // где выводить ошибки
 		$form->set("submitMessage", $ok); // сообщение выводимое после ввода
-		$form->set("showAfterSuccess", true); // показывать форму после ввода
+		$form->set("showAfterSuccess", false); // показывать форму после правильного ввода
 		$form->set("cleanAfterSuccess", false);  // очищать поля после правильного ввода
 		$form->JSprotection("36CxgD");
 
@@ -213,7 +213,7 @@
 		$form->addField("text", "email","E-mail", true,'','class = "formUser"');
 		$form->addField("text", "city","Город проживания", false,'','class = "formUser"');
 
-		$form->addField("checkbox", "mail_me","Разрешить администрации", false, $loader['mail_me'], " посылать Вам уведомления?");
+		$form->addField("checkbox", "mail_me","Разрешить администрации", false, '', " посылать Вам уведомления?");
 
 		$form->addField("checkbox", "delUser","Удалить пользователя", false, false, " Удаление аккаунта из базы данных.");
 		$form->addField("checkbox", "terms","Заполнено верно", true, false, " Внимательно проверьте введенные данные.");

@@ -37,7 +37,6 @@
 		 */
 		//	 	imagine_function( );
 
-
 		if (isset($_SESSION['us_name']) && $_SESSION['us_name'] == 'test')
 			{
 				$time  = microtime();
@@ -52,7 +51,7 @@
 			}
 		include (__DIR__.'/title.php');
 		$cryptinstall = '/inc/captcha/cryptographp.fct.php';
-		include  'captcha/cryptographp.fct.php';
+		require_once  (__DIR__.'/captcha/cryptographp.fct.php');
 
 		?>
 		<!--[if lt IE 9]>
@@ -69,43 +68,45 @@
 		</script>
 		<![endif]-->
 
+		<style type="text/css">
+		  <?php
+		ob_start("compress");
+		function compress($buffer) {
+		  /* Удаляем комментарии */
+  $buffer = preg_replace('!/\*[^*]*\*+([^/][^*]*\*+)*/!', '', $buffer);
+  /* Удаляем табуляции, пробелы, переводы строки и так далее */
+  $buffer = str_replace(array("\r\n", "\r", "\n", "\t", '  ', '    ', '    '), '', $buffer);
+  return $buffer;
+		}
+//	   кнопка вверх
+		include (__DIR__.'./../css/dynamic-to-top.css');
+		include (__DIR__.'./../css/bootstrap.css');
+		include (__DIR__.'./../css/lightbox.css');
+		include (__DIR__.'./../css/animate.css');
+		include (__DIR__.'./../css/bootstrap-modal.css');
+//		сообщения
+		include (__DIR__.'./../js/jsmessage/codebase/themes/message_default.css');
+//		сообщения
+		include (__DIR__.'./../js/humane/themes/jackedup.css');
+//		include (__DIR__.'./../js/humane/themes/libnotify.css');
+//		include (__DIR__.'./../js/humane/themes/bigbox.css');
+		include (__DIR__.'./../css/main.css');
+		ob_end_flush();
+		?>
+		</style>
 
 		<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="/favicon.ico"/>
 		<link rel="shortcut icon" href="/img/ico_nmain.gif"/>
-		<link href="/css/dynamic-to-top.css" rel="stylesheet" type="text/css"/>
-		<!-- кнопка вверх -->
-		<link href="/css/bootstrap.css" rel="stylesheet"/>
-		<link rel="stylesheet" href="/css/lightbox.css" type="text/css" media="screen"/>
-
-
 		<script src="/js/jquery.js"></script>
 		<script src="/js/bootstrap.min.js"></script>
-
-
-
-		<link href="/css/animate.css" rel="stylesheet" type="text/css"/>
-		<link href="/css/bootstrap-modal.css" rel="stylesheet" type="text/css"/>
 		<script src="/js/bootstrap-modalmanager.js"></script>
 		<script src="/js/bootstrap-modal.js"></script>
-
 		<!--сообщения-->
-		<link href="/js/jsmessage/codebase/themes/message_default.css" rel="stylesheet" type="text/css"/>
 		<script type="text/javascript" src="/js/jsmessage/codebase/message.js"></script>
-
-
-		<!--сообщения-->
-		<link href="/js/humane/themes/jackedup.css" rel="stylesheet" type="text/css"/>
-		<!--        <link href="/js/humane/themes/libnotify.css" rel="stylesheet" type="text/css"/>-->
-		<!--        <link href="/js/humane/themes/bigbox.css" rel="stylesheet" type="text/css"/>-->
 		<script type="text/javascript" src="/js/humane/humane.js"></script>
-
-		<link href="/css/main.css" rel="stylesheet" type="text/css"/>
-
-	  <script src="/js/main.js"></script>
-	  <script type="text/javascript" src="/js/ajax.js"></script>
-	  <script type="text/javascript" src="/js/no-copy.js"></script>
-
-
+	   <script src="/js/main.js"></script>
+	   <script type="text/javascript" src="/js/ajax.js"></script>
+	   <script type="text/javascript" src="/js/no-copy.js"></script>
 
 		<?
 		if (strstr($_SERVER['PHP_SELF'], 'folder_for_prototype')): ?>
@@ -255,11 +256,13 @@
 							<!--<![endif]-->
 						</object>
 					</div>
-
 					<a class="logo" href="/index.php"></a>
-
 					<div id="zagol">
-						<h1><span></span>Профессиональная<br> фото и видеосъёмка <br> в Одессе </h1>
+						<h1>
+							 <span class="letter1">Профессиональная
+						<div style="padding-top: 10px; padding-bottom: 10px;">	Фото и Видеосъёмка</div>
+				          в Одессе</span>
+						</h1>
 					</div>
 				</div>
 			</td>

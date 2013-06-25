@@ -1,5 +1,5 @@
 <?php
-  header('Content-type: text/html; charset=windows-1251');
+//   header('Content-type: text/html; charset=windows-1251');
   require_once (__DIR__.'/../../../inc/config.php');
   require_once (__DIR__.'/../../../inc/func.php');
 

@@ -27,7 +27,8 @@ function dsp_crypt($cfg = 0, $reload = 1)
 
 function chk_crypt($code)
 	{
-
+	  if($code != false || $code != '')
+		 {
 		// Проверка корректности кода
 		include ($_SESSION['configfile']);
 		$code = addslashes($code);
@@ -58,5 +59,7 @@ function chk_crypt($code)
 
 				return false;
 			}
+
+		 } else 	 return true;
 	}
 ?>

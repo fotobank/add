@@ -1,23 +1,23 @@
 <?
 $cryptinstall = '/../../inc/captcha/cryptographp.fct.php';
-include (__DIR__.'../../inc/captcha/cryptographp.fct.php');
+require_once (__DIR__.'/../../inc/captcha/cryptographp.fct.php');
  ?>
-<form action="<?=$clean_self;?>" method="post" name="Sad_Raven_Guestbook">
+<form action="<?=$clean_self;?>" id="guestbook" method="post" name="Sad_Raven_Guestbook">
 <table class="tb_send_f">
 <tr>
 <td>
 <table class="send_f">
 <tr><td><table>
-<tr><td width=83 align=right class=p>*Ваше имя:</td><td><input class=inp_f_reg style="margin: 10px 10px 0 10px; padding-left: 10px; padding-right: 10px; width: <?=$SENDWIDTH;?>px;" type=text name=name
-	  value="<?=htmlspecialchars(stripslashes($name));?>"></td></tr>
-<tr><td width=83 align=right class=p>E-mail:</td><td><input class=inp_f_reg style="margin: 3px 10px 0 10px; padding-left: 10px; padding-right: 10px; width: <?=$SENDWIDTH;?>px;" type=text name=mail
-	  value="<?=htmlspecialchars(stripslashes($mail));?>"></td></tr>
-<tr><td width=83 align=right class=p>URL:</td><td><input class=inp_f_reg style="margin: 3px 10px 0 10px; padding-left: 10px; padding-right: 10px; width: <?=$SENDWIDTH;?>px;" type=text name=url
-	  value="<?=htmlspecialchars(stripslashes($url));?>"></td></tr>
-<tr><td width=83 align=right class=p>Город:</td><td><input class=inp_f_reg style="margin: 3px 10px 0 10px; padding-left: 10px; padding-right: 10px; width: <?=$SENDWIDTH;?>px;" type=text name=city
-	  value="<?=htmlspecialchars(stripslashes($city));?>"></td></tr>
-<tr><td width=83 align=right class=p valign=top>*Сообщение:</td><td><textarea class=form2 style="margin: 3px 10px 0 10px; width: <?=$SENDWIDTH;?>px; font-size:16px;
-	  height: 100px;" name=mess rows=5><?=htmlspecialchars(stripslashes($mess));?></textarea></td></tr>
+<tr><td width=83 align=right class=p>*Ваше имя:</td><td><input class=inp_f_reg style="margin: 10px 10px 0 10px; padding-left: 10px; padding-right: 10px;
+	  width: <?=$SENDWIDTH;?>px;" type=text name=name value="<?=htmlspecialchars(stripslashes($name));?>"></td></tr>
+<tr><td width=83 align=right class=p>E-mail:</td><td><input class=inp_f_reg style="margin: 3px 10px 0 10px; padding-left: 10px; padding-right: 10px;
+	  width: <?=$SENDWIDTH;?>px;" type=text name=mail value="<?=htmlspecialchars(stripslashes($mail));?>"></td></tr>
+<tr><td width=83 align=right class=p>URL:</td><td><input class=inp_f_reg style="margin: 3px 10px 0 10px; padding-left: 10px; padding-right: 10px;
+	  width: <?=$SENDWIDTH;?>px;" type=text name=url value="<?=htmlspecialchars(stripslashes($url));?>"></td></tr>
+<tr><td width=83 align=right class=p>Город:</td><td><input class=inp_f_reg style="margin: 3px 10px 0 10px; padding-left: 10px; padding-right: 10px;
+	  width: <?=$SENDWIDTH;?>px;" type=text name=city value="<?=htmlspecialchars(stripslashes($city));?>"></td></tr>
+<tr><td width=83 align=right class=p valign=top style="padding-left: 10px;">*Сообщение:</td><td><textarea class=form2 style="margin: 3px 10px 0 10px;
+	  width: <?=$SENDWIDTH;?>px; font-size:16px; height: 100px;" name=mess rows=5><?=htmlspecialchars(stripslashes($mess));?></textarea></td></tr>
 </table></td>
   <td class=p align=center valign=top><div align="center">   
     </div>
@@ -59,34 +59,35 @@ include (__DIR__.'../../inc/captcha/cryptographp.fct.php');
   <td colspan="2"><span class="p">
   
 <? if ($spamcontrol == "yes") { 
-  echo "
-  <div class='p' align='left' style='width: 80px; margin:10px 10px; float: left; position: relative;'>
-  <input name='f_antispam' type='text' id='f_antispam' class='inp_fent' size='6' maxlength='".$spamcontrol_length."' style='float: left;'>
-  </div>
-  <div class='p' style='width: 30px; margin:10px 10px; float: left;'>==></div>
-  <div style='margin:10px 10px; float: right;'>".dsp_crypt('cryptographp.cfg.php',1)."</div>
-  <div class='p' style='width: 180px; margin:10px 10px; float: left;'>*Введите код, указанный на картинке: &nbsp;&nbsp;</div>";
+?>
+		  <div class='p' style='width: 110px; margin:10px 10px; float: left;'>*Введите код: &nbsp;&nbsp;</div>
+		  <div class='p' align='left' style='width: 80px; margin:10px 10px; float: left; position: relative;'>
+			 <label for="f_antispam"></label><input name='f_antispam' type='text' id='f_antispam' class='inp_fent' size='6' maxlength='".$spamcontrol_length."' style='float: left;'>
+		  </div>
+		  <div style='float: left; margin: 6px 0 0 -10px;'><? dsp_crypt('kontakti.cfg.php') ?></div>
 
+<?
  } else echo "<img src='img/spacer.gif' alt='' width='1' height='3' />"; 
 ?>
-
-		<div class='p' align='left' style='width: 80px; margin:10px 10px; float: left; position: relative;'>
-
-
   </span></td>
   </tr>
 <tr>
   <td colspan="2"><table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
-      <td width="83"><img src="img/spacer.gif" alt="" width="1" height="25" /></td>
+      <td width="10"><img src="./../img/spacer.gif" alt="" width="1" height="25" /></td>
+		<td valign="top"><span class="psmall">* - поля обязательные для заполнения.</span></td>
       <td valign="top">
-        <input class="metall_knopka" style="width:100px;cursor:pointer; margin-bottom: 5px;" type="submit" value="Отправить" name="add" onmouseover="this.style.backgroundColor='<?=$DARK;?>';" onmouseout="this.style.backgroundColor='<?=$LIGHT;?>';" />
+        <input class="metall_knopka" style="position: relative; margin: -10px 25px 10px 0;  width:100px;cursor:pointer; position: relative; float: right;"
+			type="hidden" value="Отправить" name="add" />
+		  <div class="nospam"><label for="comment">*Сообщение2:</label><textarea name="comment" id="comment" cols="61" rows="13" class="textarea"></textarea></div>
                     </td>
-      <td valign="top"><span class="psmall">* - поля обязательные для заполнения.</span></td>
+
     </tr>
   </table></td>
   </tr>
 </table>
 </td>
 </tr></table></form>
+<a class="metall_knopka" style="position: relative;margin: -65px 330px 0 0; width:60px;cursor:pointer; position: relative; float: right;" type="reset"
+ onClick="$('#guestbook').submit();">Отправить</a>
 <table border=0 cellpadding=0 cellspacing=0 width=100% height=4><tr><td height=4></td></tr></table>

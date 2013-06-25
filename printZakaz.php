@@ -218,7 +218,7 @@ else
 $db->close();
 	 }else{
 	//	print "<br>link invalid: ${_SERVER['REQUEST_URI']} \n";
-		  include (__DIR__.'/error_.php');
+		   include (__DIR__.'/error_.php');
 	 }
  }  else include (__DIR__.'/error_.php');
 ?>

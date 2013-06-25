@@ -4,13 +4,16 @@ if ( !defined('SR_DENIED') )
 	die("Неправильный вызов скрипта");
 	exit;
 }
-if (session_id() == "")
-  {
+/*if (session_id() == "")
+  {*/
 	 //session_start();
 	 require_once(__DIR__.'/../inc/secureSession.php');
 	 startSession();
-  }
-error_reporting(0);
+ // }
+$cryptinstall = '/../inc/captcha/cryptographp.fct.php';
+include  (__DIR__.'/../inc/captcha/cryptographp.fct.php');
+
+//error_reporting(0);
 $mail_mess = $mess;
 $mail_name = $name;
 $name = cutty($name);
@@ -24,9 +27,14 @@ $ip = preg_replace("'[^_0-9. ]'","",$ip);
 setcookie("cookmess", str_replace ("<br>", "\n", $mess), time()+3600);
 $date = time();
 $mail_date = mydate($date);
-$f_antispam = (int)$_POST["f_antispam"];
-$antispam = $_SESSION["antispam"];
-if (($f_antispam==$antispam)&&($antispam<>"")||($spamcontrol<>"yes"))
+
+ $f_antispam = (int)$_POST["f_antispam"];
+ $antispam = $_SESSION["antispam"];
+
+
+if ($_POST['f_antispam'] == chk_crypt($_POST['f_antispam']))
+
+// if (($f_antispam==$antispam)&&($antispam<>"")||($spamcontrol<>"yes"))
 {
 	$f = fopen ($data,"a");
 	flock ($f,2);
@@ -36,13 +44,18 @@ if (($f_antispam==$antispam)&&($antispam<>"")||($spamcontrol<>"yes"))
 	$very_bad = 0;
 	$ref_url="index.php";
 }
-else
+elseif ($_POST['comment'] != '')
 {
-	$very_bad = 1;
+	$very_bad = 2;
 	$ref_url="index.php?messref=1";
-}
+} else
+  {
+	 $very_bad = 1;
+	 $ref_url="index.php?messref=1";
+  }
+
 $mess = "";
-if (isset($mail_mess) && isset($mail_name) && $send_mail == "yes" && (!$very_bad ||($mail_spam=="yes"))):
+if (isset($mail_mess) && isset($mail_name) && $send_mail == "yes" && ($very_bad == 0 || $mail_spam=="yes")):
 	$subject="Сообщение от $mail_name";
 	$body="	
 	~~
@@ -58,7 +71,7 @@ if (isset($mail_mess) && isset($mail_name) && $send_mail == "yes" && (!$very_bad
 	Совпадение кодов антиспам-фильтра: $f_antispam ~~ $antispam
 	";
 	if ($mail<>"") $headers = "From: ".$mail."\n";
-	else $headers = "From: mailer@sr.guestbook\n";
+	else $headers = "From: foto@aleks.od.ua\n";
 	$headers .= "X-Sender: < ".$gname." >\n";
 	$headers .= "Content-Type: text/plain; charset=windows-1251";
 	mail($mailto, $subject, $body, $headers);
@@ -82,12 +95,17 @@ header('Content-type: text/html; charset=windows-1251');
     <td>
 <?
 if ($very_bad==0) echo "<p class=p><strong>Сообщение добавлено.</strong></p>";
-else 
+elseif ($very_bad==1)
 {
-	echo "<p class=p><strong>Сообщение НЕ добавлено. Несовпадение контрольных цифр $f_antispam $antispam</strong></p><br/>";
-}
+	echo "<p class=p><strong>Сообщение НЕ добавлено. Несовпадение контрольных цифр  $f_antispam $antispam </strong></p><br/>";
+} elseif ($very_bad==2)
+  {
+	 echo "<p class=p><strong>Сообщение НЕ добавлено. Ты бот?</strong></p><br/>";
+  }
+
 ?>	
-	<p class=p>Сейчас вы будете перемещены  в гостевую книгу. Нажмите <a href="<?=$ref_url?>"><strong>ЗДЕСЬ</strong></a>, если не хотите ждать или не работает автоматическое перенаправление.</p></td>
+	<p class=p">Сейчас вы будете перемещены  в гостевую книгу. Нажмите <a href="<?=$ref_url?>"><strong>ЗДЕСЬ</strong>
+	  </a>, если не хотите ждать или не работает автоматическое перенаправление.</p></td>
   </tr>
 </table>
 </body>
