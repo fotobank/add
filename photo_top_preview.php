@@ -92,6 +92,29 @@ if (isset($_SESSION['current_album'])):
 													Голосов: (<?=$photo_data['votes']?>)
 												</td>
 
+											  <script type="text/javascript">
+												 $(document).keyup(function (event){
+													clearTimeout($.data(this, 'timer'));
+													var wait = setTimeout(keyN, 100);
+													$(this).data('timer', wait);
+
+													function keyN(){
+													  switch (event.keyCode ) {
+														 case  27: hidePreview();
+															break;
+														 case 37 : preview('<?=$left_id?>');
+															break;
+														 case 39:	preview('<?=$right_id?>');
+															break;
+														 case 13: basketAdd(<?=$photo_data['id']?>);
+															break;
+														 case 32:	goVote('<?=$user_balans?>','<?=$vote_price?>','<?=$photo_data['id']?>');
+															break;
+													  }
+													}
+												 });
+											  </script>
+
 												<td align="right">
 
 													<div class="right_pointer" onClick="previewTop('<?= $right_id ?>');">

@@ -48,6 +48,7 @@ if ($id > 0)
             <? endif; ?>
 
 
+
                 <div style="<?= $sz_string ?>">
 
                     <div style="text-align: center; width: 100%;">
@@ -87,6 +88,30 @@ if ($id > 0)
                                     <input type="button" value="Голосовать" style="cursor: pointer;" onClick="goVote('<?=$user_balans?>','<?=$vote_price?>','<?=$photo_data['id']?>');"/><br/>
                                     Голосов: (<?=$photo_data['votes']?>)
                                 </td>
+
+										<script type="text/javascript">
+										  $(document).keyup(function (event){
+											 clearTimeout($.data(this, 'timer'));
+											 var wait = setTimeout(keyN, 100);
+											 $(this).data('timer', wait);
+
+											 function keyN(){
+												switch (event.keyCode ) {
+												case  27: hidePreview();
+												  break;
+												case 37 : preview('<?=$left_id?>');
+												  break;
+												case 39:	preview('<?=$right_id?>');
+												  break;
+												case 13: basketAdd(<?=$photo_data['id']?>);
+												  break;
+												case 32:	goVote('<?=$user_balans?>','<?=$vote_price?>','<?=$photo_data['id']?>');
+												  break;
+											 }
+											 }
+										  });
+										</script>
+
 
                                 <td align="right">
                                     <? if ($right_id): ?>

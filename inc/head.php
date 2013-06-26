@@ -69,7 +69,7 @@
 		<![endif]-->
 
 		<style type="text/css">
-		  <?php
+		  <?php // сжатие CSS файлов
 		ob_start("compress");
 		function compress($buffer) {
 		  /* Удаляем комментарии */

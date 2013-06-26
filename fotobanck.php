@@ -217,6 +217,9 @@
 							$current_page = 1;
 						}
 					$start        = ($current_page - 1) * PHOTOS_ON_PAGE;
+
+
+
 					$db = go\DB\Storage::getInstance()->get('db-for-data');
 					$rs = $db->query(
 					'select SQL_CALC_FOUND_ROWS p.* from photos p where id_album = ?i
@@ -262,6 +265,11 @@
 								<?
 								}
 						}
+
+
+
+
+
 				}
 		}
 
