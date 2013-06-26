@@ -101,8 +101,12 @@ if ($id > 0)
 												  break;
 												case 37 : preview('<?=$left_id?>');
 												  break;
+												case 40 : preview('<?=$left_id?>');
+												  break;
 												case 39:	preview('<?=$right_id?>');
 												  break;
+												case 38:	preview('<?=$right_id?>');
+													 break;
 												case 13: basketAdd(<?=$photo_data['id']?>);
 												  break;
 												case 32:	goVote('<?=$user_balans?>','<?=$vote_price?>','<?=$photo_data['id']?>');

@@ -104,7 +104,11 @@ if (isset($_SESSION['current_album'])):
 															break;
 														 case 37 : preview('<?=$left_id?>');
 															break;
+														 case 40 : preview('<?=$left_id?>');
+															break;
 														 case 39:	preview('<?=$right_id?>');
+															break;
+														 case 38:	preview('<?=$right_id?>');
 															break;
 														 case 13: basketAdd(<?=$photo_data['id']?>);
 															break;
