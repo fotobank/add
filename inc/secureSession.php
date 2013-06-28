@@ -14,7 +14,7 @@
 	* @return bool
 	*/
   function startSession($isUserActivity=true, $prefix=NULL) {
-	 $sessionLifetime = 300; // “аймаут отсутстви€ активности пользовател€ (в секундах)
+	 $sessionLifetime = 600; // “аймаут отсутстви€ активности пользовател€ (в секундах)
 	 $idLifetime = 60;  // ¬рем€ жизни идентификатора сессии
 
 	 if ( session_id() ) return true;
@@ -24,7 +24,14 @@
 	 session_name('SID'.($prefix ? '_'.$prefix : ''));
 	 // ”станавливаем врем€ жизни куки до закрыти€ браузера (контролировать все будем на стороне сервера)
 	 ini_set('session.cookie_lifetime', 0);
-	 if ( ! session_start() ) return false;
+	 if (!session_start())
+		{
+		  session_regenerate_id(true);
+		}
+	 else
+		{
+		  return false;
+		}
 
 	 $t = time();
 
@@ -32,7 +39,7 @@
 		// ≈сли таймаут отсутстви€ активности пользовател€ задан,
 		// провер€ем врем€, прошедшее с момента последней активности пользовател€
 		// (врем€ последнего запроса, когда была обновлена сессионна€ переменна€ lastactivity)
-		if ( isset($_SESSION['lastactivity']) && $t-$_SESSION['lastactivity'] >= $sessionLifetime ) {
+		if ( isset($_SESSION['lastactivity']) && isset($_SESSION['logged']) && isset($_SESSION['logged']) == true && $t-$_SESSION['lastactivity'] >= $sessionLifetime ) {
 		  // ≈сли врем€, прошедшее с момента последней активности пользовател€,
 		  // больше таймаута отсутстви€ активности, значит сесси€ истекла, и нужно завершить сеанс
 		  destroySession();
@@ -55,6 +62,7 @@
 		  if ( $t-$_SESSION['starttime'] >= $idLifetime ) {
 			 // ¬рем€ жизни идентификатора сессии истекло
 			 // √енерируем новый идентификатор
+		//	 session_write_close();
 			 session_regenerate_id(true);
 			 $_SESSION['starttime'] = $t;
 		  }

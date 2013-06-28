@@ -20,11 +20,12 @@ function deleteDir($dir)
 
    if (isset($_POST['confirm_del']))
       {
-      if ($_POST['confirm_del'] != '0')
+
+		  deleteDir($_POST['confirm_del']);
+
+      if ($_POST['confirm_del'] != '0' && $_POST['thumb'] == null)
          {
          $id = $_POST['confirm_id'];
-         $patch = $_POST['confirm_del'];
-         deleteDir($patch);
          $db->query('delete from photos  where id_album = ?i', array($id));
 	      $db->query('delete from accordions where id_album = ?i', array($id));
          $album_foto = $db->query('select img from albums where id = ?i', array($id), 'el');
@@ -33,5 +34,5 @@ function deleteDir($dir)
          }
       ok_exit('Удален каталог: ' .$_POST['confirm_del'], '../canon68452/index.php');
       }
-   session_destroy();
+   destroySession()
 ?>

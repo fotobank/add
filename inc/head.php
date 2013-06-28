@@ -14,8 +14,11 @@
 <html xmlns:Логин="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=windows-1251"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=9" />
+		<meta name="viewport" content="width=device-width, initial-scale=0.85" />
 		<meta name="google-site-verification" content="uLdE_lzhCOntN_AaTM1_sQNmIXFk1-Dsi5AWS0bKIgs"/>
 		<link href='http://fonts.googleapis.com/css?family=Lobster|Comfortaa:700|Jura:600&subset=cyrillic,cyrillic-ext' rel='stylesheet' type='text/css'>
+
 		<?
 		// обработка ошибок
 		 require_once (__DIR__.'/lib_mail.php');
@@ -97,7 +100,9 @@
 
 		<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="/favicon.ico"/>
 		<link rel="shortcut icon" href="/img/ico_nmain.gif"/>
+
 		<script src="/js/jquery.js"></script>
+		<script src="/js/jquery.lazyload.js" type="text/javascript"></script>
 		<script src="/js/bootstrap.min.js"></script>
 		<script src="/js/bootstrap-modalmanager.js"></script>
 		<script src="/js/bootstrap-modal.js"></script>
@@ -107,6 +112,8 @@
 	   <script src="/js/main.js"></script>
 	   <script type="text/javascript" src="/js/ajax.js"></script>
 	   <script type="text/javascript" src="/js/no-copy.js"></script>
+<!--		<link rel="stylesheet" type="text/css" href="/css/main.css" />-->
+
 
 		<?
 		if (strstr($_SERVER['PHP_SELF'], 'folder_for_prototype')): ?>
@@ -221,8 +228,10 @@
 			 });
 		  });
 		</script>
-
-	</head>
+</head>
+<?
+  flush();
+?>
 <body>
 <div id="maket">
 	<div id="photo_preview_bg" class="hidden" onClick="hidePreview();"></div>
@@ -235,27 +244,7 @@
 		<tr>
 			<td>
 				<div class="td_head_logo">
-
-					<div id="flash-container">
-						<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="910" height="208" id="flash-object">
-							<param name="movie" value="img/container.swf">
-							<param name="quality" value="high">
-							<param name="scale" value="default">
-							<param name="wmode" value="transparent">
-							<param name="flashvars" value="color1=0xFFFFFF&amp;alpha1=.50&amp;framerate1=24&amp;loop=true&amp;wmode=transparent&amp;clip=img/flash.swf&amp;radius=4&amp;clipx=-50&amp;clipy=0&amp;initalclipw=900&amp;initalcliph=200&amp;clipw=1000&amp;cliph=200&amp;width=900&amp;height=200&amp;textblock_width=0&amp;textblock_align=no&amp;hasTopCorners=true&amp;hasBottomCorners=true">
-							<param name="swfliveconnect" value="true">
-
-							<!--[if !IE]>-->
-							<object type="application/x-shockwave-flash" data="img/container.swf" width="910" height="208">
-								<param name="quality" value="high">
-								<param name="scale" value="default">
-								<param name="wmode" value="transparent">
-								<param name="flashvars" value="color1=0xFFFFFF&amp;alpha1=.50&amp;framerate1=24&amp;loop=true&amp;wmode=transparent&amp;clip=img/flash.swf&amp;radius=4&amp;clipx=-50&amp;clipy=0&amp;initalclipw=900&amp;initalcliph=200&amp;clipw=1000&amp;cliph=200&amp;width=900&amp;height=200&amp;textblock_width=0&amp;textblock_align=no&amp;hasTopCorners=true&amp;hasBottomCorners=true">
-								<param name="swfliveconnect" value="true">
-							</object>
-							<!--<![endif]-->
-						</object>
-					</div>
+				<?  require_once (__DIR__.'/flash.php'); ?>
 					<a class="logo" href="/index.php"></a>
 					<div id="zagol">
 						<h1>
@@ -370,13 +359,12 @@
 	?>
 
 
-
 	<div id="fixed_menu">
-		<div id="main_menu" data-spy="affix" data-offset-top="210">
-
+<!--	  фиксация меню-->
+<!--		<div id="main_menu" data-spy="affix" data-offset-top="210">-->
+		  <div id="main_menu">
 
 			<?
-
 			$value = $_SERVER['PHP_SELF'];
 			if ($_SERVER['PHP_SELF'] == '/fotobanck.php')
 				{

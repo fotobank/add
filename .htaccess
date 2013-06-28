@@ -8,7 +8,60 @@ ErrorDocument 403 /error.php?403
 ErrorDocument 404 /error.php?404
 ErrorDocument 500 /error.php?500
 
-<IfModule mod_security.c>
-   SecFilterEngine Off
-   SecFilterScanPOST Off
+AddType application/vnd.ms-fontobject .eot
+AddType font/ttf .ttf
+AddType font/otf .otf
+AddType application/x-font-woff .woff
+
+#сжатие
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml
+  SetOutputFilter DEFLATE
+  BrowserMatch ^Mozilla/4 gzip-only-text/html
+  BrowserMatch ^Mozilla/4\.0[678] no-gzip
+  BrowserMatch \bMSI[E] !no-gzip !gzip-only-text/html
+  SetEnvIfNoCase Request_URI \.(?:gif|png)$ no-gzip dont-vary
+  Header append Vary User-Agent env=!dont-vary
 </IfModule>
+
+# используем mod_expires
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault A86400    
+  ExpiresByType image/x-icon A2592000
+  ExpiresByType application/x-javascript A2592000
+  ExpiresByType text/css A2592000
+  ExpiresByType image/gif A604800
+  ExpiresByType image/png A604800
+  ExpiresByType image/jpeg A604800
+  ExpiresByType text/plain A604800
+  ExpiresByType application/x-shockwave-flash A604800
+  ExpiresByType video/x-flv A604800
+  ExpiresByType application/pdf A604800
+  ExpiresByType text/html A900
+</IfModule>
+
+# используем mod_header
+<IfModule mod_header.c>
+  # 3 Month
+  <FilesMatch "\.(flv|gif|jpg|jpeg|png|ico|swf)$">
+    Header set Cache-Control "max-age=7257600"
+  </FilesMatch>
+  # 1 Week
+  <FilesMatch "\.(js|css|pdf|txt)$">
+    Header set Cache-Control "max-age=604800"
+  </FilesMatch>
+  # 10 Minutes
+  <FilesMatch "\.(html|htm)$">
+    Header set Cache-Control "max-age=600"
+  </FilesMatch>
+  # NONE
+  <FilesMatch "\.(pl|php|cgi|spl)$">
+    Header unset Cache-Control
+    Header unset Expires
+    Header unset Last-Modified
+    FileETag None
+    Header unset Pragma
+  </FilesMatch>
+</IfModule>
+

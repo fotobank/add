@@ -74,7 +74,7 @@ require_once (__DIR__.'/../../inc/captcha/cryptographp.fct.php');
 <tr>
   <td colspan="2"><table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
-      <td width="10"><img src="./../img/spacer.gif" alt="" width="1" height="25" /></td>
+      <td width="10"><img src="/gb/img/spacer.gif" alt="" width="1" height="25" /></td>
 		<td valign="top"><span class="psmall">* - поля обязательные для заполнения.</span></td>
       <td valign="top">
         <input class="metall_knopka" style="position: relative; margin: -10px 25px 10px 0;  width:100px;cursor:pointer; position: relative; float: right;"

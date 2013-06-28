@@ -12,7 +12,7 @@
   } 
 
        // Изменение размеров изображения 
-function imageresize($outfile,$infile,$neww,$newh,$quality,$warermark,$ip_marker,$sharping)       
+function imageresize($outfile,$infile,$neww,$newh,$quality,$warermark=0,$ip_marker=0,$sharping=0)
   	     {
 //	var_dump ('Sharping - '.$sharping.';  Warermark - '.$warermark.';  Ip_marker - '.$ip_marker);		 		 
             $ext = strtolower(substr($infile, strrpos($infile, '.') + 1));  	    

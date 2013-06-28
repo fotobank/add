@@ -21,25 +21,7 @@ html, body {
 
 html {
     /*overflow-y: scroll;*/
-}
 
-
-/* ---- Добавил из-за проблемы с footerom ---- */
-#maket {
-    width: 1200px;
-    /* height:auto; */
-    margin: 0 auto;
-    min-height: 100%;
-    position: relative;
-    /*background:url(../img/hexabump.jpg);*/
-    /* background-attachment:fixed;  */
-    /* background:url('../img/foto_podlogka.gif'); */
-
-}
-
-/* ниже фильтр * html так называемый CSS хак, через который можно задать любое свойство предназначенное для IE6 */
-* html #maket, #main {
-    height: 100%;
 }
 
 #main {
@@ -55,7 +37,7 @@ html {
 
 #footer {
     /*background-color: #1C7FFF;*/
-    color: #FFF;
+    color: #000;
     position: relative;
     width: 1200px;
     /* height:50px; */
@@ -71,15 +53,36 @@ html {
 }
 
 body {
-    /*background: #d1cfc7; *//* Цвет фона веб-страницы */
+    /*background: #789ad1;//  Цвет фона веб-страницы*/
     /*background: url(/img/debut_dark.png) center top;*/
     /*background: #333333 transparent url("http://imgub.ru/wp-content/themes/Avonne/images/logo.png") no-repeat scroll center top;*/
     /*height: 200px;*/
     /*padding: 11px 0;*/
     /*background: #474747 url(/img/back.jpg);*/
-    background: #474747 url(/img/bg3.jpg);
+    background:  url(/img/bg3.jpg);
+    /*z-index: 0;*/
+
 }
 
+
+/* ---- Добавил из-за проблемы с footerom ---- */
+#maket {
+    width: 1200px;
+    /* height:auto; */
+    margin: 0 auto;
+    min-height: 100%;
+    position: relative;
+    /*background:url(/img/hexabump.jpg);*/
+    /*background-attachment:fixed;*/
+    /*background:url('/img/foto_podlogka.gif');*/
+
+
+}
+
+/* ниже фильтр * html так называемый CSS хак, через который можно задать любое свойство предназначенное для IE6 */
+* html #maket, #main {
+    height: 100%;
+}
 
 
 .block {
@@ -96,7 +99,7 @@ body {
 }
 
 .wrap {
-    background: orange url(../img/4.gif) repeat-y left;
+    background: orange url(/img/4.gif) repeat-y left;
     padding: 0 0 0 1px; /*1px ширина полоски*/
 }
 
@@ -149,11 +152,11 @@ p {
 }
 
 @font-face {
-    font-family: 'nbrushsc';
-    src: url('/fonts/nbrushsc.eot');
+    font-family: 'odessa_scr';
+    src: url('/fonts/odessa_scr.eot');
     src: local('?'),
-    url('/fonts/nbrushsc.woff') format('woff'),
-    url('/fonts/nbrushsc.ttf') format('truetype');
+    url('/fonts/odessa_scr.woff') format('woff'),
+    url('/fonts/odessa_scr.ttf') format('truetype');
     font-weight:bold;
     font-style:normal;
     color: #000000;
@@ -163,22 +166,49 @@ p {
 
 span.letter1 {
     font-family:"andantino",serif;
-    color: rgb(253, 225, 41);
+    color: rgb(253, 224, 39);
     font-size: 55px;
     float: left;
     font-weight: 600;
     line-height: 40px;
     position: relative;
-    text-shadow: 2px 2px 3px #000000;
+
+    text-shadow: 1px 2px 1px #956701,
+    0 1px 0 #eab401,
+    0 2px 0 #a37701,
+    0 3px 0 #e8b101,
+    0 4px 0 #4a3601,
+    0 5px 1px rgba(0,0,0,.1),
+    0 0 5px rgba(0,0,0,.1),
+    0 1px 3px rgba(0,0,0,.3),
+    0 3px 5px rgba(0,0,0,.2),
+    0 5px 10px rgba(0,0,0,.25),
+    0 10px 10px rgba(0,0,0,.2),
+    0 20px 20px rgba(0,0,0,.15);
+
+
+
+   /* text-shadow: 0 1px 0 #d4a001,
+    0 1px 0 #bf8f01,
+    0 2px 0 #a37701,
+    0 3px 0 #8e6501,
+    0 4px 0 #745201,
+    0 5px 1px rgba(0,0,0,.1),
+    0 0 5px rgba(0,0,0,.1),
+    0 1px 3px rgba(0,0,0,.3),
+    0 3px 5px rgba(0,0,0,.2),
+    0 5px 10px rgba(0,0,0,.25),
+    0 10px 10px rgba(0,0,0,.2),
+    0 20px 20px rgba(0,0,0,.15);*/
+
 }
 
 span.letter2 {
-    font-family:"andantino",serif;
-    color: rgb(103, 157, 107);
+    font-family:"odessa_scr",serif;
+    color: rgb(113, 0, 128);
     font-size: 32px;
-    float: left;
     font-weight: 600;
-    line-height: 40px;
+    line-height: 50px;
     position: relative;
     text-align:center;
 }
@@ -196,6 +226,7 @@ h1 {
     /*font-family: "Times New Roman", Times, serif;*/
     text-align: center;
     position: relative;
+
 }
 /*
 .cufon-active h1 {
@@ -290,7 +321,7 @@ hremind {
     margin-left: auto;
     margin-right: auto;
     z-index: 5;
-    background: url(../img/head.jpg) no-repeat left;
+    background: url(/img/head.jpg) no-repeat left;
 }
 
 .tb_head {
@@ -303,7 +334,7 @@ hremind {
     height: 200px;
     top: 0;
     left: 10px;
-    background: url(../img/logo.png) no-repeat left;
+    background: url(/img/logo.png) no-repeat left;
     background-size: contain;
     position: relative;
     margin-bottom: 10px;
@@ -338,7 +369,7 @@ a.logo {
 .td_form_ent {
     width: 300px;
     height: 200px;
-    background: url(../img/form_hd.png) no-repeat center;
+    background: url(/img/form_hd.png) no-repeat center;
 }
 
 #form_ent {
@@ -366,7 +397,7 @@ a.logo {
 }
 
 a.bt_dack {
-    background: url(../img/bt_ent.png) no-repeat center top;
+    background: url(/img/bt_ent.png) no-repeat center top;
     color: #000000;
     text-decoration: none;
     display: block;
@@ -397,7 +428,7 @@ a.bt_dack:hover {
 .bt_enter {
     width: 80px;
     /* 	height:18px; */
-    background: #000000 url(../img/bt_ent.png) no-repeat center top;
+    background: #000000 url(/img/bt_ent.png) no-repeat center top;
     /*display: block;*/
     display: inline-block; /*ie*/
     color: #110011;
@@ -409,14 +440,14 @@ a.bt_dack:hover {
 }
 
 .bt_enter:hover {
-    background: #000000 url(../img/bt_ent.png) no-repeat center bottom;
+    background: #000000 url(/img/bt_ent.png) no-repeat center bottom;
     cursor: pointer;
 }
 
 a.bt_rgstr {
     width: 80px;
     height: 18px;
-    background: #000000 url(../img/bt_rgstr.png) no-repeat center top;
+    background: #000000 url(/img/bt_rgstr.png) no-repeat center top;
     /*display: block;*/
     display: inline-block; /*ie*/
     color: #cccccc;
@@ -428,7 +459,7 @@ a.bt_rgstr {
 }
 
 a.bt_rgstr:hover {
-    background: #000000 url(../img/bt_rgstr.png) no-repeat center bottom;
+    background: #000000 url(/img/bt_rgstr.png) no-repeat center bottom;
 }
 
 #main_menu {
@@ -545,7 +576,7 @@ a.bt_gl, a.bt_fb, a.bt_usl, a.bt_ceny, a.bt_konty, a.bt_gb {
     float: left;
     text-align: center;
     padding-top: 10px;
-    background: url(../img/kadr.png);
+    background: url(/img/kadr.png);
     background-repeat: no-repeat; /* Отменяем повторение фона */
     background-position: 55% 70%;
     z-index: 1;
@@ -580,7 +611,7 @@ a.bt_gb {
 
 a.bt_gl:hover, a.bt_fb:hover, a.bt_usl:hover, a.bt_ceny:hover, a.bt_konty:hover, a.bt_gb:hover {
     /* background:#FFF; */
-    background: url(../img/kadr_hover.png);
+    background: url(/img/kadr_hover.png);
     background-repeat: no-repeat; /* Отменяем повторение фона */
     background-position: 50% 70%;
 
@@ -603,7 +634,7 @@ a.gl_act, a.fb_act, a.usl_act, a.cn_act, a.konty_act, a.gb_act {
     text-align: center;
     padding-top: 10px;
     background: #FFF;
-    background: url(../img/kadr_act.png);
+    background: url(/img/kadr_act.png);
     background-repeat: no-repeat; /* Отменяем повторение фона */
     background-position: 55% 70%;
 
@@ -754,7 +785,7 @@ a.gb_act {
 }
 
 .bt_go_reg {
-    background: url(../img/bt_go_reg.png) no-repeat center top;
+    background: url(/img/bt_go_reg.png) no-repeat center top;
     display: block;
     width: 150px;
     height: 30px;
@@ -767,7 +798,7 @@ a.gb_act {
 }
 
 .bt_go_reg:hover {
-    background: url(../img/bt_go_reg.png) no-repeat center bottom;
+    background: url(/img/bt_go_reg.png) no-repeat center bottom;
 }
 
 .err_f_reg {
@@ -779,14 +810,14 @@ a.gb_act {
 }
 
 .td_fb {
-    background: url(../img/bk_fb_td.png) no-repeat left top;
+    background: url(/img/bk_fb_td.png) no-repeat left top;
     width: 202px;
     height: 200px;
 }
 
 .td_fb:hover {
     position: absolute;
-    background: url(../img/bk_fb_td_act.png) no-repeat left top;
+    background: url(/img/bk_fb_td_act.png) no-repeat left top;
     width: 303px;
     height: 300px;
     cursor: pointer;
@@ -838,7 +869,7 @@ a.gb_act {
     position: relative;
     left: 25px;
     top: 10px;
-    background: url(../img/bk_fb_td.png) no-repeat left top;
+    background: url(/img/bk_fb_td.png) no-repeat left top;
     width: 200px;
     height: 200px;
     /* float:left; */
@@ -947,7 +978,7 @@ a.gb_act {
 }
 
 .div_fb {
-    background: url(../img/bk_fb_td.png) no-repeat left top;
+    background: url(/img/bk_fb_td.png) no-repeat left top;
     position: relative;
     width: 202px;
     height: 200px;
@@ -977,7 +1008,7 @@ a.gb_act {
 }
 
 .div_fb3 {
-    background: url(../img/bk_fb_td.png) no-repeat left top;
+    background: url(/img/bk_fb_td.png) no-repeat left top;
     position: absolute;
     width: 202px;
     height: 200px;
@@ -990,7 +1021,7 @@ a.gb_act {
 }
 
 .div_fb3:hover {
-    background: url(../img/bk_fb_td_act.png) no-repeat left top;
+    background: url(/img/bk_fb_td_act.png) no-repeat left top;
     width: 252px;
     height: 250px;
     font-size: 14px;
@@ -1096,8 +1127,49 @@ and (orientation:portrait) {
         display: none;
     }
 
+    body {
+        background:  url(/img/bg3.jpg);
+        z-index: 0;
+    }
+
     #photo_preview {
-        top: 20%;
+        top: 50%;
+    }
+
+    .left_pointer2 {
+        position: fixed;
+        right: 82%;
+        top: 35%;
+        width: 200px;
+        height: 200px;
+        cursor: pointer;
+        background: url(/img/row_left2.png) no-repeat;
+        background-size: 100% 100%;
+        opacity: 0.5; /* Значение прозрачности */
+
+    }
+
+    .left_pointer2:hover {
+        opacity: 1; /* Значение прозрачности */
+
+    }
+
+    .right_pointer2 {
+        position: fixed;
+        left: 82%;
+        top: 35%;
+        width: 200px;
+        height: 200px;
+        cursor: pointer;
+        background: url(/img/row_right2.png) no-repeat;
+        background-size: 100% 100%;
+        opacity: 0.5; /* Значение прозрачности */
+
+    }
+
+    .right_pointer2:hover {
+        opacity: 1; /* Значение прозрачности */
+
     }
 }
 
@@ -1107,16 +1179,57 @@ and (orientation:landscape) {
         display: none;
     }
 
+    body {
+        background:  url(/img/bg3.jpg);
+        z-index: 0;
+    }
+
     #photo_preview {
-        top: 10%;
+        top: 50%;
+    }
+
+    .left_pointer2 {
+        position: fixed;
+        right: 82%;
+        top: 35%;
+        width: 200px;
+        height: 200px;
+        cursor: pointer;
+        background: url(/img/row_left2.png) no-repeat;
+        background-size: 100% 100%;
+        opacity: 0.5; /* Значение прозрачности */
+
+    }
+
+    .left_pointer2:hover {
+        opacity: 1; /* Значение прозрачности */
+    }
+
+    .right_pointer2 {
+        position: fixed;
+        left: 82%;
+        top: 35%;
+        width: 200px;
+        height: 200px;
+        cursor: pointer;
+        background: url(/img/row_right2.png) no-repeat;
+        background-size: 100% 100%;
+        opacity: 0.5; /* Значение прозрачности */
+
+    }
+
+    .right_pointer2:hover {
+        opacity: 1; /* Значение прозрачности */
     }
 }
+
+
 
 .left_pointer {
     margin-top: -15px;
     width: 48px;
     height: 48px;
-    background: url(../img/row_left.png) no-repeat left top;
+    background: url(/img/row_left.png) no-repeat left top;
     cursor: pointer;
 }
 
@@ -1126,61 +1239,22 @@ and (orientation:landscape) {
     width: 48px;
     height: 48px;
     /* visibility: hidden;	 */
-    background: url(../img/row.png) no-repeat left top;
+    background: url(/img/row.png) no-repeat left top;
     cursor: pointer;
 }
 
-.left_pointer2 {
-    position: fixed;
-    right: 82%;
-    top: 25%;
-    width: 200px;
-    height: 400px;
-    cursor: pointer;
-    background: url(../img/row_left2.png) no-repeat;
-    background-size: 100% 100%;
-    opacity: 0.5; /* Значение прозрачности */
-    filter: alpha(Opacity=50); /* Прозрачность в IE */
-
-}
-
-.left_pointer2:hover {
-    opacity: 1; /* Значение прозрачности */
-    filter: alpha(Opacity=100); /* Прозрачность в IE */
-
-}
-
-.right_pointer2 {
-    position: fixed;
-    left: 82%;
-    top: 25%;
-    width: 200px;
-    height: 400px;
-    cursor: pointer;
-    background: url(../img/row_right2.png) no-repeat;
-    background-size: 100% 100%;
-    opacity: 0.5; /* Значение прозрачности */
-    filter: alpha(Opacity=50); /* Прозрачность в IE */
-
-}
-
-.right_pointer2:hover {
-    opacity: 1; /* Значение прозрачности */
-    filter: alpha(Opacity=100); /* Прозрачность в IE */
-
-}
 
 .right_pointer {
     margin-top: -15px;
     width: 48px;
     height: 48px;
-    background: url(../img/row_right.png) no-repeat left top;
+    background: url(/img/row_right.png) no-repeat left top;
     cursor: pointer;
 }
 
 a.del, span.del {
     position: absolute;
-    background: url(../img/del.png) top left no-repeat;
+    background: url(/img/del.png) top left no-repeat;
     width: 20px;
     height: 20px;
     display: block;
@@ -1192,7 +1266,7 @@ a.del:hover, span.del:hover {
 }
 
 .bt_oplatit {
-    background: url(../img/bt_opl.png) top left no-repeat;
+    background: url(/img/bt_opl.png) top left no-repeat;
     width: 180px;
     height: 40px;
     color: #FFF;
@@ -1217,7 +1291,7 @@ a.del:hover, span.del:hover {
 }
 
 .td_usl_ph, .td_usl_vd {
-    background: url(../img/td_usl_ph.png) left top no-repeat;
+    background: url(/img/td_usl_ph.png) left top no-repeat;
     width: 168px;
     height: 160px;
     padding: 5px;
@@ -1230,7 +1304,7 @@ a.del:hover, span.del:hover {
 }
 
 .td_usl_vd {
-    background: url(../img/td_usl_vd.png) left top no-repeat;
+    background: url(/img/td_usl_vd.png) left top no-repeat;
 }
 
 a.usl_svad, a.usl_deti, a.usl_bankety, a.usl_phknigi, a.usl_raznoe, a.usl_vipusk, a.sl_show, a.usl_v_svad, a.usl_v_deti, a.usl_v_vipusk, a.usl_v_bankety, a.usl_v_raznoe {
@@ -1244,51 +1318,51 @@ a.usl_svad:hover, a.usl_deti:hover, a.usl_bankety:hover, a.usl_phknigi:hover, a.
 }
 
 a.usl_svad {
-    background: url(../img/ico_svad.png) left top no-repeat;
+    background: url(/img/ico_svad.png) left top no-repeat;
 }
 
 a.usl_deti {
-    background: url(../img/ico_deti.png) left top no-repeat;
+    background: url(/img/ico_deti.png) left top no-repeat;
 }
 
 a.usl_bankety {
-    background: url(../img/ico_banketi.png) left top no-repeat;
+    background: url(/img/ico_banketi.png) left top no-repeat;
 }
 
 a.usl_phknigi {
-    background: url(../img/ico_fotoknigii.png) left top no-repeat;
+    background: url(/img/ico_fotoknigii.png) left top no-repeat;
 }
 
 a.usl_raznoe {
-    background: url(../img/ico_raznoe.png) left top no-repeat;
+    background: url(/img/ico_raznoe.png) left top no-repeat;
 }
 
 a.usl_vipusk {
-    background: url(../img/ico_vipusk.png) left top no-repeat;
+    background: url(/img/ico_vipusk.png) left top no-repeat;
 }
 
 a.sl_show {
-    background: url(../img/ico_sl_show.png) left top no-repeat;
+    background: url(/img/ico_sl_show.png) left top no-repeat;
 }
 
 a.usl_v_svad {
-    background: url(../img/ico_v_svad.png) left top no-repeat;
+    background: url(/img/ico_v_svad.png) left top no-repeat;
 }
 
 a.usl_v_deti {
-    background: url(../img/ico_v_deti.png) left top no-repeat;
+    background: url(/img/ico_v_deti.png) left top no-repeat;
 }
 
 a.usl_v_vipusk {
-    background: url(../img/ico_v_vipusk.png) left top no-repeat;
+    background: url(/img/ico_v_vipusk.png) left top no-repeat;
 }
 
 a.usl_v_bankety {
-    background: url(../img/ico_v_banketi.png) left top no-repeat;
+    background: url(/img/ico_v_banketi.png) left top no-repeat;
 }
 
 a.usl_v_raznoe {
-    background: url(../img/ico_v_raznoe.png) left top no-repeat;
+    background: url(/img/ico_v_raznoe.png) left top no-repeat;
 }
 
 .top_pos {
@@ -1304,7 +1378,7 @@ a.usl_v_raznoe {
     height: 40px;
     top: -15px;
     left: -5px;
-    background: url(../img/bc_reyt.png) left top no-repeat;
+    background: url(/img/bc_reyt.png) left top no-repeat;
 }
 
 .ph_orig_nm {
@@ -1394,7 +1468,7 @@ a.alb_usl {
     margin-left: auto;
     margin-right: auto;
     padding-left: 50%;
-    /* background:url(../img/vz.png) top center no-repeat; */
+    /* background:url(/img/vz.png) top center no-repeat; */
 }
 
 #v_zn {
@@ -1426,7 +1500,7 @@ a.alb_usl {
     padding: 1px 30px;
     background-repeat: no-repeat;
     /* Следующие два правила откаты, в случае, если браузер не поддерживает несколько фонов. */
- //   background-image: url('../img/button_bg.png');
+ //   background-image: url('/img/button_bg.png');
     /* Несколько версии происхождения. Фоновые изображения определяются индивидуально в цвете классов */
     background-position: bottom left, top right, 0 0, 0 0;
     background-clip: border-box;
@@ -1528,15 +1602,15 @@ a.alb_usl {
     border: 1px solid #a5a5a5 !important;
     background-color: #a9adb1;
 
-    background-image: url('../img/button_bg.png'), url('../img/button_bg.png'), -moz-radial-gradient(center bottom, circle, rgba(197, 199, 202, 1) 0, rgba(197, 199, 202, 0) 100px), -moz-linear-gradient(#c5c7ca, #92989c);
-    background-image: url('../img/button_bg.png'), url('../img/button_bg.png'), -webkit-gradient(radial, 50% 100%, 0, 50% 100%, 100, from(rgba(197, 199, 202, 1)), to(rgba(197, 199, 202, 0))), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#c5c7ca), to(#92989c));
+    background-image: url('/img/button_bg.png'), url('/img/button_bg.png'), -moz-radial-gradient(center bottom, circle, rgba(197, 199, 202, 1) 0, rgba(197, 199, 202, 0) 100px), -moz-linear-gradient(#c5c7ca, #92989c);
+    background-image: url('/img/button_bg.png'), url('/img/button_bg.png'), -webkit-gradient(radial, 50% 100%, 0, 50% 100%, 100, from(rgba(197, 199, 202, 1)), to(rgba(197, 199, 202, 0))), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#c5c7ca), to(#92989c));
 }
 
 .gray.button:hover {
     background-color: #b6bbc0;
 
-    background-image: url('../img/button_bg.png'), url('../img/button_bg.png'), -moz-radial-gradient(center bottom, circle, rgba(202, 205, 208, 1) 0, rgba(202, 205, 208, 0) 100px), -moz-linear-gradient(#d1d3d6, #9fa5a9);
-    background-image: url('../img/button_bg.png'), url('../img/button_bg.png'), -webkit-gradient(radial, 50% 100%, 0, 50% 100%, 100, from(rgba(202, 205, 208, 1)), to(rgba(202, 205, 208, 0))), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#d1d3d6), to(#9fa5a9));
+    background-image: url('/img/button_bg.png'), url('/img/button_bg.png'), -moz-radial-gradient(center bottom, circle, rgba(202, 205, 208, 1) 0, rgba(202, 205, 208, 0) 100px), -moz-linear-gradient(#d1d3d6, #9fa5a9);
+    background-image: url('/img/button_bg.png'), url('/img/button_bg.png'), -webkit-gradient(radial, 50% 100%, 0, 50% 100%, 100, from(rgba(202, 205, 208, 1)), to(rgba(202, 205, 208, 0))), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#d1d3d6), to(#9fa5a9));
 }
 
 /* Зелёная */
@@ -1546,14 +1620,14 @@ a.alb_usl {
     border: 1px solid #96a37b !important;
     background-color: #79be1e;
 
-    background-image: url('../img/button_bg.png'), url('../img/button_bg.png'), -moz-radial-gradient(center bottom, circle, rgba(162, 211, 30, 1) 0, rgba(162, 211, 30, 0) 100px), -moz-linear-gradient(#82cc27, #74b317);
-    background-image: url('../img/button_bg.png'), url('../img/button_bg.png'), -webkit-gradient(radial, 50% 100%, 0, 50% 100%, 100, from(rgba(162, 211, 30, 1)), to(rgba(162, 211, 30, 0))), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#82cc27), to(#74b317));
+    background-image: url('/img/button_bg.png'), url('/img/button_bg.png'), -moz-radial-gradient(center bottom, circle, rgba(162, 211, 30, 1) 0, rgba(162, 211, 30, 0) 100px), -moz-linear-gradient(#82cc27, #74b317);
+    background-image: url('/img/button_bg.png'), url('/img/button_bg.png'), -webkit-gradient(radial, 50% 100%, 0, 50% 100%, 100, from(rgba(162, 211, 30, 1)), to(rgba(162, 211, 30, 0))), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#82cc27), to(#74b317));
 }
 
 .green.button:hover {
     background-color: #89d228;
-    background-image: url('../img/button_bg.png'), url('../img/button_bg.png'), -moz-radial-gradient(center bottom, circle, rgba(183, 229, 45, 1) 0, rgba(183, 229, 45, 0) 100px), -moz-linear-gradient(#90de31, #7fc01e);
-    background-image: url('../img/button_bg.png'), url('../img/button_bg.png'), -webkit-gradient(radial, 50% 100%, 0, 50% 100%, 100, from(rgba(183, 229, 45, 1)), to(rgba(183, 229, 45, 0))), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#90de31), to(#7fc01e));
+    background-image: url('/img/button_bg.png'), url('/img/button_bg.png'), -moz-radial-gradient(center bottom, circle, rgba(183, 229, 45, 1) 0, rgba(183, 229, 45, 0) 100px), -moz-linear-gradient(#90de31, #7fc01e);
+    background-image: url('/img/button_bg.png'), url('/img/button_bg.png'), -webkit-gradient(radial, 50% 100%, 0, 50% 100%, 100, from(rgba(183, 229, 45, 1)), to(rgba(183, 229, 45, 0))), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#90de31), to(#7fc01e));
 }
 
 /* Синяя */
@@ -1564,14 +1638,14 @@ a.alb_usl {
     /* A fallback background color */
     background-color: #48b5f2;
     /* Specifying a version with gradients according to */
-    background-image: url('../img/button_bg.png'), url('../img/button_bg.png'), -moz-radial-gradient(center bottom, circle, rgba(89, 208, 244, 1) 0, rgba(89, 208, 244, 0) 100px), -moz-linear-gradient(#4fbbf7, #3faeeb);
-    background-image: url('../img/button_bg.png'), url('../img/button_bg.png'), -webkit-gradient(radial, 50% 100%, 0, 50% 100%, 100, from(rgba(89, 208, 244, 1)), to(rgba(89, 208, 244, 0))), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#4fbbf7), to(#3faeeb));
+    background-image: url('/img/button_bg.png'), url('/img/button_bg.png'), -moz-radial-gradient(center bottom, circle, rgba(89, 208, 244, 1) 0, rgba(89, 208, 244, 0) 100px), -moz-linear-gradient(#4fbbf7, #3faeeb);
+    background-image: url('/img/button_bg.png'), url('/img/button_bg.png'), -webkit-gradient(radial, 50% 100%, 0, 50% 100%, 100, from(rgba(89, 208, 244, 1)), to(rgba(89, 208, 244, 0))), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#4fbbf7), to(#3faeeb));
 }
 
 .blue.button:hover {
     background-color: #63c7fe;
-    background-image: url('../img/button_bg.png'), url('../img/button_bg.png'), -moz-radial-gradient(center bottom, circle, rgba(109, 217, 250, 1) 0, rgba(109, 217, 250, 0) 100px), -moz-linear-gradient(#63c7fe, #58bef7);
-    background-image: url('../img/button_bg.png'), url('../img/button_bg.png'), -webkit-gradient(radial, 50% 100%, 0, 50% 100%, 100, from(rgba(109, 217, 250, 1)), to(rgba(109, 217, 250, 0))), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#63c7fe), to(#58bef7));
+    background-image: url('/img/button_bg.png'), url('/img/button_bg.png'), -moz-radial-gradient(center bottom, circle, rgba(109, 217, 250, 1) 0, rgba(109, 217, 250, 0) 100px), -moz-linear-gradient(#63c7fe, #58bef7);
+    background-image: url('/img/button_bg.png'), url('/img/button_bg.png'), -webkit-gradient(radial, 50% 100%, 0, 50% 100%, 100, from(rgba(109, 217, 250, 1)), to(rgba(109, 217, 250, 0))), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#63c7fe), to(#58bef7));
 }
 
 /*Контент блоки*/
@@ -1677,7 +1751,7 @@ a.alb_usl {
 
 .small_head {
     width: 172px;
-    /*background: url(../img/title_contacts.gif) no-repeat;*/
+    /*background: url(/img/title_contacts.gif) no-repeat;*/
     height: 25px;
     margin: 20px 0 0 28px;
 }
@@ -1686,7 +1760,7 @@ a.alb_usl {
 
 .small_menu {
     width: 225px;
-    background:url(../img/debut_dark.png);
+    background:url(/img/debut_dark.png);
     /*padding: 10px 0 10px 0;*/
     border: 0 solid #777;
 
@@ -1709,7 +1783,7 @@ a strong {
 
 .contact {
     width: 225px;
-    background: url(../img/iPad.png) no-repeat;
+    background: url(/img/iPad.png) no-repeat;
     height: 340px;
     border-bottom: 0 solid #777;
     padding: 20px 0 20px 0;
@@ -1733,7 +1807,7 @@ a strong {
 .data {
     font-size: 12px;
     color: #151515;
-    background: url(../img/data.gif) no-repeat;
+    background: url(/img/data.gif) no-repeat;
     height: 18px;
     width: 71px;
     padding: 3px 16px 0 9px;
@@ -1769,7 +1843,7 @@ a strong {
 /* расстояние между текстом  и длинна желтой линии */
 #menu dt a {
     display: block;
-    background: url(../img/menu_icon_n.gif) left no-repeat;
+    background: url(/img/menu_icon_n.gif) left no-repeat;
     color: #c3c3c3;
     text-decoration: none;
     margin: 0 0 0 -30px;
@@ -1783,7 +1857,7 @@ a strong {
 
 /* толщина желтой линии */
 #menu dt a:hover {
-    background: url(../img/menu_bg_o.gif) left repeat-y;
+    background: url(/img/menu_bg_o.gif) left repeat-y;
     color: #151515;
     text-decoration: none;
     margin: 0 0 0 0;
@@ -1791,7 +1865,7 @@ a strong {
 
 /* сдвиг текста при выделении */
 #menu dt a:hover strong {
-    background: url(../img/menu_icon_o.gif) left no-repeat;
+    background: url(/img/menu_icon_o.gif) left no-repeat;
     margin: 0 0 0 -20px;
 }
 
@@ -1799,7 +1873,7 @@ a strong {
     font: normal 14px Arial, Helvetica, sans-serif;
     text-transform: uppercase;
     color: #151515;
-    background: url(../img/title_spec.gif) no-repeat;
+    background: url(/img/title_spec.gif) no-repeat;
     height: 23px;
     padding: 6px 0 2px 22px;
     margin: 20px 0 5px -11px;
@@ -1827,7 +1901,7 @@ a strong {
     color: #000; /* Цвет текста */
     font-family: Arial, sans-serif; /* Рубленый шрифт */
     font-size: 90%; /* Размер текста */
-    background: #ffa500 url(../img/title_spec.gif) no-repeat;
+    background: #ffa500 url(/img/title_spec.gif) no-repeat;
 }
 
 .ttext_blue {
@@ -2080,7 +2154,7 @@ a strong {
     position: relative;
     width: 163px;
     height: 185px;
-    /*  background:url('../img/foto_podlogka.gif');  */
+    /*  background:url('/img/foto_podlogka.gif');  */
     font-size: 14px;
     font-family: Times, serif;
     color: #000;

@@ -153,6 +153,15 @@
         </style>
 		<br><br>
 
+		<script type='text/javascript'>
+		  $(function() {
+		  $('#phone').bind("change keyup input click", function() {
+			 if (this.value.match(/[^0-9\(\)\-\+]/g)) {
+				this.value = this.value.replace(/[^0-9\(\)\-\+]/g, '');
+			 }
+		  })
+		  })
+		</script>
 
 <?
 		require(__DIR__.'/../../core/users/form/formgenerator.php');

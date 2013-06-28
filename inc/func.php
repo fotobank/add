@@ -379,4 +379,142 @@ function digit_to_string($dig){
 
 	 return $date; #Выводим преобразованную дату
   }
-?>
+
+  /**
+	* @return string
+	*
+	*  Переменная $domain содержит имя домена, на котором выполняется ваше приложение.
+	*/
+  function get_domain()
+  {
+	 $domain = "http://www.aleks.od.ua/";
+	 return $domain;
+  }
+
+  /**
+	* @param $link
+	* @param $text
+	* @param $title
+	* @param $extras
+	*
+	* @return string
+	*
+	*  anchor('new-page.php','New Page','Custom Title Message!','#special_link');
+	*
+	*  В случае задания класса, ID и для открытия в новом окне, вызов функции будет иметь вид:
+	*  $extras = array('#special_id','.special_class','_blank');
+	*  echo anchor('new-page.php','New Page','Custom Title Message!',$extras);
+	*
+	*/
+  function anchor($link, $text, $title, $extras)
+  {
+	 $domain = get_domain();
+	 $link = $domain . $link;
+	 $data = '<a href="' . $link . '"';
+	 if ($title)
+		{
+		  $data .= ' title="' . $title . '"';
+		}
+	 else
+		{
+		  $data .= ' title="' . $text . '"';
+		}
+	 if (is_array($extras))
+		{
+		  foreach($extras as $rule)
+			 {
+				$data .= parse_extras($rule);
+			 }
+		}
+	 if (is_string($extras))
+		{
+		  $data .= parse_extras($extras);
+		}
+	 $data.= '>';
+	 $data .= $text;
+	 $data .= "</a>";
+	 return $data;
+  }
+
+
+
+  /**
+	* @param $rule
+	*
+	* @return string
+	*
+	* Если мы передаем CSS ID, то он будет начинаться с #.
+	* Если мы передаем класс CSS, то он начнется с . .
+	* А если передается тэг target, то он начнется с _.
+	*/
+  function parse_extras($rule)
+  {
+	 if ($rule[0] == "#")
+		{
+		  $id = substr($rule,1,strlen($rule));
+		  $data = ' id="' . $id . '"';
+		  return $data;
+		}
+	 elseif ($rule[0] == ".")
+		{
+		  $class = substr($rule,1,strlen($rule));
+		  $data = ' class="' . $class . '"';
+		  return $data;
+		}
+	 elseif ($rule[0] == "_")
+		{
+		  $data = ' target="' . $rule . '"';
+		  return $data;
+		}
+	 return false;
+  }
+
+
+  /**
+	* @param $email
+	* @param $text
+	* @param $title
+	* @param $extras
+	*
+	* @return string
+	*
+	* для создания ссылки mailto:
+	* echo mailto('secret@emailaddress.com','Contact Me');
+	* Или, если используются пользовательские настройки, так:
+	* $extras = array('#special_id','.special_class','_blank');
+	* echo mailto('secret@emailaddress.com','Contact me','Contact your good pal Barry.',$extras);
+	*
+	*/
+function mailto($email, $text, $title, $extras)
+{
+$link = '<a href=\"mailto:' . $email;
+$link = str_rot13($link);
+$data = '<script type="text/javascript">document.write("';
+  $data .= $link;
+  $data .= '".replace(/[a-zA-Z]/g, function(c){return String.fromCharCode((c<="Z"?90:122)>=(c=c.charCodeAt(0)+13)?c:c-26);}));
+</script>';
+$data .= '"';
+if ($title)
+{
+$data .= ' title="' . $title . '"';
+}
+else
+{
+$data .= ' title="' . $text . '"';
+}
+if (is_array($extras))
+{
+foreach($extras as $rule)
+{
+$data .= parse_extras($rule);
+}
+}
+if (is_string($extras))
+{
+$data .= parse_extras($extras);
+}
+$data .= ">";
+$data .= $text;
+$data .= "</a>";
+return $data;
+}

@@ -21,7 +21,7 @@ function sendFtp() {
                 data: {ftpDir: $('#prependedInput').val()},
 
               error:function(xhr, status, errorThrown) {
-                 	                alert(errorThrown+'\n'+status+'\n'+xhr.statusText);
+       //          	                alert(errorThrown+'\n'+status+'\n'+xhr.statusText);
               },
                 success: function (data) {
 
@@ -51,11 +51,11 @@ function ajaxPostQ(url, idName,  data) {
         url: url,
         data: data,
         error:function(XHR) {
-            alert(" Ошибка: "+XHR.status+ "  " + XHR.statusText);
+     //       alert(" Ошибка: "+XHR.status+ "  " + XHR.statusText);
         },
         statusCode: {
            404: function() {
-           alert("Страница не найдена");
+     //      alert("Страница не найдена");
          }
          },
         // Выводим то что вернул PHP

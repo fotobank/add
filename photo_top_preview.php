@@ -7,7 +7,6 @@ include (dirname(__FILE__).'/inc/func.php');
 
 header('Content-type: text/html; charset=windows-1251');
 
-if (isset($_SESSION['current_album'])):
 		$id = intval($_GET['id']);
 		if ($id > 0)
 			{
@@ -102,13 +101,13 @@ if (isset($_SESSION['current_album'])):
 													  switch (event.keyCode ) {
 														 case  27: hidePreview();
 															break;
-														 case 37 : preview('<?=$left_id?>');
+														 case 37 : <?=$left_id?>?preview('<?=$left_id?>'):hidePreview();
 															break;
-														 case 40 : preview('<?=$left_id?>');
+														 case 40 : <?=$left_id?>?preview('<?=$left_id?>'):hidePreview();
 															break;
-														 case 39:	preview('<?=$right_id?>');
+														 case 39:	 <?=$right_id?>?preview('<?=$right_id?>'):hidePreview();
 															break;
-														 case 38:	preview('<?=$right_id?>');
+														 case 38:	 <?=$right_id?>?preview('<?=$right_id?>'):hidePreview();
 															break;
 														 case 13: basketAdd(<?=$photo_data['id']?>);
 															break;
@@ -143,14 +142,6 @@ if (isset($_SESSION['current_album'])):
 					}
 			}
 		$db->close(true);
-else:
-
-		echo '<script type="text/javascript">';
-		echo 'history.go(-1);';
-		echo '</script>';
-		$db->close(true);
-
-endif;
 
 ?>
 <script type='text/javascript'>

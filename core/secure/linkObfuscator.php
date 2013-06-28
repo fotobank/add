@@ -1,12 +1,9 @@
 <?php
 
-/**
- * 
- * @author Cerion Morgauin
- * @version $Id$
- * @copyright Enrico Marongiu (cerion _@_ tiscali _._ it) - 2004
-*  linkObfuscator manages a simple way of validating links: starting from a session, an user can browse exclusively those links that are performed by this page. to do this, a random seed is generated and a special code (named go) is attached to each link.
-* each page that has to be obfuscated needs this class and a $linkObfuscator::check() to validate the user.
+ /**
+ * linkObfuscator manages a simple way of validating links: starting from a session, an user can browse exclusively those links that are performed by this page.
+ * to do this, a random seed is generated and a special code (named go) is attached to each link.
+ * each page that has to be obfuscated needs this class and a $linkObfuscator::check() to validate the user.
  **/
 
 class linkObfuscator

@@ -1,5 +1,4 @@
 <?php
-
 	include  (dirname(__FILE__).'/inc/head.php');
 	include  (dirname(__FILE__).'/inc/ip-ban.php');
 	include  (dirname(__FILE__).'/inc/dirPatc.php');
@@ -7,7 +6,7 @@
 
 	$ip = Get_IP(); // Ip пользователя
 	//Количество фоток на странице
-	define('PHOTOS_ON_PAGE', 35);
+	define('PHOTOS_ON_PAGE', 105);
 	$Dir = DirPatc::getInst();
 	if (isset($_GET['album_id']))
 		{			
@@ -126,10 +125,9 @@
 
 	function paginator($record_count, $may_view, $current_page)
 		{
-
 			/** @var $record_count  Количество фотографий в альбоме */
 			if (isset($record_count))
-				{
+			  {
 					if ($may_view && $record_count > PHOTOS_ON_PAGE)
 						{
 							$page_count = ceil($record_count / PHOTOS_ON_PAGE);
@@ -192,7 +190,7 @@
 							<div style="clear: both;"></div>
 						<?
 						}
-				}
+			  }
 			//<!--И добавлять такие блоки по мере добавления фотографий-->
 		}
 
@@ -206,7 +204,7 @@
 	 * @todo function fotoPage
 	 */
 
-	function fotoPage($may_view, &$current_page, &$record_count)
+	function fotoPage(&$record_count, $may_view, &$current_page)
 		{
 
 			$current_page = isset($_GET['pg']) ? intval($_GET['pg']) : 1;
@@ -217,9 +215,6 @@
 							$current_page = 1;
 						}
 					$start        = ($current_page - 1) * PHOTOS_ON_PAGE;
-
-
-
 					$db = go\DB\Storage::getInstance()->get('db-for-data');
 					$rs = $db->query(
 					'select SQL_CALC_FOUND_ROWS p.* from photos p where id_album = ?i
@@ -239,26 +234,22 @@
 									/* размер превьюшек */
 									if (intval($sz[0]) > intval($sz[1]))
 										{
-											$sz_string = 'width="155px"';
+										  $sz_string = 'width="155px"';
 										  $ImgWidth = intval($sz[1]);
 										  $ImgHeight = intval($sz[0]);
 										}
 									else
 										{
-											$sz_string = 'height="170px"';
+										  $sz_string = 'height="170px"';
 										  $ImgWidth = intval($sz[0]);
 										  $ImgHeight = intval($sz[1]);
 										}
 									?>
 									<div class="podlogka">
 										<figure class="ramka" onClick="preview(<?= $ln['id'] ?>, <?= $ImgWidth ?>, <?= $ImgHeight ?>);">
-											<img id="<?= substr(trim($ln['img']),
-												2,
-												-4) ?>" src="dir.php?num=<?= substr(trim($ln['img']),
-												2,
-												-4) ?>" title="За фотографию проголосовало <?= $ln['votes'] ?> человек. Нажмите для просмотра." <?=$sz_string?>
-											   style="visibility: hidden;" />
-
+											<img class="lazy" data-original="thumb.php?num=<?= substr(trim($ln['img']),2,-4) ?>"
+											 id="<?= substr(trim($ln['img']),2,-4) ?>" src=""
+											 title="За фотографию проголосовало <?= $ln['votes'] ?> человек. Нажмите для просмотра." <?=$sz_string?> />
 											<figcaption>№ <?=$ln['nm']?></figcaption>
 										</figure>
 									</div>
@@ -266,11 +257,8 @@
 								}
 						}
 
-
-
-
-
 				}
+
 		}
 
 
@@ -372,8 +360,9 @@
 						<figure class="ramka" onClick="previewTop(<?= $ln['id'].','.$ImgWidth.','.$ImgHeight ?>);">
 
 							<span class="top_pos" style="opacity: 0;"><?=$pos_num?></span>
-							<img id="<?= substr(trim($ln['img']), 2, -4) ?>" src="dir.php?num=<?= substr(trim($ln['img']),
-								2,-4) ?>" alt="<?= $ln['nm'] ?>" title="Нажмите для просмотра" <?=$sz_string?> />
+						  <img class="lazy" data-original="thumb.php?num=<?= substr(trim($ln['img']),2,-4) ?>"
+							 id="<?= substr(trim($ln['img']), 2, -4) ?>" src=""
+							 alt="<?= $ln['nm'] ?>" title="Нажмите для просмотра" <?=$sz_string?> />
 							<figcaption><span style="font-size: x-small; font-family: Times, serif; ">№ <?=$ln['nm']?>
 									Голосов:<span class="badge badge-warning"> <span id="<?= substr(trim($ln['img']),
 											2,
@@ -388,7 +377,7 @@
 				}
 					?>
 					<div style="clear: both"></div>
-					<!--желтя рамка топа-->
+					<!--желтая рамка топа-->
 					<script type='text/javascript'>
 						//	$(function () {
 						//
@@ -432,8 +421,7 @@
                              </script>";
 						}
 					if ($_SESSION['popitka'][$_SESSION['current_album']] <= 0
-						&& $_SESSION['popitka'][$_SESSION['current_album']] != -10
-					)
+						&& $_SESSION['popitka'][$_SESSION['current_album']] != -10)
 						{
 							echo "<script type='text/javascript'>
                              $(document).ready(function(){
@@ -499,7 +487,7 @@
 			if ($album_data['pass'] != '')
 				{
 					?>
-					<div style="display:none;"><? check($ip, $ipLog, $timeout); ?></div><?
+					<div style="display: none;"><? check($ip, $ipLog, $timeout); ?></div><?
 					if (isset($_POST['album_pass']) && $_POST['album_pass'] != "")
 						{
 							if (!isset($_SESSION['album_pass']) || !is_array($_SESSION['album_pass']))
@@ -567,10 +555,10 @@
 		{
 			$razdel = $db->query('select nm from `categories` where id = ?i', array($_SESSION['current_cat']),'el');
 		}
-	else
-		{
-			echo "<script>window.document.location.href='/fotobanck.php?back_to_albums'</script>";
-		}
+	/*else
+		{*/
+		//	echo "<script>window.document.location.href='/fotobanck.php?back_to_albums'</script>";
+//		}
 
 
 
@@ -583,6 +571,8 @@
 	 *  Аккордеон
 	 */
 	if ($may_view && isset($_SESSION['current_album'])):
+
+
 	$event = $db->query('select `event` from `albums` where `id` =?i', array($_SESSION['current_album']), 'el');
 	//		отключение аккордеона если фотографии не показываются
 	if ($event == 'on')
@@ -676,6 +666,7 @@
 	</div>
 
 	<?
+
   if(isset($_SESSION['current_album']))
 	 {
   $event = $db->query('select `event` from `albums` where `id` =?i', array($_SESSION['current_album']), 'el');
@@ -690,16 +681,23 @@
 	<!-- Вывод фото в альбом -->
 	<div id=foto-ajax>
 		<?
-		fotoPage($may_view, $current_page, $record_count);
+		fotoPage($record_count, $may_view, $current_page);
 		?>
 	</div>
+
+  <script type="text/javascript">
+      $(function() {$("img.lazy").lazyload({
+		  threshold : 200,
+		  effect : "fadeIn"
+		});});
+  </script>
+
 
 <!-- тело --><!-- 4 -->
 <hr class="style-one" style="clear: both; margin-bottom: -20px; margin-top: 0"/>
 
-
-	<!--Вывод нумерации страниц -->   <?
-	/**
+<?
+		/**
 	 * @todo Вывод нумерации страниц
 	 */
 	paginator($record_count, $may_view, $current_page);
@@ -720,7 +718,8 @@
 	//include 'pages.php';
 
 	 }
-	  else {
+	  else
+	 {
 //	 подписка на альбом (когда альбом появится в категории)
 ?>
 	 <div class="cont-list" style="margin-left: 50%;"><div class="drop-shadow curved curved-vt-2">
@@ -739,6 +738,7 @@
 <?
   }
 	 }
+
 endif;
 /**
  * @todo <!-- Вывод альбомов в разделах -->
@@ -884,11 +884,11 @@ else:
 endif;
 ?>
 
-	<script type='text/javascript'>
+	<!--<script type='text/javascript'>
 		$('img').error(function () {
 			$(this).attr('src', '/img/not_foto.png');
 		});
-	</script>
+	</script>-->
 
 	</div>
 	<div class="end_content">
@@ -896,5 +896,5 @@ endif;
 	</div></div>
 
 <?php
-	include (dirname(__FILE__).'/inc/footer.php');
+  include (dirname(__FILE__).'/inc/footer.php');
 ?>

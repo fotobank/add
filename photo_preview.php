@@ -6,7 +6,6 @@ include (dirname(__FILE__).'/inc/config.php');
 include (dirname(__FILE__).'/inc/func.php');
 header('Content-type: text/html; charset=windows-1251');
 
-if (isset($_SESSION['current_album'])):
 
 $id = $_GET['id'];
 if ($id > 0)
@@ -53,7 +52,8 @@ if ($id > 0)
 
                     <div style="text-align: center; width: 100%;">
 
-                        <img src="dir.php?num=<?= substr(($photo_data['img']), 2, -4) ?>" alt="<?=$photo_data['nm']?>" title="Фотография № <?=$photo_data['nm']?><?=$right_id?>. Нажмите,чтобы закрыть." onClick="hidePreview();"/>
+                        <img src="dir.php?num=<?= substr(($photo_data['img']), 2, -4) ?>" alt="<?=$photo_data['nm']?>"
+								 title="Фотография № <?=$photo_data['nm']?><?=$right_id?>. Нажмите,чтобы закрыть." onClick="hidePreview();"/>
                     </div>
                     <div>
                         <table border="0" cellspacing="10px" width="100%">
@@ -95,18 +95,19 @@ if ($id > 0)
 											 var wait = setTimeout(keyN, 100);
 											 $(this).data('timer', wait);
 
+
 											 function keyN(){
 												switch (event.keyCode ) {
 												case  27: hidePreview();
 												  break;
-												case 37 : preview('<?=$left_id?>');
+												case 37 : <?=$left_id?>?preview('<?=$left_id?>'):hidePreview();
 												  break;
-												case 40 : preview('<?=$left_id?>');
+												case 40 : <?=$left_id?>?preview('<?=$left_id?>'):hidePreview();
 												  break;
-												case 39:	preview('<?=$right_id?>');
+												case 39:	 <?=$right_id?>?preview('<?=$right_id?>'):hidePreview();
 												  break;
-												case 38:	preview('<?=$right_id?>');
-													 break;
+												case 38:	 <?=$right_id?>?preview('<?=$right_id?>'):hidePreview();
+												  break;
 												case 13: basketAdd(<?=$photo_data['id']?>);
 												  break;
 												case 32:	goVote('<?=$user_balans?>','<?=$vote_price?>','<?=$photo_data['id']?>');
@@ -142,14 +143,6 @@ if ($id > 0)
             }
     }
 		$db->close(true);
-else:
-
-        echo '<script type="text/javascript">';
-        echo 'history.go(-1);';
-        echo '</script>';
-		  $db->close(true);
-
-endif;
 
 ?>
 

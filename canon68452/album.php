@@ -575,6 +575,7 @@ if (isset($_POST['go_updown']))
 if (isset($_POST['go_delete']))
 	{
 		$id           = $_POST['go_delete'];
+	   $thumb        = trim($_POST['go_del_thumb']);
 		$album_folder = $id;
 		$foto_folder  = $db->query('select foto_folder from albums where id = ?i', array($id), 'el');
 		echo "<script type='text/javascript'>
@@ -589,13 +590,13 @@ if (isset($_POST['go_delete']))
 				<h3 style="color:red">Внимание! Удаление альбома!</h3>
 			</div>
 			<div class="modal-body">
-				Удалить каталог: "<?=($_SERVER['DOCUMENT_ROOT'].$foto_folder.$album_folder)?>" ?
+				Удалить каталог: "<?=($_SERVER['DOCUMENT_ROOT'].$foto_folder.$album_folder.$thumb)?>" ?
 			</div>
 			<div class="modal-footer">
 				<form action="/inc/delete_dir.php" method="post">
 					<input type="hidden" name="confirm_id" value=<?=$id?>/>
-					<button type="submit" name="confirm_del" value=<?= (
-						$_SERVER['DOCUMENT_ROOT'].$foto_folder.$album_folder) ?>> ДА
+				   <input type="hidden" name="thumb" value=<?=$thumb?>/>
+					<button type="submit" name="confirm_del" value=<?= ($_SERVER['DOCUMENT_ROOT'].$foto_folder.$album_folder.$thumb) ?>> ДА
 					</button>
 					<button id="noConfirm" type="submit" name="confirm_del" value="0"> НЕТ</button>
 				</form>
@@ -939,9 +940,20 @@ if (isset($_SESSION['current_cat']))
 												"..<?=$ln['foto_folder']?><?=$ln['id']?>"
 												<form action="index.php" method="post" style="margin: 10px;">
 													<input class="btn btn-primary" type="hidden" name="go_delete" value="<?= $ln['id'] ?>"/>
+												  <input class="btn btn-primary" type="hidden" name="go_del_thumb" value="null"/>
 													<input class="btn-small btn-danger dropdown-toggle" type="submit" value="удалить  альбом"/>
 												</form>
 											</td>
+										</tr>
+										<tr>
+										  <td align="center" style="margin: 10px;">Папка превьюшек:
+											 "..<?=$ln['foto_folder']?><?=$ln['id']?>/thumb"
+											 <form action="index.php" method="post" style="margin: 10px;">
+												<input class="btn btn-primary" type="hidden" name="go_delete" value="<?= $ln['id'] ?>"/>
+												<input class="btn btn-primary" type="hidden" name="go_del_thumb" value="/thumb/"/>
+												<input class="btn-small btn-danger dropdown-toggle" type="submit" value="удалить  превьюшки"/>
+											 </form>
+										  </td>
 										</tr>
 										<tr>
 											<td align="center" style="height: 30px;">

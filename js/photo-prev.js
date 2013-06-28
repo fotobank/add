@@ -46,6 +46,7 @@ function previewTop(idPhoto, imgWidth, imgHeight) {
 
 
 //additional properties for jQuery object
+/*
 $(document).ready(function () {
     //align element in the middle of the screen
     $.fn.alignCenter = function () {
@@ -64,9 +65,9 @@ $(document).ready(function () {
         return $(this).css({'margin-left': marginLeft, 'margin-top': marginTop});
     };
 });
+*/
 
-
-/*$(document).ready(function () {
+$(document).ready(function () {
     //align element in the middle of the screen
     $.fn.alignCenter = function ( imgWidth, imgHeight) {
 
@@ -76,9 +77,11 @@ $(document).ready(function () {
                 .removeAttr("height")
                 .css({ width: "", height: "" });
 
-        var marginLeft = -imgWidth / 2 + 'px';
-        var marginTop = -imgHeight / 2 + 'px';
+       /* var marginLeft = -imgWidth / 2 + 'px';
+        var marginTop = -imgHeight / 2 + 'px';*/
 
+        var marginLeft = -$(this).width() / 2 + 'px';
+        var marginTop = -$(this).height() / 2 + 'px';
         // для тех браузеров, которые подгрузку с кеша не считают загрузкой, пишем следующий код
         $(this).each(function() {
             var src = $(this).attr('src');
@@ -90,8 +93,7 @@ $(document).ready(function () {
         return $(this).css({'margin-left': marginLeft, 'margin-top': marginTop});
 
     };
-});*/
-
+});
 
 
 function hidePreview() {
@@ -186,9 +188,12 @@ function goVote(balans,voteprice, idPhoto) {
 }
 
 
+/*
 
 
-/** delayed image load by Black#FFFFFF **/
+*/
+/** delayed image load by Black#FFFFFF **//*
+
 
 loadWait            = 30000;
 loadCheck           = 300;
@@ -238,21 +243,13 @@ if(!currentExists){
 
 }
 
+
+
 function imagesPreloader(){
 
     jQuery(preloadObjects).each(function(){
-
         var item        =  this;
-
-        if(item.nodeName.toLowerCase()          == "img"
-
-            &&
-            (
-                typeof excludeImages == "undefined"
-                    || excludeImages == false
-                    || (item.className.indexOf(excludeImages) == -1)
-                )
-            ){
+        if(item.nodeName.toLowerCase() == "img" && ( typeof excludeImages == "undefined"  || excludeImages == false || (item.className.indexOf(excludeImages) == -1) ) ){
 
             item.longDesc   = item.src;
 
@@ -260,38 +257,27 @@ function imagesPreloader(){
 
             item.alt        = "";
 
-            var preloaderElt= jQuery("<span></span>");
+            var preloaderElt= jQuery("<figure ></figure >");
             jQuery(preloaderElt).css({"display":"block"});
-preloaderElt.className      = "preloader "+item.className;
+            preloaderElt.className      = "preloader "+item.className;
 
-jQuery(item).before(preloaderElt);
-loadImage(item);
+            jQuery(item).before(preloaderElt);
+            loadImage(item);
 
-};
-
-
+}
 });
 
 jQuery(window).bind("scroll",preloadOther);
-
-
 
 }
 
 function loadImage(item){
     var pos      = jQuery(item).position();
-    var ItemOffsetTop        = typeof pos == "object"
-    && typeof pos.top != "undefined" ? pos.top : 0;
-
-
-
+    var ItemOffsetTop  = typeof pos == "object" && typeof pos.top != "undefined" ? pos.top : 0;
     var documentScrollTop    = jQuery(window).scrollTop();
-
-
     var scrHeight= getScreenHeight();
 
-    if(ItemOffsetTop <= (documentScrollTop + scrHeight)
-    && typeof item.storePeriod == "undefined"){
+    if(ItemOffsetTop <= (documentScrollTop + scrHeight) && typeof item.storePeriod == "undefined"){
 
     item.src = item.longDesc;
 
@@ -307,37 +293,27 @@ item.onabort         = function(){
 
 
 item.wait= 0;
-
 item.storePeriod     = setInterval(function(){
 
 
     item.wait    += loadCheck;
-
     if(item.width && item.height && item.complete){
 
 
 
     clearInterval(item.storePeriod);
     item.storePeriod      = false;
-
-
-
     jQuery(item.previousSibling).remove();
-
     jQuery(item).css("visibility","visible");
-
     if(typeof item.loadedCount != "undefined"
     && notImagesLoaded[item.loadedCount]){
     notImagesLoaded[item.loadedCount] = false;
     }
 
-
-
 } else if(item.wait > loadWait){
 
     clearInterval(item.storePeriod);
     item.storePeriod      = false;
-
     if(typeof item.loadedCount != "undefined"
     && notImagesLoaded[item.loadedCount]){
     notImagesLoaded[item.loadedCount]  = false;
@@ -346,19 +322,19 @@ item.storePeriod     = setInterval(function(){
 jQuery(item).css({"display":"none","visibility":"hidden"});
 jQuery(item.previousSibling).remove();
 
-
 }
 
 },loadCheck);
 
 } else {
-    if(typeof item.loadedCount       == "undefined"){
-    item.loadedCount = notImagesLoaded.length;
-    notImagesLoaded[item.loadedCount]        = item;
+    if(typeof item.loadedCount == "undefined"){
+        item.loadedCount = notImagesLoaded.length;
+        notImagesLoaded[item.loadedCount]  = item;
     }
 }
 
 }
 
-jQuery(document).ready(imagesPreloader);
+$(document).ready(imagesPreloader);
 
+*/
