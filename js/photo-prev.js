@@ -77,17 +77,19 @@ $(document).ready(function () {
                 .removeAttr("height")
                 .css({ width: "", height: "" });
 
-       /* var marginLeft = -imgWidth / 2 + 'px';
-        var marginTop = -imgHeight / 2 + 'px';*/
+        var fotoW = $(this).width();
+        var fotoH = ($(this).height() > 150)?$(this).height():(($(this).width() > 500)?$(this).width()*0.82:$(this).width()/0.82);
 
-        var marginLeft = -$(this).width() / 2 + 'px';
-        var marginTop = -$(this).height() / 2 + 'px';
+        var marginLeft = -fotoW / 2 + 'px';
+        var marginTop  = -fotoH / 2 + 'px';
         // для тех браузеров, которые подгрузку с кеша не считают загрузкой, пишем следующий код
         $(this).each(function() {
             var src = $(this).attr('src');
             $(this).attr('src', '');
             $(this).attr('src', src);
         });
+
+        alert ("высота экрана h= "+ getScreenHeight()+"фото w="+$(this).width()+"фото h="+$(this).height());
 
         //return updated element
         return $(this).css({'margin-left': marginLeft, 'margin-top': marginTop});
@@ -188,18 +190,18 @@ function goVote(balans,voteprice, idPhoto) {
 }
 
 
-/*
 
 
-*/
-/** delayed image load by Black#FFFFFF **//*
 
 
-loadWait            = 30000;
+/** delayed image load by Black#FFFFFF **/
+
+
+/*loadWait            = 30000;
 loadCheck           = 300;
 preloadObjects      = ".ramka img";
 notImagesLoaded     = [];
-excludeImages       = false;
+excludeImages       = false;*/
 
 function getScreenHeight(){
 
@@ -222,6 +224,7 @@ return  myHeight;
 
 }
 
+/*
 function preloadOther(){
     var l       = notImagesLoaded.length;
     var currentExists       = false;
@@ -233,15 +236,16 @@ function preloadOther(){
     currentExists = true;
     }
 }
+*/
 
 
 
-if(!currentExists){
+/*if(!currentExists){
     notImagesLoaded = [];
     jQuery(window).unbind("scroll",preloadOther);
     }
 
-}
+}*/
 
 
 
@@ -267,7 +271,7 @@ function imagesPreloader(){
 }
 });
 
-jQuery(window).bind("scroll",preloadOther);
+// jQuery(window).bind("scroll",preloadOther);
 
 }
 
@@ -335,6 +339,6 @@ jQuery(item.previousSibling).remove();
 
 }
 
-$(document).ready(imagesPreloader);
+//$(document).ready(imagesPreloader);
 
-*/
+

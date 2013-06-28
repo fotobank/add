@@ -14,7 +14,7 @@
 	* @return bool
 	*/
   function startSession($isUserActivity=true, $prefix=NULL) {
-	 $sessionLifetime = 600; // Таймаут отсутствия активности пользователя (в секундах)
+	 $sessionLifetime = 300; // Таймаут отсутствия активности пользователя (в секундах)
 	 $idLifetime = 60;  // Время жизни идентификатора сессии
 
 	 if ( session_id() ) return true;
