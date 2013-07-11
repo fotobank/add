@@ -9,6 +9,10 @@ ob_start();
 $id = intval($_POST['id']);
 $status = 'ERR';
 $msg = 'File not found!';
+$balans = null;;
+$votes = null;
+$vote = array();
+
 if(!isset($_SESSION['logged']))
 {
   $msg = 'Голосование доступно только загегистрированным пользователям. Пожалуйста, зарегистрируйтесь и войдите на сайт под своим именем!';
@@ -33,19 +37,22 @@ else
       {
 	      $db->query('insert into votes (id_user, id_photo) values (?i,?i)',array($_SESSION['userid'], $id));
 	      $db->query('update photos set votes = votes + 1 where id = ?i',array($id));
-	      $db->query('update users set balans = balans - ?f where id = ?i', array($vote['vote_price'], $_SESSION['userid']));
-         $status = 'OK';
+		   $db->query('update users set balans = balans - ?f where id = ?i', array($vote['vote_price'], $_SESSION['userid']));
+		   $votes = $db->query('select `votes` from `photos` where `id` = ?i', array($id), 'el');
+		   $balans = floatval($db->query('select balans from users where id = ?i', array($_SESSION['userid']), 'el'));
+		   $status = 'OK';
+		   $msg = 'Ваш голос добавлен !';
       }
       else
       {
-        $msg = 'На Вашем счете недостаточно денег!';
+        $msg = 'На Вашем счете недостаточно денег !';
       }
     }
   }
 }
 ob_end_clean();
 
-echo json_encode(array('status' => $status, 'msg' => $msg));
+echo json_encode(array('status' => $status, 'msg' => $msg, 'balans' => $balans, 'votpr' => $vote['vote_price'] , 'votes' => $votes));
 
 $db->close(true);
 ?>

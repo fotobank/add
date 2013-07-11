@@ -16,7 +16,7 @@ if (isset($_GET['num'])) {
 	$dirname = $foto_folder.$rs['id'].'/';
 	$file_in = substr(($dirname),1) . $file;
 	
-	//var_dump ($dirname);
+
 
   if ($watermark == '1' || $ip_marker == '1') {
 
@@ -26,6 +26,7 @@ if (isset($_GET['num'])) {
 		 if (is_file($file_out)) {
 			  header("Content-type: image/jpg");
 			  readfile($file_out);
+			  unlink($file_out);
 			}
 
   } else {

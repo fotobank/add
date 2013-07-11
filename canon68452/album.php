@@ -40,17 +40,18 @@ function get_ftp_size($ftp_handle, $dir, $global_size = 0)
 		return $global_size;
 	}
 
+
+
 function hardFlush($proc, $id, $remote_file)
 	{
 
 		echo '<script type="text/javascript">';
-		echo'window.parent.document.getElementById("'.$id
-			.'bar").innerHTML="<div class=\'progress progress-danger\'><div class=\'bar\' style=\'width: '.$proc.'%;\'>'
-			.$proc.'%</div></div>";';
+		echo 'window.parent.document.getElementById("'.$id.'bar").innerHTML="<div class=\'progress progress-danger\'><div class=\'bar\' style=\'width: '.$proc.'%;\'>'.$proc.'%</div></div>";';
 		echo 'window.parent.document.getElementById("'.$id.'").innerHTML="файл: '.$remote_file.'";';
 		echo '</script>';
-		flush();
-		ob_flush();
+//	   ob_end_flush();
+	   ob_flush();
+	   flush();
 	}
 
 function sendtext($out, $id, $bar)
@@ -244,6 +245,25 @@ if (isset($_POST['go_edit_nastr']))
 		$db->query('update photos set price = ?f, pecat = ?f, pecat_A4 = ?f where id_album = ?i', array($price,$pecat,$pecat_A4, $id));
 		$_SESSION['current_album'] = $id;
 		$_SESSION['current_cat']   = $id_category;
+
+	  debug(array("price" => $price,
+					  "pecat" => $pecat,
+					  "pecat_A4" => $pecat_A4,
+					  "id_category" => $id_category,
+					  "pass" => $pass,
+					  "quality" => $quality,
+					  "ftp_folder" => $ftp_folder,
+					  "foto_folder" => $foto_folder,
+					  "watermark" => $watermark,
+					  "ip_marker" => $ip_marker,
+					  "sharping" => $sharping,
+					  "vote_price" => $vote_price,
+					  "vote_time" => $vote_time,
+					  "vote_time_on" => $vote_time_on,
+					  "event" => $event,
+					  "on_off" => $on_off,
+					  "id" => $id), 'Сохранить', '/canon68452/album.php');
+
 	}
 
 /*
@@ -327,7 +347,7 @@ if (isset($_POST['go_ftp_upload']))
 						$pload = 100 / (get_ftp_size($ftp, $album_data['ftp_folder']));
 						$proc  = 0;
 						$all   = 0;
-						ob_start();
+			//			ob_start();
 						//Перебираем файлы, закачиваем и обрабатываем по одному
 						foreach ($file_list as $remote_file)
 							{
@@ -357,8 +377,7 @@ if (isset($_POST['go_ftp_upload']))
 										//Создаем запись в БД
 										$nm           = substr($f_name, 0, strrpos($f_name, '.'));
 										$id_photo     = $db->query('insert into photos (id_album, nm) values (?i,?string)',
-											array($album_data['id'], $nm),
-											'id');
+											array($album_data['id'], $nm),'id');
 										$tmp_name     = 'id'.$id_photo.'.jpg';
 										$foto_folder  = $album_data['foto_folder'];
 										$album_folder = $album_data['id'];
@@ -371,8 +390,10 @@ if (isset($_POST['go_ftp_upload']))
 										$quality     = $album_data['quality'];
 										if (imageresize($target_name,
 											$local_file,
-											600,
-											450,
+										  /*	600,
+												450, */
+										     700,
+											  500,
 											$quality,
 											$watermark,
 											$ip_marker,
@@ -594,11 +615,10 @@ if (isset($_POST['go_delete']))
 			</div>
 			<div class="modal-footer">
 				<form action="/inc/delete_dir.php" method="post">
-					<input type="hidden" name="confirm_id" value=<?=$id?>/>
-				   <input type="hidden" name="thumb" value=<?=$thumb?>/>
-					<button type="submit" name="confirm_del" value=<?= ($_SERVER['DOCUMENT_ROOT'].$foto_folder.$album_folder.$thumb) ?>> ДА
-					</button>
-					<button id="noConfirm" type="submit" name="confirm_del" value="0"> НЕТ</button>
+					<input type="hidden" name="confirm_id" value=<?=$id?> >
+				   <input type="hidden" name="thumb" value=<?=$thumb?> >
+					<button type="submit" name="path" value=<?= ($_SERVER['DOCUMENT_ROOT'].$foto_folder.$album_folder.$thumb) ?>> ДА</button>
+					<button id="noConfirm" type="submit" name="confirm_del" value=""> НЕТ</button>
 				</form>
 			</div>
 		</div>
@@ -919,7 +939,8 @@ if (isset($_SESSION['current_cat']))
 													</tr>
 													<tr>
 														<td align="center">
-															<form action="index.php" name="go_ftp_upload" method="post" style="margin-bottom: 0;" target="hiddenframe" onsubmit="document.getElementById('<?= $ln['id'] ?>').innerHTML='Подождите, идёт загрузка...'; return true;">
+															<form action="index.php" name="go_ftp_upload" method="post" style="margin-bottom: 0;" target="hiddenframe"
+															 onsubmit="document.getElementById('<?= $ln['id'] ?>').innerHTML='Подождите, идёт загрузка...'; return true;">
 																<input class="btn btn-success" type="hidden" name="go_ftp_upload" value="<?= $ln['id'] ?>"/>
 
 																<div id="<?= $ln['id'] ?>"></div>
@@ -929,7 +950,7 @@ if (isset($_SESSION['current_cat']))
 															</form>
 														</td>
 														<td>
-															<iframe id="hiddenframe" name="hiddenframe" style="width:0; height:0; border:0"></iframe>
+															<iframe id="hiddenframe" name="hiddenframe" style="width:0; height:0; border:0;"></iframe>
 														</td>
 													</tr>
 												</table>
@@ -940,7 +961,7 @@ if (isset($_SESSION['current_cat']))
 												"..<?=$ln['foto_folder']?><?=$ln['id']?>"
 												<form action="index.php" method="post" style="margin: 10px;">
 													<input class="btn btn-primary" type="hidden" name="go_delete" value="<?= $ln['id'] ?>"/>
-												  <input class="btn btn-primary" type="hidden" name="go_del_thumb" value="null"/>
+												  <input class="btn btn-primary" type="hidden" name="go_del_thumb" value="/"/>
 													<input class="btn-small btn-danger dropdown-toggle" type="submit" value="удалить  альбом"/>
 												</form>
 											</td>

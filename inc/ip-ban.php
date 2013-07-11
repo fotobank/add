@@ -6,37 +6,59 @@
 	 * Time: 16:11
 	 * To change this template use File | Settings | File Templates.
 	 */
-	// бан
-	$ipLog   = 'ipLogFile.txt'; // logfiles name
-	$timeout = '30'; // количество минут to block Ip
-	function record($ip, $ipLog, $timeout) // запись бана
-		{
 
+  // обработка ошибок
+  require_once (__DIR__.'/lib_mail.php');
+  require_once (__DIR__.'/lib_ouf.php');
+  require_once (__DIR__.'/lib_errors.php');
+
+
+
+	// бан
+	function record($ipLog='ipLogFile.txt', $timeout='30') // запись бана
+		{
+		   $session = checkSession::getInstance();
 			$log = fopen("$ipLog", "a+");
-			fputs($log, $ip."][".time()."][".$_SESSION['current_album']."\n");
+			fputs($log, Get_IP()."][".time()."][".$session->get('current_album')."\n");
 			fclose($log);
-			$user = isset($_SESSION['us_name']) ? $_SESSION['us_name'] : "" ;
-			trigger_error("Зафиксированн подбор пароля для альбома \"".$_SESSION['current_album'].
-			"\", пользователь - \"".$user."\" c Ip:".$ip." забанен на ".$timeout." минут!" , E_USER_ERROR);
+
+
+		  $mail_mes = "Зафиксированн подбор пароля для альбома \"".$_SESSION['current_album'].
+			"\", пользователь - \"".$session->get('us_name')."\" c Ip:".Get_IP()." забанен на ".$timeout." минут!";
+
+		  $error_processor = Error_Processor::getInstance();
+		  $error_processor->log_evuent($mail_mes,"");
+
+		  $mail            = new Mail_sender;
+		  $mail->from_addr = "webmaster@aleks.od.ua";
+		  $mail->from_name = "aleks.od.ua";
+		  $mail->to        = "aleksjurii@gmail.com";
+		  $mail->subj      = "Подбор пароля";
+		  $mail->body_type = 'text/html';
+		  $mail->body      = $mail_mes;
+		  $mail->priority  = 1;
+		  $mail->prepare_letter();
+		  $mail->send_letter();
+
 		}
 
 	// chek
-	function check($ip, $ipLog, $timeout) // проверка бана
+	function check($ipLog ='ipLogFile.txt', $timeout = '30') // проверка бана
 		{
-
+		   $session = checkSession::getInstance();
 			$data = file("$ipLog");
 			$now  = time();
-			if (!isset($_SESSION['popitka']) || !is_array($_SESSION['popitka']))
+		   $current_album = $session->get('current_album');
+			if (!$session->has("popitka") || !is_array($_SESSION['popitka']))
 				{
 					$_SESSION['popitka'] = array();
 				}
-			if (isset($_SESSION['current_album']))
+			if ( $session->has("current_album") )
 				{
-					if (!isset($_SESSION['popitka'][$_SESSION['current_album']]) || $_SESSION['popitka'][$_SESSION['current_album']] < 0
-						|| $_SESSION['popitka'][$_SESSION['current_album']] > 5 && $_SESSION['popitka'][$_SESSION['current_album']] != -10
-					)
+					if (!$session->has("popitka/$current_album") || $session->get("popitka/$current_album") < 0
+						|| $session->get("popitka/$current_album") > 5 && $session->get("popitka/$current_album") != -10)
 						{
-							$_SESSION['popitka'][$_SESSION['current_album']] = 5;
+						   $session->set("popitka/$current_album", 5);
 						}
 				}
 			if ($data) //если есть хоть одна запись
@@ -44,9 +66,9 @@
 					foreach ($data as $key => $record)
 						{
 							$subdata = explode("][", $record);
-							if (isset($_SESSION['current_album']))
-								{
-									if ($ip == $subdata[0] && $now < ($subdata[1] + 60 * $timeout) && $_SESSION['current_album'] == $subdata[2])
+
+						  // показ остаточного времени
+									if (Get_IP() == $subdata[0] && $now < ($subdata[1] + 60 * $timeout) && $current_album == $subdata[2])
 										{
 											$begin = intval((($subdata[1] + 60 * $timeout) - $now) / 60);
 											if ($begin == 1 || $begin == 21)
@@ -62,40 +84,33 @@
 													$okonc = '';
 												}
 											echo "<h2>Осталось $begin минут$okonc</h2>";
-											$_SESSION['popitka'][$_SESSION['current_album']] = -10;
+										  $session->set("popitka/$current_album", -10);
 											break;
 										}
-								}
-							elseif (isset($_SESSION['current_album']))
-								{
-									if ($ip == $subdata[0] && $now > ($subdata[1] + 60 * $timeout) && $_SESSION['current_album'] == $subdata[2]
-										&& $_SESSION['popitka'][$_SESSION['current_album']] <= 0
-										&& $_SESSION['popitka'][$_SESSION['current_album']] > 5
-									) // время бана закончилось
+
+						  // время бана закончилось
+									if (Get_IP() == $subdata[0] && $now > ($subdata[1] + 60 * $timeout) && $current_album == $subdata[2]
+										&& $session->get("popitka/$current_album") <= 0
+										&& $session->get("popitka/$current_album") > 5 )
 										{
-											$_SESSION['popitka'][$_SESSION['current_album']] = 5;
+										  $session->set("popitka/$current_album", 5);
 										}
-								}
-							if (isset($subdata[1]) && ($subdata[1] + 60 * $timeout) < $now) // чистка
-								{
-									unset($data[$key]); // убираем элемент массива, который нужно удалить
-									$data = str_replace('x0A', '', $data);
-									file_put_contents($ipLog, implode('', $data)); // сохраняем этот массив, предварительно объединив его в строку
-								}
+
+						  // чистка
+									if (isset($subdata[1]) && ($subdata[1] + 60 * $timeout) < $now)
+										{
+											unset($data[$key]); // убираем элемент массива, который нужно удалить
+											$data = str_replace('x0A', '', $data);
+											file_put_contents($ipLog, implode('', $data)); // сохраняем этот массив, предварительно объединив его в строку
+										}
 						}
 					unset($key);
 				}
-			elseif (isset($_SESSION['current_album']))
+			elseif ($session->has("current_album"))
 				{
-					if (!$data && $_SESSION['popitka'][$_SESSION['current_album']] <= 0 && $_SESSION['popitka'][$_SESSION['current_album']] > 5)
+					if (!$data && $session->get("popitka/$current_album") <= 0 && $session->get("popitka/$current_album") > 5)
 						{
-							$_SESSION['popitka'][$_SESSION['current_album']] = 5;
+						  $session->set("popitka/$current_album", 5);
 						}
 				}
-			//return ($_SESSION['popitka'][$_SESSION['current_album']]);
-			/*
-		  echo "<pre>";
-		  print_r($_SESSION.$may_view);
-		  echo "</pre>";
-		  */
 		}

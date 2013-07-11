@@ -1,12 +1,23 @@
 <?php
 
-	/**
-	 * @todo Class Error_Processor
-	 * Library for processing of errors and events.
-	 */
+		// 	 include_once (__DIR__.'/../core/Debug_HackerConsole/lib/config.php');
+		// 	 require_once (__DIR__.'/../core/Debug_HackerConsole/lib/Debug/HackerConsole/Main.php');
+
+
+			 function debugHC($v, $group="message")
+			 {
+				if (is_callable($f=array('Debug_HackerConsole_Main', 'out')))
+				  {
+					 call_user_func($f, $v, $group);
+				  }
+			 }
+
 
 	set_time_limit(0);
 
+ /**
+ * Class Error_Processor
+ */
 	class Error_Processor
 	{
 
@@ -116,21 +127,21 @@
 
 						// набор ошибок, на которые переменный след будет сохранен
 						$user_errors = array(E_USER_ERROR, E_USER_WARNING, E_USER_NOTICE);
-						$err         = "<b><CATCHABLE ERRORS></b>\n<br>";
-						$err .= "\t <b>Тип ошибки:</b>      ".$errortype[$errno]."\n<br>";
-						$err .= "\t <b>Сообщение:</b>       ".$errmsg."\n<br>";
-						$err .= "\t <b>Номер ошибки:</b>    ".$errno."\n<br>";
-						$err .= "\t <b>Файл скрипта:</b>    ".$filename."\n<br>";
-						$err .= "\t <b>Страница:</b>        ".$_SERVER['REQUEST_URI']."\n<br>";
-						$err .= "\t <b>Номер строки:</b>    ".$linenum."\n<br>";
-						$err .= "\t <b>Дата:</b>            ".$dt."\n<br>";
-						$err .= "\t <b>Ip пользователя:</b> ".Get_IP()."\n<br>";
-						$err .= "\t <b>Браузер:</b>         ".$_SERVER['HTTP_USER_AGENT']."\n<br>";
+						$err         = "<CATCHABLE ERRORS>\n";
+						$err .= "\t Тип ошибки:       ".$errortype[$errno]."\n";
+						$err .= "\t Сообщение:        ".$errmsg."\n";
+						$err .= "\t Номер ошибки:     ".$errno."\n";
+						$err .= "\t Файл скрипта:     ".$filename."\n";
+						$err .= "\t Страница:         ".$_SERVER['REQUEST_URI']."\n";
+						$err .= "\t Номер строки:     ".$linenum."\n";
+						$err .= "\t Дата:             ".$dt."\n";
+						$err .= "\t Ip пользователя:  ".Get_IP()."\n";
+						$err .= "\t Браузер:          ".$_SERVER['HTTP_USER_AGENT']."\n";
 						if (in_array($errno, $user_errors))
 							{
-								$err .= "\t <b>Трассировка ошибки:</b>".wddx_serialize_value($vars, "Variables")."\n<br>";
+								$err .= "\t Трассировка ошибки:".wddx_serialize_value($vars, "Variables")."\n";
 							}
-						$err .= "<b></CATCHABLE ERRORS></b>\n\n";
+						$err .= "</CATCHABLE ERRORS>\n\n";
 
 						/**
 						 * @todo Cохранить в файл регистрации ошибок, и послать мне по электронной почте,
@@ -144,11 +155,6 @@
 							fclose ($fp);
 						}*/
 
-						if ($errno == E_USER_ERROR)
-							{
-								mail("aleksjurii@gmail.com.com", "Critical User Error", $err);
-							}
-
 						$error_processor = Error_Processor::getInstance();
 						/**
 						 * @todo Формирование сообщения об ошибке для вывода на экран
@@ -158,8 +164,9 @@
 						/**
 						 * @todo Отправка ошибок в  лог файл и email
 						 */
-						$error_processor->err_proc($err,'wl',$err_led);
-
+						$error_processor->err_proc($err,'l',$err_led);
+						Debug_HackerConsole_Main::getInstance(true);
+						if (Debug_HackerConsole_Main::$admin) debugHC($err, "ошибка");
 						ob_end_clean();
 					}
 
@@ -171,7 +178,7 @@
 		 */
 		public static function captureException($exception)
 			{
-				$dt = date("Y-m-d H:i:s (T)");
+	//			$dt = date("Y-m-d H:i:s (T)");
 				$err =  "<EXTENSIONS ERROR> \n";
 				// заносим все выводимые данные в буфер
 //				ob_start();
@@ -190,10 +197,14 @@
 			//	$err .= "\t Браузер:         ".$_SERVER['HTTP_USER_AGENT']."\n";
 			//	$err .=  "</EXTENSIONS ERROR> \n\n";
 				$err_led = $err;
-				$error_processor = Error_Processor::getInstance();
-				$error_processor->err_proc($err,'wlm',$err_led);
+            $error_processor = Error_Processor::getInstance();
+            $error_processor->err_proc($err,'lm',$err_led);
+            Debug_HackerConsole_Main::getInstance(true);
+            if (Debug_HackerConsole_Main::$admin) debugHC($err, "ошибка");
 				return true;
 			}
+
+
 
 		/**
 		 * Функция перехвата фатальных ошибок
@@ -225,9 +236,10 @@
 						$err .= "\t Ip пользователя: ".Get_IP()."\n";
 						$err .= "\t Браузер:         ".$_SERVER['HTTP_USER_AGENT']."\n";
 						$err .=  "</FATAL ERROR> \n\n";
-
-						$error_processor = Error_Processor::getInstance();
-						$error_processor->err_proc($err,'wlm',$err_led);
+					   $error_processor = Error_Processor::getInstance();
+					   $error_processor->err_proc($err,'lm',$err_led);
+					   Debug_HackerConsole_Main::getInstance(true);
+					   if (Debug_HackerConsole_Main::$admin) debugHC($err, "ошибка");
 					}
 						return true;
 			}
@@ -250,12 +262,10 @@
 		 */
 		function err_proc($err_msg, $actions = '', $err_led)
 			{
-
 				$this->log_send(0);
 				// Adding in list of errors
 				$this->err_list[] = $err_msg;
 				$this->err_led .= $err_led; // сообщения об ошибке для вывода на экран
-
 
 				/**
 				 * Writing log
@@ -266,7 +276,6 @@
 						@chmod($this->EP_log_fullname, 0777);
 						error_log($err_msg, 3, $this->EP_log_fullname);
 					}
-
 
 				/**
 				 *  Sending mail
@@ -438,7 +447,7 @@
 		 * @param $message
 		 * @param $user_id
 		 */
-		function log_event($message, $user_id)
+		function log_evuent($message, $user_id)
 			{
 				@touch($this->event_log_fullname);
 				@chmod($this->event_log_fullname, 0777);

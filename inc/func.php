@@ -1,20 +1,36 @@
 <?php
+
+  require_once (__DIR__.'/../core/checkSession/checkSession.php');
+
   /**
 	* @param        $addr
 	* @param bool   $close_conn
 	* @param string $code
 	*/
-function main_redir($addr, $close_conn = true, $code = 'HTTP/1.1 303 See Other')
+function main_redir($addr = '', $close_conn = true, $code = 'HTTP/1.1 303 See Other')
 {
+
   header($code);
-  header('location: '.$addr);
-  if ($close_conn)
-  {
-	 $db = go\DB\Storage::getInstance()->get('db-for-data');
-	 $db->close();
-    exit();
+  if(empty($addr))
+	 {
+		if (isset($_SERVER['HTTP_REFERER'])) {
+		  header ("location: ".$_SERVER['HTTP_REFERER']);
+		}else{
+		  header ("location: index.php");
+		}
+	 } else {
+	 header('location: '.$addr);
   }
-}
+
+  if ($close_conn)
+	 {
+		$db = go\DB\Storage::getInstance()->get('db-for-data');
+		$db->close();
+		exit();
+	 }
+  exit();
+ }
+
 
   /**
 	* @param string $msg
@@ -23,8 +39,9 @@ function main_redir($addr, $close_conn = true, $code = 'HTTP/1.1 303 See Other')
 //ошибочный редирект с сообщением
 function err_exit($msg = 'Ошибка! Обратитесь к администрации.', $addr = '')
 {
-  if(empty($addr)) $addr = $_SERVER['PHP_SELF'];
-  $_SESSION['err_msg'] = $msg;
+  $session = checkSession::getInstance();
+  if(empty($addr)) $addr = $_SERVER['HTTP_REFERER'];
+  $session->set('err_msg', $msg);
   main_redir($addr);
 }
 
@@ -35,9 +52,10 @@ function err_exit($msg = 'Ошибка! Обратитесь к администрации.', $addr = '')
 //успешный редирект с сообщением
 function ok_exit($msg = 'Операция успешно завершена', $addr = '')
 {
-  if(empty($addr)) $addr = $_SERVER['PHP_SELF'];
-  $_SESSION['ok_msg'] = $msg;
-  main_redir($addr);
+  $session = checkSession::getInstance();
+  if(empty($addr)) $addr = $_SERVER['HTTP_REFERER'];
+  $session->set('ok_msg', $msg);
+  main_redir($addr, false);
 }
 
   /**
@@ -59,8 +77,9 @@ function get_param($param_name,$param_index)
  */
 function fotoFolder()
    {
+	   $session = checkSession::getInstance();
 	   $db = go\DB\Storage::getInstance()->get('db-for-data');
-	   $foto_folder = $db->query('select foto_folder from albums where id = ?i',array($_SESSION['current_album']), 'el');
+	   $foto_folder = $db->query('select `foto_folder` from `albums` where `id` = ?i',array($session->get('current_album')), 'el');
       return $foto_folder;
    }
 
@@ -256,12 +275,14 @@ function digit_to_string($dig){
 	 */
 	function iTogo()
 		{
-			if ($_SESSION['basket'])
+		  $session = checkSession::getInstance();
+
+			if ($session->has('basket'))
 				{
 					$basket = '';
 					$key    = 0;
 					$koll   = array();
-					foreach ($_SESSION['basket'] as $ind => $val)
+					foreach ($session->get('basket') as $ind => $val)
 						{
 
 							$basket .= $ind.',';
@@ -307,7 +328,7 @@ function digit_to_string($dig){
 						}
 					return $sum;
 				     }
-					unset ($_SESSION['basket']);
+				  $session->del('basket');
 					return false;
 				}
 			else
@@ -322,14 +343,15 @@ function digit_to_string($dig){
 	 */
 	function summa()
 		{
+		  $session = checkSession::getInstance();
 			    $print = iTogo();
 			if ($print)
 				{
-			    $format = $_SESSION['zakaz']['format'];
+				 $zakaz =  $session->get("zakaz");
+				 $format = $zakaz['format'];
 			    $rt = NULL;
-			if (isset($_SESSION['print']))
-				{
-			if ($_SESSION['print'] == '1' || $_SESSION['print'] == '2')
+
+			if ($session->get('print') == '1' || $session->get('print') == '2')
 				{
 					if ($format == '10x15' || $format == '13x18')
 						{
@@ -340,11 +362,11 @@ function digit_to_string($dig){
 							$rt = "ИТОГО: ".$print['pecat_A4']." гривень (".$print['koll']." фото ".$format."см)";
 						}
 				}
-			 elseif ($_SESSION['print'] == 0)
+			 elseif ($session->get('print') == 0)
 				{
 					$rt = "ИТОГО: ".$print['price']." гривень (".$print['file']." фото 13x18см)";
 				}
-				}
+
 			 return $rt;
 				} else {
 			 return false;

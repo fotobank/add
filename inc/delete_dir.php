@@ -18,12 +18,12 @@ function deleteDir($dir)
       }
 }
 
-   if (isset($_POST['confirm_del']))
+   if (!isset($_POST['confirm_del']))
       {
 
-		  deleteDir($_POST['confirm_del']);
+		  deleteDir($_POST['path']);
 
-      if ($_POST['confirm_del'] != '0' && $_POST['thumb'] == null)
+      if ($_POST['thumb'] == '/')
          {
          $id = $_POST['confirm_id'];
          $db->query('delete from photos  where id_album = ?i', array($id));
@@ -32,7 +32,10 @@ function deleteDir($dir)
          unlink("../images/$album_foto");
 	      $db->query('delete from albums where id = ?i', array($id));
          }
-      ok_exit('Удален каталог: ' .$_POST['confirm_del'], '../canon68452/index.php');
+
+      ok_exit('Удален каталог: ' .$_POST['path'], '../canon68452/index.php');
+		destroySession();
+
       }
-   destroySession()
+  main_redir();
 ?>

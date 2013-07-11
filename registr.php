@@ -241,7 +241,7 @@ LTR;
 		<tr>
 		 <td> Пароль:*</td>
 		 <td>
-			<input name="rPass" class="inp_f_reg" type="password" title="От 8 до 20 символов" maxlength="20" value="<?= $rPass ?>" data-placement="right">
+			<input name="rPass" class="inp_f_reg" type="password" title="Длина От 8 до 20 символов. Допускаются только английские буквы, цифры и слеующие знаки:  . - _ ! ~ * : < > + " maxlength="20" value="<?= $rPass ?>" data-placement="right">
 		 </td>
 		</tr>
 		<tr>

@@ -9,9 +9,9 @@
 
 header('Content-type: text/html; charset=windows-1251');
 set_time_limit(0);
-  //error_reporting(E_ALL);
-  //ini_set('display_errors', 1);
-  error_reporting(0);
+ error_reporting(E_ALL);
+ ini_set('display_errors', 1);
+ //  error_reporting(0);
 ignore_user_abort(1);
 require_once (__DIR__.'/config.php');
 require_once (__DIR__.'/lib_ouf.php');
@@ -31,8 +31,9 @@ if (!isset($_SESSION['logged']))
   <?
   } else {
   $rs = $db->query('SELECT `transaction_id`,`id`,`status` FROM `account_inv` WHERE `id_user` = ?i  ORDER BY `id` DESC LIMIT 2',array($_SESSION['userid']),'assoc');
-  $id = isset($rs)?$rs[0]['id']:false;
-  if($rs && $rs[0]['status'] != '')
+
+  $id = ($rs)?$rs[0]['id']:false;
+  if($rs && $rs[0]['status'] != '' || $id == false)
 	 {
   // чистка базы от невыполненных запросов
   /*$db->query('DELETE account_inv, actions
@@ -43,7 +44,7 @@ if (!isset($_SESSION['logged']))
 				  ',array('',$_SESSION['userid']));*/
 
   // id пополнения счета
-	 $id = $db->query('INSERT INTO account_inv (id_user) VALUES (?i)',array($_SESSION['userid']),'id');
+	 $id = $db->query('INSERT INTO `account_inv` (`id_user`) VALUES (?i)',array($_SESSION['userid']),'id');
 	 $db->query('INSERT INTO `actions` (`ip`,`id_user`,`user_event`,`id_account_inv`,`brauzer`)
 	 VALUES (?string ,?i, ?string, ?i,?string)',array(Get_IP(),$_SESSION['userid'],'пополнение счета',$id,$_SERVER['HTTP_USER_AGENT']),'id');
 	 }
@@ -99,7 +100,9 @@ if (!isset($_SESSION['logged']))
 	 <td>1.<span style="font-weight: bold; margin: 10px;">ПриватБанк LiqPAY:</span></td>
 	 <td colspan="3" style="padding-left: 10px;width: 270px;">Visa/MasterCard или счета LiqPAY</td>
 	 <td rowspan="3" style="width: 400px;"><p style="padding-left:  20px; font-size: 12px">Автоматичесская система оплаты c быстрым переводом и зачислением денег.
-		  Приём платежей по кредитным картам Visa и Master Card. Верификация платежей происходит через мобильный телефон. Минимальная сумма перевода - 2 копейки.</p></td>
+		  Приём платежей по кредитным картам Visa и Master Card. Верификация платежей происходит через мобильный телефон. Минимальная сумма перевода - 2 копейки.</p>
+	 <p style="padding-left:  20px; margin-top: -10px; font-size: 12px">Введите необходимую сумму и нажмите на значек "LIQPAY>>"</p>
+	 </td>
   </tr>
   <tr>
 	 <td class="t1">&nbsp;</td>
@@ -126,7 +129,7 @@ if (!isset($_SESSION['logged']))
 
   <?
   $pods = '';
-  if($rs[1]['status'] == 'wait_secure')
+  if(isset($rs[1]) && $rs[1]['status'] == 'wait_secure')
 	 {
    $pods = "<span style='font-size: 12px;'> Статус предыдущей транзакции: `проверяется банком`. Нажмите для обновления. Деньги будут зачислены сразу после проверки банком.</span>";
 	 } else {
@@ -137,7 +140,7 @@ if (!isset($_SESSION['logged']))
 		<span style="float: left; margin-left: 210px; font-size: 12px;">Ваша последняя транзакция: </span>
 		<button class="btn" name="checkPay" style="float: left; margin: -5px 40px 25px 20px; "
 		 onClick="ajaxPostQ('/inc/liqPay/ajaxCheck.php','#checkOut','trId='+true)">Проверить</button>
-		<span id="checkOut"><?=$pods?></span>
+		<span id="checkOut" style="position: relative;"><?=$pods?></span>
 
 
 
@@ -163,7 +166,9 @@ if (!isset($_SESSION['logged']))
 				Возможна оплата без регистрации. Банк берет небольшой процент за перевод, который необходимо учитывать при оплате.
 				Минимальная сумма перевода - 5 гривень. После оплаты пришлите, пожалуйста, на e-mail:<span id="eMail"></span>
 				сообщение, в котором укажите свой логин, номер заказа (указан в правом верхнем углу формы), сумму перевода и дату и время оплаты.
-				Деньги будут зачислены на Ваш счет сразу после проверки. </p></td>
+				Деньги будут зачислены на Ваш счет сразу после проверки. </p>
+			 <p style="padding-left:  20px; margin-top: -10px; font-size: 12px">Введите необходимую сумму и нажмите на значек "easypay"</p>
+		  </td>
 		</tr>
 		<tr>
 		  <td class="t1">&nbsp;</td>
@@ -192,15 +197,19 @@ if (!isset($_SESSION['logged']))
 <table style="margin: 30px 0 0 0" border="0">
   <tbody><tr>
 	 <td class="t1">3.<span style="font-weight: bold; margin-left: 10px; margin-right: 55px;">Перевод на карту<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ПриватБанка:</span></td>
-	 <td colspan="3" style="padding-left: 10px;width: 290px;">На Ваш E-mail будут высланы<br> реквизиты для перевода необходимой<br> суммы</td>
-	 <td rowspan="2" style="width: 400px;"><p style="padding-left:  24px; font-size: 12px">Инструкция будет выслана Вам в письме.
+	 <td colspan="2" style="padding-left: 10px;width: 290px;">На Ваш E-mail будут высланы<br> реквизиты для перевода необходимой<br> суммы</td>
+	 <td style="width: 400px;"><p style="padding-left:  24px; font-size: 12px">Инструкция будет выслана Вам в письме.
 		  Перевод в отделении ПриватБанка или через терминал без банковских процентов.</p></td>
   </tr>
   <tr>
 	 <td></td>
 	 <td><p style="padding-left: 10px; margin-top: 10px;"> Выслать реквизиты:</p></td>
 	 <td style="text-align:right;">
-		<input type="image" value="Выслать" src="http://privatbank.ua/img/logo.png?v=1912" style="width: 100px; margin-left: 20px;">
+		<input type="image" value="Выслать" src="http://privatbank.ua/img/logo.png?v=1912"
+		 onClick="ajaxPostQ('/inc/privat/ajaxPrivatMail.php','#rekMail','prMail='+true)"
+		style="width: 100px; margin-left: 20px;">
+	 </td>
+	 <td><p id='rekMail' style="padding-left: 24px; font-size: 12px">Для получения счета нажмите на значек "ПриватБанк". Если в течении 10 минут Вы не получите письмо, проверьте ящик спама.</p></td>
   </tr>
   </tbody></table>
 

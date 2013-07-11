@@ -28,7 +28,6 @@ function preview(idPhoto, imgWidth, imgHeight) {
 
 
 function previewTop(idPhoto, imgWidth, imgHeight) {
-
     $('#photo_preview').fadeTo('fast', 0.01, function () {
        $('<img src="/photo_preview.php?id=" + idPhoto/>');
         $('#photo_preview').load('photo_top_preview.php?id=' + idPhoto, function () {
@@ -78,7 +77,7 @@ $(document).ready(function () {
                 .css({ width: "", height: "" });
 
         var fotoW = $(this).width();
-        var fotoH = ($(this).height() > 150)?$(this).height():(($(this).width() > 500)?$(this).width()*0.82:$(this).width()/0.82);
+        var fotoH = ($(this).height() > 150)?$(this).height():(($(this).width() > 500)?$(this).width()*0.82:$(this).width()/0.6);
 
         var marginLeft = -fotoW / 2 + 'px';
         var marginTop  = -fotoH / 2 + 'px';
@@ -89,7 +88,7 @@ $(document).ready(function () {
             $(this).attr('src', src);
         });
 
-        alert ("высота экрана h= "+ getScreenHeight()+"фото w="+$(this).width()+"фото h="+$(this).height());
+//        alert ("высота экрана h= "+ getScreenHeight()+"фото w="+$(this).width()+"фото h="+$(this).height()+'  '+"fotoH= "+fotoH);
 
         //return updated element
         return $(this).css({'margin-left': marginLeft, 'margin-top': marginTop});
@@ -111,8 +110,10 @@ humane.forceNew = (true);
 humane.clickToClose = (true);
 humane.timeout = (2500);
 
+
 function basketAdd(idPhoto) {
     $.post('add_basket.php', {'id': idPhoto}, function (data) {
+        $(this).outDebug(data,"add_basket.php","basketAdd");
         var ans = JSON.parse(data);
         if (ans.status == 'ERR') {
             humane.error(ans.msg);
@@ -120,7 +121,7 @@ function basketAdd(idPhoto) {
         else {
        //     humane.success(["Файл добавлен в корзину"]);
             dhtmlx.message({
-                text: "Фотография<br> добавлена в корзину",
+                text: ans.msg,
                 expire:15000,
                 type:"addfoto" // 'customCss' - css класс
             });
@@ -145,21 +146,23 @@ function goVote(balans,voteprice, idPhoto) {
                     data:  {'id': idPhoto},
 
                     error:function(XHR) {
-                        alert(" Ошибка: "+XHR.status+ "  " + XHR.statusText);
+                        $(this).outDebug(" Ошибка: "+XHR.status+ "  " + XHR.statusText,"/go_vote.php","goVote");
                     },
                     statusCode: {
                         404: function() {
-                            alert("Страница не найдена");
+                            $(this).outDebug("Страница не найдена","/go_vote.php","goVote");
                         }
                     },
 
                     success: function (data) {
+                        $(this).outDebug(data,"/go_vote.php","goVote");
                         var ans = JSON.parse(data);
                         if (ans.status == 'ERR') {
                             humane.timeout = (8000);
                             humane.error(ans.msg);
                         }
                         else {
+                            $(this).outDebug(data,"/go_vote.php","goVote");
                             dhtmlx.message({ text: "Ваш голос добавлен", expire: 10000, type: "addgolos" });
                             var newBalans = (balans - voteprice).toFixed(2);
                             $('#balans').empty().append(newBalans);
@@ -176,6 +179,7 @@ function goVote(balans,voteprice, idPhoto) {
     else
     {
         $.post('/go_vote.php', {'id': idPhoto}, function (data) {
+            $(this).outDebug(data,"/go_vote.php","goVote");
             var ans = JSON.parse(data);
             if (ans.status == 'ERR') {
                 humane.timeout = (8000);
@@ -304,7 +308,6 @@ item.storePeriod     = setInterval(function(){
     if(item.width && item.height && item.complete){
 
 
-
     clearInterval(item.storePeriod);
     item.storePeriod      = false;
     jQuery(item.previousSibling).remove();
@@ -339,6 +342,5 @@ jQuery(item.previousSibling).remove();
 
 }
 
-//$(document).ready(imagesPreloader);
 
 

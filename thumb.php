@@ -4,6 +4,7 @@ include (dirname(__FILE__).'/inc/func.php');
 require (dirname(__FILE__).'/inc/i_resize.php');
 require (dirname(__FILE__).'/inc/lib_ouf.php');
 
+
 if (isset($_GET['num'])) {
 
    $file = (string) $_GET['num'];
@@ -28,7 +29,7 @@ if (isset($_GET['num'])) {
 	 else
 		{
 	   $file_out = '.'.$dirname.'thumb/'. $file;
-      imageresize($file_out,$file_in,170,155,80);
+      imageresize($file_out,$file_in,170,160,80);
 		 if (is_file($file_out)) {
 			  header("Content-type: image/jpg");
 			  readfile('.'.$dirname.'thumb/'. $file);

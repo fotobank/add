@@ -3,6 +3,9 @@
   // ini_set('display_errors', 1);
   error_reporting(0);
   include (__DIR__.'/inc/head.php');
+  require_once (__DIR__.'/core/checkSession/checkSession.php');
+  $session = checkSession::getInstance();
+
   if (!isset($_SESSION['logged']))
 	 {
 		?>
@@ -96,10 +99,10 @@
 				}
 		  }
 
-if (isset($_POST['okei']) && isset($_SESSION['basket']) && is_array($_SESSION['basket']) && count($_SESSION['basket']) > 0 )
+if (isset($_POST['okei']) && is_array($session->get('basket')) && count($session->get('basket')) > 0 )
 		  {
 
-			 $id_user = intval($_SESSION['userid']);
+			 $id_user = intval($session->get('userid'));
 			 $name = $_POST['us_name'];
 			 $subname = $_POST['us_surname'];
 			 $phone = $_POST['phone'];
@@ -114,9 +117,9 @@ if (isset($_POST['okei']) && isset($_SESSION['basket']) && is_array($_SESSION['b
 			 $id_dost = $_POST['dost'];
 			 $user_dost = $_POST['txtDost'];
 			 $user_opl = $_POST['txtOpl'];
-			 $ramka = $_SESSION['zakaz']['ramka'];
-			 $mat_gl = $_SESSION['zakaz']['mat_gl'];
-			 $format = $_SESSION['zakaz']['format'];
+			 $ramka = $session->get('zakaz/ramka');
+			 $mat_gl = $session->get('zakaz/mat_gl');
+			 $format = $session->get('zakaz/format');
 			 $comm = $_POST['comment'];
 			 $zakaz = 0;
 	       $tm  = time();
@@ -124,7 +127,7 @@ if (isset($_POST['okei']) && isset($_SESSION['basket']) && is_array($_SESSION['b
 			 $summ = NULL;
 			 if ($order)
 				{
-				  $format = $_SESSION['zakaz']['format'];
+				  $format = $session->get('zakaz/format');
 				  if ($format == '10x15' || $format == '13x18')
 					 {
 						$summ = $order['pecat'];
@@ -144,7 +147,7 @@ if (isset($_POST['okei']) && isset($_SESSION['basket']) && is_array($_SESSION['b
 				$id_order = $db->query($pattern, $data)->id(); // номер заказа
 				if($id_order)
 				  {
-					 foreach ($_SESSION['basket'] as $ind => $val)
+					 foreach ($session->get('basket') as $ind => $val)
 						{
 								$db ->query('INSERT INTO `order_print`(`id_print`,`id_photo`,`koll`) VALUES (?i,?i,?i)',array($id_order,$ind,$val));
 						}
@@ -243,7 +246,7 @@ $_SESSION['print'] = 0;
 			 $_SESSION['print'] = 1;
 		  }
 
-		if (isset($_POST['mat_gl']) && count($_SESSION['basket']) > 0)
+		if (isset($_POST['mat_gl']) && count($session->get('basket')) > 0)
 		  {
 			 $_SESSION['print']           = 2;
 			 $_SESSION['zakaz']['ramka']  = trim($_POST['ramka']);
@@ -259,13 +262,15 @@ $_SESSION['print'] = 0;
 		  {
 			 if (isset($_SESSION['print']) && $_SESSION['print'] == 1)
 				{
-				  foreach ($_SESSION['album_name'] as $id => $key)
+		?>
+		<div class="drop-shadow lifted" style="margin: 20px 0 20px 250px;">
+		  <div style="font-size: 24px;">Откорректируйте количество на каждой фотографии и нажмите далее</div>
+		</div>
+		<?
+ 				  foreach ($session->get('zakaz/album_name') as $id => $key)
 					 {
 						$rs = $db->query('select `pecat`, `pecat_A4` FROM `albums` WHERE `id` =?i', array($id), 'row')
 						?>
-						<div class="drop-shadow lifted" style="margin: 20px 0 20px 250px;">
-						  <div style="font-size: 24px;">Откорректируйте количество на каждой фотографии и нажмите далее</div>
-						</div>
 						<span class="label label-info" style="margin: 0 0 0 0;">
 					    Цена на напечатанные фотографии в альбоме "<?=$key?>": 10x15см, 13x18см - <?=$rs['pecat']?>
 						  грн, 20x30см - <?=$rs['pecat_A4']?> грн
@@ -283,16 +288,14 @@ $_SESSION['print'] = 0;
 				  <div style="clear: both;"></div>
 				<?
 				}
-			 if (!isset($_SESSION['zakaz']['format']))
+			 if (!$session->has('zakaz/format'))
 				{
-				  $_SESSION['zakaz']['format'] = '13x18';
+				  $session->set('zakaz/format','13x18');
 				}
 			 $print = iTogo();
-			 $format = $_SESSION['zakaz']['format'];
+			 $format = $session->get('zakaz/format');
 
-			 if (
-				isset($_SESSION['print']) && $_SESSION['print'] == 0 || isset($_SESSION['print']) && $_SESSION['print'] == 1
-			 )
+			 if ($session->get('print') == 0 || $session->get('print') == 1)
 				{
 				  ?>
 
@@ -399,19 +402,19 @@ $_SESSION['print'] = 0;
 				  </div>
 				<?
 				}
-			 elseif (isset($_SESSION['print']) && $_SESSION['print'] == 1)
+			 elseif ($session->get('print')== 1)
 				{
-				  if (!isset($_SESSION['zakaz']['ramka']))
+				  if (!$session->has('zakaz/ramka'))
 					 {
-						$_SESSION['zakaz']['ramka'] = 0;
+						$session->set('zakaz/ramka',0);
 					 }
-				  if (!isset($_SESSION['zakaz']['mat_gl']))
+				  if (!$session->has('zakaz/mat_gl'))
 					 {
-						$_SESSION['zakaz']['mat_gl'] = 'глянцевая';
+						$session->set('zakaz/mat_gl', 'глянцевая');
 					 }
-				  if (!isset($_SESSION['zakaz']['format']))
+				  if (!$session->has('zakaz/format'))
 					 {
-						$_SESSION['zakaz']['format'] = '13x18';
+						$session->set('zakaz/format', '13x18');
 					 }
 				  $fFormat = array('10x15', '13x18', '20x30');
 				  $fBum    = array('глянцевая', 'матовая');
@@ -442,7 +445,7 @@ $_SESSION['print'] = 0;
 								{
 								  ?>
 								  <option value='<?= $format ?>' <?=(
-								  $_SESSION['zakaz']['format'] == $format ? 'selected="selected"' : '')?>
+								  ($session->get('zakaz/format') == $format) ? 'selected="selected"' : '')?>
 
 									><?=$format?> см
 								  </option>
@@ -458,7 +461,7 @@ $_SESSION['print'] = 0;
 								{
 								  ?>
 								  <option value='<?= $bum ?>' <?=(
-								  $_SESSION['zakaz']['mat_gl'] == $bum ? 'selected="selected"' : '')?>><?=$bum?></option>
+								  ($session->get('zakaz/mat_gl') == $bum) ? 'selected="selected"' : '')?>><?=$bum?></option>
 								<?
 								}
 							 ?>
@@ -514,7 +517,7 @@ $_SESSION['print'] = 0;
 
 
 				 <?
-				   $rs = $db->query('select * from nastr order by id asc', null, 'assoc');
+				   $rs = $db->query('select * from nastr order by id asc', NULL, 'assoc');
 	          	$spOpl = array();
 				   $spDost = array();
 				   $adr_pecat = array();

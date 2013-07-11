@@ -47,11 +47,8 @@ if ($id > 0)
             <? endif; ?>
 
 
-
                 <div style="<?= $sz_string ?>">
-
                     <div style="text-align: center; width: 100%;">
-
                         <img src="dir.php?num=<?= substr(($photo_data['img']), 2, -4) ?>" alt="<?=$photo_data['nm']?>"
 								 title="Фотография № <?=$photo_data['nm']?><?=$right_id?>. Нажмите,чтобы закрыть." onClick="hidePreview();"/>
                     </div>
@@ -85,7 +82,7 @@ if ($id > 0)
 	                                $vote_price = floatval($db->query('select vote_price from albums where id = ?i', array($id_album), 'el'));
 											  $user_balans = $db->query('select balans from users where id = ?i',array($_SESSION['userid']),'el');
 	                                ?>
-                                    <input type="button" value="Голосовать" style="cursor: pointer;" onClick="goVote('<?=$user_balans?>','<?=$vote_price?>','<?=$photo_data['id']?>');"/><br/>
+                          <input type="button" value="Голосовать" style="cursor: pointer;" onClick="goVote('<?=$user_balans?>','<?=$vote_price?>','<?=$photo_data['id']?>');"/><br/>
                                     Голосов: (<?=$photo_data['votes']?>)
                                 </td>
 

@@ -1,13 +1,13 @@
 <?php
    require_once(__DIR__.'/../core/secure/linkObfuscator.php');
    require_once(__DIR__.'/secureSession.php');
-
-
+   require_once(__DIR__.'/../core/checkSession/checkSession.php');
+   $session = checkSession::getInstance();
    startSession();
 
- // session_start();
    if(!isset($_SESSION['referralSeed'])) $_SESSION['referralSeed'] = false;
-   $link=new linkObfuscator($_SESSION['referralSeed']);
+
+   $link=new linkObfuscator($session->get('referralSeed'));
    //test seed
    //print "actual referral Seed:". $_SESSION['referralSeed'] ."<br />\n";
 

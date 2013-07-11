@@ -1,4 +1,5 @@
 <?php
+  require (dirname(__FILE__).'/../core/jpeg_cleaner/jpeg_cleaner.php');
 // Преобразование Windows 1251 -> Unicode
   function win2uni($s)
   {
@@ -75,12 +76,12 @@ function imageresize($outfile,$infile,$neww,$newh,$quality,$warermark=0,$ip_mark
 			$zap = basename ($infile);
 			$db = go\DB\Storage::getInstance()->get('db-for-data');
 			$rs = $db->query('SELECT nm FROM photos WHERE img = ?string',array($zap), 'el');
-			$text = win2uni("Ваш IP-adress: {$sIP}, фото номер {$rs} - ({$w_n} x {$h_n})");
+			$text = win2uni("Ваш IP-adress: {$sIP}, фотография # {$rs}");
       //  imagestring($img_o, 3, $w_n/2-240, $h_n*0.05, $text, $iTextColor); // Рисуем текст
 			
 			define('WIDTH', $w_n);
             define('HEIGHT', $h_n);
-            define('FONT_NAME', 'LUA.TTF');
+            define('FONT_NAME', 'fonts/LUA.TTF');
             define('FONT_SIZE', 12);
   
             $coord = imagettfbbox(
@@ -93,7 +94,7 @@ function imageresize($outfile,$infile,$neww,$newh,$quality,$warermark=0,$ip_mark
 	         $width = $coord[2] - $coord[0];
             $height = $coord[1] - $coord[7];
 	         $X = (WIDTH - $width) / 2;
-            $Y = (HEIGHT + $height) / 20;
+            $Y = (HEIGHT + $height) / 10;
 
           imagettftext(
             $img_o,      // как всегда, идентификатор ресурса
@@ -115,8 +116,9 @@ function imageresize($outfile,$infile,$neww,$newh,$quality,$warermark=0,$ip_mark
 			   // Копируем изображение водяного знака на изображение источник
             imagecopy($img_o, $rWmImage, $w_n/2-$aWmImgInfo[0]/2 , $h_n*0.5, 0, 0, $aWmImgInfo[0], $aWmImgInfo[1]);
             }			
-          }		 		  
-    if ($sharping == 1)
+          }
+
+	if ($sharping == 1)
 		  {
 	        $sharpenMatrix = array(
 	                    array(0, -1, 0),
@@ -126,13 +128,20 @@ function imageresize($outfile,$infile,$neww,$newh,$quality,$warermark=0,$ip_mark
             $divisor = array_sum(array_map('array_sum', $sharpenMatrix));			
             $offset = 0;
 			imageconvolution($img_o, $sharpenMatrix, $divisor, $offset);
-		  }				  		   		    
-	   	  	imagejpeg($img_o,$outfile,$quality);			
+		  }
+
+
+				imagejpeg($img_o,$outfile,$quality);
+		//		$input_file  = $outfile;
+		//		$output_file = $outfile;
+		//		jpeg_cleaner($input_file, $output_file);
             imagedestroy($im);
             imagedestroy($img_o);			
 			return 'true';			
-    } else {
+           }
+			else
+			  {
 		     return 'false';
-		   }		   
+		   }
 }
 ?>

@@ -40,29 +40,29 @@
 			$backup_obj->comments = true;
 			
 			//Directory on the server where the backup file will be placed. Used only if task parameter equals MSB_SAVE.
-			$backup_obj->backup_dir = '/';
-			
+			$backup_obj->backup_dir = '/backup/';
+
 			//Default file name format.
 			$backup_obj->fname_format = 'm_d_Y';
 
 	//--------------------- END - OPTIONAL PREFERENCE VARIABLES ---------------------
-			
-	//---------------------- EDIT - REQUIRED EXECUTE VARIABLES ----------------------		
-				
+
+	//---------------------- EDIT - REQUIRED EXECUTE VARIABLES ----------------------
+
 			/*
-				Task: 
+				Task:
 					MSB_STRING - Return SQL commands as a single output string.
 					MSB_SAVE - Create the backup file on the server.
 					MSB_DOWNLOAD - Download backup file to the user's computer.
-					
+
 			*/
-			$task = MSB_DOWNLOAD;
+			$task = MSB_SAVE;
 			
 			//Optional name of backup file if using 'MSB_SAVE' or 'MSB_DOWNLOAD'. If nothing is passed, the default file name format will be used.
 			$filename = '';
 			
 			//Use GZip compression if using 'MSB_SAVE' or 'MSB_DOWNLOAD'?
-			$use_gzip = true;
+			$use_gzip = false;
 
 	//--------------------- END - REQUIRED EXECUTE VARIABLES ----------------------
 	

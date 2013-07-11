@@ -1,0 +1,1087 @@
+<?php
+	include  (__DIR__.'/inc/head.php');
+	include  (__DIR__.'/inc/ip-ban.php');
+   set_time_limit(0);
+	// include  (dirname(__FILE__).'/inc/lib/dtimediff/diftimer_class.php'); // подсчет времени между двумя событиями
+  ?>
+   <link rel="stylesheet" href="/js/visLightBox/data/vlboxCustom.css" type="text/css" />
+	<link rel="stylesheet" href="/js/visLightBox/data/visuallightbox.css" type="text/css" media="screen" />
+	<script src="/js/visLightBox/js/visuallightbox.js" type="text/javascript"></script>
+ <?
+
+	//Количество фоток на странице
+	define('PHOTOS_ON_PAGE', 104);
+
+
+
+  if (isset($_GET['album_id']))
+		{
+		  $current_album =$session->set('current_album', intval($_GET['album_id']));
+		  $album_data = $db->query('select * from albums where id = ?i', array($current_album),'row');
+		  $session->set("album_name/$current_album", "$album_data[nm]");
+		  if($album_data['pass'] != '' &&  $session->has("popitka/$current_album") == false)
+			  {
+				 $session->set("popitka/$current_album", 5);
+		     }
+		}
+	if (isset($_GET['back_to_albums']))
+		{
+		  $session->del('current_album');
+		}
+	if (isset($_GET['chenge_cat']))
+		{
+		  $session->del('current_album');
+		  $session->set('current_cat', intval($_GET['chenge_cat']));
+		}
+	if (isset($_GET['unchenge_cat']))
+		{
+		  $session->del('current_album');
+		  $session->del('current_cat');
+		}
+
+?>
+
+	<div id="main">
+	<script type="text/javascript" src="/js/photo-prev.js"></script>
+
+	<!-- ввод пароля -->
+	<div class="modal-scrolable" style="z-index: 150;">
+		<div id="static" class="modal hide fade in animated fadeInDown" data-keyboard="false" data-backdrop="static" tabindex="-1" aria-hidden="false">
+			<div class="modal-header">
+				<h3 style="color: #444444">Ввод пароля:</h3>
+			</div>
+			<div class="modal-body">
+
+				<div style="ttext_white">
+					На данный альбом установлен пароль. Если у Вас нет пароля для входа или он утерян , пожалуйста свяжитесь
+					с администратором сайта через email в разделе <a href="kontakty.php"><span class="ttext_blue">"Контакты"</span>.</a>
+				</div>
+				<br/>
+
+				<form action="/fotobanck_adw.php" method="post">
+					<label for="inputError" class="ttext_red" style="float: left; margin-right: 10px;">Пароль: </label>
+					<input id="inputError" type="text" name="album_pass" value="" maxlength="20"/>
+					<input class="btn-small btn-primary" type="submit" value="ввод"/>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<p id="err-modal" style="float: left;"></p>
+				<button type="button" data-dismiss="modal" class="btn" onClick="window.document.location.href='/fotobanck_adw.php?back_to_albums'">
+					Я не знаю
+				</button>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- ошибка -->
+	<div id="error_inf" class="modal hide fade" tabindex="-1" data-replace="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+			<h3 style="color:red">Неправильный пароль.</h3>
+		</div>
+		<div class="modal-body">
+			<div>
+				<a href="kontakty.php"><span class="ttext_blue">Забыли пароль?</span></a>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- запрет доступа к альбому -->
+	<?
+	$current_album = $session->get('current_album');
+	if($current_album != NULL && $session->has("popitka/$current_album") == true)
+	  {
+		 $ostPop = $session->get("popitka/$current_album");
+			if ($ostPop <= 0 || $ostPop == 5)
+			  {
+			?>
+			<div id="zapret" class="modal hide fade" tabindex="-1" data-replace="true" style=" margin-top: -180px;">
+				<div class="err_msg">
+					<div class="modal-header">
+						<h3 style="color:#fd0001">Доступ к альбому "
+						  <?
+						   $album_name = $session->get("album_name/$current_album");
+							echo $album_name;
+						  ?>" заблокирован!</h3>
+					</div>
+					<div class="modal-body">
+						<div style="color:black">Вы использовали 5 попыток ввода пароля.В целях защиты, Ваш IP заблокирован на 30
+							минут.
+						</div>
+						<br> <? check(); ?> <br><br> <a href="/kontakty.php"><span class="ttext_blue">Восстановление пароля</span></a>
+						<a style="float:right" class="btn btn-danger" data-dismiss="fotobanck_adw.php" href="/fotobanck_adw.php?back_to_albums">Закрыть</a>
+					</div>
+				</div>
+			</div>
+			<?
+		   	}
+	}
+
+
+	/**
+	 * @param $record_count
+	 * @param $may_view
+	 * @param $current_page
+	 *
+	 * @todo paginator
+	 */
+
+	function paginator($record_count, $may_view, $current_page)
+		{
+		  $session = checkSession::getInstance();
+			/** @var $record_count  Количество фотографий в альбоме */
+			if (isset($record_count))
+			  {
+					if ($may_view && $record_count > PHOTOS_ON_PAGE)
+						{
+							$page_count = ceil($record_count / PHOTOS_ON_PAGE);
+							?>
+							<!-- ПОСТРАНИЧНАЯ РАЗБИВКА -->
+							<h4><a id="home" style="float: left;">Страница <?=$current_page?></a></h4>
+							<div class="pagination" align="center">
+								<?
+								if ($current_page == 1)
+									{
+										?>
+										<span class="disabled">« </span>
+										<span class="disabled">« Предыдущая</span>
+									<?
+									}
+								else
+									{
+										?>
+										<a class="next" href="/fotobanck_adw.php?album_id=<?= $session->get('current_album') ?>&amp;pg=1#home">« </a>
+										<a class="next" href="/fotobanck_adw.php?album_id=<?= $session->get('current_album') ?>&amp;pg=<?= (
+											$current_page - 1) ?>#home">« Предыдущая</a>
+									<?
+									}
+								for ($i = 1; $i <= $page_count; $i++)
+									{
+										if ($i == $current_page)
+											{
+												//Текущая страница
+												?>
+												<span class="current"><?=$i?></span>
+											<?
+											}
+										else
+											{
+												//Ссылка на другую страницу
+												?>
+												<a href="/fotobanck_adw.php?album_id=<?= $session->get('current_album') ?>&amp;pg=<?= $i ?>#home"><?=$i?></a>
+											<?
+											}
+									}
+								if ($current_page == $page_count)
+									{
+										?>
+										<span class="disabled">Следующая »</span>
+										<span class="disabled">Посл. »</span>
+									<?
+									}
+								if ($current_page < $page_count)
+									{
+										?>
+										<a class="next" href="/fotobanck_adw.php?album_id=<?= $session->get('current_album') ?>&amp;pg=<?= (
+											$current_page + 1) ?>#home">Следующая »</a>
+										<a class="next" href="/fotobanck_adw.php?album_id=<?= $session->get('current_album') ?>&amp;pg=<?= ($page_count) ?>#home">
+											»</a>
+									<?
+									}
+								?>
+							</div>
+							<h4><a id="home" style="float: right">всего - <?=$record_count?> шт.</a></h4>
+							<div style="clear: both;"></div>
+						<?
+						}
+			  }
+		}
+
+
+	/**
+	 * @param $may_view
+	 * @param $current_page
+	 * @param $record_count
+	 *
+	 * @todo function fotoPage
+	 */
+
+	function fotoPage(&$record_count, $may_view, &$current_page)
+	{
+
+	  $current_page = isset($_GET['pg']) ? intval($_GET['pg']) : 1;
+	  if ($may_view)
+		 {
+			if ($current_page < 1)
+			  {
+				 $current_page = 1;
+			  }
+			$start        = ($current_page - 1) * PHOTOS_ON_PAGE;
+			$db = go\DB\Storage::getInstance()->get('db-for-data');
+			$rs = $db->query(
+			  'select SQL_CALC_FOUND_ROWS p.* from photos p where id_album = ?i
+			 order by img ASC, id ASC limit ?i,'.PHOTOS_ON_PAGE,
+			  array($_SESSION['current_album'], $start),'assoc');
+			$record_count = $db->query('select FOUND_ROWS() as cnt', NULL, 'el'); // количество записей
+			if ($rs)
+			  {
+				 ?>
+				 <!-- 3 -->
+				 <hr class="style-one" style="margin-top: 10px; margin-bottom: -20px;">
+				 <?
+				 foreach ($rs as $ln)
+					{
+					  $source = ($_SERVER['DOCUMENT_ROOT'].fotoFolder().$ln['id_album'].'/'.$ln['img']);
+					  $sz     = @getimagesize($source);
+					  /* размер превьюшек */
+					  if (intval($sz[0]) > intval($sz[1]))
+						 {
+							$sz_string = 'width="155px"';
+							$ImgWidth = intval($sz[1]);
+							$ImgHeight = intval($sz[0]);
+						 }
+					  else
+						 {
+							$sz_string = 'height="170px"';
+							$ImgWidth = intval($sz[0]);
+							$ImgHeight = intval($sz[1]);
+						 }
+					  ?>
+					  <div class="podlogka">
+						 <figure class="ramka" onClick="preview(<?= $ln['id'] ?>, <?= $ImgWidth ?>, <?= $ImgHeight ?>);">
+							<img class="lazy" data-original="/thumb.php?num=<?= substr(trim($ln['img']),2,-4) ?>"
+							 id="<?= substr(trim($ln['img']),2,-4) ?>" src=""
+							 title="За фотографию проголосовало <?= $ln['votes'] ?> человек. Нажмите для просмотра." <?=$sz_string?> />
+							<figcaption>№ <?=$ln['nm']?></figcaption>
+						 </figure>
+					  </div>
+					<?
+					}
+			  }
+
+		 }
+
+	}
+
+
+	/**
+	 * @param $rs
+	 * @param $start
+	 * @param $width
+	 * @param $widthSait
+	 * @param $margP
+	 *
+	 * @return array
+	 */
+
+	function getMargin($rs, $start, $width, $widthSait, $margP)
+	  {
+		 // инициализация переменных
+		 // ------------------------
+		 $margin = 0;
+		 $testDiv = 0;
+		 $koll = 1;
+		 $paddingFoto = 10;
+		 // ------------------------
+			for ($i = $start; $i<count($rs); $i++)
+			{
+			  $ln = $rs[$i];
+			  $source = ($_SERVER['DOCUMENT_ROOT'].fotoFolder().$ln['id_album'].'/'.$ln['img']);
+			  $sz     = @getimagesize($source);
+
+			  if (intval($sz[0]) > intval($sz[1]))
+				 {
+					$wid = $width+$paddingFoto;
+				 }
+			  else
+				 {
+					$wid = $width/1.25+$paddingFoto;
+				 }
+			  $testDiv += $wid;
+
+			  if((($testDiv + ($margP*($koll-1)) >= $widthSait)))
+				 {
+					$margin = round(($widthSait - $testDiv)/($koll - 1));
+					break;
+				 }
+			  $koll++;
+			}
+		 unset($i);
+		 return array("margin" =>$margin, "koll" => $koll);
+	  }
+
+
+
+	/**
+	 * @param $record_count
+	 * @param $may_view
+	 * @param $current_page
+	 * @param $width
+	 */
+
+	function fotoPageModern(&$record_count, $may_view, &$current_page, $width = 170)
+		{
+		   $session = checkSession::getInstance();
+			$current_page = isset($_GET['pg']) ? intval($_GET['pg']) : 1;
+		   $widthSait = 1200; // px
+		   $margP = 50; // предпологаемый правый маргин px
+			if ($may_view)
+				{
+					if ($current_page < 1)
+						{
+							$current_page = 1;
+						}
+					$start        = ($current_page - 1) * PHOTOS_ON_PAGE;
+					$db = go\DB\Storage::getInstance()->get('db-for-data');
+					$rs = $db->query(
+					'select SQL_CALC_FOUND_ROWS p.* from photos p where id_album = ?i
+					 order by img ASC, id ASC limit ?i,'.PHOTOS_ON_PAGE,
+					 array($session->get('current_album'), $start),'assoc');
+					 $record_count = $db->query('select FOUND_ROWS() as cnt', NULL, 'el'); // количество записей
+
+				  if ($rs)
+						{
+							?>
+<!-- 3 -->
+						  <hr class="style-one" style="margin-top: 10px; margin-bottom: -20px;">
+						  <div style=" clear: both;">
+							<?
+
+						  $data = getMargin($rs, 0, $width, $widthSait, $margP);
+						  $margin = $data['margin'];
+						  $koll = $data['koll'];
+						  $kollFoto = 1;
+						  foreach ($rs as $key => $ln)
+								{
+									$source = ($_SERVER['DOCUMENT_ROOT'].fotoFolder().$ln['id_album'].'/'.$ln['img']);
+									$sz     = @getimagesize($source);
+									/* ширина превьюшек px */
+							if (intval($sz[0]) > intval($sz[1]))
+										{
+										  $sz_string = 'width="'.$width.'px"';
+										}
+									else
+										{
+										  $sz_string = 'height="'.($width*1.066).'px"';
+										}
+
+								  if((($kollFoto == $koll)))
+
+									   {
+									?>
+					<a class="modern"  style="position: absolute; float: right;"
+					 href="/dir.php?num=<?= substr(($ln['img']), 2, -4) ?>" title="Фото № <?=$ln['nm']?>">
+									  <img  id="<?= substr(trim($ln['img']),2,-4) ?>"
+										class="lazy" <?=$sz_string?> src=""
+									   data-original="/thumb.php?num=<?= substr(trim($ln['img']),2,-4) ?>"
+										alt="№ <?=$ln['nm']?>"/>№ <?=$ln['nm']?></a>
+									  </div>
+									  <?
+
+										  $data = getMargin($rs, $key, $width, $widthSait, $margP);
+										  $margin = $data['margin'];
+										  $koll = $data['koll'];
+										  $kollFoto = 0;
+
+									  ?>
+									  <div style=" clear: both;">
+									  <?
+									   }
+									else
+									   {
+									 ?>
+                <a class="modern" style="position: relative; float: left; margin-right: <?= $margin; ?>px;"
+					  href="/dir.php?num=<?= substr(($ln['img']), 2, -4) ?>" title="Фото № <?=$ln['nm']?>">
+										 <img  id="<?= substr(trim($ln['img']),2,-4) ?>"
+										  class="lazy" <?=$sz_string?> src=""
+										  data-original="/thumb.php?num=<?= substr(trim($ln['img']),2,-4) ?>"
+										  alt="№ <?=$ln['nm']?>"/>№ <?=$ln['nm']?></a>
+									 <?
+								      }
+								  $kollFoto++;
+								  }
+									 ?>
+									 </div>
+									 <?
+						}
+				}
+		}
+
+
+	/**
+	 * @param $may_view
+	 *
+	 * @todo function verifyParol
+	 */
+
+	function verifyParol($may_view)
+		{
+		  $session = checkSession::getInstance();
+		  $current_album = $session->get('current_album');
+		  $ostPop = $session->get("popitka/$current_album");
+
+
+			if (!$may_view)
+				{
+					?>
+					<div class="row">
+						<div class="page">
+							<a class="next" href="/fotobanck_adw.php?back_to_albums">« назад</a>
+							<a class="next" href="/fotobanck_adw.php">« попробовать еще раз</a>
+						</div>
+						<img style="margin: 20px 0 0 40px;" src="/img/Stop Photo Camera.png" width="348" height="350"/>
+<!--						<h3><span style="color: #ffa500">Доступ к альбому заблокирован паролем.  --><?// //check();?><!--</span></h3>-->
+						<?
+							  if ($ostPop == -10) // проверка и вывод времени бана
+								 {
+
+								echo "<script type='text/javascript'>
+                                             $(document).ready(function(){
+                                             $('#zapret').modal('show');
+                                             });
+                                             function gloze() {
+                                             $('#zapret').modal('hide');
+                                             location='/fotobanck_adw.php?back_to_albums';
+                                             }
+                                             setTimeout('gloze()', 10000);
+                                             </script>";
+								$session->set("popitka/$current_album", 5);
+							}
+						?>
+					</div>
+				<?
+				}
+		}
+
+
+
+	/**
+	 * @param $may_view
+	 * @param $rs
+	 * @param $ln
+	 * @param $source
+	 * @param $sz
+	 * @param $sz_string
+	 *
+	 * @todo function top5
+	 */
+
+	function top5($may_view, &$rs, &$ln, &$source, &$sz, &$sz_string)
+		{
+		  $session = checkSession::getInstance();
+			if ($may_view)
+				{
+					?>
+					<div class="cont-list" style="margin-left: 50%"><div class="drop-shadow curved curved-vt-2">
+							<h3><span style="color: #c95030"> Топ 5 альбома:</span></h3>
+						</div></div><br><br><br>
+					<!-- 1 -->
+					<hr class="style-one" style="margin: 0 0 -20px 0;"/>
+					<?
+					$db = go\DB\Storage::getInstance()->get('db-for-data');
+					$rs = $db->query('select * from photos where id_album = ?i
+						   order by votes desc, id asc limit 0, 5',array($session->get('current_album')),'assoc');
+					$id_foto = array();
+				if ($rs)
+				{
+					$pos_num = 1;
+				foreach ($rs as $ln)
+				{
+					$source            = $_SERVER['DOCUMENT_ROOT'].fotoFolder().$ln['id_album'].'/'.$ln['img'];
+					$sz                = @getimagesize($source);
+					$id_foto[$pos_num] = ($ln['id']);
+					/**
+					 * @todo  размер топ 5
+					 */
+					if (intval($sz[0]) > intval($sz[1]))
+						{
+							$sz_string = 'width="165px"';
+						  $ImgWidth = intval($sz[1]);
+						  $ImgHeight = intval($sz[0]);
+						}
+					else
+						{
+							$sz_string = 'height="195px"';
+				        $ImgWidth = intval($sz[0]);
+						  $ImgHeight = intval($sz[1]);
+						}
+					?>
+					<div id="foto_top">
+						<!--  <div  class="span2 offset0" >-->
+						<figure class="ramka" onClick="previewTop(<?= $ln['id'].','.$ImgWidth.','.$ImgHeight ?>);">
+
+							<span class="top_pos" style="opacity: 0;"><?=$pos_num?></span>
+						  <img class="lazy" data-original="thumb.php?num=<?= substr(trim($ln['img']),2,-4) ?>"
+							 id="<?= substr(trim($ln['img']), 2, -4) ?>" src=""
+							 alt="<?= $ln['nm'] ?>" title="Нажмите для просмотра" <?=$sz_string?> />
+							<figcaption><span style="font-size: x-small; font-family: Times, serif; ">№ <?=$ln['nm']?>
+									Голосов:<span class="badge badge-warning"> <span id="s<?= substr(trim($ln['img']),
+											2,
+											-4) ?>" style="font-size: x-small; font-family: 'Open Sans', sans-serif; "><?=$ln['votes']?></span>
+                 </span><div id="d<?= substr(trim($ln['img']),
+									2,
+									-4) ?>" style="width: 146px;"> Рейтинг: <?echo str_repeat('<img src="/img/reyt.png"/>', floor($ln['votes'] / 5));?>
+                                                 </div></span></figcaption>
+						</figure>
+					</div>
+					<?
+					$pos_num++;
+				}
+				}
+					?>
+					<div style="clear: both"></div>
+				   <?
+				}
+		}
+
+
+
+	/**
+	 * @param $may_view
+	 * @param $rs
+	 * @param $ln
+	 * @param $source
+	 * @param $sz
+	 * @param $sz_string
+	 *
+	 * @todo function top5Modern
+	 */
+
+	function top5Modern($may_view, &$rs, &$ln, &$source, &$sz, &$sz_string)
+	{
+	  $session = checkSession::getInstance();
+	  if ($may_view)
+		 {
+			?>
+			<div class="cont-list" style="margin-left: 50%"><div class="drop-shadow curved curved-vt-2">
+				 <h3><span style="color: #c95030"> Топ 5 альбома:</span></h3>
+			  </div></div><br><br><br>
+			<!-- 1 -->
+			<hr class="style-one" style="margin: 0 0 -20px 0;"/>
+			<?
+			$db = go\DB\Storage::getInstance()->get('db-for-data');
+			$rs = $db->query('select * from photos where id_album = ?i
+						   order by votes desc, id asc limit 0, 5',array($session->get('current_album')),'assoc');
+			$id_foto = array();
+			if ($rs)
+			  {
+				 $pos_num = 1;
+				 foreach ($rs as $ln)
+					{
+					  $source            = $_SERVER['DOCUMENT_ROOT'].fotoFolder().$ln['id_album'].'/'.$ln['img'];
+					  $sz                = @getimagesize($source);
+					  $id_foto[$pos_num] = ($ln['id']);
+					  /**
+						* @todo  размер топ 5
+						*/
+					  if (intval($sz[0]) > intval($sz[1]))
+						 {
+							$sz_string = 'width="165px"';
+						 }
+					  else
+						 {
+							$sz_string = 'height="195px"';
+						 }
+					  ?>
+					  <div id="foto_top">
+						 <a class="modern" href="/dir.php?num=<?= substr(($ln['img']), 2, -4) ?>" title="Фото № <?=$ln['nm']?>">
+						 <figure class="ramka">
+							<span class="top_pos" style="opacity: 0;"><?=$pos_num?></span>
+							<img class="lazy" data-original="thumb.php?num=<?= substr(trim($ln['img']),2,-4) ?>"
+							 id="<?= substr(trim($ln['img']), 2, -4) ?>" src=""
+							 alt="<?= $ln['nm'] ?>" title="Нажмите для просмотра" <?=$sz_string?> />
+							<figcaption><span style="font-size: x-small; font-family: Times, serif; ">№ <?=$ln['nm']?>
+								 Голосов:<span class="badge badge-warning"> <span id="s<?= substr(trim($ln['img']),
+									  2,
+									  -4) ?>" style="font-size: x-small; font-family: 'Open Sans', sans-serif; "><?=$ln['votes']?></span>
+                 </span><div id="d<?= substr(trim($ln['img']),
+									2,
+									-4) ?>" style="width: 146px;"> Рейтинг: <?echo str_repeat('<img src="/img/reyt.png"/>', floor($ln['votes'] / 5));?>
+								 </div></span></figcaption>
+						 </figure>
+							</a>
+					  </div>
+					  <?
+					  $pos_num++;
+					}
+			  }
+			?>
+			<div style="clear: both"></div>
+		 <?
+		 }
+	}
+
+
+
+	/**
+	 * @param $may_view
+	 */
+
+	function parol($may_view)
+		{
+		  $session = checkSession::getInstance();
+		  $current_album = $session->get('current_album');
+
+			if (!$may_view)
+				{
+				  $ostPop = $session->get("popitka/$current_album");
+					if ($ostPop > 0	&& $ostPop <= 5)
+						{
+							echo "<script type='text/javascript'>
+                             $(document).ready(function load() {
+                             $('#static').modal('show');
+                             });
+                             </script>";
+						}
+					if ($ostPop <= 0 && $ostPop != -10)
+						{
+
+							echo "<script type='text/javascript'>
+                             $(document).ready(function(){
+                             $('#zapret').modal('show');
+                             });
+                             function gloze() {
+                             $('#zapret').modal('hide');
+                             location='/fotobanck_adw.php?back_to_albums';
+                             }
+                             setTimeout('gloze()', 10000);
+                             </script>";
+ 						  $session->set("popitka/$current_album", 5);
+ 						  record(); //бан по Ip
+						} elseif($ostPop > 0) {
+				   $ost = '';
+				   $album_pass = $session->get("album_pass/$current_album");
+					if ($album_pass != false)
+						{
+						  $ostPop =	$session->set("popitka/$current_album", $session->get("popitka/$current_album") - 1);
+						}
+					if ($ostPop == 4)
+						{
+							$ost   = 'У Вас осталось ';
+							$pop = 'попыток';
+						}
+					elseif ($ostPop == 0)
+						{
+							$pop = 'последняя попытка';
+						}
+					else
+						{
+							$ost   = 'У Вас остались ещё';
+							$pop = 'попытки';
+						}
+					if ($ostPop != 5)
+						{
+							$msg = ($ost.' '.($ostPop + 1).' '.$pop);
+							echo "<script type='text/javascript'>
+                        var infdok = document.getElementById('err-modal');
+                        var SummDok = '$msg';
+                        infdok.innerHTML = SummDok;
+								dhtmlx.message({ type:'warning', text:'$msg'});
+                        </script>";
+						}
+					}
+				}
+		}
+
+
+if ($session->has('current_album')):
+
+	$current_album = $session->get('current_album');
+	$album_data = $db->query('select * from albums where id = ?i', array($current_album),'row');
+	$may_view = false;
+	if ($album_data)
+		{
+		  $may_view = true;
+			if ($album_data['pass'] != '')
+				{
+					?>
+					<div style="display: none;"><? check(); ?></div><?
+				  if (isset($_POST['album_pass']))
+					 {
+
+					$albPass = $session->set("album_pass/".$album_data['id'], GetFormValue($_POST['album_pass']));
+
+			           if ($albPass != $album_data['pass'] && $albPass != '')
+						      {
+								echo "
+								<script type='text/javascript'>
+								// dhtmlx.message({ type:'error', text:'Пароль неправильный,<br> будьте внимательны!'});
+								humane.error('Пароль неправильный, будьте внимательны!');
+								</script>";
+								}
+				        elseif($albPass == '')
+					         {
+								echo "
+								<script type='text/javascript'>
+								humane('Введите, пожалуйста, пароль.');
+								</script>";
+								}
+							else
+								{
+									echo "
+								<script type='text/javascript'>
+								dhtmlx.message({ type:'addfoto', text:'Вход выполнен'});
+								</script>";
+								}
+
+						}
+					$may_view = ($session->get('album_pass/'.$album_data['id']) == $album_data['pass']); // переменная пароля
+				}
+			else
+				{
+				  $session->del("popitka/$current_album");
+				}
+		}
+	else
+		{
+		  $session->del('current_album');
+		}
+
+	// @todo Отключить проверку пароля
+	// $may_view = true;
+
+	// <!-- Ввод и блокировка пароля -->
+
+	parol($may_view);
+
+	$razdel = $db->query('select nm from `categories` where id = ?i', array($session->get('current_cat')),'el');
+
+
+
+	// <!-- Проверка пароля на блокировку -->
+
+	verifyParol($may_view);
+
+
+	/**
+	 *  Аккордеон
+	 */
+	if ($may_view):
+
+
+	$event = $db->query('select `event` from `albums` where `id` =?i', array($session->get('current_album')), 'el');
+	//		отключение аккордеона если фотографии не показываются
+	if ($event == 'on')
+	{
+	$acc[1] = $db->query('SELECT * FROM accordions WHERE `id_album` = ?i ',array('1'), 'assoc:collapse_numer');
+	$acc[$session->get('current_album')] = $db->query('SELECT * FROM accordions WHERE `id_album` = ?i ',array($session->get('current_album')), 'assoc:collapse_numer');
+	if ($acc[$session->get('current_album')])
+		{
+			if($acc[$session->get('current_album')][1]['accordion_nm'] != '')
+				{
+					echo "
+					<div class='profile'>
+		         <div id='garmon' class='span12 offset1'>
+			      <div class='accordion' id='accordion2'>
+					";
+					foreach ($acc[$session->get('current_album')] as $key => $accData) {
+						if ($key == 1)
+							{
+								$in = 'in';
+							} else {
+							$in = '';
+						   }
+						$collapse_nm = $acc[$session->get('current_album')][$key]['collapse_nm'];
+						if ($collapse_nm == 'default') $collapse_nm = $acc[1][$key]['collapse_nm'];
+						$collapse = $acc[$session->get('current_album')][$key]['collapse'];
+						if ($collapse == '') $collapse = $acc[1][$key]['collapse'];
+						echo "
+                  <div class='accordion-group'>
+					   <div class='accordion-heading'>
+						<a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion2' href='#collapse".$key."'>
+                  ".$collapse_nm."
+                  </a>
+					   </div>
+					   <div id='collapse".$key."' class='accordion-body collapse ".$in."'>
+						<div class='accordion-inner'>
+					   <p class='bukvica'><span style='font-size:11.0pt;'>
+                  ".$collapse."
+                  </span></p>
+						</div>
+					   </div>
+				      </div>
+						";
+					}
+					$nameButton = ($acc[$session->get('current_album')][$key]['accordion_nm'] == 'default') ? $acc[1][1]['accordion_nm'] :
+						            $acc[$session->get('current_album')][$key]['accordion_nm'];
+				   echo "
+					</div>
+			      <a class='profile_bitton2' href='#'>Закрыть</a>
+		         </div></div>
+	            <div><a class='profile_bitton' href='#'>".$nameButton."</a></div>
+					";
+				}
+		}
+	}
+
+	?>
+	</div>
+	<script language=JavaScript type="text/javascript">
+		$(function () {
+			$('.profile_bitton , .profile_bitton2').click(function () {
+				$('.profile').slideToggle();
+				return false;
+			});
+		});
+	</script>
+
+	<!-- кнопки назад -->
+	<div class="page">
+		<a class="next" href="/fotobanck_adw.php?back_to_albums">« назад</a> <a class="next" href="/fotobanck_adw.php?unchenge_cat">«
+			выбор категорий </a> <a class="next" href="/fotobanck_adw.php?back_to_albums">« раздел "<?=$razdel?>"</a>
+		<a class="next">« альбом "<?=$album_data['nm']?>"</a>
+	</div>
+
+
+	<!-- Название альбома  -->
+	<div class="cont-list" style="margin: 40px 10px 30px 0;"><div class="drop-shadow lifted">
+			<h2><span style="color: #00146e;">Фотографии альбома "<?=$album_data['nm']?>"</span></h2>
+	</div></div>
+	<div style="clear: both;"></div>
+
+	<!--/**	выводим фотографию - заголовок альбома*/ -->
+	<div id="alb_opis" class="span3">
+		<div class="alb_logo">
+			<div id="fb_alb_fotoP">
+				<img src="album_id.php?num=<?= substr(($album_data['img']),
+					2,-4) ?>" width="130px" height="124px" alt="-"/>
+			</div>
+		</div>
+		<?=$album_data['descr']?>
+	</div>
+
+	<?
+
+
+  $event = $db->query('select `event` from `albums` where `id` =?i', array($session->get('current_album')), 'el');
+//		отключение показа фотографий в альбоме
+  if ($event == 'on')
+	 {
+
+//		<!-- вывод топ 5  -->
+		top5Modern($may_view, $rs, $ln, $source, $sz, $sz_string);
+	?>
+
+	<!-- Вывод фото в альбом -->
+	<div id="modern">
+		<?
+
+	  $width = 170; // ширина горизонтальной превью в px
+
+	  fotoPageModern($record_count, $may_view, $current_page, $width);
+		?>
+	</div>
+
+  <script type="text/javascript">
+      $(function() {$("img.lazy").lazyload({
+		  threshold : 200,
+		  effect : "fadeIn"
+		});});
+  </script>
+
+
+<!-- тело --><!-- 4 -->
+<hr class="style-one" style="clear: both; margin-bottom: -20px; margin-top: 0"/>
+
+<?
+		/**
+	 * @todo Вывод нумерации страниц
+	 */
+	paginator($record_count, $may_view, $current_page);
+	$PageVarName          = "/fotobanck_adw.php?album_id=".$session->get('current_album')."&amp;pg";
+	$CurPage              = $current_page;
+	$SLCountRowsToShowing = 2;
+	if ($CurPage)
+		{
+			$CurPage = ($CurPage - 1) * $SLCountRowsToShowing;
+		}
+	else
+		{
+			$CurPage = 0;
+		}
+	$SqlShowAll      = "SELECT * FROM `*` ORDER BY `*` DESC LIMIT ".$CurPage.", ".$SLCountRowsToShowing;
+	$SqlPagesMessage = "SELECT `*` FROM `*`;";
+	$CountToShow = PHOTOS_ON_PAGE;
+	//include 'pages.php';
+
+	 }
+	  else
+	 {
+//	 подписка на альбом (когда альбом появится в категории)
+?>
+	 <div class="cont-list" style="margin-left: 50%;"><div class="drop-shadow curved curved-vt-2">
+							<h3><span style="color: #c95030">Подписка на альбом</span></h3>
+						</div></div>
+		 <div class="drop-shadow lifted" style="padding: 15px 25px 15px 25px; width: 700px; position: relative;margin-left: 70px; margin-top: 80px;">
+		 <p>
+			Фотографии с данного альбома проходят цветовую коррекцию и обработку. Мы их обязательно выложим, как только она закончится.
+			Если Вы желаете по завершению процесса получить почтовое уведомление, кликните внизу по ссылке (сообщение придет на
+			Ваш E-mail один раз, после чего подписка аннулируется автоматически).</p>
+
+		<a href="#" class="ttext_blue" style="font-size:12px;position: relative;margin-left: 200px;"
+		 onclick="goPodpiska('<?= $session->get('current_album') ?>'); return false"> Сообщить мне когда фотографии будут доступны</a>
+			</div>
+  <div id="podpiska" style="padding: 15px 25px 15px 25px; width: 70px; position: relative;margin-left: 250px; margin-top: 80px;"></div>
+<?
+  }
+
+
+endif;
+/**
+ * @todo <!-- Вывод альбомов в разделах -->
+ */
+else:
+
+		if ($session->has("current_cat"))
+			{
+			  $current_cat = intval($session->get("current_cat"));
+			}
+		else
+			{
+				$current_cat = -1;
+			}
+		if ($current_cat > 0)
+			{
+				/**
+				 * @todo<!--Вывести поле nm из бд в шапку -->
+				 */
+			   $razdel = $db->query('select nm from categories where id = ?i',array($session->get("current_cat")),'el');
+
+				?>
+				<div class="cont-list" style="margin: 20px 10px 30px 0;"><div class="drop-shadow lifted">
+						<h2><span style="color: #00146e;">Раздел фотобанка - "<?=$razdel;?>"</span></h2>
+				</div></div>
+
+				<!-- Кнопки назад -->
+
+				<div class="page">
+					<a class="next" href="/fotobanck_adw.php?unchenge_cat">« назад</a>
+					<a class="next" href="/fotobanck_adw.php?unchenge_cat">« выбор категорий </a> <a class="next">« раздел
+						"<?=$razdel;?>"</a>
+				</div>
+				<div style="clear: both"></div>
+
+				<!-- Подготовка вывода альбомов на страницы разделов   -->
+				<?
+				$rs = $db->query('select * from albums where id_category = ?i order by order_field asc',array($current_cat),'assoc');
+				/**
+				 * @todo  Вывод текстовой информации на страницы разделов
+				 */
+				echo $db->query('select txt from categories where id = ?i',array($current_cat),'el');
+				/**
+				 * @todo Печать альбомов
+				 */
+				if ($rs)
+					{
+						$i = 0;
+						$h = 0;
+							foreach ($rs as $ln)
+							{
+							  if($ln['on_off'] != 'off')
+								 {
+								$top  = $h * 1 + 20;
+								$left = $i * 250;
+								?>
+								<div class="div_tab">
+									<div class="div_t">
+										<div class="div_fb3" style="top:<?= $top ?>px; left:<?= $left ?>px;">
+											<a href="/fotobanck_adw.php?album_id=<?= $ln['id'] ?>">
+												<img src="album_id.php?num=<?= substr(($ln['img']),2,-4) ?>"
+												 id="album_<?= $ln['id'] ?>_2" alt="<?= $ln['nm'] ?>" title="Просмотр" class="img3"/>
+											</a> <br> <span class="prev_name"><?=$ln['nm']?></span>
+										</div>
+									</div>
+								</div>
+								<?
+								$i++;
+								if ($i > 4)
+									{
+										$h++;
+										$i = 0;
+										?>
+										<table border="0" width="100%" HEIGHT="250">
+											<tr>
+												<td>
+													<HR SIZE=2>
+													<br><br><br>
+													<HR SIZE=2 WIDTH=100%>
+													<br>
+												</td>
+											</tr>
+										</table>
+									<?
+									}
+								}
+							}
+						if ($i != 0)
+							{
+								?>
+								<table border="0" width="100%" HEIGHT="250">
+									<tr>
+										<td>
+											<HR SIZE=2>
+											<br><br><br>
+											<HR SIZE=2 WIDTH=100%>
+											<!--линии альбомов -->
+										  <br>
+										</td>
+									</tr>
+								</table>
+							<?
+							}
+					}
+			}
+		else
+			{
+				?>
+				<br>
+				<div class="cont-list" style="margin: -10px 10px 60px 40%;"><div class="drop-shadow lifted">
+						<h2><span style="color: #00146e;">Выбор категорий:</span></h2>
+				</div></div>
+				<table>
+					<tr>
+						<td>
+
+							<?
+							$rs = $db->query('select * from `categories` order by `id_num` asc',NULL,'assoc:id');
+ 							foreach ($rs as $ln)
+								{
+									/**
+									 * @todo кнопки разделов
+									 */
+									?>
+									<a class="button gray" href="/fotobanck_adw.php?chenge_cat=<?= $ln['id'] ?>"><?=$ln['nm']?> </a>
+								<?
+								}
+							?>
+
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div id="cont_fb"></div>
+						</td>
+					</tr>
+				</table>
+
+			<?
+			}
+endif;
+?>
+
+	<script type='text/javascript'>
+		$('img').error(function () {
+			$(this).attr('src', '/img/not_foto.png');
+		});
+	</script>
+  <script src="/js/visLightBox/js/vlbdata.js" type="text/javascript"></script>
+	</div>
+	<div class="end_content">
+
+	</div></div>
+
+<?php
+  include (dirname(__FILE__).'/inc/footer.php');
+?>

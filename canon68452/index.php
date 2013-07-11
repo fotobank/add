@@ -8,9 +8,8 @@
 			if ($_POST['op'] == 'out')
 				{
 					unset($_SESSION['admin_logged']);
-				//	session_destroy();
 				   destroySession();
-					main_redir('index.php');
+					main_redir();
 				}
 			else
 				{
@@ -18,20 +17,37 @@
 					if ($_POST['login'] == 'Photomas123' && $_POST['pass'] == 'Ht45Fd76S98K23')
 						{
 							$_SESSION['admin_logged'] = true;
-							main_redir('index.php');
+							main_redir();
 						}
 
 				}
 		}
 
-	error_reporting(E_ALL);
-	ini_set('display_errors', 1);
+	error_reporting(0);
+	ini_set('display_errors', 0);
 
-	$time  = microtime();
+	/*$time  = microtime();
 	$time  = explode(' ', $time);
 	$time  = $time[1] + $time[0];
 	$startTime = $time;
-	$startMem = intval(memory_get_usage() / 1024); //Используемая память в начале
+	$startMem = intval(memory_get_usage() / 1024);*/ //Используемая память в начале
+
+  ini_set('output_buffering', 0);
+  ini_set('zlib.output_compression', 0);
+
+  define('_DEBUG_', 1);
+  include_once (__DIR__.'/../core/Debug_HackerConsole/lib/config.php');
+  require_once (__DIR__.'/../core/Debug_HackerConsole/lib/Debug/HackerConsole/Main.php');
+  new Debug_HackerConsole_Main(true);
+
+  function debug($v, $group="message")
+  {
+	 if (is_callable($f=array('Debug_HackerConsole_Main', 'out')))
+		{
+		  call_user_func($f, $v, $group);
+		}
+  }
+
 
 	// обработка ошибок
 	include (dirname(__FILE__).'/../inc/lib_mail.php');
@@ -80,6 +96,7 @@
 	<script src="/js/bootstrap-modalmanager.js"></script>
 	<script src="/js/bootstrap-modal.js"></script>
 	<script type="text/javascript" src="/canon68452/ajax/ajaxAdmin.js"></script>
+   <script src="/js/main.js"></script>
 
 		<script type="text/javascript">
 		function confirmDelete() {
@@ -87,80 +104,10 @@
 		}
 		</script>
 
-	<!-- TinyMCE --><!--
-<script type="text/javascript" src="/js/tinymce/tiny_mce.js"></script>
-<script type="text/javascript">
-tinyMCE.init({
-		// General options
-		mode : "exact",
-		elements : "content",
-		theme : "advanced",
-		language : "ru",
-		skin : "o2k7",
-		skin_variant : "silver",
-		plugins : "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,inlinepopups,autosave,imagemanager,visualblocks",
-
-		// Theme options
-		theme_advanced_buttons1 : "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
-		theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
-		theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
-		theme_advanced_buttons4 : "insertlayer,moveforward,movebackward,absolute,|,styleprops,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,pagebreak,restoredraft,visualblocks,insertimage",
-		theme_advanced_toolbar_location : "top",
-		theme_advanced_toolbar_align : "left",
-		theme_advanced_statusbar_location : "bottom",
-		theme_advanced_resizing : true,
-        
-		// Example word content CSS (should be your site CSS) this one removes paragraph margins
-		content_css : "/css/main.css",
-
-		// Drop lists for link/image/media/template dialogs
-		template_external_list_url : "lists/template_list.js",
-		external_link_list_url : "lists/link_list.js",
-		external_image_list_url : "lists/image_list.js",
-		media_external_list_url : "lists/media_list.js",
-
-		// Replace values for the template plugin
-		template_replace_values : {
-			username : "Some User",
-			staffid : "991234"
-		}
-	});
-</script>
---><!-- /TinyMCE --><!--
-<script type="text/javascript" src="/js/tinymce/tiny_mce.js"></script>
-<script type="text/javascript">
-tinyMCE.init({    
-        
-        language : "en",
-        // General options
-        mode : "textareas",
-        theme : "advanced",
-        plugins : "spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
-
-        // Theme options
-        theme_advanced_buttons1 : "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
-        theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
-        theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
-        theme_advanced_buttons4 : "insertlayer,moveforward,movebackward,absolute,|,styleprops,spellchecker,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,blockquote,pagebreak,|,insertfile,insertimage",
-        theme_advanced_toolbar_location : "top",
-        theme_advanced_toolbar_align : "left",
-        theme_advanced_statusbar_location : "bottom",
-        theme_advanced_resizing : true,
-
-        // Skin options
-        skin : "o2k7",
-        skin_variant : "silver"        
-
-});
-</script>
--->
+	<!-- TinyMCE -->
 
 <script type="text/javascript" src="/js/tinymce/tiny_mce.js"></script>
 
-
-
-
-		<!--<script type="text/javascript" src="/js/tinymce/tiny_mce.js"></script>-->
 <script type="text/javascript">
 tinyMCE.init({    
         
@@ -205,8 +152,6 @@ tinyMCE.init({
 });
 </script>
 
-	<!--<script src="./../ckeditor/ckeditor.js"></script>
-	<script src="./../ckfinder/ckfinder.js"></script>-->
 
 	</head>
 	<body style="margin-left: 20px;">
@@ -363,7 +308,7 @@ tinyMCE.init({
 				</td>
 				<td>
 					<form action="index.php" method="get">
-						<input type="submit" value="eXtplorer" class="<? echo $_SESSION['page'] == 8 ? 'btn btn-success' : 'btn btn-primary'; ?>">
+						<input type="submit" value="Backup/Restore" class="<? echo $_SESSION['page'] == 8 ? 'btn btn-success' : 'btn btn-primary'; ?>">
 						<input type="hidden" name="page" value="8">
 					</form>
 				</td>
@@ -440,6 +385,7 @@ tinyMCE.init({
 	<?
 	endif;?>
 
+
 	<a id="dynamic_to_top" href="#" style="display: inline;"> <span> </span> </a>
 	<script type='text/javascript' src='/js/jquery.easing.1.3.js'></script>
 	<script type='text/javascript'>
@@ -456,8 +402,8 @@ tinyMCE.init({
 		{
 			?>
 			<div style="clear: both"></div>
-			<div style="position:relative; margin: 0 0 -60px 0;">
-				<?
+			<!--<div style="position:relative; margin: 0 0 -60px 0;">
+				<?/*
 				/**
 				 * $actions - переменная String с действиями:
 				 * '' - добавление ошибок в список ошибок,
@@ -469,21 +415,23 @@ tinyMCE.init({
 				 * 'm' - отправляет по электронной почте (значения могут быть объединены, например: 'ws')
 				 */
 				//	$error_processor->err_proc("" , "w", $error_processor->error);
-				$error_processor->err_proc("", "w", "");
+
+		//	$error_processor->err_proc("", "w", "");
+		//	debug($error_processor->err_led);
 				//	$error_processor->err_proc("", "am", "");
-				?>
-			   Используемая память в начале: <?=$startMem?> Кбайт;
-				Память в конце: <?=intval(memory_get_usage() / 1024)?> Кбайт;
-				Пик: <?=intval(memory_get_peak_usage() / 1024)?> Кбайт;
-				<?
+				?>/*
+			   Используемая память в начале: <?/*=$startMem*/?> Кбайт;
+				Память в конце: <?/*=intval(memory_get_usage() / 1024)*/?> Кбайт;
+				Пик: <?/*=intval(memory_get_peak_usage() / 1024)*/?> Кбайт;
+				<?/*
 				$time = microtime();
 				$time = explode(' ', $time);
 				$time = $time[1] + $time[0];
 				$finishTime = $time;
 				$total_time = round(($finishTime - $startTime), 4);
 				echo ' Страница сгенерированна за: '.$total_time.' секунд.'."\n";
-				?>
-			</div>
+				*/?>
+			</div>-->
 		<?
 		}
 	?>

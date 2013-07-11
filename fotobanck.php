@@ -8,6 +8,9 @@
 	//Количество фоток на странице
 	define('PHOTOS_ON_PAGE', 105);
 	$Dir = DirPatc::getInst();
+
+
+
 	if (isset($_GET['album_id']))
 		{			
 			$_SESSION['current_album'] = intval($_GET['album_id']);
@@ -104,7 +107,7 @@
 				<div style="color:black">Вы использовали 5 попыток ввода пароля.В целях защиты, Ваш IP заблокирован на 30
 					минут.
 				</div>
-				<br> <? check($ip, $ipLog, $timeout); ?> <br><br> <a href="kontakty.php"><span class="ttext_blue">Восстановление пароля</span></a>
+				<br> <? check(); ?> <br><br> <a href="kontakty.php"><span class="ttext_blue">Восстановление пароля</span></a>
 				<a style="float:right" class="btn btn-danger" data-dismiss="fotobanck.php" href="fotobanck.php?back_to_albums">Закрыть</a>
 			</div>
 		</div>
@@ -247,7 +250,7 @@
 									?>
 									<div class="podlogka">
 										<figure class="ramka" onClick="preview(<?= $ln['id'] ?>, <?= $ImgWidth ?>, <?= $ImgHeight ?>);">
-											<img class="lazy" data-original="thumb.php?num=<?= substr(trim($ln['img']),2,-4) ?>"
+											<img class="lazy" data-original="/thumb.php?num=<?= substr(trim($ln['img']),2,-4) ?>"
 											 id="<?= substr(trim($ln['img']),2,-4) ?>" src=""
 											 title="За фотографию проголосовало <?= $ln['votes'] ?> человек. Нажмите для просмотра." <?=$sz_string?> />
 											<figcaption>№ <?=$ln['nm']?></figcaption>
@@ -280,7 +283,7 @@
 							<a class="next" href="fotobanck.php">« попробовать еще раз</a>
 						</div>
 						<img style="margin: 20px 0 0 40px;" src="/img/Stop Photo Camera.png" width="348" height="350"/>
-						<!-- <h3><span style="color: #ffa500">Доступ к альбому заблокирован паролем.  <? //check($ip, $ipLog, $timeout);?></span></h3>-->
+						<!-- <h3><span style="color: #ffa500">Доступ к альбому заблокирован паролем.  <? //check();?></span></h3>-->
 						<?
 						if (isset($_SESSION['popitka']) && isset($_SESSION['current_album']) && $_SESSION['popitka'][$_SESSION['current_album']] == -10) // проверка и вывод времени бана
 							{
@@ -364,7 +367,7 @@
 							 id="<?= substr(trim($ln['img']), 2, -4) ?>" src=""
 							 alt="<?= $ln['nm'] ?>" title="Нажмите для просмотра" <?=$sz_string?> />
 							<figcaption><span style="font-size: x-small; font-family: Times, serif; ">№ <?=$ln['nm']?>
-									Голосов:<span class="badge badge-warning"> <span id="<?= substr(trim($ln['img']),
+									Голосов:<span class="badge badge-warning"> <span id="s<?= substr(trim($ln['img']),
 											2,
 											-4) ?>" style="font-size: x-small; font-family: 'Open Sans', sans-serif; "><?=$ln['votes']?></span>
                  </span><div style="width: 146px;"> Рейтинг: <?echo str_repeat('<img src="img/reyt.png"/>', floor($ln['votes'] / 5));?>
@@ -440,8 +443,7 @@
 					if ($_SESSION['popitka'][$_SESSION['current_album']] >= 0 && isset($_POST['album_pass'])
 						&& $_POST['album_pass'] != ""
 						|| $_SESSION['popitka'][$_SESSION['current_album']] >= 0 && isset($_POST['album_pass'])
-							&& $_POST['album_pass'] == NULL
-					)
+							&& $_POST['album_pass'] == NULL)
 						{
 							$_SESSION['popitka'][$_SESSION['current_album']]--;
 						}
@@ -487,7 +489,7 @@
 			if ($album_data['pass'] != '')
 				{
 					?>
-					<div style="display: none;"><? check($ip, $ipLog, $timeout); ?></div><?
+					<div style="display: none;"><? check(); ?></div><?
 					if (isset($_POST['album_pass']) && $_POST['album_pass'] != "")
 						{
 							if (!isset($_SESSION['album_pass']) || !is_array($_SESSION['album_pass']))
@@ -679,7 +681,7 @@
 	?>
 
 	<!-- Вывод фото в альбом -->
-	<div id=foto-ajax>
+	<div id="foto-ajax">
 		<?
 		fotoPage($record_count, $may_view, $current_page);
 		?>
@@ -884,11 +886,11 @@ else:
 endif;
 ?>
 
-	<!--<script type='text/javascript'>
+	<script type='text/javascript'>
 		$('img').error(function () {
 			$(this).attr('src', '/img/not_foto.png');
 		});
-	</script>-->
+	</script>
 
 	</div>
 	<div class="end_content">

@@ -65,3 +65,37 @@ AddType application/x-font-woff .woff
   </FilesMatch>
 </IfModule>
 
+<ifModule mod_headers.c>
+    Header set Connection keep-alive
+</ifModule>
+
+
+ <IfModule mod_expires.c> 
+ ExpiresActive On 
+ <FilesMatch "\.(ico|jpg|jpeg|png|gif)$">
+ ExpiresDefault "access plus 2 weeks"
+ </FilesMatch> 
+ <FilesMatch "\.(js|css|swf|woff)$">
+ ExpiresDefault "access plus 10 days" 
+ </FilesMatch>
+ </IfModule> 
+ 
+ 
+ <IfModule mod_deflate.c>
+ 
+ # Insert filter
+   SetOutputFilter DEFLATE
+ 
+ # Netscape 4.x has some problems... 
+   BrowserMatch ^Mozilla/4 gzip-only-text/html
+ 
+ # Netscape 4.06-4.08 have some more problems 
+   BrowserMatch ^Mozilla/4\.0[678] no-gzip 
+   BrowserMatch \bMSI[E] !no-gzip !gzip-only-text/html 
+ 
+ # Don't compress images 
+   SetEnvIfNoCase Request_URI \\.(?:gif|jpe?g|png)$ no-gzip dont-vary 
+ 
+ # Make sure proxies don't deliver the wrong content 
+   Header append Vary User-Agent env=!dont-vary 
+ </IfModule>

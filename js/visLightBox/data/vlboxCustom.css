@@ -1,0 +1,131 @@
+/*#modern {
+	width:100%;
+	zoom:1;
+}*/
+#modern .modern {
+	display:-moz-inline-stack;
+	display:inline-block;
+	zoom:1;
+	*display:inline;
+	position:relative;
+	overflow:hidden;
+	vertical-align:top;
+	margin:10px 0;
+	font-family:Trebuchet,Tahoma,Arial,sans-serif;
+	font-size:11px;
+	font-weight:normal;
+	text-decoration:none;
+	text-align:center;
+	color:#000;
+	outline:none;
+	padding:4px;
+	border:1px solid #eee;
+	background:#fff;
+	/*box-shadow:0 2px 4px rgba(0,0,0,0.1);*/
+	-webkit-transform:rotate(-3deg);
+	-moz-transform:rotate(-3deg);
+	-ms-transform:rotate(-3deg);
+	-o-transform:rotate(-3deg);
+	transform:rotate(-3deg);
+    -webkit-transform-style:preserve-3d;
+
+    -moz-border-radius: 4px;
+    box-shadow:#a3a3a3 2px 2px 2px;
+    -moz-box-shadow:#a3a3a3 2px 2px 2px;
+    -webkit-box-shadow:#a3a3a3 2px 2px 2px;
+
+}
+#modern .modern a{
+	margin:0;
+}
+#modern .modern img{
+	display:block;
+	border:none;
+	margin:0;
+}
+#modern .modern div {display:none}
+
+#modern .modern:nth-child(even){
+    -webkit-transform:rotate(3deg) scale(1.05);
+    -moz-transform:rotate(3deg) scale(1.05);
+    -ms-transform:rotate(3deg) scale(1.05);
+    -o-transform:rotate(3deg) scale(1.05);
+    transform:rotate(3deg) scale(1.05);
+}
+
+
+ /*рандом уменьшение превьюшек*/
+/*#modern .modern:nth-child(5n){
+  -webkit-transform:rotate(-4deg) scale(0.9);
+  -moz-transform:rotate(-4deg) scale(0.9);
+  -ms-transform:rotate(-4deg) scale(0.9);
+  -o-transform:rotate(-4deg) scale(0.9);
+  transform:rotate(-4deg) scale(0.9);
+  position:relative;
+  left:-10px
+}*/
+
+#modern .modern:nth-child(5n){
+  -webkit-transform:rotate(-4deg);
+  -moz-transform:rotate(-4deg);
+  -ms-transform:rotate(-4deg);
+  -o-transform:rotate(-4deg);
+  transform:rotate(-4deg);
+  position:relative;
+  left:-10px
+}
+
+
+
+#modern .modern {
+	-moz-transition:all 0.1s ease-out;
+	-o-transition:all 0.1s ease-out;
+	-webkit-transition:all 0.1s ease-out;
+	transition:all 0.1s ease-out;
+}
+#modern .modern:hover{
+	position:relative;
+	z-index:10;
+	box-shadow:8px 8px 15px rgba(0,0, 0, 0.4);
+	-webkit-transform:rotate(0deg) scale(1.2);
+	-o-transform:rotate(0deg) scale(1.2);
+	-moz-transform:rotate(0deg) scale(1.2);
+	-ms-transform:rotate(0deg) scale(1.2);
+	transform:rotate(0deg) scale(1.2);
+}
+
+/*тень не работает*/
+/*#modern .modern:before,#modern .modern:after{
+    content:"";position:absolute;z-index:-1;bottom:8px;left:10px;width:50%;height:20%;max-width:300px;box-shadow:0 8px 16px rgba(0,0,0,0.6);
+    -webkit-transform:skew(-15deg) rotate(-6deg);
+    -moz-transform:skew(-15deg) rotate(-6deg);
+    -ms-transform:skew(-15deg) rotate(-6deg);
+    -o-transform:skew(-15deg) rotate(-6deg);
+    transform:skew(-15deg) rotate(-6deg)
+}
+#modern .modern:after{
+    left:auto;right:10px;
+    -webkit-transform:skew(15deg) rotate(6deg);
+    -moz-transform:skew(15deg) rotate(6deg);
+    -ms-transform:skew(15deg) rotate(6deg);
+    -o-transform:skew(15deg) rotate(6deg);
+    transform:skew(15deg) rotate(6deg)
+}*/
+
+
+.ph_modern_nm {
+    color: #000066;
+    font-size: 14px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.div_reiting {
+    color: #000066;
+    /*height: 18px;*/
+    font-size: 14px;
+    text-align: center;
+    font-weight: bold;
+    position: relative;
+    margin-top: 30px;
+}

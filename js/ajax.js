@@ -14,11 +14,10 @@
  @time   - 8:54
  */
 
-
 function ajaxPostQ(url, idName,  data) {
 
     $(idName).empty();
-
+ //   $(idName).empty().append();
     // индикатор загрузки
     $(document).ready(function() {
 
@@ -47,16 +46,17 @@ function ajaxPostQ(url, idName,  data) {
         data: data,
 
         error:function(XHR) {
-            alert(" Ошибка: "+XHR.status+ "  " + XHR.statusText);
+            $(this).outDebug(" Ошибка: "+XHR.status+ "  " + XHR.statusText,url,"ajaxPostQ");
         },
         statusCode: {
             404: function() {
-            alert("Страница не найдена");
+                $(this).outDebug("Страница не найдена",url,"ajaxPostQ");
             }
         },
 
         success: function (html) {
 // alert (html);
+            $(this).outDebug(html,url,"ajaxPostQ");
             $(idName).empty().append(html);
         }
     });
@@ -81,7 +81,7 @@ function returnCaptcha () {
 function goKorzDel(idName, srt) {
     $('#ramka'+idName).empty().html("<div style='margin:25px 0 0 35px;'><img style='width: 140px; float: left; margin-left: 5px;' src= '/img/not_foto.png'></div>");
     $('#iTogo').empty().load('/inc/ajaxZakazDel.php', {goZakazDel: idName , str: srt }, function(data){
-//     alert(data);
+            $(this).outDebug(data,"/inc/ajaxZakazDel.php","goKorzDel");
           if(!data)
           {
    $('#clearStr').empty().html("<div class='drop-shadow lifted' style='margin: 50px 0 0 480px;'><div style='font-size: 24px;'>Ваша корзина пуста!</div></div>");
@@ -95,8 +95,8 @@ function goKorzDel(idName, srt) {
 function goPodpiska(album) {
 
     $('#podpiska').empty().load('/inc/ajaxPodpiska.php', {album: album }, function(data){
-//     alert(data);
-            if(data)
+        $(this).outDebug(data,"/inc/ajaxPodpiska.php","goPodpiska");
+        if(data)
             {
                 $('#podpiska').empty().html(data);
             }
@@ -113,16 +113,16 @@ function ajaxAdd(data) {
         data: data,
 
         error:function(XHR) {
-            alert(" Ошибка: "+XHR.status+ "  " + XHR.statusText);
+            $(this).outDebug(" Ошибка: "+XHR.status+ "  " + XHR.statusText,"/inc/ajaxZakazDel.php","ajaxAdd");
         },
         statusCode: {
             404: function() {
-                alert("Страница не найдена");
+                $(this).outDebug("Страница не найдена","/inc/ajaxZakazDel.php","ajaxAdd");
             }
         },
 
         success: function (html) {
-//  alert (html);
+            $(this).outDebug(html,"/inc/ajaxZakazDel.php","ajaxAdd");
             var ans = JSON.parse(html);
             if (ans.add == 1) {
                 dhtmlx.message({
@@ -161,16 +161,16 @@ function ajaxFormat(data) {
         data: data,
 
         error:function(XHR) {
-            alert(" Ошибка: "+XHR.status+ "  " + XHR.statusText);
+            $(this).outDebug(" Ошибка: "+XHR.status+ "  " + XHR.statusText,"/inc/ajaxZakazDel.php","ajaxFormat");
         },
         statusCode: {
             404: function() {
-                alert("Страница не найдена");
+                $(this).outDebug("Страница не найдена","/inc/ajaxZakazDel.php","ajaxFormat");
             }
         },
 
         success: function (html) {
-// alert (html);
+            $(this).outDebug(html,"/inc/ajaxZakazDel.php","ajaxFormat");
             var ans = JSON.parse(html);
                 dhtmlx.message({
                     text: "Выбран формат: <br> "+ans.format+" см",
@@ -213,6 +213,7 @@ function getCaptca() {
             alert(errorThrown+'\n'+status+'\n'+xhr.statusText);
         },
         success: function(data){
+            $(this).outDebug(data,"/inc/captcha/captcha.html","getCaptca");
             $(" #loadCaptca ").empty().append(data);
             return false;
         }

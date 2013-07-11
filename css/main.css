@@ -1388,6 +1388,7 @@ a.usl_v_raznoe {
     font-weight: bold;
 }
 
+
 #bl_top {
     float: right;
     width: 10%;
@@ -2620,6 +2621,11 @@ hr.style-one:before {
     -moz-box-shadow: inset 0 0 1px #726959;
     -webkit-box-shadow:  inset 0 0 1px #b3a895;
     box-shadow:  inset 0 0 1px #b3a895;
+}
+
+textarea {
+    resize: none; // убираем ресайз
+    overflow: auto; // убираем полосы прокрутки
 }
 
 .autoclear-normalcolor {

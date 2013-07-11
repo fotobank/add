@@ -19,7 +19,7 @@
   function XMLfilter($rs, $tag) {
 	 $rs = str_replace("\n", "", str_replace("\r", "", $rs));
 	 $tags = '<'.$tag.'>';
-	 $tage = '</'.$tag;
+	 $tage = '|</'.$tag;
 	 $start = strpos($rs, $tags)+strlen($tags);
 	 $end = strpos($rs, $tage);
 	 return substr($rs, $start, ($end-$start));

@@ -6,10 +6,8 @@
  * To change this template use File | Settings | File Templates.
  */
 
-
 //var value = $(" #result ").html();
      //   alert (value);
-
 
 
 function sendFtp() {
@@ -24,7 +22,6 @@ function sendFtp() {
        //          	                alert(errorThrown+'\n'+status+'\n'+xhr.statusText);
               },
                 success: function (data) {
-
                 var selector;
                 var option;
                 var dataArray = data.split(":");
@@ -39,6 +36,8 @@ function sendFtp() {
                     });
                     selector = "<option value = '" + ftpFold  + "' >" + ftpFold  + "</option>" + option;
                     $(" #upFTP ").empty().append(selector);
+
+     //               $(this).outDebug(dataArray,'/canon68452/ajax/ajaxAdmin.js','uploadFTP');
                 }
             });
 }
@@ -61,6 +60,7 @@ function ajaxPostQ(url, idName,  data) {
         // Выводим то что вернул PHP
         success: function (html) {
 //           alert(html);
+            $(this).outDebug(html,'/canon68452/ajax/ajaxAdmin.js','ajaxPostQ');
             $(idName).empty().append(html);
          }
     });

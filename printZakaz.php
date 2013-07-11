@@ -22,15 +22,15 @@
 	   //	print "<br>checked link: ${_SERVER['REQUEST_URI']}<br />\n";
 
   if(!isset($_SESSION['logged']))
-    err_exit('Для подтверждения заказа необходимо залогиниться на сайте!', 'index.php');
+    err_exit('Для подтверждения заказа необходимо залогиниться на сайте!');
   if(!isset($_GET['key']))
-    err_exit('Ключ не найден!', 'index.php');
+    err_exit('Ключ не найден!');
   $key = $_GET['key'];
   $data = $db->query('select * from `print` where `key` = ?string', array($key), 'row');
 //		  dump_r($data);
 if(!$data)
   {
-	 err_exit('Ключ не найден!', 'index.php');
+	 err_exit('Ключ не найден!');
   }
 else
   {

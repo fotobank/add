@@ -2,10 +2,11 @@
    require (__DIR__.'/../core/dump/dump_r.php');
    require_once (__DIR__.'/config.php');
    require_once (__DIR__.'/func.php');
-   require_once (__DIR__.'/phpIni.php');
- 	error_reporting(E_ALL);
- 	ini_set('display_errors', 1);
-// 	 error_reporting(0);
+   require_once (__DIR__.'/../core/checkSession/checkSession.php');
+// require_once (__DIR__.'/phpIni.php');
+//	error_reporting(E_ALL);
+//	ini_set('display_errors', 1);
+ 	error_reporting(0);
    header('Content-type: text/html; charset=windows-1251');
 
 ?>
@@ -16,21 +17,36 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=windows-1251"/>
 		<meta http-equiv="X-UA-Compatible" content="IE=9" />
 		<meta name="viewport" content="width=device-width, initial-scale=0.85" />
-		<meta name="google-site-verification" content="uLdE_lzhCOntN_AaTM1_sQNmIXFk1-Dsi5AWS0bKIgs"/>
-		<link href='http://fonts.googleapis.com/css?family=Lobster|Comfortaa:700|Jura:600&subset=cyrillic,cyrillic-ext' rel='stylesheet' type='text/css'>
+<!--		<meta name="google-site-verification" content="uLdE_lzhCOntN_AaTM1_sQNmIXFk1-Dsi5AWS0bKIgs"/>-->
+<!--		<link href='http://fonts.googleapis.com/css?family=Lobster|Comfortaa:700|Jura:600&subset=cyrillic,cyrillic-ext' rel='stylesheet' type='text/css'>-->
 
 		<?
+
+		if ($session->get('us_name') == 'test')
+		  {
+			 include_once (__DIR__.'/../core/Debug_HackerConsole/lib/config.php');
+			 require_once (__DIR__.'/../core/Debug_HackerConsole/lib/Debug/HackerConsole/Main.php');
+			 Debug_HackerConsole_Main::getInstance(true);
+// 		 	 Debug_HackerConsole_Main::$admin = true;
+
+			 $time  = microtime();
+			 $time  = explode(' ', $time);
+			 $time  = $time[1] + $time[0];
+			 $startTime = $time;
+			 $startMem = intval(memory_get_usage() / 1024); //Используемая память в начале
+		  }
+
 		// обработка ошибок
 		 require_once (__DIR__.'/lib_mail.php');
 		 require_once (__DIR__.'/lib_ouf.php');
 		 require_once (__DIR__.'/lib_errors.php');
 		 $error_processor = Error_Processor::getInstance();
-
+		 $session = checkSession::getInstance();
 		/**
 		 *  Тесты для проверки Error_Processor
 		 * PHP set_error_handler TEST
 		 */
-	//	IMAGINE_CONSTANT;
+// 	  IMAGINE_CONSTANT;
 		/**
 		 * PHP set_exception_handler TEST
 		 */
@@ -38,20 +54,8 @@
 		/**
 		 * PHP register_shutdown_function TEST ( IF YOU WANT TEST THIS, DELETE PREVIOUS LINE )
 		 */
-		//	 	imagine_function( );
+	//		 	imagine_function( );
 
-		if (isset($_SESSION['us_name']) && $_SESSION['us_name'] == 'test')
-			{
-				$time  = microtime();
-				$time  = explode(' ', $time);
-				$time  = $time[1] + $time[0];
-				$startTime = $time;
-				$startMem = intval(memory_get_usage() / 1024); //Используемая память в начале
-				?>
-				<h2>&laquo; DEBUG &raquo; </h2>
-					<hr class="style-one" style=" margin-bottom: -20px; margin-top: 10px"/>
-			   <?
-			}
 		include (__DIR__.'/title.php');
 		$cryptinstall = '/inc/captcha/cryptographp.fct.php';
 		require_once  (__DIR__.'/captcha/cryptographp.fct.php');
@@ -259,13 +263,13 @@
 
 				<div id="form_ent">
 
-					<? if (isset($_SESSION['logged'])): ?>
+					<? if ($session->has('logged')): ?>
 						<div style="text-align: center;">
-  <span style="color:#bb5"><span style="font-size: 14px">Здравствуйте,</span><br> <span style="font-weight: bold;"><?=$_SESSION['us_name']?></span><br/>
+  <span style="color:#bb5"><span style="font-size: 14px">Здравствуйте,</span><br> <span style="font-weight: bold;"><?=$session->get('us_name')?></span><br/>
 	  <?
-	  $user_balans = $db->query('select balans from users where id = ?i',array($_SESSION['userid']),'el');
-	  $_SESSION['userVer'] = (!isset($_SESSION['userVer']))? genpass(10, 2):$_SESSION['userVer'];
-	  $_SESSION['accVer'] = (!isset($_SESSION['accVer']))? genpass(10, 2):$_SESSION['accVer'];
+	  $user_balans = $db->query('select balans from users where id = ?i',array($session->get('userid')),'el');
+	  $_SESSION['userVer'] = ($session->has('userVer'))?$session->get('userVer'):genpass(10, 2);
+	  $_SESSION['accVer'] = ($session->has('accVer'))?$session->get('accVer'):genpass(10, 2);
 
 	  ?>
 	  <span style="font-size: 12px;"> Ваш баланс: </span>
@@ -276,8 +280,8 @@
 						  <a class="vihod" style="position: absolute; top: 62px; left: 80px;" href="/enter.php?logout=1">выход</a>
 						</div>
 						<div style="margin-top: 8px;">
-						  <a class="scet" style="position: absolute; width: 30px; top: 88px;" data-target="#" data-toggle="order" href="<?='/security.php?acc='.$_SESSION['accVer']?>">счет</a>
-						  <a class="user" href="<?='/security.php?user='.$_SESSION['userVer']?>" style="position: absolute; width: 88px; left: 48px; top: 88px;">пользователь</a>
+						  <a class="scet" style="position: absolute; width: 30px; top: 88px;" data-target="#" data-toggle="order" href="<?='/security.php?acc='.$session->get('accVer')?>">счет</a>
+						  <a class="user" href="<?='/security.php?user='.$session->get('userVer')?>" style="position: absolute; width: 88px; left: 48px; top: 88px;">пользователь</a>
 
 						</div>
 
@@ -318,43 +322,43 @@
 
 	// <!-- СООБЩЕНИЕ ОБ ОШИБКЕ-->
 
-	if (isset($_SESSION['err_msg']))
+	if ($session->has('err_msg'))
 		{
 			?>
 			<script type='text/javascript'>
 				dhtmlx.message.expire = 6000; // время жизни сообщения
-				dhtmlx.message({ type: 'error', text: 'Ошибка!<br><?=$_SESSION['err_msg']?>'});
-				<!--			humane.error('Ошибка!<br>--><?//=$_SESSION['err_msg']?><!--')-->
+				dhtmlx.message({ type: 'error', text: 'Ошибка!<br><?=$session->get('err_msg')?>'});
+				<!--			humane.error('Ошибка!<br>--><?//=$session->get('err_msg')?><!--')-->
 			</script>
 			<?
-			unset($_SESSION['err_msg']);
+		  $session->del('err_msg');
 		}
 
 
 	// <!-- СООБЩЕНИЕ О УПЕШНОМ ЗАВЕРШЕНИИ-->
 
-	if (isset($_SESSION['ok_msg']))
+	if ($session->has('ok_msg'))
 		{
 			?>
 			<script type='text/javascript'>
-				humane.success("Добро пожаловать, <?=$_SESSION['us_name']?>!<br><span><?=$_SESSION['ok_msg']?></span>");
+				humane.success("Добро пожаловать, <?=$session->get('us_name')?>!<br><span><?=$session->get('ok_msg')?></span>");
 			</script>
 			<?
-			unset($_SESSION['ok_msg']);
+		  $session->del('ok_msg');
 		}
 
 
-	if (isset($_SESSION['ok_msg2']))
+	if ($session->has('ok_msg2'))
 		{
 			?>
 			<script type='text/javascript'>
 				$(document).ready(function () {
 					dhtmlx.message.expire = 6000;
-					dhtmlx.message({ type: 'warning', text: <?=$_SESSION['ok_msg2'] ?>});
+					dhtmlx.message({ type: 'warning', text: <?=$session->get('ok_msg2') ?>});
 				});
 			</script>
 			<?
-				unset($_SESSION['ok_msg2']);
+		  $session->del('ok_msg2');
 		}
 	?>
 
@@ -366,9 +370,9 @@
 
 			<?
 			$value = $_SERVER['PHP_SELF'];
-			if ($_SERVER['PHP_SELF'] == '/fotobanck.php')
+			if ($_SERVER['PHP_SELF'] == '/fotobanck_adw.php')
 				{
-					$value = '/fotobanck.php?unchenge_cat';
+					$value = '/fotobanck_adw.php?unchenge_cat';
 				}
 
 			if ($value == '/index.php')
@@ -377,13 +381,13 @@
 					$key    = 'Главная';
 					echo "
 	<a href='$value' class='$act_ln'>$key</a>
-	<a class='bt_fb' href='/fotobanck.php?unchenge_cat'>Фото-банк</a>
+	<a class='bt_fb' href='/fotobanck_adw.php?unchenge_cat'>Фото-банк</a>
 	<a class='bt_usl' href='/uslugi.php'>Услуги</a>
 	<a class='bt_ceny' href='/ceny.php'>Цены</a>
 	<a class='bt_konty' href='/kontakty.php'>Контакты</a>
 	<a class='bt_gb' href='/gb/'>Гостевая</a>";
 				}
-			elseif ($value == '/fotobanck.php?unchenge_cat')
+			elseif ($value == '/fotobanck_adw.php?unchenge_cat')
 				{
 					$act_ln = 'fb_act';
 					$key    = 'Фото-банк';
@@ -401,7 +405,7 @@
 					$key    = 'Услуги';
 					echo "
 	<a class='bt_gl' href='/index.php'>Главная</a>
-	<a class='bt_fb' href='/fotobanck.php?unchenge_cat'>Фото-банк</a>
+	<a class='bt_fb' href='/fotobanck_adw.php?unchenge_cat'>Фото-банк</a>
 	<a href='$value' class='$act_ln'>$key</a>
 	<a class='bt_ceny' href='/ceny.php'>Цены</a>
 	<a class='bt_konty' href='/kontakty.php'>Контакты</a>
@@ -413,7 +417,7 @@
 					$key    = 'Цены';
 					echo "
 	<a class='bt_gl' href='/index.php'>Главная</a>
-	<a class='bt_fb' href='/fotobanck.php?unchenge_cat'>Фото-банк</a>
+	<a class='bt_fb' href='/fotobanck_adw.php?unchenge_cat'>Фото-банк</a>
 	<a class='bt_usl' href='/uslugi.php'>Услуги</a>
 	<a href='$value' class='$act_ln'>$key</a>
 	<a class='bt_konty' href='/kontakty.php'>Контакты</a>
@@ -425,7 +429,7 @@
 					$key    = 'Контакты';
 					echo "
 	<a class='bt_gl' href='/index.php'>Главная</a>
-	<a class='bt_fb' href='/fotobanck.php?unchenge_cat'>Фото-банк</a>
+	<a class='bt_fb' href='/fotobanck_adw.php?unchenge_cat'>Фото-банк</a>
 	<a class='bt_usl' href='/uslugi.php'>Услуги</a>
 	<a class='bt_ceny' href='/ceny.php'>Цены</a>
 	<a href='$value' class='$act_ln'>$key</a>
@@ -437,7 +441,7 @@
 					$key    = 'Гостевая';
 					echo "
 	<a class='bt_gl' href='/index.php'>Главная</a>
-	<a class='bt_fb' href='/fotobanck.php?unchenge_cat'>Фото-банк</a>
+	<a class='bt_fb' href='/fotobanck_adw.php?unchenge_cat'>Фото-банк</a>
 	<a class='bt_usl' href='/uslugi.php'>Услуги</a>
 	<a class='bt_ceny' href='/ceny.php'>Цены</a>
 	<a class='bt_konty' href='/kontakty.php'>Контакты</a>
@@ -449,7 +453,7 @@
 					$key    = 'Гостевая';
 					echo "
 	<a class='bt_gl' href='/index.php'>Главная</a>
-	<a class='bt_fb' href='/fotobanck.php?unchenge_cat'>Фото-банк</a>
+	<a class='bt_fb' href='/fotobanck_adw.php?unchenge_cat'>Фото-банк</a>
 	<a class='bt_usl' href='/uslugi.php'>Услуги</a>
 	<a class='bt_ceny' href='/ceny.php'>Цены</a>
 	<a class='bt_konty' href='/kontakty.php'>Контакты</a>

@@ -12,44 +12,53 @@
   // error_reporting(0);
   require_once (__DIR__.'/inc/config.php');
   require_once (__DIR__.'/inc/func.php');
-  include (__DIR__.'/inc/lib_mail.php');
   include (__DIR__.'/inc/lib_ouf.php');
   include (__DIR__.'/inc/lib_errors.php');
+  require_once (__DIR__.'/core/debug/PHPDebug.php');
+  $PHPDebug = new PHPDebug();
+
+
   $error_processor = Error_Processor::getInstance();
 
 
-  //  $link=new linkObfuscator($_SESSION['referralSeed']);
+  $link=new linkObfuscator($_SESSION['referralSeed']);
   // print "actual referral Seed:". $_SESSION['referralSeed'] ."<br />\n";
   $_SESSION['referralSeed']=$link->seed;
+  ($PHPDebug)?$PHPDebug->debug("referralSeed: ", $_SESSION['referralSeed']):null;
 
 
   if(!isset($_GET['key']) and !isset($_GET['user']) and !isset($_GET['acc']) and !isset($_POST['idZakaz']))
-	 err_exit('Неправильный вход!', 'index.php');
+	 err_exit('Неправильный вход!');
 
   if(!isset($_SESSION['logged']) and (!isset($_POST['idZakaz'])))  // разрешить гостевой допуск по idZakaz
-	 err_exit('Введите свой логин и пароль. Гостевой доступ на данную страницу запрещен!', 'index.php');
+	 err_exit('Введите свой логин и пароль. Гостевой доступ на данную страницу запрещен!');
 
+  // собрать на FTP заказ печати
   if(isset($_POST['idZakaz'])) {
   
-     $_SESSION['referralSeed']=$link->seed;
+    $_SESSION['referralSeed']=$link->seed;
 	 $newLink= '/inc/sobrZakaz.php';
 	 $idZakaz = trim($_POST['idZakaz']);
 	 $newLinkObscured=$link->obfuscate(preg_replace('/(&|\?)go=(\w)+/','',$newLink));
 	 // echo $newLinkObscured."<br>";
-	 header('location: '.$newLinkObscured.'&idZakaz='.$idZakaz);
+	 main_redir($newLinkObscured.'&idZakaz='.$idZakaz);
 
   }
 
+// заказ  печати
 if(isset($_GET['key'])) {
 
   $_SESSION['referralSeed']=$link->seed;
   $newLink= '/printZakaz.php';
   $key = trim($_GET['key']);
   $newLinkObscured=$link->obfuscate(preg_replace('/(&|\?)go=(\w)+/','',$newLink));
- // echo $newLinkObscured."<br>";
-  header('location: '.$newLinkObscured.'&key='.$key);
+  ($PHPDebug)?$PHPDebug->debug("key: ", $_GET['key']):null;
+  ($PHPDebug)?$PHPDebug->debug("newLinkObscured: ", $newLinkObscured):null;
+  main_redir($newLinkObscured.'&key='.$key);
+
 }
 
+// страница пользователя
   if(isset($_GET['user']) and $_GET['user'] == $_SESSION['userVer']) {
   
     $_SESSION['referralSeed']=$link->seed;
@@ -61,7 +70,7 @@ if(isset($_GET['key'])) {
 
   }
 
-
+// пополнение счета
   if(isset($_GET['acc']) and $_GET['acc'] == $_SESSION['accVer']) {
   
     $_SESSION['referralSeed']=$link->seed;
@@ -72,4 +81,4 @@ if(isset($_GET['key'])) {
 
   }
 
-  err_exit('Вход на страницу не выполнен. Пользуйтесь для навигации только кнопками, расположенными на соответствующих страницах.', 'index.php');
+  err_exit('Вход на страницу не выполнен. Пользуйтесь для навигации только кнопками, расположенными на соответствующих страницах.');

@@ -28,11 +28,13 @@
 	$cryptinstall = '/inc/captcha/cryptographp.fct.php';
 	include  'captcha/cryptographp.fct.php';
 
-	/**
-	 * @param $where
-	 * @param $type
-	 */
-	function checkData($where, $type)
+/**
+ * @param $where
+ * @param $type
+ *
+ * @return string
+ */
+function checkData($where, $type)
 		{
 			$db = go\DB\Storage::getInstance()->get('db-for-data');
 			$user_data = NULL;
@@ -40,7 +42,8 @@
 try {
 			$user_data = $db->query('select * from users where ?col = ?', array($type,$where),'row');
 } catch (go\DB\Exceptions\Exception  $e) {
-	if(isset($_SESSION['err_msg']))	$_SESSION['err_msg'] .= 'Ошибка при работе с базой данных';
+	isset($_SESSION['err_msg']) ?	$_SESSION['err_msg'] .= 'Ошибка при работе с базой данных':
+                                 $_SESSION['err_msg'] = 'Ошибка при работе с базой данных';
 	$error = true;
 }
 			if ($error != true && $user_data)
@@ -64,36 +67,40 @@ try {
 					// Отправляем письмо
 					if (!mail($user_data['email'], $subject, $letter, $headers))
 						{
-							if(isset($_SESSION['err_msg']))	$_SESSION['err_msg'] .= "Не удалось отправить письмо. Пожалуйста, попробуйте позже.<br>";
+							isset($_SESSION['err_msg']) ?	$_SESSION['err_msg'] .= "Не удалось отправить письмо. Пожалуйста, попробуйте позже.<br>":
+						                                 $_SESSION['err_msg'] = "Не удалось отправить письмо. Пожалуйста, попробуйте позже.<br>";
 						}
 					else
 						{
-							if(isset($_SESSION['ok_msg2']))	$_SESSION['ok_msg2'] =
-								"Запрос выполнен.<br>Новый пароль отправлен на E-mail,<br> указанный Вами при регистрации.<br>";
+							isset($_SESSION['ok_msg2']) ?
+							  $_SESSION['ok_msg2'] .= "Запрос выполнен.<br>Новый пароль отправлен на E-mail,<br> указанный Вами при регистрации.<br>":
+						     $_SESSION['ok_msg2']  = "Запрос выполнен.<br>Новый пароль отправлен на E-mail,<br> указанный Вами при регистрации.<br>";
 						}
+				  $ret = 'true';
 				}
 			else
 				{
-					if(isset($_SESSION['err_msg'])) $_SESSION['err_msg'] .= "Пользователь с данным '$type' не найден.<br>";
+					isset($_SESSION['err_msg']) ? $_SESSION['err_msg'] .= "Пользователь с данным '$type' не найден.<br>":
+				                                 $_SESSION['err_msg'] = "Пользователь с данным '$type' не найден.<br>";
+				  $ret = 'false';
 				}
+		  return $ret;
 		}
 
-
-if(!isset($_SESSION['previos_data'])) $_SESSION['previos_data'] = md5($_POST['login'].$_POST['email'].$_POST['pkey']);
 $_SESSION['err_msg'] = $_SESSION['err_msg2'] = $_SESSION['ok_msg2'] = '';
 
 	//Получаем данные
-	if ($_SESSION['previos_data'] != md5($_POST['login'].$_POST['email'].$_POST['pkey']))
+	if (!isset($_SESSION['previos_data']) || $_SESSION['previos_data'] != md5($_POST['login'].$_POST['email'].$_POST['pkey']))
 		{
 			if (iconv("utf-8", "windows-1251", $_POST['login'].$_POST['email'].$_POST['pkey']) == "Введите Ваш логин:или E-mail:Код безопасности:")
 				{
-				if(isset($_SESSION['err_msg'])) $_SESSION['err_msg'] .= "Необходимо заполнить одно из полей.<br>";
+				isset($_SESSION['err_msg']) ? $_SESSION['err_msg'] .= "Необходимо заполнить одно из полей.<br>":
+				                              $_SESSION['err_msg'] = "Необходимо заполнить одно из полей.<br>";
 				}
 			else
 				{
 					if ($_POST['pkey'] == chk_crypt($_POST['pkey']))
 						{
-							$where = '';
 							if (isset($_POST['login']))
 								{
 									$dataLogin = iconv("utf-8", "windows-1251", $_POST['login']);
@@ -102,13 +109,15 @@ $_SESSION['err_msg'] = $_SESSION['err_msg2'] = $_SESSION['ok_msg2'] = '';
 											$login = trim(htmlspecialchars($dataLogin));
 											if (!preg_match("/[?a-zA-Zа-яА-Я0-9_-]{3,16}$/", $login))
 												{
-													if(isset($_SESSION['err_msg2'])) 	$_SESSION['err_msg2'] .= "Логин может состоять из букв, цифр, дефисов и подчёркиваний. Длина от 3 до 16 символов.<br>";
-													$where = 'false';
+													isset($_SESSION['err_msg2']) ?
+													  $_SESSION['err_msg2'] .= "Логин может состоять из букв, цифр, дефисов и подчёркиваний. Длина от 3 до 16 символов.<br>":
+												     $_SESSION['err_msg2']  = "Логин может состоять из букв, цифр, дефисов и подчёркиваний. Длина от 3 до 16 символов.<br>";
+													  $where = 'false';
 												}
 											else
 												{
 													$login = iconv("windows-1251", "utf-8", $login);
-													checkData($login, 'login');
+												   $where = checkData($login, 'login');
 												}
 										}
 								}
@@ -120,30 +129,49 @@ $_SESSION['err_msg'] = $_SESSION['err_msg2'] = $_SESSION['ok_msg2'] = '';
 											$email = trim(htmlspecialchars($dataEmail));
 											if (!preg_match("/[0-9a-z_]+@[0-9a-z_^\.-]+\.[a-z]{2,3}/i", $email))
 												{
-													if(isset($_SESSION['err_msg2'])) $_SESSION['err_msg2'] .= "Ошибочный 'E-mail' (пример: a@b.c)!<br>";
+													isset($_SESSION['err_msg2']) ? $_SESSION['err_msg2'] .= "Ошибочный 'E-mail' (пример: a@b.c)!<br>":
+												                                  $_SESSION['err_msg2'] = "Ошибочный 'E-mail' (пример: a@b.c)!<br>";
 													$where = 'false';
 												}
 											else
 												{
-													checkData($email, 'email');
+												  $where = checkData($email, 'email');
 												}
 										}
 								}
+
+						   if (empty($_POST['email']) && empty($_POST['login'])) $where = '';
+
 							if ($where == '')
 								{
-									if(isset($_SESSION['err_msg'])) 	$_SESSION['err_msg'] .= "Пожалуйста, заполните одно из полей!<br>";
+									isset($_SESSION['err_msg']) ? $_SESSION['err_msg'] .= "Пожалуйста, заполните одно из полей!<br>":
+								                                 $_SESSION['err_msg']  = "Пожалуйста, заполните одно из полей!<br>";
 								}
+
+						  if ($where == 'false')
+							 {
+								isset($_SESSION['err_msg']) ? $_SESSION['err_msg'] .= "Пользователь не найден.":
+								                              $_SESSION['err_msg']  = "Пользователь не найден.";
+							 }
+
 						}
 					else
 						{
-							if(isset($_SESSION['err_msg'])) $_SESSION['err_msg'] .= "Неправильный ввод проверочного числа!<br>";
+							isset($_SESSION['err_msg']) ? $_SESSION['err_msg'] .= "Неправильный ввод проверочного числа!<br>":
+						                                 $_SESSION['err_msg'] = "Неправильный ввод проверочного числа!<br>";
 						}
 				}
-		}
-	else
-		{
-			if(isset($_SESSION['err_msg'])) $_SESSION['err_msg'] = "<p class='ttext_red'>Повторный ввод одинаковых данных!</p><br>";
-		}
+		 }
+	  elseif($_SESSION['previos_data'] == "b894200597453166c8ff8dd7d7488263")
+		 {
+			isset($_SESSION['err_msg']) ? $_SESSION['err_msg'] .= "<p class='ttext_red'>Для напоминания пароля необходимо заполнить<br> одно из полей.</p><br>":
+			                              $_SESSION['err_msg'] = "<p class='ttext_red'>Для напоминания пароля необходимо заполнить<br> одно из полей.</p><br>";
+		 }
+	  else
+		 {
+			isset($_SESSION['err_msg']) ? $_SESSION['err_msg'] .= "<p class='ttext_red'>Повторный ввод одинаковых данных!</p><br>":
+			                              $_SESSION['err_msg'] = "<p class='ttext_red'>Повторный ввод одинаковых данных!</p><br>";
+		 }
 
 
 	if (isset($_SESSION['ok_msg2']) && $_SESSION['ok_msg2'] != '')
