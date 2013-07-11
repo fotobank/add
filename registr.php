@@ -1,9 +1,7 @@
 <?php
  include (dirname(__FILE__).'/inc/head.php');
-  if(isset($_SESSION['logged'])) {
-  $_SESSION['err_msg'] = 'Вы уже зарегистрированны.';
-  echo "<script>window.document.location.href='index.php'</script>";
-  }
+  if(!isset($_SESSION['logged'])) {
+
 ?>
  <div id="main">
  <br>
@@ -308,6 +306,11 @@ LTR;
 		также большие и маленькие буквы. Поля, отмеченные звездочкой, заполнять обязательно.</p>
 	</div>
  </div>
+	 <?
+  } else {
+	 echo "<script>window.document.location.href='/index.php'</script>";
+  }
+	 ?>
  <div class="end_content"></div>
  </div>
 <?php include ('inc/footer.php');

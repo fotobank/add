@@ -37,17 +37,16 @@
 	  //	$error_processor->err_proc("" , "w", $error_processor->error);
 //	$error_processor->err_proc("", "w", "");
 	  //	$error_processor->err_proc("", "am", "");
-   $deb = "
+   /*$deb = "
 	   Версия PHP: ".phpversion().
 	   "\n\tИспользуемая память в начале: ".$startMem." Кбайт, Память в конце: ".intval(memory_get_usage() / 1024)." Кбайт, Пик: ".intval(memory_get_peak_usage() / 1024)." Кбайт";
-
 		$time = microtime();
 		$time = explode(' ', $time);
 		$time = $time[1] + $time[0];
 		$finishTime = $time;
 		$total_time = round(($finishTime - $startTime), 4);
-	  $deb .=  "\tСтраница сгенерированна за: ".$total_time." секунд.";
-//	   debug($deb, "сообщение");
+	  $deb .=  "\tСтраница сгенерированна за: ".$total_time." секунд.";*/
+//	   debugHC($deb, "сообщение");
         }
         ?>
     </div>

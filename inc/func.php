@@ -26,7 +26,6 @@ function main_redir($addr = '', $close_conn = true, $code = 'HTTP/1.1 303 See Ot
 	 {
 		$db = go\DB\Storage::getInstance()->get('db-for-data');
 		$db->close();
-		exit();
 	 }
   exit();
  }

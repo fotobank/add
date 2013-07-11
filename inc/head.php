@@ -21,20 +21,27 @@
 <!--		<link href='http://fonts.googleapis.com/css?family=Lobster|Comfortaa:700|Jura:600&subset=cyrillic,cyrillic-ext' rel='stylesheet' type='text/css'>-->
 
 		<?
-
 		if ($session->get('us_name') == 'test')
 		  {
 			 include_once (__DIR__.'/../core/Debug_HackerConsole/lib/config.php');
-			 require_once (__DIR__.'/../core/Debug_HackerConsole/lib/Debug/HackerConsole/Main.php');
-			 Debug_HackerConsole_Main::getInstance(true);
-// 		 	 Debug_HackerConsole_Main::$admin = true;
+		    require_once (__DIR__.'/../core/Debug_HackerConsole/lib/Debug/HackerConsole/Main.php');
+			 $Debug_HackerConsole_Main = Debug_HackerConsole_Main::getInstance(true);
 
-			 $time  = microtime();
+			/* $time  = microtime();
 			 $time  = explode(' ', $time);
 			 $time  = $time[1] + $time[0];
 			 $startTime = $time;
-			 $startMem = intval(memory_get_usage() / 1024); //Используемая память в начале
+			 $startMem = intval(memory_get_usage() / 1024);*/ //Используемая память в начале
 		  }
+
+		function debugHC($v, $group="message")
+		{
+		  if (is_callable($f=array('Debug_HackerConsole_Main', 'out')))
+			 {
+				call_user_func($f, $v, $group);
+			 }
+		}
+		//	debugHC("test");
 
 		// обработка ошибок
 		 require_once (__DIR__.'/lib_mail.php');
@@ -46,7 +53,7 @@
 		 *  Тесты для проверки Error_Processor
 		 * PHP set_error_handler TEST
 		 */
-// 	  IMAGINE_CONSTANT;
+ 	 //   IMAGINE_CONSTANT;
 		/**
 		 * PHP set_exception_handler TEST
 		 */
@@ -333,7 +340,6 @@
 			<?
 		  $session->del('err_msg');
 		}
-
 
 	// <!-- СООБЩЕНИЕ О УПЕШНОМ ЗАВЕРШЕНИИ-->
 

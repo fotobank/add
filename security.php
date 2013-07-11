@@ -13,18 +13,12 @@
   require_once (__DIR__.'/inc/config.php');
   require_once (__DIR__.'/inc/func.php');
   include (__DIR__.'/inc/lib_ouf.php');
-  include (__DIR__.'/inc/lib_errors.php');
-  require_once (__DIR__.'/core/debug/PHPDebug.php');
-  $PHPDebug = new PHPDebug();
-
-
-  $error_processor = Error_Processor::getInstance();
 
 
   $link=new linkObfuscator($_SESSION['referralSeed']);
   // print "actual referral Seed:". $_SESSION['referralSeed'] ."<br />\n";
   $_SESSION['referralSeed']=$link->seed;
-  ($PHPDebug)?$PHPDebug->debug("referralSeed: ", $_SESSION['referralSeed']):null;
+
 
 
   if(!isset($_GET['key']) and !isset($_GET['user']) and !isset($_GET['acc']) and !isset($_POST['idZakaz']))
@@ -52,8 +46,6 @@ if(isset($_GET['key'])) {
   $newLink= '/printZakaz.php';
   $key = trim($_GET['key']);
   $newLinkObscured=$link->obfuscate(preg_replace('/(&|\?)go=(\w)+/','',$newLink));
-  ($PHPDebug)?$PHPDebug->debug("key: ", $_GET['key']):null;
-  ($PHPDebug)?$PHPDebug->debug("newLinkObscured: ", $newLinkObscured):null;
   main_redir($newLinkObscured.'&key='.$key);
 
 }

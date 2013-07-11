@@ -10,7 +10,7 @@ class Debug_HackerConsole_Main
     static private $_hc_entries = array();
     var $TAB_SIZE = 4;
     static private $instance = NULL;
-    static $admin = false;
+    static private $display = true;
 
 
   /**
@@ -18,7 +18,7 @@ class Debug_HackerConsole_Main
 	*
 	* @return Debug_HackerConsole_Main|null
 	*/
-  static function getInstance($autoAttach = false)
+  static function getInstance($autoAttach=false)
   {
 	 if (self::$instance == NULL)
 		{
@@ -40,6 +40,10 @@ class Debug_HackerConsole_Main
         $GLOBALS['Debug_HackerConsole_Main_LAST'] =& $this;
     }
 
+   function __destruct()
+	 {
+
+	 }
 
     /**
      * string attachToHtml(string $pageHtml)
@@ -47,6 +51,7 @@ class Debug_HackerConsole_Main
      */
     function attachToHtml($page)
     {
+		if (!self::$display) return $page;
         $js = implode("", file(dirname(__FILE__).'/Js.js'));
         if (get_magic_quotes_runtime()) $js = stripslashes($js);
         $js = str_replace('{HEIGHT}', $this->_hc_height, $js);
@@ -98,7 +103,7 @@ class Debug_HackerConsole_Main
      */
   public static function out($v, $group="message", $color=NULL, $tip=NULL)
     {
-		  $debug = Debug_HackerConsole_Main::getInstance();
+	   	$debug = Debug_HackerConsole_Main::getInstance(true);
         // Have to work only with $obj, NOT $this!
         if (empty($debug) || strtolower(get_class($debug)) != 'debug_hackerconsole_main')
 
@@ -135,22 +140,25 @@ class Debug_HackerConsole_Main
             'tip'      => $tip,
         );
     }
-    
-    
+
+
     /**
-     * void disable()
+     * void display()
      * Disable displaying of the console.
      */
-    function disable()
+    function displayOn()
     {
-        // Work only with $obj, NOT $this!
-        if (empty($this) || strtolower(get_class($this)) != 'debug_hackerconsole_main') {
-            $obj =& $GLOBALS['Debug_HackerConsole_Main_LAST'];
-        } else {
-            $obj =& $this;
-        }
-        $obj->disabled = true;
+		 self::$display = true;
     }
+
+  /**
+	* void display()
+	* Disable displaying of the console.
+	*/
+  function displayOff()
+  {
+	 self::$display = false;
+  }
 
     /**
      * string toPre($text)

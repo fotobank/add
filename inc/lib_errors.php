@@ -1,16 +1,8 @@
 <?php
 
-		// 	 include_once (__DIR__.'/../core/Debug_HackerConsole/lib/config.php');
-		// 	 require_once (__DIR__.'/../core/Debug_HackerConsole/lib/Debug/HackerConsole/Main.php');
-
-
-			 function debugHC($v, $group="message")
-			 {
-				if (is_callable($f=array('Debug_HackerConsole_Main', 'out')))
-				  {
-					 call_user_func($f, $v, $group);
-				  }
-			 }
+     //      include_once (__DIR__.'/../core/Debug_HackerConsole/lib/config.php');
+		// 	  require_once (__DIR__.'/../core/Debug_HackerConsole/lib/Debug/HackerConsole/Main.php');
+    //       $Debug_HackerConsole_Main = Debug_HackerConsole_Main::getInstance();
 
 
 	set_time_limit(0);
@@ -33,6 +25,8 @@
       var $err_led; // сообщения об ошибке для вывода на экран
 		var $err_list = array();
 		var $err_name; // имя ошибки для заголовка письма
+
+
 
 
 		/**
@@ -68,6 +62,11 @@
 				$this ->EP_log_fullname = $_SERVER['DOCUMENT_ROOT'].'/log/errors.log'; // Path and filename of event log
 
 			}
+
+			 function __destruct()
+	         {
+
+	         }
 
 		/**
 		 *  __clone()
@@ -160,13 +159,12 @@
 						 * @todo Формирование сообщения об ошибке для вывода на экран
 						 */
 						$error_processor->err_name = $errortype[$errno];
-						$err_led = "<span><b>$errortype[$errno]</b></span>[$errno] $errmsg (<span><b>$filename на  $linenum  строке)<br /></b></span>\n<br>";
+						$err_led = "$errortype[$errno][$errno] $errmsg ($filename на $linenum строке)";
 						/**
 						 * @todo Отправка ошибок в  лог файл и email
 						 */
 						$error_processor->err_proc($err,'l',$err_led);
-						Debug_HackerConsole_Main::getInstance(true);
-						if (Debug_HackerConsole_Main::$admin) debugHC($err, "ошибка");
+						debugHC($err_led, "ошибка");
 						ob_end_clean();
 					}
 
@@ -199,8 +197,7 @@
 				$err_led = $err;
             $error_processor = Error_Processor::getInstance();
             $error_processor->err_proc($err,'lm',$err_led);
-            Debug_HackerConsole_Main::getInstance(true);
-            if (Debug_HackerConsole_Main::$admin) debugHC($err, "ошибка");
+            debugHC($err_led, "ошибка");
 				return true;
 			}
 
@@ -238,8 +235,7 @@
 						$err .=  "</FATAL ERROR> \n\n";
 					   $error_processor = Error_Processor::getInstance();
 					   $error_processor->err_proc($err,'lm',$err_led);
-					   Debug_HackerConsole_Main::getInstance(true);
-					   if (Debug_HackerConsole_Main::$admin) debugHC($err, "ошибка");
+					   debugHC($err_led, "ошибка");
 					}
 						return true;
 			}
@@ -284,7 +280,7 @@
 					{
 						// Check, that messages not send too often
 						$log_file = $this->EP_log_fullname;
-						$dump     = @file($log_file);
+						$dump     = file($log_file);
 						$too_often = false;
 						for ($I = count($dump) - 17; $I > 0; $I--)
 							{
