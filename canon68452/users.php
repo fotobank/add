@@ -3,6 +3,14 @@ if (!isset($_SESSION['admin_logged'])) die();
 
 define('RECORDS_PER_PAGE', 25);
 
+
+  include('ipgeobase/geo.php');
+  $geo = new Geo();
+  // этот метод позволяет получить все данные по ip в виде массива.
+  // массив имеет ключи 'inetnum', 'country', 'city', 'region', 'district', 'lat', 'lng'
+  $city = $geo->get_value('city');
+  $ip = $geo->ip;
+
 if (isset($_POST['update_balans']))
     {
         $id = $_POST['update_balans'];
@@ -44,7 +52,7 @@ if ($rs)
 $record_count = intval($db->query('SELECT FOUND_ROWS() as cnt',null, 'el'));
 ?>
 
-<table class="table table-striped table-bordered table-condensed span12">
+<table class="table table-striped table-bordered table-condensed table-hover">
 
     <tr class="success">
         <td><b>ID</b></td>
@@ -80,7 +88,14 @@ $record_count = intval($db->query('SELECT FOUND_ROWS() as cnt',null, 'el'));
 	             <td style="text-align: left; vertical-align: middle"><?=$ln['skype']?></td>
 	             <td style="text-align: left; vertical-align: middle"><?=$ln['phone']?></td>
 	             <td style="text-align: left; vertical-align: middle">
-		             <a class="map"  href="/map.php"><?=$ln['ip']?></a>
+						<?
+						$geo->setIp($ln['ip']);
+						?>
+						<a data-toggle="modal" class="ip" href="#ipModal"  data-m1="<?=$ln['ip']?>"
+						 data-city="<?=$geo->get_value('city')?>" data-district="<?=$geo->get_value('district')?>" data-country="<?=$geo->get_value('country')?>"
+						 data-lng="<?=$geo->get_value('lng')?>" data-lat="<?=$geo->get_value('lat')?>"
+						 data-placement="top" data-original-title="<?=$geo->get_value('city')?>"><?=$ln['ip']?>
+						</a>
 	             </td>
                 <td style="text-align: left; vertical-align: middle"><?=date('H:i d.m.Y', $ln['timestamp'])?></td>
                 <td style="text-align: center; vertical-align: middle"><?=($ln['status'] == 1) ? 'да' : 'нет';?></td>
@@ -114,7 +129,15 @@ $record_count = intval($db->query('SELECT FOUND_ROWS() as cnt',null, 'el'));
 				  {
 	            ?>
 	            <td style="text-align: center; vertical-align: middle">
-		            <a class="map"  href="/map.php"><?=$action['ip'];?></a></td>
+					  <?
+					  $geo->setIp($action['ip']);
+					  ?>
+					  <a data-toggle="modal" class="ip" href="#ipModal"  data-m1="<?=$action['ip']?>"
+						data-city="<?=$geo->get_value('city')?>" data-district="<?=$geo->get_value('district')?>" data-country="<?=$geo->get_value('country')?>"
+						data-lng="<?=$geo->get_value('lng')?>" data-lat="<?=$geo->get_value('lat')?>"
+						data-placement="top" data-original-title="<?=$geo->get_value('city')?>"><?=$action['ip']?>
+					  </a>
+					</td>
 	            <td style="text-align: left; vertical-align: middle"><?= russData($action['time_event'])?></td>
 				  <?
               }
@@ -122,7 +145,7 @@ $record_count = intval($db->query('SELECT FOUND_ROWS() as cnt',null, 'el'));
 					 {
 						?>
 						<td style="text-align: center; vertical-align: middle">
-						  <a class="map"  href="/map.php">------</a></td>
+						<a class="ip" href="#ipModal"  data-m1="0" >------</a></td>
 						<td style="text-align: left; vertical-align: middle">------</td>
 					 <?
 					 }
@@ -273,7 +296,63 @@ $record_count = intval($db->query('SELECT FOUND_ROWS() as cnt',null, 'el'));
     </tbody>
 </table>
 
-<div style="clear: both; margin-top: 120px;"></div>
+  <div class="modal hide fade in animated fadeInDown"  id="ipModal" tabindex="-1" role="dialog" aria-labelledby="ipModalLabel" aria-hidden="true"
+	data-width="630" data-height="415" aria-hidden="false">
+  <div class="modal-header" style="background: rgba(229,229,229,0.53)" >
+	 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	 <h3 id="h3Sity">город </h3>
+  </div>
+  <div class="modal-body" style="height: 450px;">
+	 <div id="map" style="width: 600px; height: 400px;"></div>
+ </div>
+  <div class="modal-footer">
+	 <a href="#" class="btn" data-dismiss="modal">Закрыть</a>
+  </div>
+  </div>
+
+
+
+<!--  <div id="map" style="width: 600px; height: 400px;"></div>-->
+
+  <script src="http://api-maps.yandex.ru/2.0-stable/?load=package.standard&lang=ru-RU" type="text/javascript"></script>
+  <script type="text/javascript">
+$(".ip").click(function () {
+		var city = $(this).data('city');
+  $('#h3Sity').empty().append('город '+city);
+		var district = $(this).data('district');
+		var country = $(this).data('country');
+		var lng = $(this).data('lng');
+		var lat = $(this).data('lat');
+  console.log('city= '+city,'\ndistrict= '+district);
+
+	 ymaps.ready(init);
+	 var myMap;
+	 function init(){
+		$('#map').empty();
+		myMap = new ymaps.Map ("map", {
+		  center:  [lat, lng],
+		  zoom: 14
+		});
+
+		var myPlacemark = new ymaps.Placemark(
+		 [lat, lng],
+		 { iconContent: 'Страна: '+country+'<br>Город: '+ city +'<br>Фед.округ: '+district },
+		 { preset: 'twirl#whiteStretchyIcon' } // Иконка будет белой и растянется под iconContent
+		);
+
+		myMap.geoObjects.add(myPlacemark);
+		myMap.controls
+		  // Кнопка изменения масштаба.
+		 .add('zoomControl', { left: 5, top: 5 })
+		  // Список типов карты
+		 .add('typeSelector')
+		  // Стандартный набор кнопок
+		 .add('mapTools', { left: 35, top: 5 });
+	 }
+	 });
+  </script>
+
+  <div style="clear: both; margin-top: 120px;"></div>
 <?
 paginator($record_count, $pg);
 }

@@ -23,8 +23,17 @@
 				}
 		}
 
+   header('Content-type: text/html; charset=windows-1251');
 	error_reporting(0);
 	ini_set('display_errors', 0);
+
+  function debugHC($v, $group="message")
+  {
+	 if (is_callable($f=array('Debug_HackerConsole_Main', 'out')))
+		{
+		  call_user_func($f, $v, $group);
+		}
+  }
 
 	/*$time  = microtime();
 	$time  = explode(' ', $time);
@@ -40,13 +49,13 @@
   require_once (__DIR__.'/../core/Debug_HackerConsole/lib/Debug/HackerConsole/Main.php');
   new Debug_HackerConsole_Main(true);
 
-  function debug($v, $group="message")
+  /*function debug($v, $group="message")
   {
 	 if (is_callable($f=array('Debug_HackerConsole_Main', 'out')))
 		{
 		  call_user_func($f, $v, $group);
 		}
-  }
+  }*/
 
 
 	// обработка ошибок
@@ -98,19 +107,25 @@
 	<script type="text/javascript" src="/canon68452/ajax/ajaxAdmin.js"></script>
    <script src="/js/main.js"></script>
 
+
 		<script type="text/javascript">
 		function confirmDelete() {
 		return confirm("¬ы подтверждаете удаление?");
 		}
 		</script>
 
+  <script type="text/javascript">
+  $(function () {
+  $("input, textarea, label, a").tooltip();
+  });
+  </script>
+
 	<!-- TinyMCE -->
 
 <script type="text/javascript" src="/js/tinymce/tiny_mce.js"></script>
 
 <script type="text/javascript">
-tinyMCE.init({    
-        
+tinyMCE.init({
         language : "ru",
         // General options
         mode : "exact",
@@ -135,6 +150,11 @@ tinyMCE.init({
         theme_advanced_toolbar_align : "left",
         theme_advanced_statusbar_location : "bottom",
         theme_advanced_resizing : true,
+
+  // Spellchecker
+  spellchecker_languages : "+Russian=ru,Ukrainian=uk,English=en",
+  spellchecker_rpc_url : "http://speller.yandex.net/services/tinyspell",
+  spellchecker_word_separator_chars : '\\s!"#$%&()*+,./:;<=>?@[\]^_{|}\xa7\xa9\xab\xae\xb1\xb6\xb7\xb8\xbb\xbc\xbd\xbe\u00bf\xd7\xf7\xa4\u201d\u201c',
 		
 		// Example word content CSS (should be your site CSS) this one removes paragraph margins
 		content_css : "/css/main.css",

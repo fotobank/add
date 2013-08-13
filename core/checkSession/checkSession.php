@@ -131,6 +131,7 @@ class checkSession {
 				  if($this->multi_array_key_exists($fold, $_SESSION[$arg[0]][$arg[1]]) == false) return false;
 			   }
 		   }
+
 		return true;
     }
 
@@ -146,18 +147,17 @@ class checkSession {
 
 		foreach ( $haystack as $key => $value ) :
 
-			 if ( $needle == $key )
+			 if ( $needle === strval($key) )
 				return true;
 
-			 if ( is_array( $value ) ) :
-				  if ( $this->multi_array_key_exists( $needle, $value ) == true )
+			 /*if ( is_array( $value ) ) :
+				  if ( $this->multi_array_key_exists( $needle, $value ) === true )
 					 return true;
 				  else
 					 continue;
-			 endif;
+			 endif;*/
 
 		endforeach;
-
 		return false;
 	 }
 

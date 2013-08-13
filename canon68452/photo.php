@@ -65,12 +65,12 @@ if ($rs)
 							foreach ($rs as $ln)
 							{
 								?>
-								<option value="<?= $ln['id'] ?>" <?=(
-								$current == $ln['id'] ? 'selected="selected"' : '')?>> <?=$ln['nm']?></option>
-							<?
+								<option value="<?= $ln['id'] ?>" <?=($current == $ln['id'] ? 'selected="selected"' : '')?>> <?=$ln['nm']?></option>
+							   <?
 							}
 						?>
-					</select><label for="appendedInputButton"> </label><input class="btn btn-success" type="hidden" name="chenge_album" value="1"/>
+					</select><label for="appendedInputButton">
+				   </label><input class="btn btn-success" type="hidden" name="chenge_album" value="1"/>
 					<input class="btn  btn-success" type="submit" value="открыть" class="sub1"/>
 				</form>
 			</div>

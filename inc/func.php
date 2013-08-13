@@ -401,6 +401,46 @@ function digit_to_string($dig){
 	 return $date; #¬ыводим преобразованную дату
   }
 
+
+
+  /**
+	* ‘ункци€ дл€ перевода даты на русский €зык
+	*
+	* @param number дата в unix формате
+	* @param string формат выводимой даты
+	* @param number сдвиг времени (часов, относительно времени на сервере)
+	*
+	* %MONTH% Ч русское название мес€ца (родительный падеж)
+	* %DAYWEEK% Ч русское название дн€ недели
+	*
+	* @example
+	* echo dateToRus( time(), '%DAYWEEK%, j %MONTH% Y, G:i' );
+	*  суббота, 10 декабр€ 2010, 12:03
+	*  ѕример использовани€:
+   * echo dateToRus($row['created_unix'], '%DAYWEEK%, j %MONTH% Y, G:i');
+	*/
+  function dateToRus($d, $format = 'j %MONTH% Y', $offset = 0)
+  {
+	 $months = array('€нвар€', 'феврал€', 'марта', 'апрел€', 'ма€', 'июн€', 'июл€',
+						  'августа', 'сент€бр€', 'окт€бр€', 'но€бр€', 'декабр€');
+
+	 $days = array('понедельник', 'вторник', 'среда', 'четверг',
+						'п€тница', 'суббота', 'воскресенье');
+
+	 $d += 3600 * $offset;
+
+	 $format = preg_replace(array(
+									'/%MONTH%/i',
+									'/%DAYWEEK%/i'
+									), array(
+										$months[date("m", $d) - 1],
+										$days[date("N", $d) - 1]
+										), $format);
+
+	 return date($format, $d);
+  }
+
+
   /**
 	* @return string
 	*

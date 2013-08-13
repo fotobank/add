@@ -10,12 +10,6 @@
  *     // Doctrine\Common namespace.
  *     $classLoader = new SplClassLoader('Doctrine\Common', '/path/to/doctrine');
  *     $classLoader->register();
- *
- * @author Jonathan H. Wage <jonwage@gmail.com>
- * @author Roman S. Borschel <roman@code-factory.org>
- * @author Matthew Weier O'Phinney <matthew@zend.com>
- * @author Kris Wallsmith <kris.wallsmith@gmail.com>
- * @author Fabien Potencier <fabien.potencier@symfony-project.org>
  */
 class SplClassLoader
 {
@@ -30,7 +24,11 @@ class SplClassLoader
      * 
      * @param string $ns The namespace to use.
      */
-    public function __construct($ns = null, $includePath = null)
+  /**
+	* @param null $ns
+	* @param null $includePath
+	*/
+  public function __construct($ns = NULL, $includePath = NULL)
     {
         $this->_namespace = $ns;
         $this->_includePath = $includePath;
@@ -120,7 +118,7 @@ class SplClassLoader
      */
     public function loadClass($className)
     {
-        if (null === $this->_namespace || $this->_namespace.$this->_namespaceSeparator === substr($className, 0, strlen($this->_namespace.$this->_namespaceSeparator))) {
+        if (NULL === $this->_namespace || $this->_namespace.$this->_namespaceSeparator === substr($className, 0, strlen($this->_namespace.$this->_namespaceSeparator))) {
             $fileName = '';
             $namespace = '';
             if (false !== ($lastNsPos = strripos($className, $this->_namespaceSeparator))) {
@@ -130,7 +128,7 @@ class SplClassLoader
             }
             $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . $this->_fileExtension;
 
-            require ($this->_includePath !== null ? $this->_includePath . DIRECTORY_SEPARATOR : '') . $fileName;
+            require ($this->_includePath !== NULL ? $this->_includePath . DIRECTORY_SEPARATOR : '') . $fileName;
         }
     }
 }

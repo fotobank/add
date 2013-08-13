@@ -1,16 +1,7 @@
 <?php
 
-/*
-  MySQL database backup class, version 1.0.0
-  Written by Vagharshak Tozalakyan <vagh@armdex.com>
-  Released under GNU Public license
-*/
-
-
 define('MSB_VERSION', '1.0.0');
-
 define('MSB_NL', "\r\n");
-
 define('MSB_STRING', 0);
 define('MSB_DOWNLOAD', 1);
 define('MSB_SAVE', 2);
@@ -40,12 +31,13 @@ class MySQL_Backup
     {
       return false;
     }
+
     if ($task == MSB_SAVE)
     {
       if (empty($fname))
       {
         $fname = $this->backup_dir;
-        $fname .= date($this->fname_format);
+        $fname .= $_SERVER['HTTP_HOST'].'_'.date($this->fname_format);
         $fname .= ($compress ? '.sql.gz' : '.sql');
       }
       return $this->_SaveToFile($fname, $sql, $compress);
@@ -54,15 +46,19 @@ class MySQL_Backup
     {
       if (empty($fname))
       {
-        $fname = date($this->fname_format);
+
+        $fname =  $_SERVER['HTTP_HOST'].'_'.date($this->fname_format);
         $fname .= ($compress ? '.sql.gz' : '.sql');
       }
-      return $this->_DownloadFile($fname, $sql, $compress);
+
+		return ($this->_DownloadFile($fname, $sql, $compress)) ? true : false;
+
     }
     else
     {
       return $sql;
     }
+
   }
 
 
@@ -99,6 +95,7 @@ class MySQL_Backup
 
   function _Query($sql)
   {
+	 mysql_query("SET NAMES utf8");
     if ($this->link_id !== -1)
     {
       $result = mysql_query($sql, $this->link_id);
@@ -265,12 +262,26 @@ class MySQL_Backup
 
   function _DownloadFile($fname, $sql, $compress)
   {
-    header('Content-disposition: filename=' . $fname);
-    header('Content-type: application/octetstream');
-    header('Pragma: no-cache');
-    header('Expires: 0');
-    echo ($compress ? gzencode($sql) : $sql);
-    return true;
+
+	 if($compress)
+		{
+		  ini_set('zlib.output_compression','Off');
+		  if(!($db = gzencode($sql, 6)))
+		  {
+			 $this->error = 'Can\'t create the output file.';
+			 return false;
+		  }
+		 }
+	  else
+		 {
+		   $db = $sql;
+	   }
+	 header('Content-disposition: filename=' . $fname);
+	 header('Content-type: application/octetstream');
+	 header('Pragma: no-cache');
+	 header('Expires: 0');
+	 echo $db;
+	 return true;
   }
 
 }

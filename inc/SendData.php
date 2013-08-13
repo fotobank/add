@@ -9,7 +9,7 @@
 	/*
 	*  Todo    - ajax скрипт восстановления пароля
 	*/
-
+header('Content-type: text/html; charset=windows-1251');
 	// обработка ошибок
 	include (dirname(__FILE__).'/lib_mail.php');
 	include (dirname(__FILE__).'/lib_ouf.php');
@@ -194,8 +194,9 @@ $_SESSION['err_msg'] = $_SESSION['err_msg2'] = $_SESSION['ok_msg2'] = '';
 
 		}
    $_SESSION['previos_data'] = md5($_POST['login'].$_POST['email'].$_POST['pkey']);
-	unset($_SESSION['err_msg']);
-	unset($_SESSION['err_msg2']);
+   unset($_SESSION['err_msg']);
+   unset($_SESSION['err_msg2']);
+   unset($_SESSION['ok_msg2']);
 	unset($_SESSION['secret_number']);
 	$db->close();
 ?>

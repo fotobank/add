@@ -154,18 +154,18 @@
             tB.appendChild(tR);
 
             var tDa = document.createElement("td");
-            tDa.setAttribute("width", "10%");
+            tDa.setAttribute("width", "24%");
             tDa.setAttribute("valign", "top");
             tR.appendChild(tDa);
 
             var tDb = document.createElement("td");
-            tDb.setAttribute("width", "40%");
+            tDb.setAttribute("width", "33%");
             tDb.setAttribute("valign", "top");
             tDb.setAttribute("align", "left");
             tR.appendChild(tDb);
 
             var tDc = document.createElement("td");
-            tDc.setAttribute("width", "40%");
+            tDc.setAttribute("width", "33%");
             tDc.setAttribute("valign", "top");
             tDc.setAttribute("align", "right");
             tR.appendChild(tDc);
@@ -486,7 +486,7 @@
 
                         success: function (html) {
                             $(this).outDebug(html,"/js/visLightBox/js/visuallightbox.js","goParam");
-                            var ans = JSON.parse(html);
+                            var ans = $.parseJSON(html);
                             var reiting = str_repeat("<img src='/img/reyt.png' style='margin-top: -10px;'/>", Math.round(ans.votes/5).toFixed(0));
 
                             if (ans.votes > 4) {

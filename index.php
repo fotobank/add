@@ -4,6 +4,7 @@ include (dirname(__FILE__).'/inc/head.php');
 ?>
 <div id="main">
 
+
 <!--<div id="myModal" class="modal hide fade in"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 <div class="modal-header">
 <button class="close" data-dismiss="modal">x</button>
@@ -17,7 +18,7 @@ include (dirname(__FILE__).'/inc/head.php');
 </div>-->
 
 <div id="cont_fb">
-<? echo $db->query('select txt from content where id = ?i',array(1),'el'); ?>
+<?// echo $db->query('select txt from content where id = ?i',array(1),'el'); ?>
 </div>
 <?
 /*echo "<script type='text/javascript'>

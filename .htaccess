@@ -2,6 +2,19 @@ php_flag magic_quotes_gpc Off
 php_flag magic_quotes_runtime Off
 php_flag magic_quotes_sybase Off
 
+ <IfModule mod_rewrite.c>
+   RewriteEngine on
+   RewriteRule    ^(fotobanck)$ fotobanck_adw.php?unchenge_cat [L]
+   RewriteRule    ^(svadba)$ fotobanck_adw.php?chenge_cat=1 [L]
+   RewriteRule    ^(jubilei)$ fotobanck_adw.php?chenge_cat=2 [L]
+   RewriteRule    ^(deti)$ fotobanck_adw.php?chenge_cat=3 [L]
+   RewriteRule    ^(shkola)$ fotobanck_adw.php?chenge_cat=4 [L]
+   RewriteRule    ^(dt135)$ fotobanck_adw.php?chenge_cat=5 [L]
+   RewriteRule    ^(dt224)$ fotobanck_adw.php?chenge_cat=6 [L]
+   RewriteRule    ^(gimnastika)$ fotobanck_adw.php?chenge_cat=7 [L]
+   RewriteRule    ^(fotobanck.php)$ fotobanck_adw.php [L]
+   RewriteRule   ^index.php$ / [QSA,R]
+ </IfModule>
 
 ErrorDocument 400 /error.php?400
 ErrorDocument 401 /error.php?401

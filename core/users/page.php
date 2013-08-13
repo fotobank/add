@@ -13,145 +13,12 @@
   include (__DIR__.'/../../inc/head.php');
 
   if ($link->referralSeed) {
-	 if(($link->check($_SERVER['SCRIPT_NAME'].'?go='.trim(isset($_GET['go'])?$_GET['go']:''))) || $_GET['user'] == $_SESSION['userForm']){
+	 if(($link->check($_SERVER['SCRIPT_NAME'].'?go='.trim(isset($_GET['go'])?$_GET['go']:''))) || (isset($_GET['user']) and $_GET['user'] == $_SESSION['userForm'])){
 	//	   print "<br>actual referral Seed:". $_SESSION['referralSeed'] ."<br />\n";
 	//		print "checked link: ${_SERVER['REQUEST_URI']}<br />\n";
 ?>
-		<style>
 
-		  #userForm legend {
-			 border-image: none;
-			 border: 0 none #000000;
-			 border-bottom: 1px solid;
-			 color: #6e26ab;
-			 display: block;
-			 font-size: 26px;
-			 line-height: 40px;
-			 margin-bottom: 20px;
-			 padding: 0;
-			 width: 100%;
-		  }
 
-		  #userForm div{
-		          margin:3px 0;
-                padding:3px 0;
-                min-height:18px;
-            }
-
-		  #userForm p{
-		          font-size:80%;
-                font-style:italic;
-            }
-
-		   input.formUser, input[name="form1_submit"], select, textarea{
-		     		 background-color: #e6e0ce;
-                border:1px solid #585559;
-                border-radius:4px;
-                -moz-border-radius:4px;
-                -webkit-border-radius:4px;
-                display:block;
-                width:260px;
-				    padding: 0 5px;
-            }
-
-            #form_example input,
-            #form_example select,
-            #form_example textarea{
-                margin-left:210px;
-            }
-
-		  input[type=submit]{
-			float: right;
-			 margin-right: 210px;
-			 width:100px;
-		  }
-
-		  input[type=submit]:hover{
-							background-color: #e6b1ba;
-							cursor:pointer;
-            }
-
-		  input[type=submit]:active{
-							background-color: #7cff7e;
-				         color: #030202;
-            }
-
-		  input[type=radio], input[type=checkbox]{
-							 display:inline;
-							 margin:4px;
-							 margin-left:0 !important;
-							 width: auto;
-            }
-
-           label.sublabel{
-					 float:none;
-					 text-align:left;
-                margin-left: 210px;
-                display:block;
-                font-weight:normal;
-				    width: 300px;
-            }
-
-            input[type=hidden]{
-						display:none;
-				 }
-            input:focus, select:focus, textarea:focus{
-						background-color: #f4f0ed;
-            }
-
-		  form fieldset div label{
-					  	text-align:right;
-              	   width:200px;
-              	 	float:left;
-                  font-weight:bold;
-				      margin-right: 10px;
-            }
-
-		  #errorList label{
-			 text-align:left;
-			 width:500px;
-			 font-weight:bold;
-			 margin-right: 10px;
-		  }
-
-		  #userForm  label span{
-		            color: #ff686b;
-	 }
-
-            .small{
-						float:left;
-						margin-left:10px !important;
-               	 width:100px !important;
-            }
-
-            div.error{
-						background-color: #e6d1b2;
-            }
-            .errorbox{
-					background-color: #ddddde;
-                font-size:80%;
-                border:1px solid #302d31;
-                line-height:140%;
-            }
-
-            .errorbox ul{
-					padding-left:20px;
-            }
-
-            .errorbox h4{
-					margin:5px;
-            }
-            .errorbox label{
-				  float:none;
-				  cursor:pointer;
-	        }
-
-            .errorbox label:hover{
-					text-decoration:underline;
-            }
-
-        </style>
-		<br><br>
 
 		<script type='text/javascript'>
 		  $(function() {
@@ -167,15 +34,16 @@
 		require(__DIR__.'/../../core/users/form/formgenerator.php');
       // защита страницы
 		$_SESSION['userForm'] = genpass(20, 2);
-		$link='/core/users/page.php?user='.$_SESSION['userForm'];
+		$link="/core/users/page.php?user=".$_SESSION['userForm'];
+
 
 		$form=new Form();
-		$ok = '<div class="drop-shadow lifted" style="margin: 20px 0 0 470px;">
+		$ok = '<div class="drop-shadow lifted" style="margin: 20px 0 0 440px;">
 			    <div style="font-size: 24px;">Изменения записаны!</div>
 		       </div>';
 
 		//установка формы
-		$form->set("title", "Страничка пользователя:  <strong style='font-size: 28px; margin: 0 0 0 20px;'><i>".$_SESSION['us_name']."</i></strong>");
+		$form->set("title", "Пользователь:  <strong style='font-size: 28px; margin: 0 0 0 20px;'><i>".$_SESSION['us_name']."</i></strong>");
 		$form->set("name", "userForm"); // название формы
 		$form->set("action", $link); // переход на страницу обработки $link после ввода
 		$form->set("linebreaks", false);
@@ -188,14 +56,14 @@
 		$form->set("placeholders",true);
 		$form->set("errorPosition", "in_before"); // где выводить ошибки
 		$form->set("submitMessage", $ok); // сообщение выводимое после ввода
-		$form->set("showAfterSuccess", false); // показывать форму после правильного ввода
+		$form->set("showAfterSuccess", true); // показывать форму после правильного ввода
 		$form->set("cleanAfterSuccess", false);  // очищать поля после правильного ввода
 		$form->JSprotection("36CxgD");
 
 		$loader = $db->query('SELECT `login`, `email`,  `skype`,  `phone`,  `block`,  `mail_me`, `us_name`,  `us_surname`, `city` FROM `users` WHERE `id` = ?i',
                 array($_SESSION['userid']),'row');
 
-		$block = ($loader['block'] == 1)?'Пожалуйста, для правильной работы почтовой службы указывайте свои точные данные.
+		$block = ($loader['block'] == 1)?'Для правильной работы почтовых служб, пожалуйста, указывайте свои точные данные.
 		Ваши контактные данные будут использоваться только в пределах данного
 		сайта и уничтожаются после удаления аккаунта.':'Аккаунт заблокирован!';
       unset($loader['block']);
@@ -243,15 +111,76 @@
 		$form->validator("city", "regExpValidator",  3, 20, "/[?a-zA-Zа-яА-Я0-9_-]{0,20}$/",
 		                                                       "название города может состоять из букв, цифр, дефисов и подчёркиваний. Длина от 3 до 20 символов.");
 
-		//отображение формы
-		$form->display("Применить", "form1_submit");
-
-		//сохранить действительные данные для дальнейшего использования
+  ?>
+		<div class="user-tabs">
+		  <ul id="myTab" class="nav nav-tabs">
+			 <li class="active">
+				<a data-toggle="tab" href="#user" data-toggle="tab">Редактирование данных пользователя</a>
+			 </li>
+			 <li class="">
+				<a data-toggle="tab" href="#zakaz" data-toggle="tab">Мои фотографии</a>
+			 </li>
+			 <!--<li class="dropdown">
+			  <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+				 Dropdown
+				 <b class="caret"></b>
+			  </a>
+			  <ul class="dropdown-menu">
+				 <li class="">
+					<a data-toggle="tab" href="#dropdown1">тест1</a>
+				 </li>
+				 <li class="">
+					<a data-toggle="tab" href="#dropdown2">тест2</a>
+				 </li>
+			  </ul>
+			</li>-->
+		  </ul>
+		  <div id="myTabContent" class="tab-content">
+			 <div id="user" class="tab-pane fade active in">
+				<?
+				/**
+				 * отображение формы
+				 */
+				$form->display("Применить", "form1_submit");
+				?>
+			 </div>
+				<div id="zakaz" class="tab-pane fade">
+				<p>В этом разделе Вы имеете возможность скачать выкупленные фотографии. Выберите галочками нужные фотографии и нажмите на кнопку "скачать". Заказ действителен не менее пяти дней после последней закачки фотографий. </p>
+				  <?
+				  include_once (__DIR__.'./../users/zip.php');
+				  ?>
+			 </div>
+			 <!--<div id="dropdown1" class="tab-pane fade">
+			  <p>
+				 1
+			  </p>
+			</div>
+			<div id="dropdown2" class="tab-pane fade">
+			  <p>
+				 2
+			  </p>
+			</div>-->
+		  </div>
+		</div>
+		<script>
+		  $(function () {
+//			 $(" #myTab a:last ").tab('show');
+//			 $(' #myTab a[href="#zakaz"] ').tab('show');
+		  })
+		</script>
+		<?
+		/**
+		 * сохранить действительные данные для дальнейшего использования
+		 */
 		$result=($form->getData());
-		// рекомендуется сбросить форму после сохранения данных
+		/**
+		 * рекомендуется сбросить форму после сохранения данных
+		 */
 		unset($form);
 
-		// удаление аккаунта
+		/**
+		 * удаление аккаунта
+		 */
 		if(isset($result['delUser'])) {
 		  $db->query('DELETE FROM `users` WHERE `id`=?i',array($_SESSION['userid']));
 		  unset($result);
@@ -283,6 +212,7 @@
   } else include (__DIR__.'/../../error_.php');
 
 ?>
+
   <div class="end_content"></div>
   </div>
 <?

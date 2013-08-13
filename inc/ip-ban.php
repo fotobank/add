@@ -70,22 +70,16 @@
 						  // показ остаточного времени
 									if (Get_IP() == $subdata[0] && $now < ($subdata[1] + 60 * $timeout) && $current_album == $subdata[2])
 										{
-											$begin = intval((($subdata[1] + 60 * $timeout) - $now) / 60);
-											if ($begin == 1 || $begin == 21)
-												{
-													$okonc = 'а';
-												}
-											elseif ($begin == 2 || $begin == 3 || $begin == 4 || $begin == 22 || $begin == 23 || $begin == 24)
-												{
-													$okonc = 'ы';
-												}
-											else
-												{
-													$okonc = '';
-												}
-											echo "<h2>Осталось $begin минут$okonc</h2>";
+											$begin = ((($subdata[1] + 60 * $timeout) - $now) / 60);
+										   $min = intval($begin);
+										   $sec = round((($begin - $min)*60),2);
+
+							//			  echo "<h2>Осталось <span id='timer' long='$begin:00'>$begin:00 минут$okonc</span></h2>";
 										  $session->set("popitka/$current_album", -10);
-											break;
+
+										  return json_encode(array('min' => $min,'sec' => $sec));
+
+										  break;
 										}
 
 						  // время бана закончилось

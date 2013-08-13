@@ -60,8 +60,8 @@ else
         }
     		$remote_file = $photo_data['ftp_path'];
     		$f_name = substr($remote_file, strrpos($remote_file, '/') + 1);								   
- $f_name = iconv('utf-8', 'cp1251', $f_name);
-        $ext = strtolower(substr($f_name, strrpos($f_name, '.') + 1));
+         $f_name = iconv('utf-8', 'cp1251', $f_name);
+         $ext = strtolower(substr($f_name, strrpos($f_name, '.') + 1));
     		$local_file = $_SERVER['DOCUMENT_ROOT'].'/tmp/'.$f_name;
     	if(!ftp_get($ftp, $local_file, $remote_file, FTP_BINARY))
           err_exit('Фотография недоступна! Обратитесь к администрации сервиса (ERR=004)');

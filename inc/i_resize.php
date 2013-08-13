@@ -1,5 +1,4 @@
 <?php
-  require (dirname(__FILE__).'/../core/jpeg_cleaner/jpeg_cleaner.php');
 // Преобразование Windows 1251 -> Unicode
   function win2uni($s)
   {

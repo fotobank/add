@@ -114,7 +114,8 @@ if (!isset($_SESSION['logged']))
 	 <td><div class="control-group success">
 		  <label class="control-label" for="inputSuccess"></label>
 		  <div class="controls">
-		  <input id="inputSuccess" class="autoclear" type="text" value="" name="LiqPay" style="margin-left: 10px; width: 150px; margin-bottom: -5px;" data-original-title="" title="">
+		  <input id="inputSuccess" class="autoclear" type="text" value="" name="LiqPay" onkeyup="parseField(this.name)"
+			style="margin-left: 10px; width: 150px; margin-bottom: -5px;" data-original-title="" title="">
 		  <input type="hidden" value="<?=$id?>" name="userId" style="margin-left: 10px; width: 150px; margin-bottom: -5px;" data-original-title="" title="">
 		  </div>
 		</div>
@@ -178,7 +179,8 @@ if (!isset($_SESSION['logged']))
 		<tr>
 		  <td style="padding-left:  55px;">Сумма (гр.):</td>
 		  <td><div class="control-group success">
-			 <label for="amount"></label><input id="amount" class="autoclear" type="text" style="margin-left: 10px; width: 150px; margin-bottom: -10px;" value="" name="amount" data-original-title="" title="">
+			 <label for="amount"></label><input id="amount" class="autoclear" type="text" onkeyup="parseField(this.name)"
+				 style="margin-left: 10px; width: 150px; margin-bottom: -10px;" value="" name="amount" data-original-title="" title="">
 			 <input type="hidden" id="orderId" name="orderId" type="text" value="">
 			 <input type="hidden" id="desc" name="desc" type="text"
 			  value="<?=iconv ('windows-1251', 'utf-8', 'Пополнение счета пользователя '.$_SESSION['us_name'].' на сайте '.$_SERVER['SERVER_NAME'])?>">
@@ -268,6 +270,21 @@ if (!isset($_SESSION['logged']))
   <a class="btn btn-primary" data-dismiss="modal">Закрыть</a>
 </div>
 </div>
+
+  <script type='text/javascript'>
+	 function parseField(id){
+		var obj = '[name="'+id+'"]';
+		var str = new String(jQuery(obj).val());
+		if(str.match(/[^0-9]+/gi)){
+
+		  jQuery(obj).css({'border-color':'#980000','background-color':'#EDCECE'});
+		  jQuery(obj).val(str.replace(/[^0-9]+/gi,''));
+
+		  setTimeout(function(){jQuery(obj).css({'border-color':'#85BFF2','background-color':'#FFFFFF'});},1000)
+		}
+	 }
+  </script>
+
 <?
 }
 }else{

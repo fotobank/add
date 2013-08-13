@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<title>Плагин jQuery Badger - супер сексуальные бэджи в стиле iOS | Материалы проекта RUSELLER.COM</title>
+	
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/badger.js"></script>
+	<link rel="stylesheet" href="css/badger.css" type="text/css">
+	<link rel="stylesheet" href="css/index.css" type="text/css">
+</head>
+<body>
+<div class="content">
+	<div class="l-column">
+		<div class="l-inside">
+		<div class="top">
+			<h1>Badger</h1>
+			<h2>Супер сексуальные бэджи в стиле iOS. Плагин jQuery.</h2>
+		</div>
+		<p>Badger позволяет просто добавить прекрасные бэджи к элементам на ваших страницах без использования изображений.
+		Оформленные в стиле iOs (iPhone и iPad), такие бэджи являются отличным способом для информирования посетителей вашего сайта.</p>
+		
+		<h2>Демонстрация</h2>
+		<div style="position:relative;border:1px solid #ddd;padding:10px;" id="MyBadge">
+		<p>Элемент <code>div</code> должен иметь свойство <b>position:relative</b>. Зачем?
+		Чтобы прикрепить бэдж.</p>
+		<li class="tryit" onclick="$('#MyBadge').badger('2');">$('#MyBadge').badger('2');</li>
+		<li class="tryit" onclick="$('#MyBadge').badger('+4');">$('#MyBadge').badger('+4');</li>
+		<li class="tryit" onclick="$('#MyBadge').badger('-11');">$('#MyBadge').badger('-11');</li>
+		<li class="tryit" onclick="$('#MyBadge').badger('');">$('#MyBadge').badger('');</li>
+		<div style="clear:both;"></div>
+		</div>
+		
+		<div style="position:relative;border:1px solid #ddd;padding:10px;margin-top:20px;" id="WordBadge">
+		<p>Данный блок демонстрирует вид бэджа с текстом. Предполагается, что извещения будут маленькие и простые.
+		Рекомендуется использовать одно короткое слово (не более 7 символов).</p>
+		<li class="tryit" onclick="$('#WordBadge').badger('Новый');">$('#WordBadge').badger('Новый');</li>
+		<li class="tryit" onclick="$('#WordBadge').badger('Готово!');">$('#WordBadge').badger('Готово!');</li>
+		<li class="tryit" onclick="$('#WordBadge').badger('48');">$('#WordBadge').badger('48');</li>
+		<li class="tryit" onclick="$('#WordBadge').badger('');">$('#WordBadge').badger('');</li>
+		<div style="clear:both;"></div>
+		</div>
+		
+		<h2>Как использовать</h2>
+		<p>Добавить бэдж очень просто. Вставляем вызов бибилиотеки <a href="http://jquery.com/" target="_blank">jQuery</a> в раздел <b>head</b>
+		вместе с файлами Badger (код JavaScript и CSS).</p>
+		<p class="code">&lt;script type="text/javascript" src="http://code.jquery.com/jquery-1.4.4.min.js"&gt;&lt;/script&gt;<br>
+		&lt;script type="text/javascript" src="badger.js"&gt;&lt;/script&gt;<br>
+		&lt;link rel="stylesheet" href="badger.css" type="text/css" /&gt;</p>
+		
+		<p>Затем вызываем Badger для нужного элемента!</p>
+		<p class="code">
+		&lt;script&gt;<br>
+		$(document).ready(function()<br>
+		&nbsp;&nbsp;{<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;$('#MyDiv').badger('5');<br>
+		&nbsp;&nbsp;});<br>
+		&lt;/script&gt;
+		</p>
+		
+		<p>Badger может выполнять операции сложения и вычитания, но лучше передавать ему готовую строку для вывода.
+		Если нужно узнать, что в текущий момент выводит бэдж, просто добавьте возвратную функцию.</p>
+		<p class="code">$('#MyDiv').badger('+2', function(r) { alert(r); });</p>
+		
+		<h2>Настройка</h2>
+		<p>Badger стилизован по образу iOS (iPhone/iPad). Если вы хотите изменить внешний вид бэджа, то модифицируйте соответствующий класс CSS. 
+		Для получения эффекта закругления рамки устанавливайте радиус скругления границы равным примерно половине высоты бэджа.</p>
+		</div>
+	</div>
+</div>
+
+<script>
+$(document).ready(function()
+	{ 
+	$('#MyBadge').badger('22');
+	$('#WordBadge').badger('Текст');
+	});
+</script>
+
+</body>
+</html>

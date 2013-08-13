@@ -1,18 +1,35 @@
 <?
-   require (__DIR__.'/../core/dump/dump_r.php');
+  // удаление волшебных кавычек
+ //  if (get_magic_quotes_gpc()) {
+	 $process = array(&$_GET, &$_POST, &$_COOKIE, &$_REQUEST);
+	 while (list($key, $val) = each($process)) {
+		foreach ($val as $k => $v) {
+		  unset($process[$key][$k]);
+		  if (is_array($v)) {
+			 $process[$key][stripslashes($k)] = $v;
+			 $process[] = &$process[$key][stripslashes($k)];
+		  } else {
+			 $process[$key][stripslashes($k)] = stripslashes($v);
+		  }
+		}
+	 }
+	 unset($process);
+//   }
+
+
+  require (__DIR__.'/../core/dump/dump_r.php');
    require_once (__DIR__.'/config.php');
    require_once (__DIR__.'/func.php');
    require_once (__DIR__.'/../core/checkSession/checkSession.php');
 // require_once (__DIR__.'/phpIni.php');
 //	error_reporting(E_ALL);
-//	ini_set('display_errors', 1);
+	ini_set('display_errors', 0);
  	error_reporting(0);
    header('Content-type: text/html; charset=windows-1251');
-
 ?>
 
 	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//RU" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns:Логин="http://www.w3.org/1999/xhtml">
+   <html xmlns:Логин="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=windows-1251"/>
 		<meta http-equiv="X-UA-Compatible" content="IE=9" />
@@ -69,7 +86,7 @@
 
 		?>
 		<!--[if lt IE 9]>
-		<script>
+	  <script type='text/javascript'>
 			document.createElement('header');
 			document.createElement('nav');
 			document.createElement('section');
@@ -82,169 +99,93 @@
 		</script>
 		<![endif]-->
 
-		<style type="text/css">
-		  <?php // сжатие CSS файлов
-		ob_start("compress");
-		function compress($buffer) {
-		  /* Удаляем комментарии */
-  $buffer = preg_replace('!/\*[^*]*\*+([^/][^*]*\*+)*/!', '', $buffer);
-  /* Удаляем табуляции, пробелы, переводы строки и так далее */
-  $buffer = str_replace(array("\r\n", "\r", "\n", "\t", '  ', '    ', '    '), '', $buffer);
-  return $buffer;
-		}
-//	   кнопка вверх
-		include (__DIR__.'./../css/dynamic-to-top.css');
-		include (__DIR__.'./../css/bootstrap.css');
-		include (__DIR__.'./../css/lightbox.css');
-		include (__DIR__.'./../css/animate.css');
-		include (__DIR__.'./../css/bootstrap-modal.css');
-//		сообщения
-		include (__DIR__.'./../js/jsmessage/codebase/themes/message_default.css');
-//		сообщения
-		include (__DIR__.'./../js/humane/themes/jackedup.css');
-//		include (__DIR__.'./../js/humane/themes/libnotify.css');
-//		include (__DIR__.'./../js/humane/themes/bigbox.css');
-		include (__DIR__.'./../css/main.css');
-		ob_end_flush();
-		?>
-		</style>
-
 		<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="/favicon.ico"/>
 		<link rel="shortcut icon" href="/img/ico_nmain.gif"/>
-
-		<script src="/js/jquery.js"></script>
-		<script src="/js/jquery.lazyload.js" type="text/javascript"></script>
-		<script src="/js/bootstrap.min.js"></script>
-		<script src="/js/bootstrap-modalmanager.js"></script>
-		<script src="/js/bootstrap-modal.js"></script>
-		<!--сообщения-->
-		<script type="text/javascript" src="/js/jsmessage/codebase/message.js"></script>
-		<script type="text/javascript" src="/js/humane/humane.js"></script>
-	   <script src="/js/main.js"></script>
-	   <script type="text/javascript" src="/js/ajax.js"></script>
-	   <script type="text/javascript" src="/js/no-copy.js"></script>
-<!--		<link rel="stylesheet" type="text/css" href="/css/main.css" />-->
-
+	   <link rel="stylesheet" href="/css/main.css" type="text/css">
 
 		<?
-		if (strstr($_SERVER['PHP_SELF'], 'folder_for_prototype')): ?>
-			<script type="text/javascript" src="/js/prototype.js"></script>
-			<script type="text/javascript" src="/js/scriptaculous.js?load=effects"></script>
-			<script type="text/javascript" src="/js/lightbox.js"></script>
-		<? endif; ?>
 
-		<!--- шифровка E-mail -->
-		<script type="text/javascript">
-			function scrambleVideo() {
-				var pa, pb, pc, pd, pe, pf;
-				pa = '<a href='+'"mai';
-				pb = 'video';
-				pc = '">';
-				pa += 'lto:';
-				pb += '@';
-				pe = '</a>';
-				pf = 'Заказ видеосъемки';
-				pb += 'aleks.od.ua';
-				pd = pf;
-				document.write(pa + pb + pc + pd + pe)
-			}
-			function scrambleFoto() {
-				var pa, pb, pc, pd, pe, pf;
-				pa = '<a href='+'"mai';
-				pb = 'foto';
-				pc = '">';
-				pa += 'lto:';
-				pb += '@';
-				pe = '</a>';
-				pf = 'Заказ фотосесии';
-				pb += 'aleks.od.ua';
-				pd = pf;
-				document.write(pa + pb + pc + pd + pe)
-			}
-		</script>
+		require_once (__DIR__.'/../core/magic-min/class.magic-min.php' );
+
+		//Initialize the class with image encoding, gzip, a timer, and use the google closure API
+		$vars = array(
+		  'encode' => true,
+		  'timer' => true,
+		  'gzip' => true
+		);
+		$min = new Minifier( $vars );
+
+		$include_CSS= array(
+		  // кнопка вверх
+		  'css/dynamic-to-top.css',
+		  'css/bootstrap.css',
+		  'css/lightbox.css',
+		  'css/animate.css',
+		  'css/bootstrap-modal.css',
+		  // сообщения
+		  'js/jsmessage/codebase/themes/message_default.css',
+		  // сообщения
+		  'js/humane/themes/jackedup.css',
+//		  'js/humane/themes/libnotify.css',
+//		  'js/humane/themes/bigbox.css',
+//		  'css/main.css',
+		  'js/visLightBox/data/vlboxCustom.css',
+		  'js/visLightBox/data/visuallightbox.css',
+		  'js/prettyPhoto/css/prettyPhoto.css',
+		  'js/badger/badger.css'
+		);
+
+		?>
+		<link rel="stylesheet" href="<?php $min->merge( '/cache/head.min.css', 'css', $include_CSS, '', $include_CSS ); ?>" />
+		<?
+//		$min->logs();
 
 
-		<script type="text/javascript">
+		$include_Js = array(
+		  'js/jquery-1.10.2.min.js',
+		  'js/jquery.lazyload.js',
+		  'js/bootstrap.min.js',
+		  'js/bootstrap-modalmanager.js',
+		  'js/bootstrap-modal.js',
+	//	  <!--сообщения-->
+		  'js/jsmessage/codebase/message.js',
+		  'js/humane/humane.js',
+		  'js/main.js',
+		  'js/ajax.js',
+		  'js/no-copy.js',
+		  'js/badger/badger.js',
+		  'js/jquery.waitforimages.js'
+		);
+		$prioritize_Js = array(
+		  'js/jquery-1.10.2.min.js',
+		  'js/jquery.lazyload.js',
+		  'js/bootstrap.min.js',
+		  'js/bootstrap-modalmanager.js',
+		  'js/bootstrap-modal.js'
+		);
+		?>
+		<script src="<?php $min->merge( '/cache/head.min.js', 'js', $include_Js, '', $prioritize_Js); ?>"></script>
 
-			function smile(str) {
-				obj = document.Sad_Raven_Guestbook.mess;
-				obj.focus();
-				obj.value = obj.value + str;
-			}
-			function openBrWindow(theURL, winName, features) {
-				window.open(theURL, winName, features);
-			}
-			function inserttags(stT, enT) {
-				obj = document.Sad_Raven_Guestbook.mess;
-				obj2 = document.Sad_Raven_Guestbook;
-				if ((document.selection)) {
-					obj.focus();
-					obj2.document.selection.createRange().text = stT + obj2.document.selection.createRange().text + enT;
-				}
-				else {
-					obj.focus();
-					obj.value += stT + enT;
-				}
-			}
-		</script>
+	  <script type="text/JavaScript">
+		 //подавить все сообщения об ошибках JavaScript
+		 window.onerror=null;
+	  </script>
+		<?
+//		$min->logs();
 
-		<script type="text/javascript">
-			$(document).ready(function () {
-				$(".vhod ,.registracia, input, textarea, label").tooltip();
-			});
+		/*if (strstr($_SERVER['PHP_SELF'], 'folder_for_prototype')): */?><!--
+		  <script type="text/javascript" src="/js/prototype.js"></script>
+		  <script type="text/javascript" src="/js/scriptaculous.js?load=effects"></script>
+		  <script type="text/javascript" src="/js/lightbox.js"></script>
+		--><?/* endif; */?>
 
-			$("a[rel=popover]")
-				.popover({
-					offset: 10
-				})
-				.click(function (e) {
-					e.preventDefault()
-				});
-		</script>
-
-		<!--	запуск modal reminder -->
-		<script type="text/javascript">
-			$(document).ready(function () {
-				$('[data-toggle="modal"]').click(function (e) {
-					e.preventDefault();
-					var url = $(this).attr('href');
-					if (url.indexOf("#") == 0) {
-						$(url).modal('open');
-					} else {
-						$.get(url, function (data) {
-							$('<div id="vosst" class="modal hide fade in animated fadeInDown" style="position: absolute; top: 40%; left: 50%; z-index: 1; " data-keyboard="false" data-width="460" data-backdrop="static" tabindex="-1" aria-hidden="false">' + data + '</div>').modal();
-						})
-							.success(function () {
-								// привязываем плагин ко всем элементам с "autoclear"
-								$(' .autoclear ').autoClear().tooltip();
-							});
-					}
-				});
-			});
-		</script>
-
-		<!--	запуск modal order -->
-		<script type="text/javascript">
-		  $(document).ready(function () {
-			 $('[data-toggle="order"]').click(function (e) {
-				e.preventDefault();
-				var url = $(this).attr('href');
-				if (url.indexOf("#") == 0) {
-				  $(url).modal('open');
-				} else {
-				  $.get(url, function (data) {
-					 $('<div id="vosst" class="modal hide fade in animated fadeInDown" style="position: absolute; top: 40%; left: 50%; z-index: 1; " data-keyboard="false" data-width="950" data-backdrop="static" tabindex="-1" aria-hidden="false">' + data + '</div>').modal();
-				  })
-				}
-			 });
-		  });
-		</script>
 </head>
 <?
   flush();
 ?>
 <body>
 <div id="maket">
+
 	<div id="photo_preview_bg" class="hidden" onClick="hidePreview();"></div>
 	<div id="photo_preview" class="hidden"></div>
 
@@ -308,14 +249,14 @@
 								<tr>
 									<td>
 										<input data-placement="left" rel="tooltip" class="vhod" name="submit" type="submit" value="вход" title="Добро пожаловать!"
-											data-original-title="Tooltip on left">
+											data-original-title="Добро пожаловать!">
 									</td>
 									<td>
 										<a href="/registr.php" class="registracia" data-placement="right" data-original-title="Вы еще не зарегистрировались? Присоединяйтесь">регистрация</a>
 									</td>
 								</tr>
 							</table>
-							<a href="/reminder.php" style="color: #fff; text-decoration: none;" data-target="#" data-toggle="modal">Забыли пароль?</a>
+							<a href="/reminder.php" style="color: #fff; text-decoration: none;" data-target="#" data-toggle="modal" data-placement="right" data-original-title="Восстановление пароля">Забыли пароль?</a>
 						</form>
 					<? endif; ?>
 				</div>
@@ -329,7 +270,19 @@
 
 	// <!-- СООБЩЕНИЕ ОБ ОШИБКЕ-->
 
-	if ($session->has('err_msg'))
+
+	if (!empty($error))
+	  {
+		 ?>
+		 <script type='text/javascript'>
+			dhtmlx.message.expire = 6000; // время жизни сообщения
+			dhtmlx.message({ type: 'error', text: 'Ошибка!<br><?=$error?>'});
+		 </script>
+		 <?
+		 unset($error);
+	  }
+
+	if ($session->has('err_msg') && $session->get('err_msg') != '')
 		{
 			?>
 			<script type='text/javascript'>
@@ -343,7 +296,7 @@
 
 	// <!-- СООБЩЕНИЕ О УПЕШНОМ ЗАВЕРШЕНИИ-->
 
-	if ($session->has('ok_msg'))
+	if ($session->has('ok_msg') && $session->get('ok_msg') != '')
 		{
 			?>
 			<script type='text/javascript'>
@@ -354,14 +307,12 @@
 		}
 
 
-	if ($session->has('ok_msg2'))
+	if ($session->has('ok_msg2') && $session->get('ok_msg2') != '')
 		{
 			?>
 			<script type='text/javascript'>
-				$(document).ready(function () {
 					dhtmlx.message.expire = 6000;
 					dhtmlx.message({ type: 'warning', text: <?=$session->get('ok_msg2') ?>});
-				});
 			</script>
 			<?
 		  $session->del('ok_msg2');
@@ -369,9 +320,6 @@
 	?>
 
 
-	<div id="fixed_menu">
-<!--	  фиксация меню-->
-<!--		<div id="main_menu" data-spy="affix" data-offset-top="210">-->
 		  <div id="main_menu">
 
 			<?
@@ -474,7 +422,6 @@
 
 
 		</div>
-	</div>
 
 	</div>
 
@@ -484,51 +431,6 @@
   <a href="http://www.google.com/chromeframe/?redirect=true">установите расширение Google Chrome Frame</a>для просмотра этого сайта.</p>
 <![endif]-->
 
-	<script type="text/javascript">
-		/* $(document).ready(function () {
-		 *//*$('#fixed_menu').on('mouseenter', function(){
-		 $('#main_menu').show();
-		 });*//*
-		 *//*$(input('.affix').on('change', function () {
-		 alert('Вы нажали на элемент foo2')
-		 }));*//*
-		 });*/
-
-		/* idleTimer = null;
-		 idleState = false; // состояние отсутствия
-		 idleWait = 2000; // время ожидания в мс. (1/1000 секунды)
-
-		 $(document).ready( function(){
-		 $('#show_menu').on('mouseenter', function(){
-		 clearTimeout(idleTimer); // отменяем прежний временной отрезок
-		 if(idleState == true){
-		 // Действия на возвращение пользователя
-		 $("#fixed_menu").animate({height: "show"}, 1000);
-		 }
-
-		 idleState = false;
-		 idleTimer = setTimeout(function(){
-		 // Действия на отсутствие пользователя
-		 $("#fixed_menu").animate({height: "hide"}, 1000);
-		 idleState = true;
-		 }, idleWait);
-		 });
-
-		 $("#fixed_menu").trigger("mouseenter"); // сгенерируем ложное событие, для запуска скрипта
-		 });*/
-
-
-		/*(function($){
-		 $('#show_menu').mouseleave(function(e) {
-		 $('#fixed_menu').fadeIn();
-		 });
-		 $('#fixed_menu').mouseleave(function(e) {
-		 $(this).fadeOut();
-		 });
-		 })(jQuery)*/
-
-	</script>
-
 	<NOSCRIPT >
 		<br><br>
 		<hfooter style="color: #d64d5c; margin-left: 200px;">Внимание! Для полноценной работы сайта, вам нужен браузер с поддержкой JavaScript!</hfooter>
@@ -536,21 +438,3 @@
 
 	<!--Голова конец-->
 <?
-
-
-
-//  if ($value == '/gb/index.php'): ?>
-	<!--	<div id="main">
-	<table width=<?/*= $TABWIDTH */?> border=2 cellspacing=0 cellpadding=2>
-		<tr>
-			<td>
-				<table width=100% border=2 cellspacing=1 cellpadding=3 bgcolor=<?/*=$BORDER*/?>>
-					<tr>
-						<td align=center class=pdarkhead bgcolor=<?/*=$DARK*/?>><b><?/*=$gname*/?></b></td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-		<tr>
-			<td>-->
-<?// endif; ?>

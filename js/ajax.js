@@ -14,10 +14,10 @@
  @time   - 8:54
  */
 
+
 function ajaxPostQ(url, idName,  data) {
 
     $(idName).empty();
- //   $(idName).empty().append();
     // индикатор загрузки
     $(document).ready(function() {
 
@@ -53,10 +53,9 @@ function ajaxPostQ(url, idName,  data) {
                 $(this).outDebug("—траница не найдена",url,"ajaxPostQ");
             }
         },
-
         success: function (html) {
 // alert (html);
-            $(this).outDebug(html,url,"ajaxPostQ");
+// $(this).outDebug(html,url,"ajaxPostQ");
             $(idName).empty().append(html);
         }
     });
@@ -219,6 +218,8 @@ function getCaptca() {
         }
     });
 
+
+
  //   $.ajax({
 //        type: 'post',
     //    url: "/inc/captcha/captcha.php",
@@ -345,49 +346,3 @@ function ajaxGet(url, idName)
     xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
     xmlhttp.send();
 }
-
-
-
-function hPocta(){
-
-    var data =  $('#nPocta').val().split('|');
-    if (data[0] != 'выбрать')
-    {
-    var val = "<p style='font-size:12px;'>ќбращаем ¬аше внимание, что при выборе наложенного платежа заказчик оплачивает пересылку фотографий в одну сторону и денег в другую. — ценами на почтовые услуги ¬ы можете ознакомитьс€ кликнув по ссылке.</p><a href= '" + data[1] +"' class='ttext_blue' style='font-size:10px; float: right;' target='_blank'>–асчет стоимости пересылки в почтовой службе  '"+ data[0] +"' </a>";
-    $(' #httpPocta ').empty().html(val);
-    }
-
-}
-
-
-/*
- Todo    - јвтоочистка текстового пол€ при получении фокуса
- @author - Jurii
- @date   - 13.04.13
- @time   - 8:56
- */
-(function ($) {
-    $.fn.autoClear = function () {
-        // сохран€ем во внутреннюю переменную текущее значение
-        $(this).each(function () {
-            $(this).data("autoclear", $(this).attr("value"));
-        });
-        $(this).bind('focus', function () {   // обработка фокуса
-            if ($(this).attr("value") == $(this).data("autoclear")) {
-                $(this).attr("value", "").addClass('autoclear-normalcolor');
-            }
-        })
-            .bind('blur', function () {    // обработка потери фокуса
-                if ($(this).attr("value") == " ") {
-                    $(this).attr("value", $(this).data("autoclear")).removeClass('autoclear-normalcolor');
-                }
-            });
-        return $(this);
-    }
-})(jQuery);
-
-$(function () {
-    // прив€зываем плагин ко всем элементам с id "#email, #login"
-    $('.autoclear, .inp_f_reg').autoClear();
-});
-

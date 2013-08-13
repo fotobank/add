@@ -107,11 +107,45 @@
 				<div style="color:black">Вы использовали 5 попыток ввода пароля.В целях защиты, Ваш IP заблокирован на 30
 					минут.
 				</div>
-				<br> <? check(); ?> <br><br> <a href="kontakty.php"><span class="ttext_blue">Восстановление пароля</span></a>
+				<br>
+			  <?
+			  $ret =json_decode(check(), true);
+
+			  if ($ret['min'] == 1 || $ret['min'] == 21)
+				 {
+					$okonc = 'а';
+				 }
+			  elseif ($ret['min'] == 2 || $ret['min'] == 3 || $ret['min'] == 4 || $ret['min'] == 22 || $ret['min'] == 23 || $ret['min'] == 24)
+				 {
+					$okonc = 'ы';
+				 }
+			  else
+				 {
+					$okonc = '';
+				 }
+
+			  ?>
+			  <h2>Осталось <span id='timer' long='<?= $ret['min'].':'.$ret['sec'] ?>'><?= $ret['min'].':'.$ret['sec'] ?></span> минут<?=$okonc?></h2>
+			  <script type='text/javascript'>
+				 $(function() {
+					var t = setInterval (function ()
+					{
+					  function f (x) {return (x / 100).toFixed (2).substr (2)}
+					  var o = document.getElementById ('timer'), w = 60, y = o.innerHTML.split (':'),
+						v = y [0] * w + (y [1] - 1), s = v % w, m = (v - s) / w; if (s < 0)
+					  var v = o.getAttribute ('long').split (':'), m = v [0], s = v [1];
+					  o.innerHTML = [f (m), f (s)].join (':');
+					}, 1000);
+				 });
+			  </script>
+			   <br>
+			   <br>
+			   <a href="kontakty.php"><span class="ttext_blue">Восстановление пароля</span></a>
 				<a style="float:right" class="btn btn-danger" data-dismiss="fotobanck.php" href="fotobanck.php?back_to_albums">Закрыть</a>
 			</div>
 		</div>
 	</div>
+
 	<?
 	}
 	?>
@@ -295,8 +329,8 @@
                                              $('#zapret').modal('hide');
                                              location='/fotobanck.php?back_to_albums';
                                              };
-                                             setTimeout('gloze()', 10000);
-                                             </script>";
+
+                                             </script>";  //       setTimeout('gloze()', 10000);
 								$_SESSION['popitka'][$_SESSION['current_album']] = 5;
 							}
 						?>
@@ -434,8 +468,8 @@
                              $('#zapret').modal('hide');
                              location='fotobanck.php?back_to_albums';
                              }
-                             setTimeout('gloze()', 10000);
-                             </script>";
+
+                             </script>";  //    setTimeout('gloze()', 10000);
 							$_SESSION['popitka'][$_SESSION['current_album']] = 5;
 							record($ip, $ipLog, $timeout); //бан по Ip
 						}

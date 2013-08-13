@@ -1,0 +1,75 @@
+body {
+color : #545454;
+font-size : 15px;
+font-family : Times;
+background-image : url(images/body.gif);
+background-attachment : fixed;
+max-width : 600px;
+margin : auto;
+}
+a:link, a:active, a:visited {
+color : #1f8ba0;
+text-decoration : none;
+}
+a:hover, a:focus {
+text-decoration : underline;
+}
+div {
+background-color : #fff;
+margin : 1px;
+padding : 2px;
+}
+hr {
+margin : 0;
+border-color : #f0f0f0 #fff #fff;
+border-style : solid;
+border-width : 1px;
+}
+.header {
+color : #fff;
+line-height : 0;
+background-color : #93db2e;
+background-image : url(images/header.gif);
+background-repeat : no-repeat;
+background-position : right 50%;
+padding : 0;
+}
+.title {
+background-color : #e5eff0;
+background-image : url(images/title.gif);
+background-repeat : repeat-x;
+background-position : 50% bottom;
+border : 1px solid #dbe5e6;
+}
+.title2 {
+background-color : #eef8e0;
+background-image : url(images/title2.gif);
+background-repeat : repeat-x;
+background-position : 50% bottom;
+border : 1px solid #e1ecd1;
+}
+.content {
+background-image : url(images/content.gif);
+background-repeat : repeat-x;
+background-position : 50% top;
+border : 1px solid #ececec;
+}
+.content2 {
+background-image : url(images/content.gif);
+background-repeat : repeat-x;
+background-position : 50% top;
+border : 1px solid #ececec;
+}
+.content2 a:link, .content2 a:visited {
+color : #62931d;
+}
+.footer {
+color : #fff;
+background-color : #32b6ce;
+background-image : url(images/footer.gif);
+background-repeat : no-repeat;
+background-position : right 50%;
+}
+/* Style by Mad
+http://wapdiz.ru */
+/*EDIT by MIXLION*/

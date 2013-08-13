@@ -280,7 +280,7 @@
 					{
 						// Check, that messages not send too often
 						$log_file = $this->EP_log_fullname;
-						$dump     = file($log_file);
+						$dump     = @file($log_file);
 						$too_often = false;
 						for ($I = count($dump) - 17; $I > 0; $I--)
 							{

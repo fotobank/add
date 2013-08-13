@@ -2,9 +2,9 @@
  include (dirname(__FILE__).'/inc/head.php');
   if(!isset($_SESSION['logged'])) {
 
-?>
+
+	 ?>
  <div id="main">
- <br>
  <?
  $rLogin = 'Имя для входа (Login)';
  $rPass = '';
@@ -95,24 +95,23 @@
 													 $subject = '=?koi8-r?B?'.base64_encode(convert_cyr_string($title,
 														"w",
 														"k")).'?=';
-													 $letter
-																		= <<< LTR
-   Здравствуйте, $rName_us.
-   Вы успешно зарегистрировались на Creative line studio.
-   После активации аккаунта Вам станут доступны скачивание, покупка или голосование за понравившуюся фотографию.
-   Так же для всех зарегистрированных пользователей предусмотрены различные бонусы и скидки.
-   Ваши регистрационные данные:
-      логин: $rLogin
-      пароль: $rPass
+													 $letter = <<< LTR
+													  Здравствуйте, $rName_us.
+													  Вы успешно зарегистрировались на Creative line studio.
+													  После активации аккаунта Вам станут доступны скачивание, покупка или голосование за понравившуюся фотографию.
+													  Так же для всех зарегистрированных пользователей предусмотрены различные бонусы и скидки.
+													  Ваши регистрационные данные:
+														  логин: $rLogin
+														  пароль: $rPass
 
-   Для активации аккаунта вам следует пройти по ссылке:
-   http://$_SERVER[HTTP_HOST]/activation.php?login=$rLogin&key=$key
+													  Для активации аккаунта вам следует пройти по ссылке:
+													  http://$_SERVER[HTTP_HOST]/activation.php?login=$rLogin&key=$key
 
-   Данная ссылка будет доступна в течении 5 дней.
+													  Данная ссылка будет доступна в течении 5 дней.
 
-   $date
+													  $date
 LTR;
-// Отправляем письмо
+												  // Отправляем письмо
 													 if (!mail($rEmail,
 														$subject,
 														$letter,
@@ -122,25 +121,26 @@ LTR;
 														 // Если письмо не отправилось, удаляем юзера из базы
 														 $db->query('DELETE FROM users WHERE login= (?string) LIMIT 1',
 															array($rLogin));
-														 $err_msg
-															= "Произошла ошибка при отправке письма.<br> Попробуйте зарегистрироваться еще раз.";
+														 $err_msg = "Произошла ошибка при отправке письма.<br> Попробуйте зарегистрироваться еще раз.";
 														}
 													 else
 														{
 														 unset ($err_msg);
-														 echo "<div align='center' class='err_f_reg'>Вы успешно зарегистрировались в системе.
-																											   <br>На указанный вами
-																											   e-mail было отправлено письмо со ссылкой для активации аккаунта.
-																											   </div>";
-														 print "<script language='Javascript' type='text/javascript'>
-																												  <!--
-																                                      humane.timeout = (6000);
+
+														  echo "<div align='center' class='drop-shadow lifted' style='position: relative; margin:40px 0 0 280px;
+														                 padding-bottom: 3px; padding-left: 20px; padding-right: 20px;'>
+                                                     Вы успешно зарегистрировались в системе.
+																 <br>На указанный вами e-mail было отправлено письмо со ссылкой для активации аккаунта.
+																 </div><div style='clear: both;'></div>";
+														  print "<script language='Javascript' type='text/javascript'>
+																	<!--
+																   humane.timeout = (10000);
                      humane.success('Спасибо.<br>Вы успешно зарегистрировались в системе.<br>На указанный вами e-mail было отправлено письмо со ссылкой для активации аккаунта.');
-																												  function reLoad()
-																												  {location = \"registr.php\"};
-																												  setTimeout('reLoad()', 8000);
-																												  -->
-																												  </script>";
+																	function reLoad()
+																	{location = \"registr.php\"};
+																	setTimeout('reLoad()', 14000);
+																	-->
+																	</script>";
 														}
 													}
 												 else
@@ -218,9 +218,9 @@ LTR;
 		  <?
 		}
 	}
- ?>
- <div id="form_reg">
 
+ ?>
+ <div id="form_reg" style="margin-top: 40px;">
 	<div class="cont-list" style="margin: 0 0 10px 80px">
 	 <div class="drop-shadow curved curved-vt-2">
 		<h2><b><span style="color: #001591">Регистрация на сайте:</span></b></h2>
@@ -269,7 +269,8 @@ LTR;
 		<tr>
 		 <td>Телефон:</td>
 		 <td>
-			<input name="rPhone" class="inp_f_reg" type="text" title="Для заказа фотографий обязательно( можно ввести потом )" value="<?= $rPhone ?>" maxlength="20" data-placement="right">
+			<input name="rPhone" class="inp_f_reg" type="text" title="Для заказа фотографий обязательно( можно ввести потом )" onkeyup="parseField(this.name)"
+			 value="<?= $rPhone ?>" maxlength="20" data-placement="right">
 		 </td>
 		</tr>
 		<tr>
@@ -308,10 +309,25 @@ LTR;
  </div>
 	 <?
   } else {
-	 echo "<script>window.document.location.href='/index.php'</script>";
+	 echo "<script type='text/javascript'>window.document.location.href='/index.php'</script>";
   }
 	 ?>
  <div class="end_content"></div>
  </div>
+
+  <script type='text/javascript'>
+	 function parseField(id){
+		var obj = '[name="'+id+'"]';
+		var str = new String(jQuery(obj).val());
+		if(str.match(/[^0-9-_]+/gi)){
+
+		  jQuery(obj).css({'border-color':'#980000','background-color':'#EDCECE'});
+		  jQuery(obj).val(str.replace(/[^0-9-_]+/gi,''));
+
+		  setTimeout(function(){jQuery(obj).css({'border-color':'#85BFF2','background-color':'#FFFFFF'});},1000)
+		}
+	 }
+  </script>
+
 <?php include ('inc/footer.php');
 ?>

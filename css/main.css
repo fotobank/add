@@ -75,8 +75,6 @@ body {
     /*background:url(/img/hexabump.jpg);*/
     /*background-attachment:fixed;*/
     /*background:url('/img/foto_podlogka.gif');*/
-
-
 }
 
 /* ниже фильтр * html так называемый CSS хак, через который можно задать любое свойство предназначенное для IE6 */
@@ -84,38 +82,23 @@ body {
     height: 100%;
 }
 
-
-.block {
-    background: #fff url(/img/bg_left.gif) repeat-y; /* Цвет фона блока,
-                                                          путь к фону с границей слева,
-                                                          повторение по вертикали */
-}
-.block div {
-    background: url(/img/bg_right.gif) repeat-y 100% 0; /* Путь к фону с границей справа,
-                                                             повторение по вертикали,
-                                                             расположение фона по
-                                                            правому краю блока */
-    padding: 10px; /* Поля вокруг текста */
-}
-
-.wrap {
-    background: orange url(/img/4.gif) repeat-y left;
-    padding: 0 0 0 1px; /*1px ширина полоски*/
-}
-
 a {
     outline: none;
     text-decoration: none;
-    color: #fff; /* Цвет текста */
+    color: #3737d4; /* Цвет текста */
 }
 
 a:visited {
-    /* color: #ffc; */
+     /*color: #ffc; */
     /* Цвет посещенной ссылки */
 }
 
 a:active {
     color: #f00; /* Цвет активной ссылки */
+}
+
+.contact a {
+    color: #ffffff;
 }
 
 p {
@@ -186,31 +169,24 @@ span.letter1 {
     0 10px 10px rgba(0,0,0,.2),
     0 20px 20px rgba(0,0,0,.15);
 
-
-
-   /* text-shadow: 0 1px 0 #d4a001,
-    0 1px 0 #bf8f01,
-    0 2px 0 #a37701,
-    0 3px 0 #8e6501,
-    0 4px 0 #745201,
-    0 5px 1px rgba(0,0,0,.1),
-    0 0 5px rgba(0,0,0,.1),
-    0 1px 3px rgba(0,0,0,.3),
-    0 3px 5px rgba(0,0,0,.2),
-    0 5px 10px rgba(0,0,0,.25),
-    0 10px 10px rgba(0,0,0,.2),
-    0 20px 20px rgba(0,0,0,.15);*/
-
 }
 
 span.letter2 {
-    font-family:"odessa_scr",serif;
+   /* font-family:"odessa_scr",serif;
     color: rgb(113, 0, 128);
     font-size: 32px;
     font-weight: 600;
     line-height: 50px;
     position: relative;
-    text-align:center;
+    float: left;
+    margin: 0 15px 0 5px;*/
+    /*text-align:center;*/
+
+    color:#56650A;
+    font-size:1.7em;
+    font-family:"Trebuchet MS",Tahoma,Arial,sans-serif;
+    text-shadow:1px 1px 3px #999999;
+
 }
 
 h1 {
@@ -250,7 +226,7 @@ h2 {
     font-family: "Times New Roman", Times, serif;
     /*font-family: Arial, Helvetica, sans-serif;*/
     font-weight: normal;
-    text-align: center;
+    /*text-align: center;*/
 }
 
 
@@ -692,14 +668,15 @@ a.gb_act {
 }
 
 /*страничка пользователя*/
+
 #userForm {
     width:550px;
     margin:0 auto;
     padding:10px 15px;
     display: block;
-    background: #e7e1cf;
+    background: #f4eee6;
     border-radius: 14px;
-    border: #aaaaaa ridge 2px;
+    /*border: #aaaaaa ridge 2px;*/
     color: #000000;
     font-size: 18px;
     font-family: "Times New Roman", Times, serif;
@@ -753,7 +730,7 @@ a.gb_act {
 
 #for_reg_cont:first-letter{
     display:block;
-    margin: 5px 0 0 5px;
+    margin: 5px 0 0 0;
     float:left;
     color: #001592;
     font-size:50px;
@@ -1027,21 +1004,6 @@ a.gb_act {
     font-size: 14px;
     z-index: 1;
 }
-
-
-/*
-.div_fb3 {
-    background: url(/img/bk_fb_td_act.png) no-repeat left top;
-    position: absolute;
-    width: 252px;
-    height: 250px;
-    float: left;
-    cursor: pointer;
-    text-align: center;
-    font-size: 13px;
-    z-index: 1;
-}
-*/
 
 
 
@@ -1501,7 +1463,7 @@ a.alb_usl {
     padding: 1px 30px;
     background-repeat: no-repeat;
     /* Следующие два правила откаты, в случае, если браузер не поддерживает несколько фонов. */
- //   background-image: url('/img/button_bg.png');
+    background-image: url(/img/button_bg.png);
     /* Несколько версии происхождения. Фоновые изображения определяются индивидуально в цвете классов */
     background-position: bottom left, top right, 0 0, 0 0;
     background-clip: border-box;
@@ -1518,6 +1480,18 @@ a.alb_usl {
     -webkit-transition: background-position 1s;
     -moz-transition: background-position 1s;
     transition: background-position 1s;
+    font-weight: bolder;
+    position: relative;
+    margin: 20px 0 30px 0;
+}
+
+.button span {
+    position:absolute;
+    left: 50%;
+    margin-left:-6%;
+    width:50%;
+    top: 2px;
+
 }
 
 .button:hover {
@@ -1545,15 +1519,11 @@ a.alb_usl {
     font-weight: bolder;
 }
 
-.button {
-    font-size: 15px;
-    font-weight: bolder;
-    left: 3px;
-}
 
 .button.full {
-    /* left: auto; */
-    padding: 3px 487px;
+     /*left: auto;*/
+    padding: 3px 50%;
+    height: 14px;
 }
 
 .button.full.green, .button.full.gray {
@@ -1645,7 +1615,9 @@ a.alb_usl {
 
 .blue.button:hover {
     background-color: #63c7fe;
-    background-image: url('/img/button_bg.png'), url('/img/button_bg.png'), -moz-radial-gradient(center bottom, circle, rgba(109, 217, 250, 1) 0, rgba(109, 217, 250, 0) 100px), -moz-linear-gradient(#63c7fe, #58bef7);
+    background-image: url('/img/button_bg.png'), url('/img/button_bg.png'),
+    -moz-radial-gradient(center bottom, circle, rgba(109, 217, 250, 1) 0, rgba(109, 217, 250, 0) 100px),
+    -moz-linear-gradient(#63c7fe, #58bef7);
     background-image: url('/img/button_bg.png'), url('/img/button_bg.png'), -webkit-gradient(radial, 50% 100%, 0, 50% 100%, 100, from(rgba(109, 217, 250, 1)), to(rgba(109, 217, 250, 0))), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#63c7fe), to(#58bef7));
 }
 
@@ -1662,8 +1634,8 @@ a.alb_usl {
 
 /* элемент ниже позволяет не наезжать подвалу на контент, он должен быть не меньше подвала по высоте */
 .end_content {
-    position: static;
-    height: 80px;
+    position: relative;
+    height: 70px;
     width: 1200px;
     clear: both;
     margin: auto;
@@ -1678,51 +1650,33 @@ a.alb_usl {
     margin: auto;
 }
 
-/* <!---- Для настройки ----> */
-.c_colonka, /* .l_colonka, */
-.header, .r_colonka, .center_left, .center_righ, .center_top /* .small_menu */
-{
-    /* color: #fff ; */
-    border-bottom: 0 solid #777;
+.header {
+    width: 1200px;
+    height: 280px;
+    /*padding: 10px;*/
 }
-
-/* .center_left,.small_menu {background-color:#444;}
-.center_righ {background-color:#333;}
-.center_top {background-color:#555;}
-.c_colonka {background-color:#777;}
-.header {background-color:#666;}
-.l_colonka, .r_colonka {background-color:#555; } */
-
-/*  ---- Для настройки --- */
-
-/* .l_colonka,.c_colonka,.r_colonka 
-{margin-top:30px;} */
 
 .l_colonka, .c_colonka, .r_colonka, .center_top, .center_left, .center_righ, .header {
     float: left;
 }
 
-.header {
-    width: 1200px;
-    height: 150px;
-    padding: 10px;
-}
 
 .l_colonka {
-    width: 250px;
-    border-right: 0 solid #777;
+    width: 240px;
+    margin-left: 10px;
+    /*border-right: 0 solid #777;*/
 }
 
 .c_colonka {
-    width: 698px;
-    border-right: 0 solid #777;
+    width: 680px;
+    margin-left:10px;
+    /*border-right: 0 solid #777;*/
 }
 
 .r_colonka {
-    width: 230px;
-    border-left: 1px solid #777;
-    margin: 10px 10px 10px 0;
-    padding-left: 10px;
+    width: 240px;
+    margin-left: 10px;
+    /*border-left: 1px solid #777;*/
 }
 
 .center_top {
@@ -1759,14 +1713,14 @@ a.alb_usl {
 
 /* зоголовок */
 
-.small_menu {
+/*.small_menu {
     width: 225px;
     background:url(/img/debut_dark.png);
-    /*padding: 10px 0 10px 0;*/
+    *//*padding: 10px 0 10px 0;*//*
     border: 0 solid #777;
 
 
-}
+}*/
 
 a strong {
     color: #000000;
@@ -1788,15 +1742,12 @@ a strong {
     height: 340px;
     border-bottom: 0 solid #777;
     padding: 20px 0 20px 0;
+    margin-left: 8px;
     /*box-shadow: 1px 1px 3px 1px #000, 0 0 1px rgba(0, 0, 0, .5) inset;*/
 }
 
 /* тело контактов */
 
-/* расположение табличек */
-.small_menu, .contact {
-    margin: 40px 0 40px 10px;
-}
 
 .news {
     font: normal 11px Arial, Helvetica, sans-serif;
@@ -1813,7 +1764,7 @@ a strong {
     width: 71px;
     padding: 3px 16px 0 9px;
     text-align: center;
-    margin: -5px 0 10px -11px;
+    margin: -5px 0 10px -10px;
 
 }
 
@@ -1832,13 +1783,9 @@ a strong {
 
 /*  левое меню */
 #menu {
-    margin: 0 0 0 0; /* сдвиг меню */
     font: normal 12px Arial, Helvetica, sans-serif;
     text-transform: uppercase;
-}
-
-#menu {
-    margin: 10px 0 10px 0;
+    /*margin: 10px 0 10px 0;*/
 }
 
 /* расстояние между текстом  и длинна желтой линии */
@@ -1847,7 +1794,7 @@ a strong {
     background: url(/img/menu_icon_n.gif) left no-repeat;
     color: #c3c3c3;
     text-decoration: none;
-    margin: 0 0 0 -30px;
+    margin: 0 0 0 -35px;
 }
 
 #menu dt a strong {
@@ -1861,13 +1808,13 @@ a strong {
     background: url(/img/menu_bg_o.gif) left repeat-y;
     color: #151515;
     text-decoration: none;
-    margin: 0 0 0 0;
+    margin: 0 -10px 0 -10px;
 }
 
 /* сдвиг текста при выделении */
 #menu dt a:hover strong {
     background: url(/img/menu_icon_o.gif) left no-repeat;
-    margin: 0 0 0 -20px;
+    margin: 0 0 0 -10px;
 }
 
 .spec_title {
@@ -1875,9 +1822,9 @@ a strong {
     text-transform: uppercase;
     color: #151515;
     background: url(/img/title_spec.gif) no-repeat;
-    height: 23px;
+    height: 18px;
     padding: 6px 0 2px 22px;
-    margin: 20px 0 5px -11px;
+    margin: 20px 0 5px -10px;
 }
 
 .ttext_red {
@@ -2495,7 +2442,7 @@ div.page {
 
 div.pagination {
     padding:3px;
-    margin: 10px 0 -40px 0;
+    margin: 10px 0 -30px 0;
     text-align:center;
     z-index: 10;
 
@@ -2655,6 +2602,8 @@ textarea {
     z-index:-2;
 }
 
+
+
 .drop-shadow p {
     font-size:16px;
     font-weight:bold;
@@ -2678,7 +2627,11 @@ textarea {
     border-radius:100px / 10px;
 }
 
-.lifted {border-radius:0;}
+.lifted {
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
 
 .lifted:before,  .lifted:after {
     bottom:15px;
@@ -2716,4 +2669,624 @@ span.preloader {
     background: url('/img/loader2.gif');
 }
 
-.nospam {position: absolute; left: -10000px;}
+.nospam {position: absolute; left: -10000px;
+}
+/* фото в услугах */
+ul li {
+    display: inline;
+}
+
+
+/* анимация альбомов в услугах */
+#container {
+    /*max-width: 50em;*/
+    padding: 0 20px;
+    margin: 50px auto 0 auto;
+    position: relative;
+}
+
+.group {
+    position: relative;
+    margin:0 auto;
+}
+
+.stack {
+    float: left;
+    width: 22%;
+    margin: 0 4% 4% 0;
+    position: relative;
+    z-index: 10;
+}
+
+/* Image styles */
+.stack img { max-width: 100%; height: auto; vertical-align: bottom; border: 10px solid #fff; border-radius: 3px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+.stack:last-of-type { margin-right: 0; }
+
+/* Stacks creted by the use of generated content */
+.stack:before, .stack:after { content: ""; border-radius: 3px; width: 100%; height: 100%; position: absolute; border: 10px solid #fff; left: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    -webkit-transition: 0.15s all ease-out;
+    -moz-transition: 0.15s all ease-out;
+    transition: 0.15s all ease-out;
+}
+.stack:before { top: 4px; z-index: -10; } /* 1st element in stack (behind image) */
+.stack:after { top: 8px; z-index: -20; } /* 2nd element in stack (behind image) */
+
+/* Second stack example (rotated to the right from the bottom left) */
+.stack.rotated:before {
+    -webkit-transform-origin: bottom left;
+    -moz-transform-origin: bottom left;
+    transform-origin: bottom left;
+    -webkit-transform: rotate(2deg);
+    -moz-transform: rotate(2deg);
+    transform: rotate(2deg);
+}
+.stack.rotated:after {
+    -webkit-transform-origin: bottom left;
+    -moz-transform-origin: bottom left;
+    transform-origin: bottom left;
+    -webkit-transform: rotate(4deg);
+    -moz-transform: rotate(4deg);
+    transform: rotate(4deg);
+}
+
+/* Third stack example (One stack element rotated in the opposite direction) */
+.stack.twisted:before {
+    -webkit-transform: rotate(4deg);
+    -moz-transform: rotate(4deg);
+    transform: rotate(4deg);
+}
+.stack.twisted:after {
+    -webkit-transform: rotate(-4deg);
+    -moz-transform: rotate(-4deg);
+    transform: rotate(-4deg);
+}
+
+/* Fourth stack example (Similar to the second but rotated left) */
+.stack.rotated-left:before {
+    -webkit-transform-origin: bottom left;
+    -moz-transform-origin: bottom left;
+    transform-origin: bottom left;
+    -webkit-transform: rotate(-3deg);
+    -moz-transform: rotate(-3deg);
+    transform: rotate(-3deg);
+}
+.stack.rotated-left:after {
+    -webkit-transform-origin: bottom left;
+    -moz-transform-origin: bottom left;
+    transform-origin: bottom left;
+    -webkit-transform: rotate(-6deg);
+    -moz-transform: rotate(-6deg);
+    transform: rotate(-6deg);
+}
+
+/* Reset all rotations on hover */
+.stack:hover:before, .stack:hover:after {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    transform: rotate(0deg);
+}
+
+/*
+iPhone and mobile widths --------------------------------------------------------------------------------------------------------------------------- */
+@media only screen and (min-width: 320px) and (max-width: 480px) {
+    .stack { float: none; width: auto; margin-bottom: 35px; }
+}
+
+/*автопревью в услугах, автоматическое расположение*/
+.am-wrapper{
+    float:left;
+    position:relative;
+    overflow:hidden;
+}
+.am-wrapper img{
+    position:absolute;
+    outline:none;
+}
+
+/*SEPIA*/
+.am-wrapper img {
+    -webkit-transition: all 1s ease;
+    -moz-transition: all 1s ease;
+    -o-transition: all 1s ease;
+    -ms-transition: all 1s ease;
+    transition: all 1s ease;
+}
+
+.am-wrapper img:hover {
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    filter: grayscale(100%);
+}
+
+.clear {clear:both;}
+
+#userForm legend {
+    border-image: none;
+    border: 0 none #000000;
+    border-bottom: 1px solid;
+    color: #6e26ab;
+    display: block;
+    font-size: 26px;
+    line-height: 40px;
+    margin-bottom: 20px;
+    padding: 0;
+    width: 100%;
+}
+
+#userForm div{
+    margin:3px 0;
+    padding:3px 0;
+    min-height:18px;
+}
+
+#userForm p{
+    font-size:90%;
+    font-style:italic;
+}
+
+fieldset input.formUser, fieldset input[name="form1_submit"],fieldset select, fieldset textarea{
+    background-color: #f3ede5;
+    border:1px solid #999;
+    border-radius:4px;
+    -moz-border-radius:4px;
+    -webkit-border-radius:4px;
+    display:block;
+    width:260px;
+    padding: 0 5px;
+}
+
+/* #form_example input,
+ #form_example select,
+ #form_example textarea{
+     margin-left:210px;
+ }*/
+
+fieldset input[type=submit]{
+    float: right;
+    margin-right: 210px;
+    width:100px;
+}
+
+fieldset input[type=submit]:hover{
+    background-color: #e6b1ba;
+    cursor:pointer;
+}
+
+fieldset input[type=submit]:active{
+    background-color: #7cff7e;
+    color: #030202;
+}
+
+fieldset input[type=radio], input[type=checkbox]{
+    display:inline;
+    margin:4px;
+    margin-left:0 !important;
+    width: auto;
+}
+
+label.sublabel{
+    float:none;
+    text-align:left;
+    margin-left: 210px;
+    display:block;
+    font-weight:normal;
+    width: 300px;
+}
+
+fieldset input[type=hidden]{
+    display:none;
+}
+fieldset input:focus,fieldset select:focus, fieldset textarea:focus{
+    background-color: #f4f0ed;
+}
+
+form fieldset div label{
+    text-align:right;
+    width:200px;
+    float:left;
+    font-weight:bold;
+    margin-right: 10px;
+}
+
+#errorList label{
+    text-align:left;
+    width:500px;
+    font-weight:bold;
+    margin-right: 10px;
+}
+
+#userForm  label span{
+    color: #ff686b;
+}
+
+.small{
+    /*float:left;*/
+    /*margin-left:10px !important;*/
+    /*width:100px !important;*/
+}
+
+div.error{
+    background-color: #e6d1b2;
+}
+.errorbox{
+    background-color: #ddddde;
+    font-size:80%;
+    border:1px solid #302d31;
+    line-height:140%;
+}
+
+.errorbox ul{
+    padding-left:20px;
+}
+
+.errorbox h4{
+    margin:5px;
+}
+.errorbox label{
+    float:none;
+    cursor:pointer;
+}
+
+.errorbox label:hover{
+    text-decoration:underline;
+}
+
+/*табы*/
+.user-tabs {
+    background-color: #f3ede5;
+    border: 1px solid #000000;
+    border-radius: 4px 4px 4px 4px;
+    margin: 15px 0;
+    padding: 39px 19px 14px;
+    position: relative;
+    min-height: 500px;
+}
+
+.user-tabs:after {
+    background-color: #f4eee6;
+    border: 1px solid #000000;
+    border-radius: 4px 0 4px 0;
+    color: #496183;
+    content: "Раздел пользователя";
+    font-size: 12px;
+    font-weight: bold;
+    left: -1px;
+    padding: 3px 7px;
+    position: absolute;
+    top: -1px;
+}
+
+.user-tabs > p:last-child {
+    margin-bottom: 0;
+}
+
+.nav-tabs {
+    border-bottom: 1px solid #999;
+}
+
+.nav-tabs > li > a {
+    border-color: #eeeeee #eeeeee #999999;
+    color: #0088CC;
+    background-color: #d3d3d3;
+}
+
+.nav-tabs > li > a:hover {
+    border-color: #999999 #999999 #eeeeee;
+    background-color: #f4eee6;
+}
+
+.nav-tabs > .active > a, .nav-tabs > .active > a:hover {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #f2ece4;
+    border-color: #999 #999 transparent;
+    border-style: solid;
+    border-width: 1px;
+    color: #444;
+    cursor: default;
+}
+
+.order-tabl {
+    background-color: #f3ede5;
+    border: 1px solid #aaa;
+    border-radius: 4px 4px 4px 4px;
+    margin: 15px 0;
+    padding: 39px 19px 14px;
+    position: relative;
+}
+
+.order-tabl:after {
+    background-color: #f4eee6;
+    border: 1px solid #aaa;
+    border-radius: 4px 0 4px 0;
+    color: #496183;
+    content: "Заказ фотографий";
+    font-size: 12px;
+    font-weight: bold;
+    left: -1px;
+    padding: 3px 7px;
+    position: absolute;
+    top: -1px;
+}
+
+.order-tabl h2 {
+    border-color: #000000 #000000 #6E26AB;
+    color: #6E26AB;
+    border-style: none none solid;
+    border-width: 0 0 1px;
+}
+
+
+
+.block{
+    background: #ebebeb;
+    border:1px solid #acacac;
+    margin:0 0 10px;
+    padding:0 10px 10px;
+    box-shadow:0 0 2px #CCCCCC inset;
+    position:relative;
+    -webkit-border-radius: 5px; /* Safari 3-4, iOS 1-3.2, Android ?1.6 */
+    -moz-border-radius: 5px; /* Firefox 1-3.6 */
+    border-radius: 5px; /* Opera 10.5+, IE 9+, Safari 5, Chrome, Firefox 4+, iOS 4+, Android 2.1+ */
+}
+
+.block:before, .block:after {
+    content:"";
+    position:absolute;
+    z-index:-2;
+}
+
+
+.block h1{
+    color:#007299;
+    font-size:1.7em;
+    font-family:"Trebuchet MS",Tahoma,Arial,sans-serif;
+    text-shadow:1px 1px 3px #999999;
+    text-align: left;
+}
+
+.block h1 a{
+    text-decoration:none;
+    color:#007299;
+    text-shadow:1px 1px 3px #999999;
+}
+
+.block h1 a:hover{
+    text-decoration:none;
+    color:#209335;
+    text-shadow:1px 1px 3px #999999;
+}
+
+.block h2{
+    padding: 6px 10px 5px 10px;
+    text-transform:uppercase;
+    margin:0 -10px 10px;
+    -moz-background-size: 100% 100%;  /*Firefox 3.6+*/
+    -o-background-size: 100% 100%; -webkit-background-size: 100% 100%; -khtml-background-size: 100% 100%; background-size: 100% 100%;
+    background: -moz-linear-gradient(top, #fdef00, #fd9d00);
+    background: -webkit-gradient(linear, left top, left bottom, from(#fdef00), to(#fd9d00));
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled='true',startColorstr=#fdef00,endColorstr=#fd9d00,GradientType=0); zoom: 1;
+    background-clip: border-box; -moz-background-clip: border-box; -webkit-background-clip: border-box; -khtml-background-clip: border-box;
+    background-origin: border-box; -moz-background-origin: border; -webkit-background-origin: border-box; -khtml-background-origin: border-box;
+    -moz-border-radius: 6px 6px 0 0;
+    -webkit-border-radius: 6px 6px 0 0;
+    border-radius: 6px 6px 0 0;
+    color: #000000;
+    font: 14px Arial,Helvetica,sans-serif;
+    height: 18px;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 4px #BBBBBB;
+    border-bottom:1px solid #DDDDDD;
+}
+
+.yellow {
+    background: -moz-linear-gradient(top, #fdef00, #fd9d00);
+    background: -webkit-gradient(linear, left top, left bottom, from(#fdef00), to(#fd9d00));
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled='true',startColorstr=#fdef00,endColorstr=#fd9d00,GradientType=0); zoom: 1;
+}
+
+.silver {
+    background: -moz-linear-gradient(top, #fff, #ccc);
+    background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ccc));
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled='true',startColorstr=#fff,endColorstr=#ccc,GradientType=0); zoom: 1;
+}
+
+.block h3{
+    margin-bottom:10px;
+    color:#3F7900;
+    text-shadow:1px 1px 2px #999;
+    padding:0;
+}
+
+.block h2 a{
+    color:#005F7F;
+    text-decoration:none;
+}
+
+.post_thumbnail{
+    background:none repeat scroll 0 0 #FFFFFF;
+    border:1px solid #ccc;
+    margin:5px 15px 10px 0;
+    padding:3px;
+    box-shadow:0 0 3px rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow:0 0 3px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow:0 0 3px rgba(0, 0, 0, 0.2);
+}
+
+.post{padding:0 5px 10px;border-bottom:1px dotted #aaa;margin-bottom:15px;}
+.title{font-family:Georgia,"Times New Roman",Times,serif;font-size:20px;color:#333;text-shadow:1px 1px 2px #999;margin:0 0 10px;padding:0;}
+.title a{text-decoration:none;color:#333;font-family:Georgia,"Times New Roman",Times,serif;}
+.title a:hover{text-decoration:none;color:#209335;text-shadow:1px 2px 3px #999;}
+.post-info{font-size:12px;padding-bottom:10px;display:block;overflow:hidden;}
+.post-info .postdate{color:#acacac;background:url(/img/date.png) 0 50% no-repeat;padding-left:15px;margin-right:10px;}
+.post-info .author{color:#359cc6;background:url(/img/user.png) 0 50% no-repeat;padding-left:15px;margin-right:10px;}
+.post-info .comment{color:#359cc6;background:url(/img/comment.png) 0 50% no-repeat;padding-left:15px;margin-right:10px;}
+.post-info .view{color:#acacac;background:url(/img/view.gif) 0 50% no-repeat;padding-left:18px;margin-right:10px;}
+.post_thumbnail{background:none repeat scroll 0 0 #FFFFFF;border:1px solid #ccc;margin:5px 15px 5px 0;padding:3px;box-shadow:0 0 3px rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow:0 0 3px rgba(0, 0, 0, 0.2);-moz-box-shadow:0 0 3px rgba(0, 0, 0, 0.2);}
+.post_thumbnail:hover{box-shadow:none;}
+.entry {
+    border: 0 none;
+    font-family: inherit;
+    font-size: 100%;
+    font-style: inherit;
+    font-weight: inherit;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+
+}
+
+.c_colonka .entry {
+    text-indent: 15px;
+}
+
+.aligncenter {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.alignleft {
+    float: left;
+}
+.alignright {
+    float: right;
+}
+
+div.readmorecontent{text-align:right;margin-right:10px;}
+.readmorecontent a{background:#e5e5e5;background:-webkit-gradient(linear, left top, left bottom, from(#fff), to(#e5e5e5));
+    background:-webkit-linear-gradient(top, #fff, #e5e5e5);background:-moz-linear-gradient(top, #fff, #e5e5e5);
+    background:-ms-linear-gradient(top, #fff, #e5e5e5);background:-o-linear-gradient(top, #fff, #e5e5e5);
+    border:1px solid #CCC;border-radius:16px 16px 16px 16px;color:#555555;font-size:12px;outline:none;
+    line-height:30px;margin:0;padding:5px 10px;text-decoration:none;box-shadow:0 1px 2px rgba(0, 0, 0, 0.2), 0 1px 0 rgba(255, 255, 255, 0.4) inset;
+    text-shadow:0 1px 0 rgba(255, 255, 255, 0.2);}
+.readmorecontent a:active{position:relative;top:1px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.9);-webkit-box-shadow:inset 0 1px 0 rgba(255,255,255,0.4);-moz-box-shadow:inset 0 1px 0 rgba(255,255,255,0.4);-o-box-shadow:inset 0 1px 0 rgba(255,255,255,0.4);}
+.readmorecontent a:hover{background:#fff;background:-webkit-gradient(linear, left top, left bottom, from(#e5e5e5), to(#fff));
+    background:-webkit-linear-gradient(top, #e5e5e5, #fff);background:-moz-linear-gradient(top, #e5e5e5, #fff);
+    background:-ms-linear-gradient(top, #e5e5e5, #ffff);background:-o-linear-gradient(top, #e5e5e5, #fff);}
+
+.yarlist{list-style:none outside none;margin:0;padding:0;}
+.yarlist li{padding:4px 0; display: block;}
+.yarlist li a{background:url(/img/icon-arrow.png) 0 50% no-repeat;padding-left:18px;}
+
+
+.noteclassic,.noteimportant,.notewarning,.notetip,.notehelp,.notesmile{
+    width:84%;
+    border-radius:10px 10px;
+    -moz-border-radius:10px 10px;-webkit-border-radius:10px 10px;
+    padding:10px 20px 10px 80px;
+    margin: 15px 5px 5px 7px;
+    -webkit-box-shadow:2px 2px 3px #999;-moz-box-shadow:2px 2px 3px #999;
+    min-height:40px;
+    height:auto;
+    overflow:visible;
+    position:relative;
+    bottom:6px;
+    right:6px;
+    border:1px solid #999999;
+    background-position:20px 50%;
+    background-repeat:no-repeat;
+    text-align:justify;
+}
+
+.noteclassic{
+    background-color:#EEF;
+    background-image:url(/img/note.png);
+}
+
+input.subscribe-field{width:130px;padding:5px 0 5px 30px;background:url(/img/rss-mail.png) 3px 50% no-repeat;font:12px Arial,
+Helvetica, sans-serif;color:#888;border:1px solid #c8c6c4;vertical-align:top;border-radius:3px;}
+
+.subscribeform{text-align:center;}
+.subscribeform button{background:none repeat scroll 0 0 #838383;border:none;border-radius:3px 3px 3px 3px;color:#FFFFFF;font:13px Arial, Helvetica, sans-serif;margin:6px 0 0 3px;text-shadow:1px 1px 0 rgba(0, 0, 0, 0.4);padding:4px 5px 5px;}
+.subscribeform button:hover{cursor:pointer;text-shadow:1px 1px 0 rgba(0, 0, 0, 0.4);background:none repeat scroll 0 0 #30A146;}
+.block p a img{margin-left: -5px;}
+.c_colonka .block p {
+    font-size: 16px;
+    font-weight: normal;
+    color: #000;
+    font-family: "Times New Roman", Times, serif;
+    line-height: 1.3;
+    text-indent: 15px;
+    margin: 10px 0;
+}
+.r_colonka p{margin: 15px 5px; font-size: 14px;}
+.l_colonka p{margin: 15px 5px; font-size: 14px;}
+.block blockquote p {
+    line-height: 1.0;
+}
+.block blockquote {
+    border-left-width: 0; padding-left: 5px; padding-right: 5px;
+}
+/*центрирование блока*/
+.center-bl {display:block; margin:0 auto;}
+/*центрирование строки*/
+.center {text-align: center;}
+
+#smail {
+    background:url(/img/smile.jpg) no-repeat transparent;
+    height: 220px;
+}
+#noVrag {
+    display: none;
+    text-align: justify;
+}
+
+.textwidget hr {
+    border: none; /* Убираем границу для браузера Firefox */
+    color: #b9b9b9; /* Цвет линии для остальных браузеров */
+    background-color: #b9b9b9; /* Цвет линии для браузера Firefox и Opera */
+    height: 1px; /* Толщина линии */
+}
+
+.shadow{box-shadow:4px 4px 10px #857373;-webkit-box-shadow:4px 4px 10px #857373;-moz-box-shadow:4px 4px 10px #857373;padding:0;}
+
+.clearlist{list-style:none;margin:0;padding:0;position:relative;}
+.clearlist li{
+    position: relative;
+    background:none;
+    border-bottom:1px dotted #262270;
+    padding:10px 0;
+    font-family: "Helvetica Neue", Arial,Helvetica,sans-serif;
+    font-size: 75%;
+    line-height: 1.5;
+    display: inline-block;
+}
+
+.clearlist li a{text-decoration:none;background:none;padding-left:0;}
+.clearlist li .time{color:#359cc6;padding-bottom:5px;font-style:italic;}
+.clearlist li span{color:#359cc6;font-style:italic;}
+.clearlist li .avatar{float:left;border:1px solid #ccc;margin-right:5px;padding:1px;}
+.clearlist li .recent_comment_name,.recent_comment_name a{font-size:12px;font-weight:700;color:#d15128;font-style:italic;}
+.clearlist li .ctime{font-size:11px;color:#999;}
+.simplist li{padding:4px 0;}
+.simplist li a{background:url(/img/arr.png) 0 50% no-repeat;padding-left:12px;}
+
+
+.r_colonka ul li a, .c_colonka ul li a, .l_colonka ul li a {
+    background: url(/img/arr.png) no-repeat scroll 0 4px transparent;
+    padding-left: 10px;
+}
+
+.r_colonka a:hover, .c_colonka a:hover, .l_colonka a:hover {
+    color: #e88f00;
+    background-color: #eaeaea;
+    text-decoration: underline;
+}
