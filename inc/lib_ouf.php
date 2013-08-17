@@ -60,8 +60,26 @@ function get_f($text,$tag)
 	 return $output;
   }
 
+  function sql_valid($data) {
+	 $data = str_replace("\\", "\\\\", $data);
+	 $data = str_replace("'", "\'", $data);
+	 $data = str_replace('"', '\"', $data);
+	 $data = str_replace("\x00", "\\x00", $data);
+	 $data = str_replace("\x1a", "\\x1a", $data);
+	 $data = str_replace("\r", "\\r", $data);
+	 $data = str_replace("\n", "\\n", $data);
+	 return($data);
+  }
 
+  /**
+	* для базы данных
+	*
+	* @param $input
+	*
+	* @return bool|mixed
+	*/
   function sanitize($input) {
+
 	 if (is_array($input)) {
 		foreach($input as $var=>$val) {
 		  $output[$var] = sanitize($val);
@@ -72,12 +90,109 @@ function get_f($text,$tag)
 		  $input = stripslashes($input);
 		}
 		$input  = cleanInput($input);
-		$output = mysql_real_escape_string($input);
+		$output = sql_valid($input);
+
 	 }
-	 return $output;
+	 return isset($output)?$output:false;
   }
 
 //---------------------------------------------------------
+  /**
+	* @param $table
+	* @param $kolonka
+	*
+	* print для ENUM
+	*/
+  function printEnum ($table, $kolonka)
+  {
+
+	 if (isset($_SESSION['kolonka']))
+		{
+		  $current_c = $_SESSION['kolonka'];
+		}
+	 else
+		{
+		  $current_c = 'c_colonka';
+		}
+
+	 $db = go\DB\Storage::getInstance()->get('db-for-data');
+	 $data	= $db->query('SHOW COLUMNS FROM ?t LIKE "%?e%" ',array($table,$kolonka))->row();
+	 preg_match_all('/\(([^)]+)\)/', str_replace("'", '', $data['Type']), $values);
+	 $enum_fileds = explode(',', $values[1][0]);
+	 foreach ($enum_fileds as $field)
+		{
+		  printf ("<option value ='%s' ".( $current_c == $field ? 'selected="selected"' : '')." >%s</option>",$field,$field);
+		}
+  }
+
+
+
+  //---------------------------------------------------------
+  /**
+	* @param $table
+	* @param $kolonka
+	*
+	* print для Set
+	*/
+  function printSet ($table, $kolonka)
+  {
+
+	 if (isset($_SESSION['location']))
+		{
+		  $current_c = $_SESSION['location'];
+		}
+	 else
+		{
+		  $current_c = NULL;
+		}
+
+	 $db = go\DB\Storage::getInstance()->get('db-for-data');
+	 $data	= $db->query('SHOW COLUMNS FROM ?t LIKE "%?e%" ',array($table,$kolonka))->row();
+	 preg_match_all('/\(([^)]+)\)/', str_replace("'", '', $data['Type']), $values);
+	 $enum_fileds = explode(',', $values[1][0]);
+	 foreach ($enum_fileds as $field)
+		{
+		  $selekted = '';
+		  foreach($current_c as $val)
+			 {
+				if($val == $field)
+				  {
+					 $selekted = 'selected="selected"';
+					 break;
+				  }
+			 }
+		  printf ("<option value ='%s' ".$selekted." >%s</option>",$field,$field);
+		}
+  }
+
+
+
+  /**
+	* Get either a Gravatar URL or complete image tag for a specified email address.
+	*
+	* @param string $email The email address
+	* @param string $s Size in pixels, defaults to 80px [ 1 - 2048 ]
+	* @param string $d Default imageset to use [ 404 | mm | identicon | monsterid | wavatar ]
+	* @param string $r Maximum rating (inclusive) [ g | pg | r | x ]
+	* @param boole $img True to return a complete IMG tag False for just the URL
+	* @param array $atts Optional, additional key/value attributes to include in the IMG tag
+	* @return String containing either just a URL or a complete image tag
+	* @source http://gravatar.com/site/implement/images/php/
+	*/
+  function get_gravatar( $email, $s = 80, $d = 'mm', $r = 'g', $img = false, $atts = array() ) {
+	 $url = 'http://www.gravatar.com/avatar/';
+	 $url .= md5( strtolower( trim( $email ) ) );
+	 $url .= "?s=$s&d=$d&r=$r";
+	 if ( $img ) {
+		$url = '<img src="' . $url . '"';
+		foreach ( $atts as $key => $val )
+		  $url .= ' ' . $key . '="' . $val . '"';
+		$url .= ' />';
+	 }
+	 return $url;
+  }
+
+
 
 	function Get_IP()
 		{
@@ -140,71 +255,7 @@ function ISubStr($InStr,$Len)
   return $Tmp1;
 }
 
-// Paging type 1 (numbers of a pages)
-function get_paging1($item_q, $item_on_page, $cur_page, $tmpl_cur_page, $tmpl_oth_page, $divider = '', $max_simple = 30, $block_first = '&lt;&lt;', $block_last = '&gt;&gt;')
-{
-  if (!is_numeric($cur_page)) $cur_page = 1;
-  $max_page = ceil($item_q/$item_on_page);
 
-  if ($max_page <= $max_simple) { // Simple
-    for ($I=1;$I<=$max_page;$I++) {
-      if ($I == $cur_page) $paging .= str_replace("[NUM]",$I, $tmpl_cur_page);
-      else {
-        $page_no = $page_show = $I;
-        eval($tmpl_oth_page);
-        $paging .= $page_num;
-      }
-      if ($I < $max_page) $paging .= $divider;
-    }
-  } else { // Complex
-    if ($cur_page > 1) {
-      $page_no = 1;
-      $page_show = $block_first;
-      eval($tmpl_oth_page);
-      $paging .= $page_num;
-    }
-    if ($cur_page > 3) $paging .= '... ';
-    for ($I=$cur_page-2;$I<=$cur_page+2;$I++) {
-      if ($I>0 and $I<=$max_page) {
-        if ($I == $cur_page) $paging .= str_replace("[NUM]",$I, $tmpl_cur_page);
-        else {
-          $page_no = $page_show = $I;
-          eval($tmpl_oth_page);
-          $paging .= $page_num;
-        }
-        if ($I<$cur_page+2 and $I<$max_page) $paging .= $divider;
-      }
-    }
-    if ($cur_page < $max_page-2) $paging .= '... ';
-    if ($cur_page < $max_page) {
-      $page_no = $max_page;
-      $page_show = $block_last;
-      eval($tmpl_oth_page);
-      $paging .= $page_num;
-    }
-  }
-
-  return $paging;
-}
-
-// Paging type 2 (numbers of a items, divided on groups)
-function get_paging2($item_q, $item_on_page, $cur_page, $tmpl_cur_page, $tmpl_oth_page)
-{
-  $page_no = 0;
-  for ($I=1;$I<=$item_q;$I=$I+$item_on_page) {
-    $page_no++;
-    $num_block = $I;
-    $I1 = $I + $item_on_page - 1;
-    if ($I1<=$item_q && $I!=$I1) $num_block .= '-'.$I1;
-    if ($page_no != $cur_page) {
-      eval($tmpl_oth_page);
-      $paging .= $page_num;
-    } else {
-      $paging .= str_replace("[NUM]",$num_block, $tmpl_cur_page);
-    }
-  }
-  return $paging;
-}
 
 // Call HTTP authentication header
 function authenticate($message)

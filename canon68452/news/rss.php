@@ -3,9 +3,9 @@ include 'sys/func.php';
 header("Content-type: application/rss+xml");
 echo '<?xml version="1.0" encoding="UTF-8" ?><rss version="2.0">
 <channel>
-    <title>RSS Р›РµРЅС‚Р° РЅРѕРІРѕСЃС‚РµР№ '.$_SERVER['HTTP_HOST'].'</title>
+    <title>RSS Лента новостей '.$_SERVER['HTTP_HOST'].'</title>
      <link>http://'.$_SERVER['HTTP_HOST'].'</link>
-     <description>РќРѕРІРѕСЃС‚Рё СЃР°Р№С‚Р° '.$_SERVER['HTTP_HOST'].'</description>
+     <description>Новости сайта '.$_SERVER['HTTP_HOST'].'</description>
      <language>ru-RU</language>';
      echo "\n";
 

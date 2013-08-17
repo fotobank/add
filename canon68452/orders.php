@@ -17,7 +17,6 @@ if ($pg < 1)
 	}
 $start = ($pg - 1) * RECORDS_PER_PAGE;
 
-
     $rs = $db->query('select SQL_CALC_FOUND_ROWS r.*, u.login, u.us_name
                      from orders r, users u
                     where u.id = r.id_user

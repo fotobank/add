@@ -1,23 +1,39 @@
 <?
-//СЃРёСЃС‚РµРјРЅС‹Рµ С„СѓРЅРєС†РёРё
-error_reporting(E_WARNING);
+//системные функции
+  error_reporting(E_WARNING);
 
-function admin_only()
-{
-  $db = go\DB\Storage::getInstance()->get('db-for-data');
-  $rpa = $db->query('SELECT `admnick` FROM `config` WHERE id=1','','el');
-  $rpp = $db->query('SELECT `admpass` FROM `config` WHERE id=1','','el');
-if(@$_COOKIE['admnews'] != "$rpa///$rpp"){
-		echo '<div class="title2">РР·РІРёРЅРёС‚Рµ ,РґР°РЅРЅР°СЏ С„СѓРЅРєС†РёСЏ РґРѕСЃС‚СѓРїРЅР° С‚РѕР»СЊРєРѕ РґР»СЏ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂР°<br/><a href="admin.php">РђРґРјРёРЅРєР°</a></div>';
-		}
-}
-
-function if_adm($str){
-  $db = go\DB\Storage::getInstance()->get('db-for-data');
-  $rpa = $db->query('SELECT `admnick` FROM `config` WHERE id=1','','el');
-  $rpp = $db->query('SELECT `admpass` FROM `config` WHERE id=1','','el');
-if(@$_COOKIE['admnews'] == "$rpa///$rpp"){
-		return $str;
+  function admin_only()
+  {
+	 if (isset($_COOKIE['admnews']) && $_COOKIE['admnews'] != md5(login().'///'.pass()));
+		  {
+    if(!$_SESSION['admin_logged']){
+		  echo '<div class="title2">Извините ,данная функция доступна только для администратора<br/><a href="index.php">Админка</a></div>';
+	 }
   }
-  return false;
 }
+
+
+  function if_adm($str)
+  {
+	 if (isset($_COOKIE['admnews']) && $_COOKIE['admnews'] == md5(login().'///'.pass()));
+		{
+  if(!$_SESSION['admin_logged']){
+		  return $str;
+		}
+	 return false;
+  }
+}
+
+
+  function login()
+  {
+	 $db = go\DB\Storage::getInstance()->get('db-for-data');
+	    return $db->query('SELECT `admnick` FROM `config` WHERE id=1', '', 'el');
+  }
+
+
+  function pass()
+  {
+	 $db = go\DB\Storage::getInstance()->get('db-for-data');
+	       return $db->query('SELECT `admpass` FROM `config` WHERE id=1', '', 'el');
+  }

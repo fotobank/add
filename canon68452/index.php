@@ -1,8 +1,17 @@
 <?
 	set_time_limit(0);
-	include (dirname(__FILE__).'/../inc/config.php');
-	include (dirname(__FILE__).'/../inc/func.php');
-	//Логин
+	include (__DIR__.'/../inc/config.php');
+	include (__DIR__.'/../inc/func.php');
+   include (__DIR__.'/news/sys/func.php');
+
+  header('Content-type: text/html; charset=windows-1251');
+  error_reporting(1);
+  ini_set('display_errors', 1);
+
+  function errLogin(){
+	 echo '<div style="position: absolute;width: 260px; left: 50%; top:5%; margin-left: -130px;"><div class="block red">Не правильный логин или пароль!</div></div>';
+  }
+  //Логин
 	if (isset($_POST['op']))
 		{
 			if ($_POST['op'] == 'out')
@@ -13,27 +22,30 @@
 				}
 			else
 				{
-					//Вот тут прописываем логин и пароль админа!
-					if ($_POST['login'] == 'Photomas123' && $_POST['pass'] == 'Ht45Fd76S98K23')
+
+					if (htmlspecialchars($_POST['login']) == login() && md5(htmlspecialchars($_POST['pass'])) == pass())
 						{
 							$_SESSION['admin_logged'] = true;
+						   setcookie('admnews',md5(htmlspecialchars($_POST['login']).'///'.md5(htmlspecialchars($_POST['pass'])),time()+86400));
+						   setcookie('admnewswar','');
 							main_redir();
-						}
+						} else {
+					  if(isset($_COOKIE['admnewswar']) && intval($_COOKIE['admnewswar'])>0){
+						 setcookie('admnewswar',$_COOKIE['admnewswar']+1,time()+3600);
+						 errLogin();
+					  } else{
+						 setcookie('admnewswar',1,time()+3600);
+						 errLogin();
 
-				}
+//					  echo '<div class="title2">Не правельный логин или пароль</div><div class="content2"><a href="?">Авторизация</a></div>';
+//						   exit;
+					  }
+
+					}
+		    }
 		}
 
-   header('Content-type: text/html; charset=windows-1251');
-	error_reporting(0);
-	ini_set('display_errors', 0);
 
-  function debugHC($v, $group="message")
-  {
-	 if (is_callable($f=array('Debug_HackerConsole_Main', 'out')))
-		{
-		  call_user_func($f, $v, $group);
-		}
-  }
 
 	/*$time  = microtime();
 	$time  = explode(' ', $time);
@@ -49,7 +61,7 @@
   require_once (__DIR__.'/../core/Debug_HackerConsole/lib/Debug/HackerConsole/Main.php');
   new Debug_HackerConsole_Main(true);
 
-  /*function debug($v, $group="message")
+ /*function debug($v, $group="message")
   {
 	 if (is_callable($f=array('Debug_HackerConsole_Main', 'out')))
 		{
@@ -98,6 +110,9 @@
 	<script type="text/javascript" src="/js/jquery.js"></script>
 	<script type="text/javascript" src="/js/bootstrap.min.js"></script>
 	<link href="/css/admin.css" rel="stylesheet" type="text/css"/>
+  <link rel="stylesheet" href="/js/bootstrap-multiselect-master/css/bootstrap-multiselect.css" type="text/css">
+  <link rel="stylesheet" href="/js/bootstrap-multiselect-master/css/prettify.css" type="text/css">
+
 
 
 	<link href="/css/animate.css" rel="stylesheet" type="text/css"/>
@@ -106,6 +121,84 @@
 	<script src="/js/bootstrap-modal.js"></script>
 	<script type="text/javascript" src="/canon68452/ajax/ajaxAdmin.js"></script>
    <script src="/js/main.js"></script>
+  <script type="text/javascript" src="/js/bootstrap-multiselect-master/js/bootstrap-multiselect.js"></script>
+  <script type="text/javascript" src="/js/bootstrap-multiselect-master/js/prettify.js"></script>
+
+
+
+
+<?
+
+  function printErr ($err){
+	 $mes = $err;
+	 if(is_array($err)) {
+		foreach ($err as $val){
+		  $mes = '';
+		  $mes .= $val."<br>";
+		}
+	 }
+	 $err = sanitize($mes);
+	 ?>
+	 <link rel="stylesheet" href="/canon68452/jGrowl-master/jquery.jgrowl.min.css" type="text/css">
+	 <script type="text/javascript" src="/js/jquery.js"></script>
+	 <script type="text/javascript" src="/canon68452/jGrowl-master/jquery.jgrowl.min.js"></script>
+	 <?
+	 echo "<script type='text/javascript'>(function($){ $(document).ready(function(){ $.jGrowl('$err',{
+	                            header: 'Ошибка!',
+	                            sticky:true,
+	                            life:12000,
+	                            header: 'Ошибка!',
+					                theme: 'iphone'
+	                            });});})(jQuery);</script>";
+  }
+
+  function debugHC($v, $group="message")
+  {
+	 printErr ($v);
+	 if (is_callable($f=array('Debug_HackerConsole_Main', 'out')))
+		{
+		  call_user_func($f, $v, $group);
+		}
+  }
+?>
+
+
+
+
+
+  <script type="text/javascript">
+	 $(document).ready(function() {
+		$('.multiselect').multiselect({
+		  buttonClass: 'btn',
+		  buttonWidth: 'auto',
+		  includeSelectAllOption: true,
+		  buttonContainer: '<div class="btn-group" />',
+		  maxHeight: false,
+		  buttonText: function(options) {
+			 if (options.length == 0) {
+				return 'None selected <b class="caret"></b>';
+			 }
+			 else if (options.length > 3) {
+				return options.length + ' selected  <b class="caret"></b>';
+			 }
+			 else {
+				var selected = '';
+				options.each(function() {
+				  selected += $(this).text() + ', ';
+				});
+				return selected.substr(0, selected.length -2) + ' <b class="caret"></b>';
+			 }
+		  }
+		});
+	 });
+  </script>
+
+
+  <script type="text/javascript">
+	 function confirmOk() {
+		return confirm("Вы подтверждаете действие?");
+	 }
+  </script>
 
 
 		<script type="text/javascript">
@@ -129,9 +222,10 @@ tinyMCE.init({
         language : "ru",
         // General options
         mode : "exact",
-		elements : "content",
+		 elements : "content",
         theme : "advanced",
-       height:"800px",
+       height:"1230px",
+
 
   inline_styles: true,
   remove_script_host : false,
@@ -173,6 +267,55 @@ tinyMCE.init({
 </script>
 
 
+<script type="text/javascript">
+  tinyMCE.init({
+	 language : "ru",
+	 // General options
+	 mode : "exact",
+	 elements : "body, head",
+	 theme : "advanced",
+	 height:"300px",
+
+
+	 inline_styles: true,
+	 remove_script_host : false,
+	 cleanup: false,
+	 extended_valid_elements:"noindex, strong/b,  em/i, sup, sub, ul, ol, li, div[class | id | style | name | title | align | width | height], span[class | id | style | name | title], hr[class | id | style | name | title | align | width | height], img[class | id | style | name | title | src | align | alt | hspace | vspace | width | height | border=0], a[class | id | style | name | title | src | href | rel | target | ], iframe[class | id | style | name | title | src | align | width | height | marginwidth | marginheight | scrolling | frameborder | border | bordercolor], embed[ param | flashvars | wmode | class | id | style | name | title | align | width | height | hspace | vspace | type | pluginspage | src], object[class | id | style | name | title | align | width | height | hspace | vspace |embed|param| type | classid | code | codebase | codetype | data],param[name|value],script[type|src],iframe[src|style|width|height|scrolling|marginwidth|marginheight|frameborder]",
+
+
+	 plugins :        "spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+
+	 // Theme options
+	 theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,undo,redo,|,bullist,numlist,|,outdent,indent,blockquote,|,forecolor,backcolor,help",
+	 theme_advanced_buttons2 : "styleselect,formatselect,fontselect,fontsizeselect",
+	 theme_advanced_buttons3 : "hr,visualchars,nonbreaking,removeformat,visualaid,sub,sup,charmap,iespell,media,advhr|,link,unlink,anchor,image,cleanup,spellchecker,code",
+	 theme_advanced_toolbar_location : "top",
+	 theme_advanced_toolbar_align : "left",
+	 theme_advanced_statusbar_location : "bottom",
+	 theme_advanced_resizing : true,
+
+	 // Spellchecker
+	 spellchecker_languages : "+Russian=ru,Ukrainian=uk,English=en",
+	 spellchecker_rpc_url : "http://speller.yandex.net/services/tinyspell",
+	 spellchecker_word_separator_chars : '\\s!"#$%&()*+,./:;<=>?@[\]^_{|}\xa7\xa9\xab\xae\xb1\xb6\xb7\xb8\xbb\xbc\xbd\xbe\u00bf\xd7\xf7\xa4\u201d\u201c',
+
+	 // Example word content CSS (should be your site CSS) this one removes paragraph margins
+	 content_css : "/css/main.css",
+
+	 // Drop lists for link/image/media/template dialogs
+	 template_external_list_url : "lists/template_list.js",
+	 external_link_list_url : "lists/link_list.js",
+	 external_image_list_url : "lists/image_list.js",
+	 media_external_list_url : "lists/media_list.js",
+
+	 // Skin options
+	 skin : "o2k7",
+	 skin_variant : "silver"
+
+  });
+</script>
+
+
 	</head>
 	<body style="margin-left: 20px;">
 	<div class="wrapper">
@@ -183,12 +326,12 @@ tinyMCE.init({
 	if (isset($_GET['page']))
 		{
 			$_SESSION['page'] = intval($_GET['page']);
-			if ($_SESSION['page'] < 1 || $_SESSION['page'] > 8)
+			if ($_SESSION['page'] < 1 || $_SESSION['page'] > 9)
 				{
 					$_SESSION['page'] = 1;
 				}
 		}
-	if (!isset($_SESSION['page']) || $_SESSION['page'] < 1 || $_SESSION['page'] > 8)
+	if (!isset($_SESSION['page']) || $_SESSION['page'] < 1 || $_SESSION['page'] > 9)
 		{
 			$_SESSION['page'] = 1;
 		}
@@ -328,10 +471,16 @@ tinyMCE.init({
 				</td>
 				<td>
 					<form action="index.php" method="get">
-						<input type="submit" value="Backup/Restore" class="<? echo $_SESSION['page'] == 8 ? 'btn btn-success' : 'btn btn-primary'; ?>">
+						<input type="submit" value="Редактор блоков" class="<? echo $_SESSION['page'] == 8 ? 'btn btn-success' : 'btn btn-primary'; ?>">
 						<input type="hidden" name="page" value="8">
 					</form>
 				</td>
+			  <td>
+				 <form action="index.php" method="get">
+					<input type="submit" value="Backup/Restore" class="<? echo $_SESSION['page'] == 9 ? 'btn btn-success' : 'btn btn-primary'; ?>">
+					<input type="hidden" name="page" value="9">
+				 </form>
+			  </td>
 			</tr>
 		</table>
 		<hr>
@@ -361,8 +510,11 @@ tinyMCE.init({
 					include 'content.php';
 					break;
 			case 8:
-					include 'manager.php';
+					include 'editNews.php';
 					break;
+		    case 9:
+				   include 'manager.php';
+				   break;
 		}
 		?>
 
@@ -372,8 +524,18 @@ tinyMCE.init({
 		<script type="text/javascript" src="/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="/js/jquery.tools.min.js"></script>
 		<link href="/css/admin.css" rel="stylesheet" type="text/css"/>
+<?
+// 	  setcookie('admnewswar',1,time()+3600); // для настройки
 
-		<!--Выделение формы входа с затемнением-->
+  if(isset($_COOKIE['admnewswar']) && intval($_COOKIE['admnewswar'])>1){
+
+
+  }
+	  if(isset($_COOKIE['admnewswar']) && intval(@$_COOKIE['admnewswar'])>2){
+	  echo '<div style="position: relative;width: 300px;height: 50px;margin: 20% auto;"><div class="block red">Вы превысили количество допустимых попыток вхoда, следующая попытка будет возможна через час!</div></div>';exit;}
+?>
+
+	<!--Выделение формы входа с затемнением-->
 		<script type="text/javascript">
 			// execute your scripts when the DOM is ready. this is a good habit
 			$(function() {
@@ -387,8 +549,17 @@ tinyMCE.init({
 				});
 			});
 		</script>
+			  <div style="
+							  width: 350px;
+							  height:200px;
+							  background:#F00;
+							  position:absolute;
+							  left:50%;
+							  top:40%;
+							  margin:-100px 0 0 -175px;
+							  z-index:10000;
+							  ">
 
-			<div style="width:350px; height:200px; position:absolute; left:50%; top:50%; margin:-100px 0 0 -200px;">
 				<div class="well">
 					<legend>ВХОД В АДМИНКУ</legend>
 					<form class="expose" method="POST" action="index.php" accept-charset="1251">
@@ -416,6 +587,7 @@ tinyMCE.init({
 	<script type='text/javascript' src='./../js/dynamic.to.top.dev.js'></script>
 	</div>
 	</body>
+
 	<div id="end_content"></div>
 	<?
 	if ((isset($_SESSION['admin_logged']) && $_SESSION['admin_logged'] == true))
@@ -455,16 +627,19 @@ tinyMCE.init({
 		<?
 		}
 	?>
-	<div class="footer">
-		<div style="padding-top: 13px; padding-left: 42%;">
+	<div class="footer" style="height: 30px;">
+	<div style="width:200px;
+	position: relative;
+	height:30px;
+	margin: 0 auto;">
 			<hfooter> Creative ls &copy; 2013</hfooter>
 		</div>
-		<div id="foot_JavaScript" style="position:relative;left:10px;top:13px;width:269px;height:25px;z-index:10;">
+		<div id="foot_JavaScript" style="position:relative;left:10px;margin-top:-15px;width:269px;z-index:1;">
 			<div style="color:#000;font-size:10px;font-family:Verdana,sans-serif;font-weight:normal;font-style:normal;text-decoration:none" id="copyrightnotice"></div>
 			<script type="text/javascript">
 				var now = new Date();
-				var startYear = "1995";
-				var text = "Copyright &copy; ";
+				var startYear = "2012";
+				var text = "&copy; ";
 				if (startYear != '') {
 					text = text + startYear + "-";
 				}

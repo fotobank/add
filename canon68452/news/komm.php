@@ -1,38 +1,47 @@
 <?
 session_start();
 include 'sys/func.php';
-include 'sys/head.php';
+
+  include (__DIR__.'/../../inc/config.php');
+  include (__DIR__.'/../../inc/func.php');
+
 
 $_GET['nid'] = abs(intval($_GET['nid']));
-if(mysql_result(mysql_query('SELECT COUNT(*) FROM `config` WHERE `common`="1"'),0)==0){	echo '<div class="title">РљРѕРјРјРµРЅС‚Р°СЂРёРё Рє РЅРѕРІРѕСЃС‚СЏРј Р·Р°РїСЂРµС‰РµРЅС‹</div><div class="content">
-    	<a href="index.php">Рљ РЅРѕРІСЃС‚СЏРј</a></div>';include 'sys/end.php';exit;}
+if($db->query('SELECT COUNT(*) FROM `config` WHERE `common`=?i',array(1),'el')==0){
+	echo '<div class="title">Комментарии к новостям запрещены</div><div class="content">
+    	<a href="index.php">К новстям</a></div>';exit;}
 
-if(mysql_result(mysql_query('SELECT COUNT(*) FROM `news` WHERE id="'.$_GET['nid'].'" and komm="1"'),0)==0){	echo '<div class="title">РљРѕРјРјРµРЅС‚Р°СЂРёРё Рє РґР°РЅРЅРѕР№ РЅРѕРІРѕСЃС‚Рё Р·Р°РїСЂРµС‰РµРЅС‹</div><div class="content">
-    	<a href="index.php">Рљ РЅРѕРІСЃС‚СЏРј</a></div>';include 'sys/end.php';exit;}
+if($db->query('SELECT COUNT(*) FROM `news` WHERE id=?i and `komm`=?i',array($_GET['nid'],1),'el')==0){
+	echo '<div class="title">Комментарии к данной новости запрещены</div><div class="content">
+    	<a href="index.php">К новстям</a></div>';exit;}
 
-echo '<div class="title2">РљРѕРјРјРµРЅС‚Р°СЂРёРё Рє РЅРѕРІРѕСЃС‚Рё: <a href="news.php?nid='.$_GET['nid'].'">
-'.mysql_result(mysql_query('SELECT `name` FROM `news` WHERE `id`="'.$_GET['nid'].'"'),0).'</a></div>';
+echo '<div class="title2">Комментарии к новости: <a href="news.php?nid='.$_GET['nid'].'">
+'.$db->query('SELECT `name` FROM `news` WHERE `id`=?i',array($_GET['nid']),'el').'</a></div>';
 
-	//РґР»СЏ РєР°РїС‡Рё
+	//для капчи
 
 	$mt = mt_rand(0,99);
 	$mt1 = mt_rand(0,99);
 
-$cfg = mysql_fetch_array(mysql_query('SELECT * FROM `config` WHERE id=1'));
-switch(@$_GET['act']){	default:
+$cfg = $db->query('SELECT * FROM `config` WHERE id=?i',array(1),'row');
+switch(@$_GET['act']){
+	default:
 	@$page = abs(intval($_GET['page']));
 if(empty($page)){$page = 1;}
 
-$all = mysql_result(mysql_query('SELECT COUNT(*) FROM `komments` WHERE `news_id`="'.$_GET['nid'].'"'),0);
-$allp = ceil($all/$cfg[5]);
+$all = $db->query('SELECT COUNT(*) FROM `komments` WHERE `news_id`=?i',array($_GET['nid']),'el');
+
+$allp = ceil($all/$cfg['cop']);
 if($page>$allp){$page=$allp;}
 
 
-if(mysql_result(mysql_query('SELECT COUNT(*) FROM `komments` WHERE `news_id`="'.$_GET['nid'].'" '),0)==0){	echo '<div class="title">РљРѕРјРјРµРЅС‚Р°СЂРёРµРІ РЅРµС‚Сѓ</div>';} else {
-		$komm = mysql_query('SELECT * FROM `komments` WHERE `news_id`="'.$_GET['nid'].'"
-		ORDER BY `id` DESC LIMIT '.intval($page*$cfg[5]-$cfg[5]).','.$cfg[5]);
+if($db->query('SELECT COUNT(*) FROM `komments` WHERE `news_id`=?i',array($_GET['nid']),'el')==0){
+	echo '<div class="title">Комментариев нету</div>';} else {
 
-		while($k = mysql_fetch_array($komm)){			echo '<div class="title">'. htmlspecialchars(stripslashes($k['nick'])).' ['.$k['data'].']  ';
+	$komm = $db->query('SELECT * FROM `komments` WHERE `news_id`=?i ORDER BY `id` DESC LIMIT ?i, ?i',array($_GET['nid'],intval($page*$cfg[5]-$cfg[5]),$cfg[5]),'assoc');
+
+		  foreach($komm as $k){
+			echo '<div class="title">'. htmlspecialchars(stripslashes($k['nick'])).' ['.$k['data'].']  ';
 
 			$str= '<a href="newsadm.php?act=kommdel&kid='.$k['id'].'">[del]</a>'; echo if_adm($str);
 
@@ -42,24 +51,27 @@ if(mysql_result(mysql_query('SELECT COUNT(*) FROM `komments` WHERE `news_id`="'.
 
 
 echo '<div class="content"><form action="?act=kommadd&amp;nid='.$_GET['nid'].'" method="post">
-РџСЂРµРґСЃС‚Р°РІС‚РµСЃСЊ: <input type="text" name="name" /><br/>
-Р’Р°С€ РєРѕРјРјРµРЅС‚Р°СЂРёР№:<br/>
+Представтесь: <input type="text" name="name" /><br/>
+Ваш комментарий:<br/>
 <textarea name="kommtext" cols="13" rows="4"></textarea><br/>';
-if(mysql_result(mysql_query('SELECT COUNT(*) FROM `config` WHERE `captcha`="1"'),0)==1)	{		$_SESSION['mt']=$mt;
-		$_SESSION['mt1']=$mt1;echo  'Р’РІРµРґРёС‚Рµ РєРѕРґ СЃ РєР°СЂС‚РёРЅРєРё:<br/><img src="captcha.php" alt="wait" /><br/>
+if($db->query('SELECT COUNT(*) FROM `config` WHERE `captcha`=?i',array(1),'el')==1)
+	{
+		$_SESSION['mt']=$mt;
+		$_SESSION['mt1']=$mt1;
+echo  'Введите код с картинки:<br/><img src="captcha.php" alt="wait" /><br/>
 <input type="text" name="kod" size="4"/>';
 	}
 
 
-echo '<input type="submit" value="Р”РѕР±Р°РІРёС‚СЊ" /></form></div><div class="content2">';
+echo '<input type="submit" value="Добавить" /></form></div><div class="content2">';
 
-//РЅР°РІРёРіР°С†РёСЏ
+//навигация
 
 if($page>1){echo '<a href="?page='.($page-1).'&amp;nid='.$_GET['nid'].'"><<</a> ';}
 	if($allp>$page){echo '<a href="?page='.($page+1).'&amp;nid='.$_GET['nid'].'">>></a><br/>';}
-	echo '<form action="?" method="get">РЎС‚СЂ. <input type="text" size="2" name="page" />
+	echo '<form action="?" method="get">Стр. <input type="text" size="2" name="page" />
 	<input type="hidden" name="nid" value="'.$_GET['nid'].'" /><input type="submit" value="go" /></form></div>';
-	$str = '<div class="title"><a href="admin.php">РђРґРјРёРЅРєР°</a></div>'; echo if_adm($str);
+	$str = '<div class="title"><a href="admin.php">Админка</a></div>'; echo if_adm($str);
 
 break;
 
@@ -68,39 +80,42 @@ case 'kommadd':
 $_POST['kommtext'] = trim($_POST['kommtext']);
 $_POST['name'] = trim($_POST['name']);
 
-if(mb_strlen($_POST['name'],'utf-8')>16){	echo '<div class="title">РњР°РєСЃРёРјР°Р»СЊРЅР°СЏ РґР»РёРЅР° РЅРёРєР° 16 СЃРёРјРІРѕР»РѕРІ</div><div class="content">
-    	<a href="komm.php?nid='.$_GET['nid'].'">РќР°Р·Р°Рґ</a><br/>
-    	<a href="index.php">Рљ РЅРѕРІСЃС‚СЏРј</a></div>';include 'sys/end.php';exit;}
+if(mb_strlen($_POST['name'],'utf-8')>16){
+	echo '<div class="title">Максимальная длина ника 16 символов</div><div class="content">
+    	<a href="komm.php?nid='.$_GET['nid'].'">Назад</a><br/>
+    	<a href="index.php">К новстям</a></div>';exit;}
 
 if(mb_strlen($_POST['kommtext'],'utf-8')>$cfg[9]){
-	echo '<div class="title">РњР°РєСЃРёРјР°Р»СЊРЅР°СЏ РґР»РёРЅР° РєРѕРјРјРµРЅС‚Р°СЂРёСЏ '.$cfg[9].' СЃРёРјРІРѕР»РѕРІ</div><div class="content">
-    	<a href="komm.php?nid='.$_GET['nid'].'">РќР°Р·Р°Рґ</a><br/>
-    	<a href="index.php">Рљ РЅРѕРІСЃС‚СЏРј</a></div>';include 'sys/end.php';exit;}
+	echo '<div class="title">Максимальная длина комментария '.$cfg['kommdl'].' символов</div><div class="content">
+    	<a href="komm.php?nid='.$_GET['nid'].'">Назад</a><br/>
+    	<a href="index.php">К новстям</a></div>';exit;}
 
-if(mysql_result(mysql_query('SELECT COUNT(*) FROM `config` WHERE `captcha`="1"'),0)==1)
-	{		if(intval($_POST['kod'])!=$_SESSION['mt'].$_SESSION['mt1']){			echo '<div class="title">РљРѕРґ СЃ РєР°СЂС‚РёРЅРєРё РІРІРµРґРµРЅ РЅРµ РІРµСЂРЅРѕ </div><div class="content">
-    	<a href="komm.php?nid='.$_GET['nid'].'">РќР°Р·Р°Рґ</a><br/>
-    	<a href="index.php">Рљ РЅРѕРІСЃС‚СЏРј</a></div>';include 'sys/end.php';exit;}}
 
-if(mysql_result(mysql_query('SELECT COUNT(*) FROM `config` WHERE `anrek`="1"'),0)==1){
+  if($db->query('SELECT COUNT(*) FROM `config` WHERE `captcha`=?i',array(1),'el')==1)
+	{
+		if(intval($_POST['kod'])!=$_SESSION['mt'].$_SESSION['mt1']){
+			echo '<div class="title">Код с картинки введен не верно </div><div class="content">
+    	<a href="komm.php?nid='.$_GET['nid'].'">Назад</a><br/>
+    	<a href="index.php">К новстям</a></div>';exit;}}
+
+	 if($db->query('SELECT COUNT(*) FROM `config` WHERE `anrek`=?i',array(1),'el')==1){
 $_POST['kommtext'] = preg_replace('#http://.*\.(com|net|org|ru|ua|info|in)#i','',$_POST['kommtext']);}
 
 if(empty($_POST['name']) || empty($_POST['kommtext'])){
-echo '<div class="title">Р—Р°РїРѕР»РЅРёС‚Рµ РІСЃРµ РїРѕР»СЏ <br/> *Р РµРєР»Р°РјР° Р·Р°РїСЂРµС‰РµРЅР° </div><div class="content">
-    	<a href="komm.php?nid='.$_GET['nid'].'">РќР°Р·Р°Рґ</a><br/>
-    	<a href="index.php">Рљ РЅРѕРІСЃС‚СЏРј</a></div>';include 'sys/end.php';exit;}
+echo '<div class="title">Заполните все поля <br/> *Реклама запрещена </div><div class="content">
+    	<a href="komm.php?nid='.$_GET['nid'].'">Назад</a><br/>
+    	<a href="index.php">К новстям</a></div>';exit;}
 
-if(mysql_query('INSERT INTO `komments` VALUES("","'.$_GET['nid'].'","'.mysql_real_escape_string($_POST['kommtext']).'",
+if($db->query('INSERT INTO `komments` VALUES("","'.$_GET['nid'].'","'.mysql_real_escape_string($_POST['kommtext']).'",
 "'.mysql_real_escape_string($_POST['name']).'","'.date('d.m.y H:i').'")'))
-{	echo '<div class="title">РљРѕРјРјРµРЅС‚Р°СЂРёР№ СѓСЃРїРµС€РЅРѕ РґРѕР±Р°РІР»РµРЅ</div><div class="content">
-    	<a href="komm.php?nid='.$_GET['nid'].'">РќР°Р·Р°Рґ</a><br/>
-    	<a href="index.php">Рљ РЅРѕРІСЃС‚СЏРј</a></div>';
-    	} else {    		echo '<div class="title">РћС€РёР±РєР° РґРѕР±Р°РІР»РµРЅРёСЏ РєРѕРјРјРµРЅС‚Р°СЂРёСЏ<br/></div><div class="content">
-    	<a href="komm.php?nid='.$_GET['nid'].'">РќР°Р·Р°Рґ</a><br/>
-    	<a href="index.php">Рљ РЅРѕРІСЃС‚СЏРј</a></div>';}
+{
+	echo '<div class="title">Комментарий успешно добавлен</div><div class="content">
+    	<a href="komm.php?nid='.$_GET['nid'].'">Назад</a><br/>
+    	<a href="index.php">К новстям</a></div>';
+    	} else {
+    		echo '<div class="title">Ошибка добавления комментария<br/></div><div class="content">
+    	<a href="komm.php?nid='.$_GET['nid'].'">Назад</a><br/>
+    	<a href="index.php">К новстям</a></div>';}
 
 break;
-
 }
-include 'sys/end.php';
-?>

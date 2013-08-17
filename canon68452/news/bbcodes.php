@@ -3,14 +3,14 @@
 include 'sys/func.php';
 include 'sys/head.php';
 admin_only();
-echo '<div class="title">BB РєРѕРґС‹</div>
+echo '<div class="title">BB коды</div>
 <div class="content">
-<div class="content2">[b] [/b] - <b>Р–РёСЂРЅС‹Р№ С‚РµРєСЃС‚</b></div>
-<div class="content2">[u] [/u] - <u>РџРѕРґС‡РµСЂРєРЅСѓС‚С‹Р№ С‚РµРєСЃС‚</u></div>
-<div class="content2">[i] [/i] - <i>РљСѓСЂСЃРёРІ</i><br/></div>
-<div class="content2">[color=С†РІРµС‚] [/color] - РџСЂРёРјРµСЂ:<br/> [color=red] <font color="red">РўРµРєСЃС‚</font> [/color]</div>
-<div class="content2">[url=СЃСЃС‹Р»РєР°] РЅР°Р·РІР°РЅРёРµ СЃСЃС‹Р»РєРё [/url] - РџСЂРёРјРµСЂ:<br/> [url=http://google.com] РџРѕРёСЃРє [/url] - <a href="http://google.com">РџРѕРёСЃРє</a></div>
-<div class="title"><a href="newsadm.php">РЈРїСЂР°РІР»РµРЅРёРµ РЅРѕРІРѕСЃС‚СЏРјРё</a></div></div>';
+<div class="content2">[b] [/b] - <b>Жирный текст</b></div>
+<div class="content2">[u] [/u] - <u>Подчеркнутый текст</u></div>
+<div class="content2">[i] [/i] - <i>Курсив</i><br/></div>
+<div class="content2">[color=цвет] [/color] - Пример:<br/> [color=red] <font color="red">Текст</font> [/color]</div>
+<div class="content2">[url=ссылка] название ссылки [/url] - Пример:<br/> [url=http://google.com] Поиск [/url] - <a href="http://google.com">Поиск</a></div>
+<div class="title"><a href="newsadm.php">Управление новостями</a></div></div>';
 
 
 include 'sys/end.php';

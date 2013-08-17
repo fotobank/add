@@ -579,3 +579,53 @@ $data .= $text;
 $data .= "</a>";
 return $data;
 }
+
+  /**
+	*  Склонение слов
+	*   $n — число/количество
+	*  ehample :  padegi(2)
+	*  result: коментария
+	*  ehample : padegi(55,'страница','страницы','страниц')
+	*  result: страниц
+	*/
+ function padegi($n,$var1='комментарий',$var2='комментария',$var3='комментариев'){
+
+  return $n%10==1&&$n%100!=11?$var1:($n%10>=2&&$n%10<=4&&($n%100<10||$n%100>=20)?$var2:$var3);
+
+  }
+
+
+  /**
+	* Удаление ссылок из текста
+	* $string = 'Это тестовая строка с ссылками: http://xozblog.ru и еще http://google.com';
+	*
+	* @param $string
+	*
+	* @return mixed
+	*/
+  function removeUrl ($string){
+	 return preg_replace('/\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|$!:,.;]*[A-Z0-9+&@#\/%=~_|$]/i', '', $string);
+  }
+
+
+// Вывести на экран изображение пользователя Gravatar
+  function printGgravatar ($email) {
+  $gravatar = 'http://www.gravatar.com/avatar/' . md5($email) . '?s=32';
+  return '<img src="' . $gravatar . '" width="32" height="32"/>';
+  }
+
+  /**
+	* Создание временного URL из строки
+	* Здесь мы передаем в функцию строковую переменную, преобразуем строку в нижний регистр и заменяем все пробелы тире.
+	* Принцип как в текстовом редакторе WordPress, вводим заголовок статьи и сразу формируется URL страницы.
+	* echo create_slug('Create Simple Slug URL');
+	*
+	* @param $string
+	*
+	* @return mixed
+	*/
+  function create_slug($string){
+	 $string = strtolower($string);
+	 $slug=preg_replace('/[^a-z0-9-]+/', '-', $string);
+	 return $slug;
+  }

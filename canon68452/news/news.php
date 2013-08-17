@@ -1,27 +1,30 @@
 <?
-include 'sys/func.php';
+ if (!isset($_SESSION['admin_logged'])) die();
 
-$_GET['nid'] = abs(intval($_GET['nid']));
-if(mysql_result(mysql_query('SELECT COUNT(*) FROM `news` WHERE `id`="'.$_GET['nid'].'"'),0)==0){	echo '<div class="title2">РР·РІРёРЅРёС‚Рµ ,РґР°РЅРЅР°СЏ РЅРѕРІРѕСЃС‚СЊ РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚
-	<br/><a href="index.php">Рљ РЅРѕРІРѕСЃС‚СЏРј</a></div>';include 'sys/end.php';exit;}
-mysql_query('UPDATE `news` SET `pros`=`pros`+1 WHERE id="'.$_GET['nid'].'"');
-$news = mysql_fetch_array(mysql_query('SELECT * FROM `news` WHERE id="'.$_GET['nid'].'"'));
+  if(isset($_GET['nid'])) {
 
-include 'sys/bb.php';
+	 $_GET['nid'] = abs(intval($_GET['nid']));
 
-//РІС‹РІРѕРґ РЅРѕРІРѕСЃС‚Рё
+	 if($db->query('SELECT COUNT(*) FROM `news` WHERE `id`=?i',array($_GET['nid']),'el')==0)
+		{
+		  echo '<div class="title2">Извините ,данная новость не существует
+	           <br/><a href="index.php">К новостям</a></div>';exit;
+		}
+	 $db->query('UPDATE `news` SET `pros`=`pros`+1 WHERE id=?i',array($_GET['nid']));
 
-echo '<div class="title2">'.htmlspecialchars(stripslashes($news['name']));
-$str='  <a href="newsadm.php?act=newsdel&amp;id='.$_GET['nid'].'">[del]</a>
+	 $news = $db->query('SELECT * FROM `news` WHERE id=?i',array($_GET['nid']),'row');
+
+	 include 'sys/bb.php';
+
+//вывод новости
+
+	 echo '<div class="title2">'.htmlspecialchars(stripslashes($news['name']));
+	 $str='  <a href="newsadm.php?act=newsdel&amp;id='.$_GET['nid'].'">[del]</a>
 <a href="newsadm.php?act=newsedit&amp;id='.$_GET['nid'].'">[edit]</a>'; echo if_adm($str);
-echo '</div><div class="content">'.bb(htmlspecialchars(stripslashes($news['head']))).'</div><div class="title">';
+	 echo '</div><div class="content">'.bb(htmlspecialchars(stripslashes($news['head']))).'</div><div class="title">';
 
-if(mysql_result(mysql_query('SELECT COUNT(*) FROM `config` WHERE common=1'),0)==1 && $news['komm']==1){
-echo '<a href="komm.php?nid='.$_GET['nid'].'">РџСЂРѕРєРѕРјРјРµРЅС‚РёСЂРѕРІР°С‚СЊ</a>
-['.mysql_result(mysql_query('SELECT COUNT(*) FROM `komments` WHERE `news_id`="'.$_GET['nid'].'"'),0).']<br/>';}
-echo 'РџСЂРѕСЃРјРѕС‚СЂРѕРІ: '.$news['pros'].'<br/>
-Р”Р°С‚Р° РґРѕР±Р°РІР»РµРЅРёСЏ: '.$news['date'].'</div>';
-
-
-
-include 'sys/end.php';
+	 if($db->query('SELECT COUNT(*) FROM `config` WHERE common=?i',array(1),'el')==1 && $news['komm']==1){
+		echo '<a href="news/komm.php?nid='.$_GET['nid'].'">Прокомментировать</a> ['.$db->query('SELECT COUNT(*) FROM `komments` WHERE `news_id`=?i',array($_GET['nid']),'el').']<br/>';}
+	 echo 'Просмотров: '.$news['pros'].'<br/>
+  Дата добавления: '.$news['date'].'</div>';
+  }
