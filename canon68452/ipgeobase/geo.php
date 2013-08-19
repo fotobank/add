@@ -19,10 +19,10 @@
         }
 
 	  public function setIp($ip) {
-		 if($this->is_valid_ip($ip)) {
+		 if($this->is_valid_ip($ip) && $ip != '') {
 			$this->ip = $ip;
-		 } else {
-			debugHC('несуществующий ip адрес');
+		 } elseif($ip != '') {
+			debugHC('несуществующий ip адрес: '.$ip);
 		 }
 	  }
 

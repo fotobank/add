@@ -193,7 +193,7 @@ if (isset($_POST['vosstLoc']))
 		&nbsp;
 	 </td>
 	 <td>
-		<form action="/canon68452/index.php?page=8" method="post">
+		<form action="/canon68452/index.php?page=9" method="post">
 		  <input class="btn btn-success" type="submit" name="rezerv" value="Backup" style="margin-top: 20px; margin-left: 33px; position: relative;">
 		</form>
 	 </td>
@@ -210,7 +210,7 @@ if (isset($_POST['vosstLoc']))
 ?>
   <div class="controls">
 	 <div class="input-append">
-		<form action="/canon68452/index.php?page=8" method="post">
+		<form action="/canon68452/index.php?page=9" method="post">
 		  <label> <select class="span3" name="qzNameDb" style="height: 28px; float: left;">
 			 <?
 			 foreach ($files as $key =>  $ln)
@@ -234,7 +234,7 @@ if (isset($_POST['vosstLoc']))
 		Удаление резервной копии,<br> расположенной на сервере:
 		<div class="controls">
 		  <div class="input-append">
-			 <form action="/canon68452/index.php?page=8" method="post">
+			 <form action="/canon68452/index.php?page=9" method="post">
 				<label> <select class="span3" name="qzNameDb" style="height: 28px; float: left;">
 					 <?
 					 foreach ($files as $key =>  $ln)
@@ -256,7 +256,7 @@ if (isset($_POST['vosstLoc']))
   <tr>
 	 <td colspan="3">
 		Восстановление с локального файла:
-  <form action="/canon68452/index.php?page=8" method="post"  enctype='multipart/form-data'>
+  <form action="/canon68452/index.php?page=9" method="post"  enctype='multipart/form-data'>
 	 <input type="hidden" name="MAX_FILE_SIZE" value="15000000" />
 	 <input type = "file" name = "fileDB"  style="float: left; position: relative; width: 273px;">
 	 <input class="btn btn-info" type="submit" name="vosstLoc" value="Restore" style=" position: relative;">

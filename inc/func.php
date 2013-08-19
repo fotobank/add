@@ -66,10 +66,24 @@ function ok_exit($msg = 'Операция успешно завершена', $addr = '')
 function get_param($param_name,$param_index)
 {
 	$db = go\DB\Storage::getInstance()->get('db-for-data');
-	$rs = $db->query('select `param_value` from nastr where `param_name` = (?string) AND `param_index` = ?i',array($param_name,$param_index), 'el');
+	$rs = $db->query('select `param_value` from `nastr` where `param_name` = (?string) AND `param_index` = ?i',array($param_name,$param_index), 'el');
 	$value = $rs ? $rs : false;
 	return $value;
 }
+
+  /**
+	* @param $kolonka
+	* @param $user_id
+	*
+	* @return bool|\go\DB\Result
+	*/
+  function get_user($kolonka,$user_id)
+  {
+	 $db = go\DB\Storage::getInstance()->get('db-for-data');
+	 $rs = $db->query('select ?c from `users` where `id` = ?i',array($kolonka,$user_id), 'el');
+	 $value = $rs ? $rs : false;
+	 return $value;
+  }
 
 /**
  * @return string
@@ -610,9 +624,38 @@ return $data;
 
 // Вывести на экран изображение пользователя Gravatar
   function printGgravatar ($email) {
-  $gravatar = 'http://www.gravatar.com/avatar/' . md5($email) . '?s=32';
-  return '<img src="' . $gravatar . '" width="32" height="32"/>';
+  $gravatar = 'http://www.gravatar.com/avatar/' . md5( strtolower( trim( $email ) ) ) . '?s=32';
+  return '<img class="avatar photo" src="' . $gravatar . '" width="40" height="40"/>';
   }
+
+
+
+  /**
+	* Get either a Gravatar URL or complete image tag for a specified email address.
+	*
+	* @param string $email The email address
+	* @param string $s Size in pixels, defaults to 80px [ 1 - 2048 ]
+	* @param string $d Default imageset to use [ 404 | mm | identicon | monsterid | wavatar ]
+	* @param string $r Maximum rating (inclusive) [ g | pg | r | x ]
+	* @param boole $img True to return a complete IMG tag False for just the URL
+	* @param array $atts Optional, additional key/value attributes to include in the IMG tag
+	* @return String containing either just a URL or a complete image tag
+	* @source http://gravatar.com/site/implement/images/php/
+	*/
+  function get_gravatar( $email, $img = false, $atts = array("width"=>"40", "height"=>"40", "class"=>"avatar photo"), $s = 80, $d = 'mm', $r = 'g' ) {
+	 $url = 'http://www.gravatar.com/avatar/';
+	 $url .= md5( strtolower( trim( $email ) ) );
+	 $url .= "?s=$s&d=$d&r=$r";
+	 if ( $img ) {
+		$url = '<img src="' . $url . '"';
+		foreach ( $atts as $key => $val )
+		  $url .= ' ' . $key . '="' . $val . '"';
+		$url .= ' />';
+	 }
+	 return $url;
+  }
+
+
 
   /**
 	* Создание временного URL из строки

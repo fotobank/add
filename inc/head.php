@@ -26,6 +26,7 @@
 	ini_set('display_errors', 0);
  	error_reporting(0);
    header('Content-type: text/html; charset=windows-1251');
+   header("X-Frame-Options: SAMEORIGIN");
 ?>
 
 	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//RU" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

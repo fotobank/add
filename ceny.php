@@ -381,6 +381,74 @@
 
 
 
+		<div id="respond">
+		  <div class="block">
+			 <h2>Присоединяйтесь к обсуждению!</h2>
+			 <div class="cancel-comment-reply">
+				<small><a rel="nofollow" id="cancel-comment-reply-link"  style="display:none;"
+					href="<?=$_SERVER['REQUEST_URI']?>#respond">Нажмите, чтобы отменить ответ.</a></small>
+			 </div>
+			 <form action="<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']?>#comment-5000" method="post" id="commentform">
+				<p><input type="text" name="author" id="author" value="" size="22" tabindex="1" class="textarea"/>
+				  <label for="author"><small>Имя (обязательно)</small></label></p>
+				<p><input type="text" name="email" id="email" value="" size="22" tabindex="2" class="textarea"/>
+				  <label for="email"><small>E-mail (не публикуется) (обязательно)</small></label></p>
+				<p><input type="text" name="url" id="url" value="" size="22" tabindex="3" class="textarea"/>
+				  <label for="url"><small>Ваш сайт</small></label></p>
+				<div id="comment_quicktags">
+				  <script src="/inc/wp-comment-quicktags-plus.php" type="text/javascript"></script>
+				  <script type="text/javascript">edToolbar();</script>
+				</div>
+				<p><textarea name="comment" id="comment" cols="100%" rows="10" tabindex="4"></textarea></p>
+				<p class="terms">Отправляя кoммeнтapий, Вы автоматически принимаете <a href="#t4" onclick="view('t4'); return false">правила кoммeнтиpoвaния</a> на этом блоге.</p>
+
+				<div id="t4" class="terms">
+				  <h3>Правила кoммeнтиpoвaния на сайте <?=$_SERVER['HTTP_HOST']?>:</h3>
+				  <ol>
+					 <li>Во избежание захламления спамом, <strong>первый кoммeнтapий</strong> всегда проходит премодерацию.</li>
+					 <li>В поле "<strong>Ваш сайт</strong>" лучше указывать ссылку на главную страницу вашего сайта/блога. Ссылки на прочую веб-лабуду (в том числе блоги/сплоги, <strong>созданные не для людей</strong>) будут удалены.</li>
+					 <li>Не используйте в качестве имени комментатора <strong>слоганы/названия сайтов, рекламные фразы, ключевые</strong> и т.п. слова. В случае несоблюдения этого условия, имя изменяю на свое усмотрение. Просьба указывать нормальное имя или ник.</li>
+					 <li>Комментарии не по теме удаляются без предупреждения.</li>
+				  </ol>
+				</div>
+
+				<p><input id="preview" type="submit" name="preview" tabindex="5" class="Cbutton" value="Предпросмотр" />
+				  <input id="submit" type="submit" name="submit" tabindex="6" style="font-weight: bold" class="Cbutton" value="Отправить &raquo;" />
+				  <input type='hidden' name='comment_post_ID' value='1481' id='comment_post_ID' />
+				  <input type='hidden' name='comment_parent' id='comment_parent' value='2392' />
+				</p>
+
+				<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="4447100622" /></p>
+
+				<p style="clear: both;" class="subscribe-to-comments">
+				  <input type="checkbox" name="subscribe" id="subscribe" value="subscribe" style="width: auto;" />
+				  <label for="subscribe">Оповещать о новых комментариях по почте</label>
+				</p>
+
+				<script type="text/javascript">
+				  <!--
+				  edCanvas = document.getElementById('comment');
+				  //-->
+				</script>
+			 </form>
+			 <form action="" method="post">
+				<input type="hidden" name="solo-comment-subscribe" value="solo-comment-subscribe" />
+				<input type="hidden" name="postid" value="1481" />
+				<input type="hidden" name="ref" value="<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']?>%2Fcomment-page-1%3Freplytocom%3D2392" />
+
+				<p class="solo-subscribe-to-comments">
+				  Подписаться не комментируя:	<br />
+				  <label for="solo-subscribe-email">E-mail:	<input type="text" name="email" id="solo-subscribe-email" size="22" value="" /></label>
+				  <input type="submit" name="submit" value="Подписаться &raquo;" />
+				</p>
+			 </form>
+		  </div>
+
+
+
+
+
+
   </div>
 
 
@@ -692,6 +760,13 @@
   <div id="cont_fb">
 	 <? echo $db->query('select txt from content where id = ?i', array(3), 'el'); ?>
   </div>
+
+<script type="text/javascript">
+  function view(n) {
+	 style = document.getElementById(n).style;
+	 style.display = (style.display == 'block') ? 'none' : 'block';
+  }
+</script>
 
   </div>
   <div class="end_content"></div>

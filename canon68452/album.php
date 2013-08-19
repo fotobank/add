@@ -760,7 +760,8 @@ if (isset($_SESSION['current_cat']))
 
 															<form action="index.php" method="post">
 															  <label for="appendedInputButton"></label>
-															  <input id="appendedInputButton" type="text" name="nm" value="<?= $ln['nm'] ?>" style="height: 22px; width: 140px; margin-bottom: 5px;" />
+															  <input id="appendedInputButton" type="text" name="nm" value="<?= $ln['nm'] ?>"
+																style="height: 22px; width: 140px; margin-bottom: 5px;  border-radius: 4px 4px 4px 4px;" />
 															  <input class="btn btn-primary" type="hidden" name="go_edit_name" value="<?= $ln['id'] ?>"/>
 															  <input class="btn btn-small btn-primary" type="submit" value="переименовать" />
 															</form>
@@ -783,8 +784,8 @@ if (isset($_SESSION['current_cat']))
 														 <div class="btn-toolbar">
 															<div class="btn-group">
 															  <input type="hidden" name="go_updown" value="<?= $ln['id'] ?>"/>
-															  <input class="btn-small btn-info" type="submit" name="up" value="поднять"/>
-															  <input class="btn-small btn-info" type="submit" name="down" value="опустить"/>
+															  <input class="btn-small btn-info" type="submit" name="up" value="поднять" style="border-radius: 4px 0 0 4px;"/>
+															  <input class="btn-small btn-info" type="submit" name="down" value="опустить" style="border-radius: 0 4px 4px 0;"/>
 															</div>
 														 </div>
 													  </form>
@@ -885,7 +886,7 @@ if (isset($_SESSION['current_cat']))
 																		<td colspan="2">
 																			<div class="input-prepend">
 																				<label for="id_category" class="add-on">Категория:</label>
-																				<select id="id_category" class="span3" name="id_category" class="multiselect">
+																				<select id="id_category" class="multiselect" name="id_category">
 																					<?
 																					$tmp =
 																						$db->query('select * from `categories` order by id asc',
@@ -959,11 +960,10 @@ if (isset($_SESSION['current_cat']))
 																	<tr>
 																		<td colspan="2">
 																			<input id="ftpFold" type="hidden" name="ftpFold" value="<?= $ln['ftp_folder'] ?>"/>
-
 																			<div class="input-prepend">
 																				<label id='refresh' title='Обновить папки' for="upFTP" class="add-on" onclick='sendFtp();'>
 																					Папка uploada FTP:</label>
-																				<select id="upFTP" class="span3" NAME="ftp_folder" class="multiselect">
+																				<select id="upFTP" class="span3 multiselect" NAME="ftp_folder">
 																					<option value="<?= $ln['ftp_folder'] ?>"><?= $ln['ftp_folder'] ?></option>
 																				</select>
 																			</div>

@@ -167,32 +167,6 @@ function get_f($text,$tag)
 
 
 
-  /**
-	* Get either a Gravatar URL or complete image tag for a specified email address.
-	*
-	* @param string $email The email address
-	* @param string $s Size in pixels, defaults to 80px [ 1 - 2048 ]
-	* @param string $d Default imageset to use [ 404 | mm | identicon | monsterid | wavatar ]
-	* @param string $r Maximum rating (inclusive) [ g | pg | r | x ]
-	* @param boole $img True to return a complete IMG tag False for just the URL
-	* @param array $atts Optional, additional key/value attributes to include in the IMG tag
-	* @return String containing either just a URL or a complete image tag
-	* @source http://gravatar.com/site/implement/images/php/
-	*/
-  function get_gravatar( $email, $s = 80, $d = 'mm', $r = 'g', $img = false, $atts = array() ) {
-	 $url = 'http://www.gravatar.com/avatar/';
-	 $url .= md5( strtolower( trim( $email ) ) );
-	 $url .= "?s=$s&d=$d&r=$r";
-	 if ( $img ) {
-		$url = '<img src="' . $url . '"';
-		foreach ( $atts as $key => $val )
-		  $url .= ' ' . $key . '="' . $val . '"';
-		$url .= ' />';
-	 }
-	 return $url;
-  }
-
-
 
 	function Get_IP()
 		{
@@ -290,4 +264,25 @@ function delete_files($folder)
 		return sprintf("%02d:%02d:%02d", (int)($time / 3600), (int)(($time % 3600) / 60), $time % 60);
 }
 
-?>
+
+  /**
+	*
+	* Преобразование объекта в массив
+	* $array = objectToArray( $obj );
+	*
+	* @param    object  $object преобразуемый объект
+	* @reeturn      array
+	*
+	*/
+  function objectToArray( $object )
+  {
+	 if( !is_object( $object ) && !is_array( $object ) )
+		{
+		  return $object;
+		}
+	 if( is_object( $object ) )
+		{
+		  $object = get_object_vars( $object );
+		}
+	 return array_map( 'objectToArray', $object );
+  }

@@ -99,10 +99,7 @@ $record_count = intval($db->query('SELECT FOUND_ROWS() as cnt',null, 'el'));
 	             </td>
                 <td style="text-align: left; vertical-align: middle"><?=date('H:i d.m.Y', $ln['timestamp'])?></td>
                 <td style="text-align: center; vertical-align: middle"><?=($ln['status'] == 1) ? 'да' : 'нет';?></td>
-
-<!--	            <td style="text-align: center; vertical-align: middle">--><?//=($ln['block'] == 1) ? 'нет' : 'да';?><!--</td>-->
 	            <td style="text-align: center; vertical-align: middle">
-
 	            <div class="slideThree">
 		            <input id="<?=$ln['id']?>" type='checkbox' NAME='block' VALUE='<?=$ln['block']?>'
 			         onClick="ajaxPostQ('/canon68452/index.php','','<?= 'checkbox='.$ln['id'].'&block='.$ln['block'] ?>')"
@@ -119,7 +116,7 @@ $record_count = intval($db->query('SELECT FOUND_ROWS() as cnt',null, 'el'));
 					            <label for="appendedInputButton"></label><input id="appendedInputButton" style="height: 16px; padding-top: 2px;
                                  padding-bottom: 3px; width: 40px;" class="span1" type="text" name="level" value="<?= $ln['level'] ?>"/>
 					            <input class="btn btn-primary" type="hidden" name="update_level" value="<?= $ln['id'] ?>"/>
-					            <input class="btn-mini btn-primary" type="submit" value="ok"/>
+					            <input class="btn-mini btn-primary" type="submit" value="ok" style=" border-radius: 0 4px 4px 0;"/>
 				            </form>
 			            </div>
 	            </td>
@@ -205,7 +202,7 @@ $record_count = intval($db->query('SELECT FOUND_ROWS() as cnt',null, 'el'));
                                 <label for="appendedInputButton"></label><input id="appendedInputButton" style="height: 16px; padding-top: 2px;
                                  padding-bottom: 3px; width: 60px;" class="span1" type="text" name="balans" value="<?= $ln['balans'] ?>"/>
                                 <input class="btn btn-primary" type="hidden" name="update_balans" value="<?= $ln['id'] ?>"/>
-                                <input class="btn-mini btn-primary" type="submit" value="ok"/>
+                                <input class="btn-mini btn-primary" type="submit" value="ok" style=" border-radius: 0 4px 4px 0;"/>
                             </form>
                         </div>
                 </td>

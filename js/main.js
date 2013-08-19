@@ -18,8 +18,6 @@
         });
     };
 
-
-
     $(function () {
         $(".vhod , input, textarea, label, .lazy, .img3").tooltip();
         });

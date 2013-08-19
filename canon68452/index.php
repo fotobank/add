@@ -4,7 +4,11 @@
 	include (__DIR__.'/../inc/func.php');
    include (__DIR__.'/news/sys/func.php');
 
+  ini_set('output_buffering', 0);
+  ini_set('zlib.output_compression', 0);
+
   header('Content-type: text/html; charset=windows-1251');
+  header("X-Frame-Options: SAMEORIGIN");
   error_reporting(1);
   ini_set('display_errors', 1);
 
@@ -53,8 +57,7 @@
 	$startTime = $time;
 	$startMem = intval(memory_get_usage() / 1024);*/ //Используемая память в начале
 
-  ini_set('output_buffering', 0);
-  ini_set('zlib.output_compression', 0);
+
 
   define('_DEBUG_', 1);
   include_once (__DIR__.'/../core/Debug_HackerConsole/lib/config.php');
@@ -110,8 +113,8 @@
 	<script type="text/javascript" src="/js/jquery.js"></script>
 	<script type="text/javascript" src="/js/bootstrap.min.js"></script>
 	<link href="/css/admin.css" rel="stylesheet" type="text/css"/>
-  <link rel="stylesheet" href="/js/bootstrap-multiselect-master/css/bootstrap-multiselect.css" type="text/css">
-  <link rel="stylesheet" href="/js/bootstrap-multiselect-master/css/prettify.css" type="text/css">
+   <link rel="stylesheet" href="/js/bootstrap-multiselect-master/css/bootstrap-multiselect.css" type="text/css">
+   <link rel="stylesheet" href="/js/bootstrap-multiselect-master/css/prettify.css" type="text/css">
 
 
 
@@ -121,49 +124,21 @@
 	<script src="/js/bootstrap-modal.js"></script>
 	<script type="text/javascript" src="/canon68452/ajax/ajaxAdmin.js"></script>
    <script src="/js/main.js"></script>
-  <script type="text/javascript" src="/js/bootstrap-multiselect-master/js/bootstrap-multiselect.js"></script>
-  <script type="text/javascript" src="/js/bootstrap-multiselect-master/js/prettify.js"></script>
-
+   <script type="text/javascript" src="/js/bootstrap-multiselect-master/js/bootstrap-multiselect.js"></script>
+   <script type="text/javascript" src="/js/bootstrap-multiselect-master/js/prettify.js"></script>
 
 
 
 <?
 
-  function printErr ($err){
-	 $mes = $err;
-	 if(is_array($err)) {
-		foreach ($err as $val){
-		  $mes = '';
-		  $mes .= $val."<br>";
-		}
-	 }
-	 $err = sanitize($mes);
-	 ?>
-	 <link rel="stylesheet" href="/canon68452/jGrowl-master/jquery.jgrowl.min.css" type="text/css">
-	 <script type="text/javascript" src="/js/jquery.js"></script>
-	 <script type="text/javascript" src="/canon68452/jGrowl-master/jquery.jgrowl.min.js"></script>
-	 <?
-	 echo "<script type='text/javascript'>(function($){ $(document).ready(function(){ $.jGrowl('$err',{
-	                            header: 'Ошибка!',
-	                            sticky:true,
-	                            life:12000,
-	                            header: 'Ошибка!',
-					                theme: 'iphone'
-	                            });});})(jQuery);</script>";
-  }
-
   function debugHC($v, $group="message")
   {
-	 printErr ($v);
 	 if (is_callable($f=array('Debug_HackerConsole_Main', 'out')))
 		{
 		  call_user_func($f, $v, $group);
 		}
   }
 ?>
-
-
-
 
 
   <script type="text/javascript">
@@ -193,13 +168,11 @@
 	 });
   </script>
 
-
   <script type="text/javascript">
 	 function confirmOk() {
 		return confirm("Вы подтверждаете действие?");
 	 }
   </script>
-
 
 		<script type="text/javascript">
 		function confirmDelete() {

@@ -2,8 +2,6 @@
 if (!isset($_SESSION['admin_logged'])) die();
 //include 'news/sys/func.php';
 
-if(!isset($_SESSION['admin_logged']))
-  die();
 
 define('RECORDS_PER_PAGE', 20);
 
@@ -21,7 +19,11 @@ include_once "praide-analyser-cp-1251.php";
 function printKoment($newsId)
 {
   $db = go\DB\Storage::getInstance()->get('db-for-data');
-  $komments = $db->query('SELECT * FROM `komments` WHERE `news_id` = ?i',array($newsId),'assoc');
+//  $komments = $db->query('SELECT * FROM `komments` WHERE `news_id` = ?i',array($newsId),'assoc');
+
+  $pattern = 'SELECT u.*, k.* FROM komments k, users u WHERE k.news_id = ?i AND k.user_id = u.id ORDER BY k.parents_id, k.data ASC';
+  $komments = $db->query($pattern, array($newsId), 'assoc');
+
 
   include __DIR__ . '/../inc/Gravatar.php';
   $gravatar = new \emberlabs\GravatarLib\Gravatar();
@@ -32,63 +34,162 @@ function printKoment($newsId)
   $gravatar->setMaxRating('G');
   $avatar = $gravatar->buildGravatarURL('aleksjurii@gmail.com');
 
-
-  foreach ($komments as $key => $post)
-	 {
-	$color =	($key %2 == 0)?"background-color:#efe;":"background-color:#ffe;"
 ?>
+<script type="text/javascript" src="/inc/wp/comment-reply.js"></script>
+
+  <ol class="commentlist">
+<?
+
+	 function commentChildren ($post, &$komments, $key) {
+		echo "<ul class='children'>";
+		if(isset($komments[$key]['parents_id'])) {
+		comment ($post, $komments, $key);
+		}
+	 }
 
 
-		  <ol class="commentlist">
-			 <li id="comment-<?=$post['id']?>">
-				<div id="div-comment-<?=$post['id']?>">
-				  <div class="vcard">
-					 <img class="avatar photo" width="40" height="40" src="http://0.gravatar.com/avatar/0cada37723a7804c48bfd46aa0a6fa45?s=40&d=&r=G" alt="">
-					 <cite class="fn">
-						<noindex>
-						  <a class="url" href="http://dbmast.ru/goto/http://www.sngsnick.com/" rel="nofollow" target="_blank"><?=$post['nick']?></a>
-						</noindex>
-					 </cite>
-					 <span class="says">:</span>
-				  </div>
-				  <div class="comment-meta">
-					 <a href="http://dbmast.ru/besplatnyj-onlajn-servis-dlya-bystrogo-obmena-fajlami-do-50-gb/comment-page-1#comment-3402"><?=$post['data']?></a>
-				  </div>
-				  <p>Хороший сервис. Я о нем тоже уже где-то писал в конце мая.</p>
-				  <div class="reply">
-					 <a onclick="return addComment.moveForm('div-comment-1958', '1958', 'respond', '1701')"
-					  href="index.php?replytocom=1958#respond">Ответить</a>
-				  </div>
+
+	 function comment ($post, &$komments, $key) {
+	//	$post = array_shift($komments);
+		$gravatar = get_gravatar(get_user('email',$post['user_id']), true);
+		echo  "<li id='comment-".$post['id']."' class='comment even thread-even depth-1'>";
+
+		$parrents =  "<div id= 'div-comment-".$post['id']."' class='comment-body'>
+				<div class='comment-author vcard'>
+				".$gravatar."
+				<cite class='fn'>
+				  <noindex>
+					 <a class='url' href='".$post['cite']."' rel='nofollow' target='_blank'>".$post['us_name'].$post['user_id']."</a>
+				  </noindex>
+				</cite>
+				<span class='says'>:</span>
 				</div>
+				<div class='comment-meta commentmetadata'>
+				  <a href='http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."#comment-".$post['id']."'>".$post['data']."</a>
+				</div>
+				<p>".$post['text']."</p>
+				<div class='reply'>
+				  <a onclick='return addComment.moveForm('div-comment-".$post['id']."', '".$post['id']."', 'respond', '1701')'
+				  href='index.php?replytocom=".$post['id']."#respond'>Ответить</a>
+				</div>
+				</div>";
+		echo $parrents;
+
+		/*if ($komments['0']['parents_id'] == $post['id']) {
+		  commentChildren ($post, $komments);
+		}*/
+
+		foreach($komments as $key2 => $post) {
+		  $id = $key+1;
+        if (isset($post['parents_id']) && $post['parents_id'] == $id) {
+		     if(isset($komments[$key2]['parents_id'])) unset($komments[$key2]['parents_id']);
+		        commentChildren ($post, $komments, $key);
+		      }
+		  }
 
 
-				<ul class="children">
-				  <li id="comment-<?=$post['id']?>">
-					 <div id="div-comment-<?=$post['id']?>">
-						<div class="vcard">
-						  <img class="avatar photo" width="40" height="40" src="<?=$avatar?>" alt="">
-						  <cite class="fn">driver</cite>
-						  <span class="says">:</span>
-						</div>
-						<div class="comment-meta">
-						  <a href="http://dbmast.ru/besplatnyj-onlajn-servis-dlya-bystrogo-obmena-fajlami-do-50-gb/comment-page-1#comment-3403"><?=$post['data']?></a>
-						</div>
-						<p>Здравствуйте, Николай. </p>
-						<p>Спасибо за комментарий, если мой скромный блог просматривают такие люди, значит все не зря. Удачи вам в вашей работе)))</p>
-						<div class="reply">
 
- <a onclick="return addComment.moveForm('div-comment-3403', '3403', 'respond', '2089'); href='index.php?replytocom=3403#respond'">Ответить</a>
+		/*if (count($komments) != 0 && $komments['0']['parents_id'] == $post['id']) {
 
-						</div>
-					 </div>
-				  </li>
-				</ul>
-			 </li>
-         </ol>
+		 foreach ($_SESSION['komments'] as $key => $val)
+			{
+
+			  commentChildren ($komments);*/
+
+	//			 unset($_SESSION['komments'][$key]);
+			//	 sort($_SESSION['komments']);
+
+		/*}
+
+		  if(count($komments) != 0) comment ($komments);
+
+	 }*/
+		echo	"</li>";
+	 }
+
+
+//	$color =	($key %2 == 0)?"background-color:#efe;":"background-color:#ffe;";
+
+foreach($komments as $key => $post) {
+  if(isset($komments[$key]['parents_id'])) unset($komments[$key]['parents_id']);
+  comment ($post, $komments, $key);
+
+}
+
+
+
+
+?>
+</ol>
+
+
+  <div id="respond">
+	 <div class="block">
+		<h2>Присоединяйтесь к обсуждению!</h2>
+		<div class="cancel-comment-reply">
+		  <small><a rel="nofollow" id="cancel-comment-reply-link"  style="display:none;"
+			  href="<?=$_SERVER['REQUEST_URI']?>#respond">Нажмите, чтобы отменить ответ.</a></small>
+		</div>
+		<form action="<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']?>#comment-5000" method="post" id="commentform">
+		  <p><input type="text" name="author" id="author" value="" size="22" tabindex="1" class="textarea"/>
+			 <label for="author"><small>Имя (обязательно)</small></label></p>
+		  <p><input type="text" name="email" id="email" value="" size="22" tabindex="2" class="textarea"/>
+			 <label for="email"><small>E-mail (не публикуется) (обязательно)</small></label></p>
+		  <p><input type="text" name="url" id="url" value="" size="22" tabindex="3" class="textarea"/>
+			 <label for="url"><small>Ваш сайт</small></label></p>
+		  <div id="comment_quicktags">
+			 <script src="/inc/wp/wp-comment-quicktags-plus.php" type="text/javascript"></script>
+			 <script type="text/javascript">edToolbar();</script>
+		  </div>
+		  <p><textarea name="comment" id="comment" cols="100%" rows="10" tabindex="4"></textarea></p>
+		  <p class="terms">Отправляя кoммeнтapий, Вы автоматически принимаете <a href="#t4" onclick="view('t4'); return false">правила кoммeнтиpoвaния</a> на нашем сайте.</p>
+
+		  <div id="t4" class="terms">
+			 <h3>Правила кoммeнтиpoвaния на сайте <?=$_SERVER['HTTP_HOST']?>:</h3>
+			 <ol>
+				<li>Во избежание захламления спамом, <strong>первый кoммeнтapий</strong> всегда проходит премодерацию.</li>
+				<li>В поле "<strong>Ваш сайт</strong>" лучше указывать ссылку на главную страницу вашего сайта/блога. Ссылки на прочую веб-лабуду (в том числе блоги/сплоги, <strong>созданные не для людей</strong>) будут удалены.</li>
+				<li>Не используйте в качестве имени комментатора <strong>слоганы/названия сайтов, рекламные фразы, ключевые</strong> и т.п. слова. В случае несоблюдения этого условия, имя изменяю на свое усмотрение. Просьба указывать нормальное имя или ник.</li>
+				<li>Комментарии не по теме удаляются без предупреждения.</li>
+			 </ol>
+		  </div>
+
+		  <p><input id="preview" type="submit" name="preview" tabindex="5" class="Cbutton" value="Предпросмотр" />
+			 <input id="submit" type="submit" name="submit" tabindex="6" style="font-weight: bold" class="Cbutton" value="Отправить &raquo;" />
+			 <input type='hidden' name='comment_post_ID' value='1481' id='comment_post_ID' />
+			 <input type='hidden' name='comment_parent' id='comment_parent' value='2392' />
+		  </p>
+
+		  <p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="4447100622" /></p>
+
+		  <p style="clear: both;" class="subscribe-to-comments">
+			 <input type="checkbox" name="subscribe" id="subscribe" value="subscribe" style="width: auto;" />
+			 <label for="subscribe">Оповещать о новых комментариях по почте</label>
+		  </p>
+
+		  <script type="text/javascript">
+			 <!--
+			 edCanvas = document.getElementById('comment');
+			 //-->
+		  </script>
+		</form>
+		<form action="" method="post">
+		  <input type="hidden" name="solo-comment-subscribe" value="solo-comment-subscribe" />
+		  <input type="hidden" name="postid" value="1481" />
+		  <input type="hidden" name="ref" value="<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']?>%2Fcomment-page-1%3Freplytocom%3D2392" />
+
+		  <p class="solo-subscribe-to-comments">
+			 Подписаться не комментируя:	<br />
+			 <label for="solo-subscribe-email">E-mail:	<input type="text" name="email" id="solo-subscribe-email" size="22" value="" /></label>
+			 <input type="submit" name="submit" value="Подписаться &raquo;" />
+		  </p>
+		</form>
+  </div>
+
 
 <?
-	 }
 }
+
 
 
 
@@ -432,3 +533,9 @@ if(isset($_GET['newsId']))  $_SESSION['newsId'] = $_GET['newsId'];
 	 $('.tab-pane').show();
   });
 </script>
+	 <script type="text/javascript">
+		function view(n) {
+		  style = document.getElementById(n).style;
+		  style.display = (style.display == 'block') ? 'none' : 'block';
+		}
+	 </script>

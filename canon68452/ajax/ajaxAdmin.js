@@ -36,8 +36,7 @@ function sendFtp() {
                     });
                     selector = "<option value = '" + ftpFold  + "' >" + ftpFold  + "</option>" + option;
                     $(" #upFTP ").empty().append(selector);
-
-     //               $(this).outDebug(dataArray,'/canon68452/ajax/ajaxAdmin.js','uploadFTP');
+               //     $(this).outDebug(dataArray,'/canon68452/ajax/ajaxAdmin.js','uploadFTP');
                 }
             });
 }
@@ -60,7 +59,7 @@ function ajaxPostQ(url, idName,  data) {
         // Выводим то что вернул PHP
         success: function (html) {
 //           alert(html);
-            $(this).outDebug(html,'/canon68452/ajax/ajaxAdmin.js','ajaxPostQ');
+  //          $(this).outDebug(html,'/canon68452/ajax/ajaxAdmin.js','ajaxPostQ');
             $(idName).empty().append(html);
          }
     });
