@@ -86,7 +86,7 @@
 		 * @todo определяемая пользователем функция обработки ошибок
 		 */
 
-		public static function userErrorHandler($errno, $errmsg, $filename, $linenum, $vars)
+		public static function userErrorHandler($errno, $errmsg, $filename, $linenum, $vars = array())
 			//    function userErrorHandler($errno, $errmsg, $filename, $linenum, $vars)
 			{
 

@@ -64,3 +64,37 @@ function ajaxPostQ(url, idName,  data) {
          }
     });
 }
+
+
+function ajaxPostNews (url, idName,  data) {
+    $.ajax({
+        type: "POST",
+        header: ('Content-Type: application/json; charset=utf-8;'),
+        url: url,
+        data: data,
+        error:function(XHR) {
+          //         alert(" Ошибка: "+XHR.status+ "  " + XHR.statusText);
+        },
+        statusCode: {
+            404: function() {
+          //            alert("Страница не найдена");
+            }
+        },
+        // Выводим то что вернул PHP
+        success: function (html) {
+      //     alert(html);
+            var ans = jQuery.parseJSON(html);
+        //    var ans = JSON.parse(html);
+
+            $(this).outDebug(html,'/canon68452/ajax/ajaxPostNews.php','ajaxPostNews');
+            $(this).outDebug(ans.author_r);
+
+            $('#author_r').val( ans.author_r);
+            $('#email_r').val(ans.email_r);
+            $('#url_r').val(ans.url_r);
+            $('#comment_r').empty().append(ans.comment_r);
+
+            $(this).outDebug(ans.url_r);
+        }
+    });
+}

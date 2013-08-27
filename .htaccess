@@ -13,7 +13,7 @@ php_flag magic_quotes_sybase Off
    RewriteRule    ^(dt224)$ fotobanck_adw.php?chenge_cat=6 [L]
    RewriteRule    ^(gimnastika)$ fotobanck_adw.php?chenge_cat=7 [L]
    RewriteRule    ^(fotobanck.php)$ fotobanck_adw.php [L]
-   RewriteRule   ^index.php$ / [QSA,R]
+   RewriteRule    ^index.php$ / [QSA,R]
  </IfModule>
 
 ErrorDocument 400 /error.php?400

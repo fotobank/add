@@ -107,8 +107,7 @@ if (isset($_SESSION['current_album'])):
 									$foto_folder.$ln['id_album'].'/'.$ln['img'] ?>" style="width: 120px;">
 										<div style="display: inline-block">
 										<div id="<?= $ln['id'] ?>">
-											<img style="width: 120px; float: left;" alt="" src="<?=
-											$foto_folder.$ln['id_album'].'/'.$ln['img'] ?>?t=<?= time() ?>">
+											<img style="width: 120px; float: left;" alt="" src="<?=$foto_folder.$ln['id_album'].'/'.$ln['img'] ?>?t=<?= time() ?>">
 										</div>
 										</div>
 									</a>

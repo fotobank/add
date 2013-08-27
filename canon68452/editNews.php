@@ -13,187 +13,13 @@ if(isset($_POST['delete_order']))
 	 $db->query("delete from download_photo where id_order = ?i", array($id));
   }
 
-include_once "praide-analyser-cp-1251.php";
-
-
-function printKoment($newsId)
-{
-  $db = go\DB\Storage::getInstance()->get('db-for-data');
-//  $komments = $db->query('SELECT * FROM `komments` WHERE `news_id` = ?i',array($newsId),'assoc');
-
-  $pattern = 'SELECT u.*, k.* FROM komments k, users u WHERE k.news_id = ?i AND k.user_id = u.id ORDER BY k.parents_id, k.data ASC';
-  $komments = $db->query($pattern, array($newsId), 'assoc');
-
-
-  include __DIR__ . '/../inc/Gravatar.php';
-  $gravatar = new \emberlabs\GravatarLib\Gravatar();
-  // example: setting default image and maximum size
-  $gravatar->setDefaultImage('mm') ->setAvatarSize(150);
-//  $gravatar->setDefaultImage('http://aleks.od.ua/path/to/image.png');
-  // example: setting maximum allowed avatar rating
-  $gravatar->setMaxRating('G');
-  $avatar = $gravatar->buildGravatarURL('aleksjurii@gmail.com');
-
-?>
-<script type="text/javascript" src="/inc/wp/comment-reply.js"></script>
-
-  <ol class="commentlist">
-<?
-
-	 function commentChildren ($post, &$komments, $key) {
-		echo "<ul class='children'>";
-		if(isset($komments[$key]['parents_id'])) {
-		comment ($post, $komments, $key);
-		}
-	 }
-
-
-
-	 function comment ($post, &$komments, $key) {
-	//	$post = array_shift($komments);
-		$gravatar = get_gravatar(get_user('email',$post['user_id']), true);
-		echo  "<li id='comment-".$post['id']."' class='comment even thread-even depth-1'>";
-
-		$parrents =  "<div id= 'div-comment-".$post['id']."' class='comment-body'>
-				<div class='comment-author vcard'>
-				".$gravatar."
-				<cite class='fn'>
-				  <noindex>
-					 <a class='url' href='".$post['cite']."' rel='nofollow' target='_blank'>".$post['us_name'].$post['user_id']."</a>
-				  </noindex>
-				</cite>
-				<span class='says'>:</span>
-				</div>
-				<div class='comment-meta commentmetadata'>
-				  <a href='http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."#comment-".$post['id']."'>".$post['data']."</a>
-				</div>
-				<p>".$post['text']."</p>
-				<div class='reply'>
-				  <a onclick='return addComment.moveForm('div-comment-".$post['id']."', '".$post['id']."', 'respond', '1701')'
-				  href='index.php?replytocom=".$post['id']."#respond'>Ответить</a>
-				</div>
-				</div>";
-		echo $parrents;
-
-		/*if ($komments['0']['parents_id'] == $post['id']) {
-		  commentChildren ($post, $komments);
-		}*/
-
-		foreach($komments as $key2 => $post) {
-		  $id = $key+1;
-        if (isset($post['parents_id']) && $post['parents_id'] == $id) {
-		     if(isset($komments[$key2]['parents_id'])) unset($komments[$key2]['parents_id']);
-		        commentChildren ($post, $komments, $key);
-		      }
-		  }
-
-
-
-		/*if (count($komments) != 0 && $komments['0']['parents_id'] == $post['id']) {
-
-		 foreach ($_SESSION['komments'] as $key => $val)
-			{
-
-			  commentChildren ($komments);*/
-
-	//			 unset($_SESSION['komments'][$key]);
-			//	 sort($_SESSION['komments']);
-
-		/*}
-
-		  if(count($komments) != 0) comment ($komments);
-
-	 }*/
-		echo	"</li>";
-	 }
-
-
-//	$color =	($key %2 == 0)?"background-color:#efe;":"background-color:#ffe;";
-
-foreach($komments as $key => $post) {
-  if(isset($komments[$key]['parents_id'])) unset($komments[$key]['parents_id']);
-  comment ($post, $komments, $key);
-
-}
+include_once  ( __DIR__ . '/../canon68452/praide-analyser-cp-1251.php');
+include_once  ( __DIR__ . '/../inc/wp/comments.php');
 
 
 
 
-?>
-</ol>
-
-
-  <div id="respond">
-	 <div class="block">
-		<h2>Присоединяйтесь к обсуждению!</h2>
-		<div class="cancel-comment-reply">
-		  <small><a rel="nofollow" id="cancel-comment-reply-link"  style="display:none;"
-			  href="<?=$_SERVER['REQUEST_URI']?>#respond">Нажмите, чтобы отменить ответ.</a></small>
-		</div>
-		<form action="<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']?>#comment-5000" method="post" id="commentform">
-		  <p><input type="text" name="author" id="author" value="" size="22" tabindex="1" class="textarea"/>
-			 <label for="author"><small>Имя (обязательно)</small></label></p>
-		  <p><input type="text" name="email" id="email" value="" size="22" tabindex="2" class="textarea"/>
-			 <label for="email"><small>E-mail (не публикуется) (обязательно)</small></label></p>
-		  <p><input type="text" name="url" id="url" value="" size="22" tabindex="3" class="textarea"/>
-			 <label for="url"><small>Ваш сайт</small></label></p>
-		  <div id="comment_quicktags">
-			 <script src="/inc/wp/wp-comment-quicktags-plus.php" type="text/javascript"></script>
-			 <script type="text/javascript">edToolbar();</script>
-		  </div>
-		  <p><textarea name="comment" id="comment" cols="100%" rows="10" tabindex="4"></textarea></p>
-		  <p class="terms">Отправляя кoммeнтapий, Вы автоматически принимаете <a href="#t4" onclick="view('t4'); return false">правила кoммeнтиpoвaния</a> на нашем сайте.</p>
-
-		  <div id="t4" class="terms">
-			 <h3>Правила кoммeнтиpoвaния на сайте <?=$_SERVER['HTTP_HOST']?>:</h3>
-			 <ol>
-				<li>Во избежание захламления спамом, <strong>первый кoммeнтapий</strong> всегда проходит премодерацию.</li>
-				<li>В поле "<strong>Ваш сайт</strong>" лучше указывать ссылку на главную страницу вашего сайта/блога. Ссылки на прочую веб-лабуду (в том числе блоги/сплоги, <strong>созданные не для людей</strong>) будут удалены.</li>
-				<li>Не используйте в качестве имени комментатора <strong>слоганы/названия сайтов, рекламные фразы, ключевые</strong> и т.п. слова. В случае несоблюдения этого условия, имя изменяю на свое усмотрение. Просьба указывать нормальное имя или ник.</li>
-				<li>Комментарии не по теме удаляются без предупреждения.</li>
-			 </ol>
-		  </div>
-
-		  <p><input id="preview" type="submit" name="preview" tabindex="5" class="Cbutton" value="Предпросмотр" />
-			 <input id="submit" type="submit" name="submit" tabindex="6" style="font-weight: bold" class="Cbutton" value="Отправить &raquo;" />
-			 <input type='hidden' name='comment_post_ID' value='1481' id='comment_post_ID' />
-			 <input type='hidden' name='comment_parent' id='comment_parent' value='2392' />
-		  </p>
-
-		  <p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="4447100622" /></p>
-
-		  <p style="clear: both;" class="subscribe-to-comments">
-			 <input type="checkbox" name="subscribe" id="subscribe" value="subscribe" style="width: auto;" />
-			 <label for="subscribe">Оповещать о новых комментариях по почте</label>
-		  </p>
-
-		  <script type="text/javascript">
-			 <!--
-			 edCanvas = document.getElementById('comment');
-			 //-->
-		  </script>
-		</form>
-		<form action="" method="post">
-		  <input type="hidden" name="solo-comment-subscribe" value="solo-comment-subscribe" />
-		  <input type="hidden" name="postid" value="1481" />
-		  <input type="hidden" name="ref" value="<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']?>%2Fcomment-page-1%3Freplytocom%3D2392" />
-
-		  <p class="solo-subscribe-to-comments">
-			 Подписаться не комментируя:	<br />
-			 <label for="solo-subscribe-email">E-mail:	<input type="text" name="email" id="solo-subscribe-email" size="22" value="" /></label>
-			 <input type="submit" name="submit" value="Подписаться &raquo;" />
-		  </p>
-		</form>
-  </div>
-
-
-<?
-}
-
-
-
-
-function printPubl($newsId,$pg)
+	function printPubl($newsId,$pg)
 {
   $db = go\DB\Storage::getInstance()->get('db-for-data');
   $data = $db->query('SELECT * FROM `news` WHERE `id` = ?i',array($newsId),'row');
@@ -236,7 +62,7 @@ function printPubl($newsId,$pg)
 		  </form>
 		</td>
 		<td valign="top" align="center">
-		  <form style="width: 230px;" action="<?=$_SERVER['PHP_SELF']?>" method="post">
+		  <form style="width: 230px;" id="upload_form" action="<?=$_SERVER['PHP_SELF']?>" method="post" enctype="multipart/form-data" onsubmit="return checkForm()">
 			 Название
 			 <label>
 				<input type="text" name="name" value="<?=$data['name']?>"/>
@@ -264,14 +90,56 @@ function printPubl($newsId,$pg)
 				</select>
 			 </label>
 			 <div class="linBlue"></div>
-			 Картинка слева
-			 <label>
-				<div class="controls">
-				  <div class="input-append">
-					 <input id="appendedInputButton" class="span3" type="file" name="img" style="width: 303px;"/>
+			 Картинка заголовка статьи
+			 <ul class="thumbnails" style="margin-bottom: 0;">
+				<li class="span2">
+				  <div class="thumbnail">
+					 <img src="<?=$data['img']?>?t=<?=time()?>" style="width: auto; height: auto;">
+					 <div class="caption">
+					 </div>
+				</li>
+			 </ul>
+				<input type="hidden" id="x1" name="x1" />
+				<input type="hidden" id="y1" name="y1" />
+				<input type="hidden" id="x2" name="x2" />
+				<input type="hidden" id="y2" name="y2" />
+				<div><input type="file" name="image_file" id="image_file" onchange="fileSelectHandler()"/></div>
+				<div class="error"></div>
+				<div class="step2">
+				  <h2>Шаг2: Выберите регион обрезки</h2>
+				  <img id="preview" style="width: 230px;"/>
+				  <?
+				  // загрузка картинки
+				  if (isset($_POST['filedim'])) {
+					 include_once  ( __DIR__ . '/../inc/cropUploader/thumbUploader.php');
+					 $sImage = new ImageUploader();
+					 $dir = './../reklama/thumb/'; // папка для загрузки
+					 $sImage->upload($dir, 140, true);
+					 $imgNews = $dir.'imgNews-'.trim($_POST['newsId']).'.jpg';
+					 $db->query('UPDATE `news` SET `img` = ?  WHERE `id` = ?i', array($imgNews, $_POST['newsId']));
+				  }
+				  ?>
+				  <div class="info">
+					 <div class="input-prepend">
+						<label class="add-on" for="filesize">Размер файла</label>
+						<input class="span1" type="text" id="filesize" name="filesize" style="width: 80px; height: 25px;">
+					 </div>
+					 <div class="input-prepend">
+						<label class="add-on" for="filetype">Тип</label>
+						<input class="span1" type="text" id="filetype" name="filetype" style="width: 80px; height: 25px;">
+					 </div> <div class="input-prepend">
+						<label class="add-on" for="filedim">Размер изображения</label>
+						<input class="span1" type="text" id="filedim" name="filedim" style="width: 80px; height: 25px;">
+					 </div> <div class="input-prepend">
+						<label class="add-on" for="w">W</label><input class="span1" type="text" id="w" name="w" style="width: 80px; height: 25px;">
+					 </div> <div class="input-prepend">
+						<label class="add-on" for="h">H</label>
+						<input class="span1" type="text" id="h" name="h" style="width: 80px; height: 25px;">
+					 </div>
 				  </div>
 				</div>
-			 </label>
+
+
 			 <div class="linBlue"></div>
 			 <div>Отключить коментарии</div>
 			 <div class="slideThree">
@@ -309,7 +177,17 @@ function printPubl($newsId,$pg)
 		  </form>
 		<td valign="top">
 <?
-		  printKoment($data['id'])
+	if(isset($_POST['preview'])) {
+	  // превью - редактора
+	include_once  (__DIR__.'/../inc/wp/comments-post.php');
+	} elseif (isset($_POST['update']) || isset($_POST['insert'])) {
+	  // отправка коментария на запись или обновление
+	  include_once  (__DIR__.'/../inc/wp/comment-redaktor.php');
+	  printKoment($data['id']);
+	} else {
+	  // печать комментариев
+		  printKoment($data['id']);
+	}
 ?>
 		</td>
 	 </tr>
@@ -330,17 +208,17 @@ function printPubl($newsId,$pg)
 }
 
 
-
+// обработка  запросов
 if(isset($_POST['newsId']))
   {
 	 $set = array();
-	 $expected=array('name','head','body','avtor-pub','img','on-cit','citata','avtor-cit','komm','kolonka');
+	 $expected=array('name','head','body','avtor-pub','on-cit','citata','avtor-cit','komm','kolonka');
 	 foreach($expected as $key){
 		if((isset($_POST[$key]) && (!empty($_POST[$key])) or (isset($_POST[$key]) && $_POST[$key] == '0')))
 		  {
 		  $set[$key]=$_POST[$key];
-	 }
-	 }
+	     }
+	   }
 	 $location = '';
 	if (isset($_POST['location']))
 	  {
@@ -362,68 +240,7 @@ if(isset($_POST['newsId']))
 
 	 $_SESSION['kolonka'] = isset($_POST['kolonka'])?$_POST['kolonka']:'c_colonka';
 	 if (isset($_SESSION['location'])) unset($_SESSION['location']);
-	 $_SESSION['location'] = isset($_POST['location'])?$_POST['location']:null;
-	 if (isset($_FILES['img']) && $_FILES['img']['size'] != 0)
-		{
-		  if ($_FILES['img']['size'] < 1024 * 15 * 1024)
-			 {
-				$ext         =
-				 strtolower(substr($_FILES['img']['name'], 1 + strrpos($_FILES['img']['name'], ".")));
-				$nm          = $_POST['nm'];
-				$descr       = $_POST['descr'];
-				$foto_folder = $_POST['foto_folder'];
-				$id_category = $_POST['id_category'];
-				if (empty($nm))
-				  {
-					 $nm = 'Без имени';
-				  }
-				try
-				  {
-					 $id_album = $db->query('insert into `albums` (nm) VALUES (?string)', array($nm), 'id');
-				  }
-				catch (go\DB\Exceptions\Exception $e)
-				  {
-					 die('Ошибка при работе с базой данных');
-				  }
-				$db->query('insert into `accordions` (id_album,collapse_numer,collapse_nm,accordion_nm) VALUES (?scalar,?i,?string,?string)',
-				  array($id_album,'1','default','default'));
-				$img         = 'id'.$id_album.'.'.$ext;
-				$target_name = $_SERVER['DOCUMENT_ROOT'].'/images/'.$img;
-				$file_load   = $_SERVER['DOCUMENT_ROOT'].'/tmp/'.$img;
-				if (move_uploaded_file($_FILES['img']['tmp_name'], $file_load))
-				  {
-					 $sharping  = 1;
-					 $watermark = 0;
-					 $ip_marker = 0;
-					 if (imageresize($target_name, $file_load, 200, 200, 75, $watermark, $ip_marker, $sharping) == 'true')
-						{
-						  $db->query('update albums set id_category = ?i, img = ?, order_field = ?i, descr = ?, foto_folder = ? where id = ?i',
-							 array($id_category, $img, $id_album, $descr, $foto_folder, $id_album));
-						  mkdir('../'.$foto_folder.$id_album, 0777, true) or die($php_errormsg);
-						  unlink($file_load);
-						  $_SESSION['current_album'] = $id_album;
-						  $_SESSION['current_cat']   = $id_category;
-						}
-					 else
-						{
-						  $db->query('delete from albums where id ?i', array($id_album));
-						  unlink($file_load);
-						  die('Для обработки принимаются только JPG, PNG или GIF имеющие размер не более 15Mb.');
-						}
-				  }
-				else
-				  {
-					 $db->query('delete from albums where id ?i', array($id_album));
-					 unlink($file_load);
-					 die('Не могу загрузить файл в папку "tmp"');
-				  }
-			 }
-		  else
-			 {
-				unlink($file_load);
-				die('Размер файла превышает 15 мегабайт');
-			 }
-		}
+	 $_SESSION['location'] = isset($_POST['location'])?$_POST['location']:NULL;
   }
 
 
@@ -443,6 +260,9 @@ if(isset($_GET['newsId']))  $_SESSION['newsId'] = $_GET['newsId'];
 ?>
 
 <div class="tabbable tabs-left">
+  <div class="thumbImg">
+	 <div class="bheader"><h2>Редактор блоков</h2></div>
+  </div>
   <ul class="nav nav-tabs" style="margin-right: 0;">
 	 <?
 	 if($name)

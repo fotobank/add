@@ -15,9 +15,11 @@
 	 }
 	 unset($process);
 //   }
+// фильтрация опасных значений из переменных запроса $ _GET, $ _POST, $ _REQUEST и $ _COOKIE 
+    include (__DIR__.'/secmodule.inc.php');
 
 
-  require (__DIR__.'/../core/dump/dump_r.php');
+   require (__DIR__.'/../core/dump/dump_r.php');
    require_once (__DIR__.'/config.php');
    require_once (__DIR__.'/func.php');
    require_once (__DIR__.'/../core/checkSession/checkSession.php');

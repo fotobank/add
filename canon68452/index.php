@@ -1,8 +1,11 @@
-<?
+<?php
 	set_time_limit(0);
 	include (__DIR__.'/../inc/config.php');
 	include (__DIR__.'/../inc/func.php');
    include (__DIR__.'/news/sys/func.php');
+
+  // фильтрация опасных значений из переменных запроса $ _GET, $ _POST, $ _REQUEST и $ _COOKIE
+  include (__DIR__.'/../inc/secmodule.inc.php');
 
   ini_set('output_buffering', 0);
   ini_set('zlib.output_compression', 0);
@@ -11,6 +14,7 @@
   header("X-Frame-Options: SAMEORIGIN");
   error_reporting(1);
   ini_set('display_errors', 1);
+
 
   function errLogin(){
 	 echo '<div style="position: absolute;width: 260px; left: 50%; top:5%; margin-left: -130px;"><div class="block red">Не правильный логин или пароль!</div></div>';
@@ -73,6 +77,7 @@
   }*/
 
 
+
 	// обработка ошибок
 	include (dirname(__FILE__).'/../inc/lib_mail.php');
 	include (dirname(__FILE__).'/../inc/lib_ouf.php');
@@ -92,6 +97,31 @@
 	 * PHP register_shutdown_function TEST ( IF YOU WANT TEST THIS, DELETE PREVIOUS LINE )
 	 */
 	//	 	imagine_function( );
+
+
+  require_once(__DIR__.'/../inc/PhpConsole.php');
+  PhpConsole::start(true, true, dirname(__FILE__));
+
+// test
+
+//  debug('debug message');
+  // debug('SELECT * FROM users', 'db');
+
+  /* class TestErrorBacktrace {
+	 function __construct() {
+		$this->yeah(12, array());
+	 }
+	 function yeah() {
+		self::oops('some string', new stdClass());
+	 }
+	 static function oops() {
+		file_get_contents('oops.txt');
+		throw new Exception('Exception with call backtrace');
+	 }
+  }
+
+  new TestErrorBacktrace();*/
+
 
 
 ?>
@@ -115,6 +145,8 @@
 	<link href="/css/admin.css" rel="stylesheet" type="text/css"/>
    <link rel="stylesheet" href="/js/bootstrap-multiselect-master/css/bootstrap-multiselect.css" type="text/css">
    <link rel="stylesheet" href="/js/bootstrap-multiselect-master/css/prettify.css" type="text/css">
+   <link href="/inc/cropUploader/css/jquery.Jcrop.min.css" rel="stylesheet" type="text/css" />
+
 
 
 
@@ -126,8 +158,8 @@
    <script src="/js/main.js"></script>
    <script type="text/javascript" src="/js/bootstrap-multiselect-master/js/bootstrap-multiselect.js"></script>
    <script type="text/javascript" src="/js/bootstrap-multiselect-master/js/prettify.js"></script>
-
-
+   <script src="/inc/cropUploader/js/jquery.Jcrop.min.js"></script>
+   <script src="/inc/cropUploader/js/script.js"></script>
 
 <?
 

@@ -101,7 +101,7 @@ function get_f($text,$tag)
 	* @param $table
 	* @param $kolonka
 	*
-	* print для ENUM
+	* print для ENUM msql
 	*/
   function printEnum ($table, $kolonka)
   {
@@ -132,7 +132,7 @@ function get_f($text,$tag)
 	* @param $table
 	* @param $kolonka
 	*
-	* print для Set
+	* print для Set msql
 	*/
   function printSet ($table, $kolonka)
   {
