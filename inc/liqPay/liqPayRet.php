@@ -9,8 +9,6 @@
 
   ignore_user_abort(1);
   include (__DIR__.'/../head.php');
-  require_once (__DIR__.'/../lib_ouf.php');
-  require_once (__DIR__.'/../xmlArray.php');
 
 
   if (!isset($_SESSION['logged']))

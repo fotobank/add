@@ -1,20 +1,23 @@
 <?php
-   require_once(__DIR__.'/../core/secure/linkObfuscator.php');
+
+	include_once (__DIR__.'/../classes/autoload.php');
+	autoload::getInstance();
+
    require_once(__DIR__.'/secureSession.php');
-   require_once(__DIR__.'/../core/checkSession/checkSession.php');
-   $session = checkSession::getInstance();
+
+   $session = check_Session::getInstance();
    startSession();
 
    if(!isset($_SESSION['referralSeed'])) $_SESSION['referralSeed'] = false;
 
-   $link=new linkObfuscator($session->get('referralSeed'));
+   $link=new link_Obfuscator($session->get('referralSeed'));
    //test seed
    //print "actual referral Seed:". $_SESSION['referralSeed'] ."<br />\n";
 
 
 
 
-	require(__DIR__.'/goDB/autoload.php');
+	require(__DIR__.'/../classes/Go/DB/autoload.php');
 	\go\DB\autoloadRegister();
 	$params = array(
 		            'host'     => 'localhost',

@@ -9,9 +9,11 @@
 
  // header('Content-type: text/html; charset=windows-1251');
 
+	include_once (__DIR__.'/../classes/autoload.php');
+	autoload::getInstance();
+
   if(isset($_POST['url']))  //
 	 {
-		include (__DIR__.'./../inc/autoPrev.php');
 		$url = iconv('utf-8', 'cp1251', trim($_POST['url']));
 		$galery = iconv('utf-8', 'cp1251', trim($_POST['galery']));
 		$height = intval($_POST['height']);

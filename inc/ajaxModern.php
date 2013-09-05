@@ -10,15 +10,15 @@
 
   header('Content-type: text/html; charset=windows-1251');
   // обработка ошибок
-  require_once (__DIR__.'/lib_mail.php');
-  require_once (__DIR__.'/lib_ouf.php');
-  require_once (__DIR__.'/lib_errors.php');
+	include_once (__DIR__.'/../classes/autoload.php');
+	autoload::getInstance();
+
+
   $error_processor = Error_Processor::getInstance();
   require_once (__DIR__.'/config.php');
   require_once (__DIR__.'/func.php');
-  require_once (__DIR__.'/../core/checkSession/checkSession.php');
 
-  $fotoBank = checkSession::getInstance();
+  $fotoBank = check_Session::getInstance();
 
   if(isset($_POST['fotoId']))  //
 	 {

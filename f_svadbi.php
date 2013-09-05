@@ -1,6 +1,6 @@
 <?php
   include (__DIR__.'/inc/head.php');
-  include (__DIR__.'/inc/autoPrev.php');
+
 
   $include_Js = array('js/prettyPhoto/js/jquery.prettyPhoto.js','js/montage/js/jquery.montage.js' );
 ?>

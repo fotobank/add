@@ -7,8 +7,8 @@
  * To change this template use File | Settings | File Templates.
  */
 
-include (__DIR__.'./../../inc/config.php');
-include (__DIR__.'./../../inc/func.php');
+include_once (__DIR__.'./../../inc/config.php');
+include_once (__DIR__.'./../../inc/func.php');
 
 if(!isset($_SESSION['logged']))
   err_exit('Для скачивания фото необходимо залогиниться на сайте!');

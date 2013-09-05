@@ -1,32 +1,19 @@
-<?
-  // удаление волшебных кавычек
- //  if (get_magic_quotes_gpc()) {
-	 $process = array(&$_GET, &$_POST, &$_COOKIE, &$_REQUEST);
-	 while (list($key, $val) = each($process)) {
-		foreach ($val as $k => $v) {
-		  unset($process[$key][$k]);
-		  if (is_array($v)) {
-			 $process[$key][stripslashes($k)] = $v;
-			 $process[] = &$process[$key][stripslashes($k)];
-		  } else {
-			 $process[$key][stripslashes($k)] = stripslashes($v);
-		  }
-		}
-	 }
-	 unset($process);
-//   }
-// фильтрация опасных значений из переменных запроса $ _GET, $ _POST, $ _REQUEST и $ _COOKIE 
-    include (__DIR__.'/secmodule.inc.php');
+<?php
+	error_reporting (E_ALL);
+	ini_set('display_errors', 1);
+
+	include_once (__DIR__.'/../classes/autoload.php');
+	autoload::getInstance();
 
 
-   require (__DIR__.'/../core/dump/dump_r.php');
-   require_once (__DIR__.'/config.php');
+	require (__DIR__.'/../core/dump/dump_r.php');
+   include (__DIR__.'/config.php');
    require_once (__DIR__.'/func.php');
-   require_once (__DIR__.'/../core/checkSession/checkSession.php');
+
+
 // require_once (__DIR__.'/phpIni.php');
-//	error_reporting(E_ALL);
-	ini_set('display_errors', 0);
- 	error_reporting(0);
+
+
    header('Content-type: text/html; charset=windows-1251');
    header("X-Frame-Options: SAMEORIGIN");
 ?>
@@ -41,39 +28,34 @@
 <!--		<link href='http://fonts.googleapis.com/css?family=Lobster|Comfortaa:700|Jura:600&subset=cyrillic,cyrillic-ext' rel='stylesheet' type='text/css'>-->
 
 		<?
+
+      // использование объекта как массива
+		$registry = new Registry();
+
+      // шаблонизатор
+		require_once (site_path . '/lib/Twig/Autoloader.php');
+
+		Twig_Autoloader::register();
+
+
+
 		if ($session->get('us_name') == 'test')
 		  {
-			 include_once (__DIR__.'/../core/Debug_HackerConsole/lib/config.php');
-		    require_once (__DIR__.'/../core/Debug_HackerConsole/lib/Debug/HackerConsole/Main.php');
 			 $Debug_HackerConsole_Main = Debug_HackerConsole_Main::getInstance(true);
-
-			/* $time  = microtime();
-			 $time  = explode(' ', $time);
-			 $time  = $time[1] + $time[0];
-			 $startTime = $time;
-			 $startMem = intval(memory_get_usage() / 1024);*/ //Используемая память в начале
 		  }
+		// проверка работы консоли
+		// 	debugHC("test");
 
-		function debugHC($v, $group="message")
-		{
-		  if (is_callable($f=array('Debug_HackerConsole_Main', 'out')))
-			 {
-				call_user_func($f, $v, $group);
-			 }
-		}
-		//	debugHC("test");
 
 		// обработка ошибок
-		 require_once (__DIR__.'/lib_mail.php');
-		 require_once (__DIR__.'/lib_ouf.php');
-		 require_once (__DIR__.'/lib_errors.php');
+
 		 $error_processor = Error_Processor::getInstance();
-		 $session = checkSession::getInstance();
+		 $session = check_Session::getInstance();
 		/**
 		 *  Тесты для проверки Error_Processor
 		 * PHP set_error_handler TEST
 		 */
- 	 //   IMAGINE_CONSTANT;
+ //	    IMAGINE_CONSTANT;
 		/**
 		 * PHP set_exception_handler TEST
 		 */
@@ -86,6 +68,7 @@
 		include (__DIR__.'/title.php');
 		$cryptinstall = '/inc/captcha/cryptographp.fct.php';
 		require_once  (__DIR__.'/captcha/cryptographp.fct.php');
+
 
 		?>
 		<!--[if lt IE 9]>
@@ -108,15 +91,13 @@
 
 		<?
 
-		require_once (__DIR__.'/../core/magic-min/class.magic-min.php' );
-
 		//Initialize the class with image encoding, gzip, a timer, and use the google closure API
 		$vars = array(
 		  'encode' => true,
 		  'timer' => true,
 		  'gzip' => true
 		);
-		$min = new Minifier( $vars );
+		$min = new minifier_jsCss( $vars );
 
 		$include_CSS= array(
 		  // кнопка вверх
@@ -174,13 +155,14 @@
 		 window.onerror=null;
 	  </script>
 		<?
-//		$min->logs();
+//	$min->logs();
 
 		/*if (strstr($_SERVER['PHP_SELF'], 'folder_for_prototype')): */?><!--
 		  <script type="text/javascript" src="/js/prototype.js"></script>
 		  <script type="text/javascript" src="/js/scriptaculous.js?load=effects"></script>
 		  <script type="text/javascript" src="/js/lightbox.js"></script>
 		--><?/* endif; */?>
+
 
 </head>
 <?

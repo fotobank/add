@@ -126,7 +126,7 @@ if(defined('ABSPATH')) {
 		if ( !strstr($_SERVER['HTTP_USER_AGENT'], 'Safari') ) : 
 		?>
 		<div id="comment_quicktags">
-			<script src="<?php echo get_settings('siteurl') . '/wp-content/plugins/wp-comment-quicktags-plus.php'; ?>" type="text/javascript"></script>
+<!--			<script src="--><?php //echo get_settings('siteurl') . '/inc/wp/wp-comment-quicktags-plus.php'; ?><!--" type="text/javascript"></script>-->
 			<script type="text/javascript">edToolbar();</script>
 		</div>
 		<?php endif;
@@ -138,12 +138,13 @@ if(defined('ABSPATH')) {
 			<script type="text/javascript">
 			<!--
 			edCanvas = document.getElementById(\'comment\');
+			edCanvas = document.getElementById(\'comment_r\');
 			//-->
 			</script>
 			';
 	}
 
-	add_action('comment_form', 'wp_comment_quicktags_plus_define_textfield');
+//	add_action('comment_form', 'wp_comment_quicktags_plus_define_textfield');
 
 } else {
 

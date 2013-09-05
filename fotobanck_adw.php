@@ -1,7 +1,7 @@
 <?php
 	include  (__DIR__.'/inc/head.php');
 	include  (__DIR__.'/inc/ip-ban.php');
-   require_once (__DIR__.'/inc/Pager2.class.php');
+
    set_time_limit(0);
 	// include  (dirname(__FILE__).'/inc/lib/dtimediff/diftimer_class.php'); // подсчет времени между двумя событиями
 
@@ -269,7 +269,7 @@
 
 	function fotoPageModern($may_view, &$current_page, $width = 170)
 		{
-		   $session = checkSession::getInstance();
+		   $session = check_Session::getInstance();
 		   $current_page = isset($_GET['current_page']) ? intval($_GET['current_page']) : 0;
 		   $widthSait = 1200; // px
 		   $margP = 50; // предпологаемый правый маргин px
@@ -360,7 +360,7 @@
 
 	function verifyParol($may_view)
 		{
-		  $session = checkSession::getInstance();
+		  $session = check_Session::getInstance();
 		  $current_album = $session->get('current_album');
 		  $ostPop = $session->get("popitka/$current_album");
 
@@ -412,7 +412,7 @@
 
 	function top5($may_view, &$rs, &$ln, &$source, &$sz, &$sz_string)
 		{
-		  $session = checkSession::getInstance();
+		  $session = check_Session::getInstance();
 			if ($may_view)
 				{
 					?>
@@ -493,7 +493,7 @@
 
 	function top5Modern($may_view, &$rs, &$ln, &$source, &$sz, &$sz_string)
 	{
-	  $session = checkSession::getInstance();
+	  $session = check_Session::getInstance();
 	  if ($may_view)
 		 {
 			?>
@@ -564,7 +564,7 @@
 
 	function parol($may_view)
 		{
-		  $session = checkSession::getInstance();
+		  $session = check_Session::getInstance();
 		  $current_album = $session->get('current_album');
 
 			if (!$may_view && $current_album != null)

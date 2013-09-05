@@ -36,7 +36,7 @@ else
   {
 
 	 require_once (__DIR__.'/inc/lib_mail.php');
-	 require_once (__DIR__.'/inc/http.php');
+
 
 
     if((time() - intval($data['dt']) > 172800) && $data['id_nal'] != 'пополнение баланса сайта')

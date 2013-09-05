@@ -11,9 +11,12 @@
   set_time_limit(0);
   ini_set("display_errors","1");
   ignore_user_abort(1);
-  require_once (__DIR__.'/../config.php');
-  require_once (__DIR__.'/../lib_ouf.php');
-  require_once (__DIR__.'/../lib_mail.php');
+
+	include_once (__DIR__.'/../../classes/autoload.php');
+	autoload::getInstance();
+
+   require_once (__DIR__.'/../config.php');
+
 
 
   if(isset($_POST['prMail']))

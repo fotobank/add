@@ -14,7 +14,7 @@ set_time_limit(0);
  //  error_reporting(0);
 ignore_user_abort(1);
 require_once (__DIR__.'/config.php');
-require_once (__DIR__.'/lib_ouf.php');
+
 
 if ($link->referralSeed) {
 if($link->check($_SERVER['SCRIPT_NAME'].'?go='.trim(isset($_GET['go'])?$_GET['go']:''))){

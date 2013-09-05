@@ -8,16 +8,14 @@
 	 */
 
   // обработка ошибок
-  require_once (__DIR__.'/lib_mail.php');
-  require_once (__DIR__.'/lib_ouf.php');
-  require_once (__DIR__.'/lib_errors.php');
-
+	include_once (__DIR__.'/../classes/autoload.php');
+	autoload::getInstance();
 
 
 	// бан
 	function record($ipLog='ipLogFile.txt', $timeout='30') // запись бана
 		{
-		   $session = checkSession::getInstance();
+		   $session = check_Session::getInstance();
 			$log = fopen("$ipLog", "a+");
 			fputs($log, Get_IP()."][".time()."][".$session->get('current_album')."\n");
 			fclose($log);
@@ -45,7 +43,7 @@
 	// chek
 	function check($ipLog ='ipLogFile.txt', $timeout = '30') // проверка бана
 		{
-		   $session = checkSession::getInstance();
+		   $session = check_Session::getInstance();
 			$data = file("$ipLog");
 			$now  = time();
 		   $current_album = $session->get('current_album');

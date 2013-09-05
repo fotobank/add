@@ -288,6 +288,14 @@ padding: 5px 5px 5px 5px;
     font-family : Times,serif;
 }
 
+#respond {
+    margin-top: 10px;
+}
+
+#redaktor {
+    margin-top: 10px;
+}
+
 .block{
     background: #ebebeb;
     border:1px solid #acacac;

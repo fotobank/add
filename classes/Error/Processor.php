@@ -1,11 +1,8 @@
 <?php
-
-     //      include_once (__DIR__.'/../core/Debug_HackerConsole/lib/config.php');
-		// 	  require_once (__DIR__.'/../core/Debug_HackerConsole/lib/Debug/HackerConsole/Main.php');
-    //       $Debug_HackerConsole_Main = Debug_HackerConsole_Main::getInstance();
-
-
 	set_time_limit(0);
+
+	include_once (__DIR__.'/../../classes/autoload.php');
+	autoload::getInstance();
 
  /**
  * Class Error_Processor

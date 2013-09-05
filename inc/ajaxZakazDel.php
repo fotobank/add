@@ -9,9 +9,9 @@
 
   header('Content-type: text/html; charset=windows-1251');
 	// обработка ошибок
-	include (dirname(__FILE__).'/lib_mail.php');
-	include (dirname(__FILE__).'/lib_ouf.php');
-	include (dirname(__FILE__).'/lib_errors.php');
+	include_once (__DIR__.'/../classes/autoload.php');
+	autoload::getInstance();
+
 	$error_processor = Error_Processor::getInstance();
 	include (dirname(__FILE__).'/config.php');
 	include (dirname(__FILE__).'/func.php');

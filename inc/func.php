@@ -1,6 +1,8 @@
 <?php
 
-  require_once (__DIR__.'/../core/checkSession/checkSession.php');
+	include_once (__DIR__.'/../classes/autoload.php');
+	autoload::getInstance();
+
 
   /**
 	* @param        $addr
@@ -38,7 +40,7 @@ function main_redir($addr = '', $close_conn = true, $code = 'HTTP/1.1 303 See Ot
 //ошибочный редирект с сообщением
 function err_exit($msg = 'Ошибка! Обратитесь к администрации.', $addr = '')
 {
-  $session = checkSession::getInstance();
+  $session = check_Session::getInstance();
   if(empty($addr)) $addr = $_SERVER['HTTP_REFERER'];
   $session->set('err_msg', $msg);
   main_redir($addr);
@@ -51,7 +53,7 @@ function err_exit($msg = 'Ошибка! Обратитесь к администрации.', $addr = '')
 //успешный редирект с сообщением
 function ok_exit($msg = 'Операция успешно завершена', $addr = '')
 {
-  $session = checkSession::getInstance();
+  $session = check_Session::getInstance();
   if(empty($addr)) $addr = $_SERVER['HTTP_REFERER'];
   $session->set('ok_msg', $msg);
   main_redir($addr, false);
@@ -143,7 +145,7 @@ function get_param($param_name,$param_index)
  */
 function fotoFolder()
    {
-	   $session = checkSession::getInstance();
+	   $session = check_Session::getInstance();
 	   $db = go\DB\Storage::getInstance()->get('db-for-data');
 	   $foto_folder = $db->query('select `foto_folder` from `albums` where `id` = ?i',array($session->get('current_album')), 'el');
       return $foto_folder;
@@ -341,7 +343,7 @@ function digit_to_string($dig){
 	 */
 	function iTogo()
 		{
-		  $session = checkSession::getInstance();
+		  $session = check_Session::getInstance();
 
 			if ($session->has('basket'))
 				{
@@ -409,7 +411,7 @@ function digit_to_string($dig){
 	 */
 	function summa()
 		{
-		  $session = checkSession::getInstance();
+		  $session = check_Session::getInstance();
 			    $print = iTogo();
 			if ($print)
 				{
@@ -725,3 +727,285 @@ return $data;
 	 $slug=preg_replace('/[^a-z0-9-]+/', '-', $string);
 	 return $slug;
   }
+
+	// Return all values (array) of specified tag from XML-fragment
+	function get_fa($text,$tag)
+	{
+		preg_match_all("/<$tag>(.*?)<\/$tag>/s",$text,$out);
+		return $out[1];
+	}
+
+	// Return first value of specified tag from XML-fragment
+	function get_f($text,$tag)
+	{
+		$ret = get_fa($text,$tag);
+		return $ret[0];
+	}
+
+	/**
+	 * Возвращает безопасное значение, с удаленным html и php кодом
+	 * @param string $in_Val - исходное значение
+	 * @param int $trim_Val - если больше 0, то оставляет только указанное количество символов
+	 * @param bool $u_Case - если true, то возвращает заглавные буквы
+	 * @param bool $trim_symbols - если true, то возвращает только цифры до первой буквы
+	 * @return string
+	 */
+	function GetFormValue($in_Val, $trim_Val = 0, $u_Case = false, $trim_symbols=false) {
+		$ret = trim(addslashes(htmlspecialchars(strip_tags($in_Val))));
+		if ($trim_Val)
+			$ret = substr($ret, 0, $trim_Val);
+		if ($u_Case)
+			$ret = strtoupper($ret);
+
+		if ($trim_symbols) {
+			$my_len = strlen($ret);
+			for ($pos = 0; $pos<$my_len;$pos++) {
+				if (!is_numeric(substr($ret,$pos,1))) {
+					$ret = substr($ret,0,$pos);
+					break;
+				}
+			}
+		}
+		return $ret;
+	}
+
+	// -------------------------------------------------------------
+	function cleanInput($input) {
+
+		$search = array(
+			'@<script[^>]*?>.*?</script>@si',   // javascript
+			'@<[\/\!]*?[^<>]*?>@si',            // HTML теги
+			'@<style[^>]*?>.*?</style>@siU',    // теги style
+			'@<![\s\S]*?--[ \t\n\r]*>@'         // многоуровневые комментарии
+		);
+
+		$output = preg_replace($search, '', $input);
+		return $output;
+	}
+
+	function sql_valid($data) {
+		$data = str_replace("\\", "\\\\", $data);
+		$data = str_replace("'", "\'", $data);
+		$data = str_replace('"', '\"', $data);
+		$data = str_replace("\x00", "\\x00", $data);
+		$data = str_replace("\x1a", "\\x1a", $data);
+		$data = str_replace("\r", "\\r", $data);
+		$data = str_replace("\n", "\\n", $data);
+		return($data);
+	}
+
+	/**
+	 * для базы данных
+	 *
+	 * @param $input
+	 *
+	 * @return bool|mixed
+	 */
+	function sanitize($input) {
+
+		if (is_array($input)) {
+			foreach($input as $var=>$val) {
+				$output[$var] = sanitize($val);
+			}
+		}
+		else {
+			if (get_magic_quotes_gpc()) {
+				$input = stripslashes($input);
+			}
+			$input  = cleanInput($input);
+			$output = sql_valid($input);
+
+		}
+		return isset($output)?$output:false;
+	}
+
+	//---------------------------------------------------------
+	/**
+	 * @param $table
+	 * @param $kolonka
+	 *
+	 * print для ENUM msql
+	 */
+	function printEnum ($table, $kolonka)
+	{
+
+		if (isset($_SESSION['kolonka']))
+		{
+			$current_c = $_SESSION['kolonka'];
+		}
+		else
+		{
+			$current_c = 'c_colonka';
+		}
+
+		$db = go\DB\Storage::getInstance()->get('db-for-data');
+		$data	= $db->query('SHOW COLUMNS FROM ?t LIKE "%?e%" ',array($table,$kolonka))->row();
+		preg_match_all('/\(([^)]+)\)/', str_replace("'", '', $data['Type']), $values);
+		$enum_fileds = explode(',', $values[1][0]);
+		foreach ($enum_fileds as $field)
+		{
+			printf ("<option value ='%s' ".( $current_c == $field ? 'selected="selected"' : '')." >%s</option>",$field,$field);
+		}
+	}
+
+
+
+	//---------------------------------------------------------
+	/**
+	 * @param $table
+	 * @param $kolonka
+	 *
+	 * print для Set msql
+	 */
+	function printSet ($table, $kolonka)
+	{
+
+		if (isset($_SESSION['location']))
+		{
+			$current_c = $_SESSION['location'];
+		}
+		else
+		{
+			$current_c = NULL;
+		}
+
+		$db = go\DB\Storage::getInstance()->get('db-for-data');
+		$data	= $db->query('SHOW COLUMNS FROM ?t LIKE "%?e%" ',array($table,$kolonka))->row();
+		preg_match_all('/\(([^)]+)\)/', str_replace("'", '', $data['Type']), $values);
+		$enum_fileds = explode(',', $values[1][0]);
+		foreach ($enum_fileds as $field)
+		{
+			$selekted = '';
+			foreach($current_c as $val)
+			{
+				if($val == $field)
+				{
+					$selekted = 'selected="selected"';
+					break;
+				}
+			}
+			printf ("<option value ='%s' ".$selekted." >%s</option>",$field,$field);
+		}
+	}
+
+
+
+
+	function Get_IP()
+	{
+		if (getenv("HTTP_CLIENT_IP") && strcasecmp(getenv("HTTP_CLIENT_IP"), "unknown"))
+		{
+			$ip = getenv("HTTP_CLIENT_IP");
+		}
+		elseif (getenv("HTTP_X_FORWARDED_FOR") && strcasecmp(getenv("HTTP_X_FORWARDED_FOR"), "unknown"))
+		{
+			$ip = getenv("HTTP_X_FORWARDED_FOR");
+		}
+		elseif (getenv("REMOTE_ADDR") && strcasecmp(getenv("REMOTE_ADDR"), "unknown"))
+		{
+			$ip = getenv("REMOTE_ADDR");
+		}
+		elseif (!empty($_SERVER['REMOTE_ADDR']) && strcasecmp($_SERVER['REMOTE_ADDR'], "unknown"))
+		{
+			$ip = $_SERVER['REMOTE_ADDR'];
+		}
+		else
+		{
+			$ip = "unknown";
+		}
+
+		return ($ip);
+	}
+
+
+	// Return Whois-information (uses database of RIPE NCC)
+	// $address can be IP-address or hostname
+	function Get_Whois($address)
+	{
+		$res = '';
+		if (empty($address)) return 'No search key specified';
+		$socket = fsockopen ("whois.ripe.net", 43, $errno, $errstr);
+		if (!$socket) {
+			return $errstr($errno);
+		} else {
+			fputs ($socket, $address."\r\n");
+			while (!feof($socket)) {
+				$res .= fgets($socket, 128);
+			}
+		}
+		fclose ($socket);
+		return $res;
+	}
+
+	// Return cut string
+	// $InStr - string, $Len - required length
+	function ISubStr($InStr,$Len)
+	{
+		$Tmp1 = substr($InStr,0,$Len);
+		if (strlen($Tmp1) == $Len) { // Scrap of incomplete words
+			for (;;) {
+				if (substr($Tmp1,-1) == ' ') {break;}
+				else {$Tmp1 = substr($Tmp1,0,-1);}
+			}
+			$Tmp1 = $Tmp1.'...';
+		}
+		return $Tmp1;
+	}
+
+
+
+	// Call HTTP authentication header
+	function authenticate($message)
+	{
+		Header( "WWW-authenticate: Basic realm=\"$message\"");
+		Header( "HTTP/1.0 401 Unauthorized");
+	}
+
+
+	// Delete all files in specified folder and also the folder
+	function delete_files($folder)
+	{
+		if ($dir = @opendir($folder)) {
+			while (($file = readdir($dir)) !== false) {
+				if ($file!='.' && $file!='..' && filetype($folder.$file)=='file') {
+					unlink($folder.$file);
+				} elseif ($file!='.' && $file!='..' && filetype($folder.$file)=='dir') {
+					delete_files($folder.$file.'/');
+				}
+			}
+			closedir($dir);
+			rmdir(substr($folder, 0, strlen($folder)-1));
+		}
+	}
+
+	/**
+	 * @param $time
+	 * форматирование времени
+	 * @return string
+	 */
+	function showPeriod($time) {
+		return sprintf("%02d:%02d:%02d", (int)($time / 3600), (int)(($time % 3600) / 60), $time % 60);
+	}
+
+
+	/**
+	 *
+	 * Преобразование объекта в массив
+	 * $array = objectToArray( $obj );
+	 *
+	 * @param    object  $object преобразуемый объект
+	 * @reeturn      array
+	 *
+	 */
+	function objectToArray( $object )
+	{
+		if( !is_object( $object ) && !is_array( $object ) )
+		{
+			return $object;
+		}
+		if( is_object( $object ) )
+		{
+			$object = get_object_vars( $object );
+		}
+		return array_map( 'objectToArray', $object );
+	}

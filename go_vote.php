@@ -4,7 +4,6 @@
 error_reporting(0);
 include (dirname(__FILE__).'/inc/config.php');
 include (dirname(__FILE__).'/inc/func.php');
-include (dirname(__FILE__).'/inc/lib_ouf.php');
 ob_start();
 $id = intval($_POST['id']);
 $status = 'ERR';

@@ -127,7 +127,7 @@ class SplClassLoader
                 $fileName = str_replace($this->_namespaceSeparator, DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
             }
             $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . $this->_fileExtension;
-
+$test = $this->_includePath !== NULL ? $this->_includePath . DIRECTORY_SEPARATOR : '';
             require ($this->_includePath !== NULL ? $this->_includePath . DIRECTORY_SEPARATOR : '') . $fileName;
         }
     }

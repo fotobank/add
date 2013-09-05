@@ -4,9 +4,6 @@
 	include (__DIR__.'/../inc/func.php');
    include (__DIR__.'/news/sys/func.php');
 
-  // фильтрация опасных значений из переменных запроса $ _GET, $ _POST, $ _REQUEST и $ _COOKIE
-  include (__DIR__.'/../inc/secmodule.inc.php');
-
   ini_set('output_buffering', 0);
   ini_set('zlib.output_compression', 0);
 
@@ -64,9 +61,12 @@
 
 
   define('_DEBUG_', 1);
-  include_once (__DIR__.'/../core/Debug_HackerConsole/lib/config.php');
-  require_once (__DIR__.'/../core/Debug_HackerConsole/lib/Debug/HackerConsole/Main.php');
-  new Debug_HackerConsole_Main(true);
+	include_once (__DIR__.'/../classes/autoload.php');
+	autoload::getInstance();
+
+
+
+   new Debug_HackerConsole_Main(true);
 
  /*function debug($v, $group="message")
   {
@@ -79,9 +79,6 @@
 
 
 	// обработка ошибок
-	include (dirname(__FILE__).'/../inc/lib_mail.php');
-	include (dirname(__FILE__).'/../inc/lib_ouf.php');
-	include (dirname(__FILE__).'/../inc/lib_errors.php');
 	$error_processor = Error_Processor::getInstance();
 
 	/**

@@ -1,21 +1,36 @@
 <?
 if (!isset($_SESSION['admin_logged'])) die();
-//include 'news/sys/func.php';
 
+if(isset($_POST['deleteNews']))
+  {
+	 $deleteNews = $_POST['deleteNews'];
+	 $img = $db->query("SELECT `img` FROM `news` WHERE `id` = ?i",array($deleteNews),'el');
+	 unlink($img);
+	 $db->query("delete from `news` where `id` = ?i", array($deleteNews));
+	 $db->query("delete from `komments` where `news_id` = ?i", array($deleteNews));
+  }
+
+if(isset($_POST['newNews']))
+  {
+	 $list    = array('','Новость', '', '', 'Юрий','',0,'','','',0,0,'c_colonka','главная');
+	 $pattern = 'INSERT INTO `news` VALUES (?list)';
+	 $data    = array($list);
+	 $idNews  = $db->query($pattern, $data)->id();
+
+	 echo "<script type='text/javascript'>
+			 location.href = 'index.php?page=8&newsId='+$idNews;
+			 </script>";
+  }
+
+
+?>
+<script type="text/javascript" src="/inc/wp/ajaxPostNews.js"></script>
+<?
 
 define('RECORDS_PER_PAGE', 20);
 
-if(isset($_POST['delete_order']))
-  {
-	 $id = $_POST['delete_order'];
-	 $db->query("delete from orders where id = ?i", array($id));
-	 $db->query("delete from order_items where id_order = ?i", array($id));
-	 $db->query("delete from download_photo where id_order = ?i", array($id));
-  }
-
 include_once  ( __DIR__ . '/../canon68452/praide-analyser-cp-1251.php');
 include_once  ( __DIR__ . '/../inc/wp/comments.php');
-
 
 
 
@@ -179,23 +194,29 @@ include_once  ( __DIR__ . '/../inc/wp/comments.php');
 <?
 	if(isset($_POST['preview'])) {
 	  // превью - редактора
-	include_once  (__DIR__.'/../inc/wp/comments-post.php');
+			include_once  (__DIR__.'/../inc/wp/comments-post.php');
 	} elseif (isset($_POST['update']) || isset($_POST['insert'])) {
 	  // отправка коментария на запись или обновление
-	  include_once  (__DIR__.'/../inc/wp/comment-redaktor.php');
-	  printKoment($data['id']);
+			include_once  (__DIR__.'/../inc/wp/comment-redaktor.php');
+			printKoment($data['id']);
 	} else {
 	  // печать комментариев
-		  printKoment($data['id']);
+		 	 printKoment($data['id']);
 	}
 ?>
 		</td>
 	 </tr>
 	 <tr>
-		<td></td>
 		<td>
 		  <form style="width: 230px;" action="index.php?pg=<?=$pg?>" method="post">
-			 <input class="btn btn-primary" type="submit" value="удалить статью" onclick="return confirmDelete();"/>
+			 <input type="hidden" name="newNews" value="1"/>
+			 <input class="btn btn-success" type="submit" value="Новая статья"/>
+		  </form>
+		</td>
+		<td>
+		  <form style="width: 230px;" action="index.php?pg=<?=$pg?>" method="post">
+			 <input type="hidden" name="deleteNews" value="<?=$newsId?>"/>
+			 <input class="btn btn-danger" type="submit" value="удалить статью" onclick="return confirmDelete();"/>
 		  </form>
 		</td>
 		<td></td>
@@ -343,16 +364,16 @@ if(isset($_GET['newsId']))  $_SESSION['newsId'] = $_GET['newsId'];
 	  }
 	?>
 	<div style="clear:both"> </div>
-	<?
+	      <?
 		  paginator($record_count, $pg);
 	      ?>
   </div>
 </div>
-<script type="text/javascript">
-  $(function(){
-	 $('.tab-pane').show();
-  });
-</script>
+	 <script type="text/javascript">
+		$(function(){
+		  $('.tab-pane').show();
+		});
+	 </script>
 	 <script type="text/javascript">
 		function view(n) {
 		  style = document.getElementById(n).style;

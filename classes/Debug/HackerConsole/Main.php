@@ -3,7 +3,9 @@
  * http://forum.dklab.ru/users/DmitryKoterov/
  * @version 1.x $Id: Main.php 168 2007-01-30 21:12:03Z dk $
  */
- 
+include_once (__DIR__.'/../config.php');
+
+
 class Debug_HackerConsole_Main
 {
     var $_hc_height = "400"; // height of the console (pixels)
@@ -320,4 +322,13 @@ class Debug_HackerConsole_Main
  * Last created console.
  */
 $GLOBALS['Debug_HackerConsole_Main_LAST'] = NULL;
+
+
+	function debugHC($v, $group="message")
+	{
+		if (is_callable($f=array('Debug_HackerConsole_Main', 'out')))
+		{
+			call_user_func($f, $v, $group);
+		}
+	}
 ?>

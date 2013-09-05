@@ -7,15 +7,19 @@
  * To change this template use File | Settings | File Templates.
  */
 
+	require_once (__DIR__.'/classes/autoload.php');
+	autoload::getInstance();
+
+
    error_reporting(E_ALL);
    ini_set('display_errors', 1);
   // error_reporting(0);
   require_once (__DIR__.'/inc/config.php');
   require_once (__DIR__.'/inc/func.php');
-  include (__DIR__.'/inc/lib_ouf.php');
 
 
-  $link=new linkObfuscator($_SESSION['referralSeed']);
+
+  $link=new link_Obfuscator($_SESSION['referralSeed']);
   // print "actual referral Seed:". $_SESSION['referralSeed'] ."<br />\n";
   $_SESSION['referralSeed']=$link->seed;
 

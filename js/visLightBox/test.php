@@ -1,7 +1,7 @@
 <?
 include  (dirname(__FILE__).'/../../inc/head.php');
 include  (dirname(__FILE__).'/../../inc/ip-ban.php');
-include  (dirname(__FILE__).'/../../inc/dirPatc.php');
+
 ?>
 		<link rel="stylesheet" href="/js/visLightBox/data/vlboxCustom.css" type="text/css" />
 		<link rel="stylesheet" href="/js/visLightBox/data/visuallightbox.css" type="text/css" media="screen" />

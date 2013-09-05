@@ -1,7 +1,6 @@
 <?php
   require_once (dirname(__FILE__).'/inc/func.php');
   require_once (dirname(__FILE__).'/inc/config.php');
-  require_once (dirname(__FILE__).'/inc/lib_ouf.php');
 
 if(isset($_POST['login']) && !empty($_POST['login']) && !empty($_POST['password'] ))
 {

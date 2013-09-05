@@ -14,16 +14,16 @@
 	 exit;
   }
 
-  $news_id              = ( isset($_POST['news_id_r']))     	 ? trim($_POST['news_id_r']) : 0;
-  $comment_parent       = (isset($_POST['comment_parent_r']))  ? intval($_POST['comment_parent_r']) : 0;
-  $comment_post_ID      = (isset($_POST['comment_post_ID_r'])) ? intval($_POST['comment_post_ID_r']) : 0;
-  $comment_content      = ( isset($_POST['comment_r']))        ? trim($_POST['comment_r']) : null;
   $comment_author_email = ( isset($_POST['email']))       	 ? trim($_POST['email']) : null;
   $comment_author       = ( isset($_POST['author']))      	 ? trim(strip_tags($_POST['author'])) : null;
   $comment_author_url   = ( isset($_POST['url']))         	 ? trim($_POST['url']) : null;
 
-
   if (isset($_POST['update'])) {
+
+	 $news_id              = ( isset($_POST['news_id_r']))     	 ? trim($_POST['news_id_r']) : 0;
+	 $comment_parent       = (isset($_POST['comment_parent_r']))  ? intval($_POST['comment_parent_r']) : 0;
+	 $comment_post_ID      = (isset($_POST['comment_post_ID_r'])) ? intval($_POST['comment_post_ID_r']) : 0;
+	 $comment_content      = ( isset($_POST['comment_r']))        ? trim($_POST['comment_r']) : null;
 
 	 $set = array( 'news_id' 	 => $news_id,
 		            'parents_id' => $comment_parent,
@@ -37,6 +37,10 @@
 
 
   if (isset($_POST['insert'])) {
+
+	 $news_id              = ( isset($_POST['news_id']))     	 ? trim($_POST['news_id']) : 0;
+	 $comment_parent       = (isset($_POST['comment_parent']))  ? intval($_POST['comment_parent']) : 0;
+	 $comment_content      = ( isset($_POST['comment']))        ? trim($_POST['comment']) : null;
 
 	 if(isset($_SESSION['logged']) && $_SESSION['logged'])
 		{

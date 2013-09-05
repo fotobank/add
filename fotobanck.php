@@ -1,7 +1,7 @@
 <?php
 	include  (dirname(__FILE__).'/inc/head.php');
 	include  (dirname(__FILE__).'/inc/ip-ban.php');
-	include  (dirname(__FILE__).'/inc/dirPatc.php');
+
 	// include  (dirname(__FILE__).'/inc/lib/dtimediff/diftimer_class.php'); // подсчет времени между двумя событиями
 
 	$ip = Get_IP(); // Ip пользователя

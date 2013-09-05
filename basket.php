@@ -3,8 +3,8 @@
   // ini_set('display_errors', 1);
   error_reporting(0);
   include (__DIR__.'/inc/head.php');
-  require_once (__DIR__.'/core/checkSession/checkSession.php');
-  $session = checkSession::getInstance();
+
+  $session = check_Session::getInstance();
 
   if (!isset($_SESSION['logged']))
 	 {

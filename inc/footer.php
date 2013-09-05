@@ -17,42 +17,11 @@
     <div style="padding-top: 13px; padding-left: 42%;">
         <hfooter> Creative ls &copy; 2013</hfooter>
     </div>
-   <?
-    if (isset($_SESSION['us_name']) && $_SESSION['us_name'] == 'test')
-    {
-	?>
-	<div class="ttext_blue" style="position:absolute; margin-top: 45px;">
-		<?
-	/**
-	 * $actions - переменная String с действиями:
-	 * '' - добавление ошибок в список ошибок,
-	 * 'w' - пишет сообщение об ошибке на экран,
-	 * 'а' - выводит список всех сообщений на экран,
-	 * "d" - очищает стек ошибки,
-	 * 's' - остановить исполнение,
-	 * 'l' - пишет log,
-	 * 'm' - отправляет по электронной почте (значения могут быть объединены, например: 'ws')
-	 */
-	  //	$error_processor->err_proc("" , "w", $error_processor->error);
-//	$error_processor->err_proc("", "w", "");
-	  //	$error_processor->err_proc("", "am", "");
-   /*$deb = "
-	   Версия PHP: ".phpversion().
-	   "\n\tИспользуемая память в начале: ".$startMem." Кбайт, Память в конце: ".intval(memory_get_usage() / 1024)." Кбайт, Пик: ".intval(memory_get_peak_usage() / 1024)." Кбайт";
-		$time = microtime();
-		$time = explode(' ', $time);
-		$time = $time[1] + $time[0];
-		$finishTime = $time;
-		$total_time = round(($finishTime - $startTime), 4);
-	  $deb .=  "\tСтраница сгенерированна за: ".$total_time." секунд.";*/
-//	   debugHC($deb, "сообщение");
-        }
-        ?>
-    </div>
+
 	
     <!-- Piwik -->
 	<?	
-	if($_SERVER['SERVER_NAME'] != 'aleks.od.ua')
+	if($_SERVER['SERVER_NAME'] == 'aleks.od.ua')
 	{
 // Эта функция вызовет API, чтобы получить лучшие ключевые слова для данного URL.
 // Затем записывает в список лучших ключевых слов в HTML список
@@ -99,6 +68,9 @@ function DisplayTopKeywords($url = "")
     <?
      }
 	//<!-- End Piwik Tracking Code -->
+
+
+
   ?>
   <script type='text/javascript'>
   /* <![CDATA[ */
@@ -106,10 +78,15 @@ function DisplayTopKeywords($url = "")
   /* ]]> */
   </script>
   <?
+
+
   $include_Js = array('js/jquery.easing.1.3.js', 'js/dynamic.to.top.dev.js' );
+
+
   ?>
   <script src="<?php $min->merge( '/cache/footer.min.js', 'js', $include_Js, '', $prioritize_Js = $include_Js); ?>"></script>
   <?
+
 //		$min->logs();
   ?>
     <a id="dynamic_to_top" href="#" style="display: inline;">

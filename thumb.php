@@ -2,7 +2,6 @@
 include (dirname(__FILE__).'/inc/config.php');
 include (dirname(__FILE__).'/inc/func.php');
 require (dirname(__FILE__).'/inc/i_resize.php');
-require (dirname(__FILE__).'/inc/lib_ouf.php');
 
 
 if (isset($_GET['num'])) {
