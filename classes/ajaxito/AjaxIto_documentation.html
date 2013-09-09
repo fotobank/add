@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>AjaxIto Documentation File</title>
+</head>
+<body>
+<h1>This guide</h1>
+This is the main guide to start using and understanding AjaxIto. I wrote it to complement the "examples.php" file that has some useful demonstrations of how to use the class, all the code in that files is commented. So with this two files I think you won't have any problem using AjaxIto.
+<hr />
+<h2>What is AjaxIto?</h2>
+AjaxIto is a class written in php that makes it easy to integrate AJAX in a PHP application. It works with PHP versions >= 4. <BR />
+With AjaxIto it is easy to call php functions via JavaScript, and refresh content and styles without reloading the page.<BR />
+
+<hr />
+<h2>Why should you need AjaxIto?</h2>
+If you want to refresh some parts of the page without reloading it. That includes the styles and content of all the objects that participate in the page. <BR />
+
+<hr />
+<h2>How does AjaxIto work?</h2>
+When you want some data be processed by your server or you just want to change a color of a part of your page (without reloading it), you call the AjaxIto JavaScript function. And there you define wich PHP method will take care of the request. Then, in that method, you do your work (access a database, write a file, create an image, use a webservice, etc.) and then setup the response (just two kind of responses are posible) via Ajaxito functions (ok, this may sound complicated, but you just need to see any basic example to understand how simple is).
+So:
+<ul>
+<li> You call the Ajaxito JavaScript function, this function sends the variables in the background to the "process script" (that is the same file where you instantied Ajaxito class (that's why is so important to create the object before any headers are sent to the client).</li>
+<li> The method of the selected class is executed and there are defined the responses</li>
+<li> The response is automatically parsed and the corresponding objects properties of the page are updated.</li>
+</ul>
+<hr />
+<h2>Simple step by step guide to start using AjaxIto</h2>
+<ol>
+<li> Create a class that inherits from AjaxItoResPro (don't forget to include AjaxItoResPro.class.php file)</li>
+<li> The methods of that class will be the ones that can be called from using AJAX. So if your methods needs arguments define it with one argument. By this argument will be passed an array that contains all the variables passed during the JavaScript call. Also in that method you need a way to indicate the response so there are two methods that are inherited from the parent class that you need to know:</li>
+<ul>
+	<li>The first is: <i>addDOMProperty</i>, with this method you will be able to change any style property of an object of the page, for example if you call: <i>$this->addDOMProperty('colorDiv','color','#FF0000');</i>, the response of this method will cause that the object identified by "colorDiv" will change it's text color to "#FF0000" (red). So you can set as many as this properties as you want, and you can set any style (just like you define them in your css sheet). So the three parameters are: the id of the html object, the name of the property to set, and the new value.</li>
+	<li>The second is needed when you need to execute some JavaScript defined "on the fly" in the server. It's name is: <i>addJavaScriptCode</i>. It needs only one parameter that is the JavaScript code, for example: <i>$this->addJavaScriptCode("alert('Hello World!');");</i>, so, the response of this method will cause an alert message saying "Hello World!".</li>
+</ul>
+<li> In the page that you want tou use AJAX, create an AjaxIto object (just the first argument is needed that is the name of te instance that will be used to identificate the JS functions). It's very important to create the object before any headers are sent to the client (be careful with the blank lines)</li>
+<li> Then ask the object to insert all the javascript needed by calling the getJs() function.</li>
+<li> Also ask to insert what will be "loading message" by calling the getLoaderHTML() function. (you can pass by arguemnt your own styles to this message, it's just a div containing a word that is sepcified in every AJAX call, and appears while waiting for the server answer) </li>
+<li> Then you are ready to make the call... just do it like any JavaScript function, for example in the onClick Event: <i>onClick="testing_doPHP('ExampleControllerClass','changeColor','<vars><var0><value>red</value></var0></vars>','Changing...');"</i></li>
+<ul>
+	Note:
+	<li>The name of the JavaScript function is <i>nameOfAjaxitoObject_doPHP</i>(the name defined in step 3), in this case: <i>testing_doPHP</i></li>
+	<li>The first argument is the name of the class defined in the first step</li>
+	<li>The second argument is the name of a method of that class</li>
+	<li>The third agument is a string in an XML like format that defines the variables that will be passed (in an array) to the method. The format of this string is :<i>&lt;vars&gt;&lt;var0&gt;&lt;value&gt;red&lt;/value&gt;&lt;/var0&gt;&lt;/vars&gt;</i>, where you can sepecify all the variables you need just adding <i>&lt;var1&gt;&lt;value&gt;value_of_the_variable_one&lt;/value&gt;&lt;/var1&gt</i> before closing the &lt;vars&gt; node. You can also use the CDATA XML (Unparsed Character Data) node if you need to pass illegal characters like "&lt;" and "&amp;". </li>
+	
+</ul>
+</ol>
+<hr />
+<h2>License</h2>
+AjaxIto is Open Source under the BSD License (http://www.opensource.org/licenses/bsd-license.php). The text of the license could be found at the beginning of the code.
+<BR /> 
+<hr />
+AjaxIto. By Javier Rubacha. Web: <a href="http://www.jabox.com.ar/ajaxito">http://www.jabox.com.ar/ajaxito</a>
+</body>
+</html>

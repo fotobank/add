@@ -1,5 +1,5 @@
 <?php
-include (dirname(__FILE__).'/inc/head.php');
+include_once (dirname(__FILE__).'/inc/head.php');
 
 ?>
 <div id="main">
@@ -28,7 +28,7 @@ include (dirname(__FILE__).'/inc/head.php');
          </script>"; */
 ?>
 
-<!-- <button id="parol" style="margin-left:30%"  class="btn btn-primary" href="#myModal" data-toggle="modal">модальное окно</button> -->
+<!-- <button id="parol" style="margin-left:30%"  class="btn btn-primary" href="#myModal" data-toggle="modal">модальное окно</button>-->
 
 </div>
 <div class="end_content"></div>

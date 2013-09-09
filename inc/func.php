@@ -1,8 +1,6 @@
 <?php
-
-	include_once (__DIR__.'/../classes/autoload.php');
+	require_once (__DIR__.'/../classes/autoload.php');
 	autoload::getInstance();
-
 
   /**
 	* @param        $addr
@@ -11,7 +9,6 @@
 	*/
 function main_redir($addr = '', $close_conn = true, $code = 'HTTP/1.1 303 See Other')
 {
-
   header($code);
   if(empty($addr))
 	 {
@@ -475,12 +472,14 @@ function digit_to_string($dig){
   /**
 	* Функция для перевода даты на русский язык
 	*
-	* @param number дата в unix формате
-	* @param string формат выводимой даты
-	* @param number сдвиг времени (часов, относительно времени на сервере)
+	* @param $d number дата в unix формате
+	* @param string $format формат выводимой даты
+	* @param int $offset сдвиг времени (часов, относительно времени на сервере)
 	*
 	* %MONTH% — русское название месяца (родительный падеж)
 	* %DAYWEEK% — русское название дня недели
+	*
+	* @return string
 	*
 	* @example
 	* echo dateToRus( time(), '%DAYWEEK%, j %MONTH% Y, G:i' );
@@ -488,7 +487,8 @@ function digit_to_string($dig){
 	*  Пример использования:
    * echo dateToRus($row['created_unix'], '%DAYWEEK%, j %MONTH% Y, G:i');
 	*/
-  function dateToRus($d, $format = 'j %MONTH% Y', $offset = 0)
+
+	function dateToRus($d, $format = 'j %MONTH% Y', $offset = 0)
   {
 	 $months = array('января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля',
 						  'августа', 'сентября', 'октября', 'ноября', 'декабря');

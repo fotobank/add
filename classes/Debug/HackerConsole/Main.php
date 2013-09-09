@@ -3,7 +3,7 @@
  * http://forum.dklab.ru/users/DmitryKoterov/
  * @version 1.x $Id: Main.php 168 2007-01-30 21:12:03Z dk $
  */
-include_once (__DIR__.'/../config.php');
+require_once (__DIR__.'/../config.php');
 
 
 class Debug_HackerConsole_Main

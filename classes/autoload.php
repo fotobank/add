@@ -25,7 +25,7 @@ class autoload {
 	{
 		if (self::$instance == NULL)
 		{
-			self::$instance = new autoload;
+			self::$instance = new autoload();
 		}
 		return self::$instance;
 	}
@@ -49,6 +49,9 @@ class autoload {
 			$className = ltrim($className, '\\');
 			$fileName  = '';
 			$namespace = '';
+			if (strpos($className, 'Twig') === 0) {
+				return false;
+			}
 			if ($lastNsPos = strrpos($className, '\\')) {
 				$namespace = substr($className, 0, $lastNsPos);
 				$className = substr($className, $lastNsPos + 1);
@@ -56,7 +59,17 @@ class autoload {
 			}
 			$fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className).'.php';
 			$file = site_path.'classes'.DIRSEP.$fileName;
-			require $file;
+
+
+			try {
+				require_once $file;
+			} catch (Exception $e) {
+				if(DUMP_R) dump_r($e->getMessage());
+			}
+
+
+
+			return true;
 		});
 	}
 

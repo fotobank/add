@@ -9,7 +9,7 @@
 
  // header('Content-type: text/html; charset=windows-1251');
 
-	include_once (__DIR__.'/../classes/autoload.php');
+	require_once (__DIR__.'/../classes/autoload.php');
 	autoload::getInstance();
 
   if(isset($_POST['url']))  //

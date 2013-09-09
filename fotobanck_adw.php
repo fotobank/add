@@ -692,13 +692,13 @@ if ($session->has('current_album') == true):
 
 	$razdel = $db->query('select nm from `categories` where id = ?i', array($session->get('current_cat')),'el');
 
-
+//	dump_r($razdel);
 
 	// <!-- Проверка пароля на блокировку -->
 
 	verifyParol($may_view);
 
-
+//	dump_r($may_view);
 	/**
 	 *  Аккордеон
 	 */
@@ -902,6 +902,7 @@ else:
 						<h2><span style="color: #00146e;">Раздел фотобанка - "<?=$razdel;?>"</span></h2>
 				</div></div>
 
+
 				<!-- Кнопки назад -->
 
 				<div class="page">
@@ -985,6 +986,7 @@ else:
 		else
 			{
 				?>
+
 				<br>
 				<div class="cont-list" style="margin: -10px 10px 60px 40%;"><div class="drop-shadow lifted">
 						<h2><span style="color: #00146e;">Выбор категорий:</span></h2>

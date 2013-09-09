@@ -7,8 +7,12 @@
  * To change this template use File | Settings | File Templates.
  */
 header('Content-type: text/html; charset=windows-1251');
-$cryptinstall = '/inc/captcha/cryptographp.fct.php';
-include  'inc/captcha/cryptographp.fct.php';
+
+$cryptinstall = '/classes/dsp/cryptographp.fct.php';
+require_once  (__DIR__.'/classes/dsp/cryptographp.fct.php');
+
+
+
 ?>
 <!-- восстановление пароля data-focus-on="input:first" -->
 	<div class="modal-header" style="background: rgba(229,229,229,0.53)">

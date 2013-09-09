@@ -10,6 +10,60 @@
      //   alert (value);
 
 
+/**
+ * запуск multiselect
+ */
+
+function multSel() {
+    $('.multiselect').multiselect({
+        buttonClass: 'btn',
+        buttonWidth: 'auto',
+        includeSelectAllOption: true,
+        buttonContainer: '<div class="btn-group" />',
+        maxHeight: false,
+        buttonText: function (options) {
+            if (options.length == 0) {
+                return 'None selected <b class="caret"></b>';
+            }
+            else if (options.length > 3) {
+                return options.length + ' selected  <b class="caret"></b>';
+            }
+            else {
+                var selected = '';
+                options.each(function () {
+                    selected += $(this).text() + ', ';
+                });
+                return selected.substr(0, selected.length - 2) + ' <b class="caret"></b>';
+            }
+        }
+    });
+}
+
+function multSelFtp() {
+    $('#upFTP').multiselect({
+        buttonClass: 'btn',
+        buttonWidth: 'auto',
+        includeSelectAllOption: true,
+        buttonContainer: '<div class="btn-group" />',
+        maxHeight: false,
+        buttonText: function (options) {
+            if (options.length == 0) {
+                return 'None selected <b class="caret"></b>';
+            }
+            else if (options.length > 3) {
+                return options.length + ' selected  <b class="caret"></b>';
+            }
+            else {
+                var selected = '';
+                options.each(function () {
+                    selected += $(this).text() + ', ';
+                });
+                return selected.substr(0, selected.length - 2) + ' <b class="caret"></b>';
+            }
+        }
+    });
+}
+
 function sendFtp() {
 
           $.ajax({
@@ -37,6 +91,7 @@ function sendFtp() {
                     selector = "<option value = '" + ftpFold  + "' >" + ftpFold  + "</option>" + option;
                     $(" #upFTP ").empty().append(selector);
                //     $(this).outDebug(dataArray,'/canon68452/ajax/ajaxAdmin.js','uploadFTP');
+                    multSelFtp();
                 }
             });
 }

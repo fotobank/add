@@ -17,7 +17,7 @@
   include (__DIR__.'/config.php');
   include (__DIR__.'/func.php');
 
-  include_once (__DIR__.'/../classes/autoload.php');
+  require_once (__DIR__.'/../classes/autoload.php');
   autoload::getInstance();
 
 

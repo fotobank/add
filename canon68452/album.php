@@ -963,8 +963,8 @@ if (isset($_SESSION['current_cat']))
 																			<div class="input-prepend">
 																				<label id='refresh' title='Обновить папки' for="upFTP" class="add-on" onclick='sendFtp();'>
 																					Папка uploada FTP:</label>
-																				<select id="upFTP" class="span3 multiselect" NAME="ftp_folder">
-																					<option value="<?= $ln['ftp_folder'] ?>"><?= $ln['ftp_folder'] ?></option>
+																				<select id="upFTP" class="span3" NAME="ftp_folder">
+																					<option value="<?= $ln['ftp_folder'] ?>">Подождите идет запрос данных ...</option>
 																				</select>
 																			</div>
 																		</td>

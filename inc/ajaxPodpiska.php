@@ -8,7 +8,7 @@
  */
   header('Content-type: text/html; charset=windows-1251');
   // обработка ошибок
-	include_once (__DIR__.'/../classes/autoload.php');
+	require_once (__DIR__.'/../classes/autoload.php');
 	autoload::getInstance();
 
 

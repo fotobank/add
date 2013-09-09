@@ -1,10 +1,16 @@
 <?php
 	set_time_limit(0);
 
-	include_once (__DIR__.'/../../classes/autoload.php');
+	require_once (__DIR__.'/../../classes/autoload.php');
 	autoload::getInstance();
 
- /**
+	if(Debug_HC) $Debug_HackerConsole_Main = Debug_HackerConsole_Main::getInstance(true);
+	// проверка работы консоли
+	// debugHC("test");
+
+
+
+	/**
  * Class Error_Processor
  */
 	class Error_Processor
@@ -55,8 +61,8 @@
 				set_error_handler(array('Error_Processor', 'userErrorHandler'));
 				set_exception_handler(array('Error_Processor', 'captureException'));
 				register_shutdown_function(array('Error_Processor', 'captureShutdown'));
-				$this ->event_log_fullname = $_SERVER['DOCUMENT_ROOT'].'/log/events.log'; // Path and filename of error log
-				$this ->EP_log_fullname = $_SERVER['DOCUMENT_ROOT'].'/log/errors.log'; // Path and filename of event log
+				$this -> event_log_fullname = $_SERVER['DOCUMENT_ROOT'].'/log/events.log'; // Path and filename of error log
+				$this -> EP_log_fullname = $_SERVER['DOCUMENT_ROOT'].'/log/errors.log'; // Path and filename of event log
 
 			}
 
@@ -104,7 +110,8 @@
 						 * E_USER_WARNING и E_USER_NOTICE
 						 * если ошибка попадает в отчет (при использовании оператора "@" error_reporting() вернет 0)
 						 */
-						$errortype = array(E_ERROR             => 'E_ERROR (Фатальная ошибка)',
+						$errortype = array(
+						                   E_ERROR             => 'E_ERROR (Фатальная ошибка)',
 						                   E_WARNING           => 'E_WARNING (Предупреждение) ',
 						                   E_PARSE             => 'E_PARSE',
 						                   E_NOTICE            => 'E_NOTICE (Уведомление) ',
@@ -140,7 +147,7 @@
 						$err .= "</CATCHABLE ERRORS>\n\n";
 
 						/**
-						 * @todo Cохранить в файл регистрации ошибок, и послать мне по электронной почте,
+						 * Cохранить в файл регистрации ошибок, и послать мне по электронной почте,
 						 * если есть критическая пользовательская ошибка
 						 */
 						/*error_log($err, 3, "errors.log");
@@ -150,51 +157,43 @@
 							ftruncate($fp, 0); // очищаем файл
 							fclose ($fp);
 						}*/
+                  $err_led = "$errortype[$errno][$errno] $errmsg ($filename на $linenum строке)";
 
-						$error_processor = Error_Processor::getInstance();
 						/**
-						 * @todo Формирование сообщения об ошибке для вывода на экран
+						 * @ Отправка ошибок в  лог файл и email
 						 */
-						$error_processor->err_name = $errortype[$errno];
-						$err_led = "$errortype[$errno][$errno] $errmsg ($filename на $linenum строке)";
-						/**
-						 * @todo Отправка ошибок в  лог файл и email
-						 */
-						$error_processor->err_proc($err,'l',$err_led);
-						debugHC($err_led, "ошибка");
 						ob_end_clean();
+						self::__err_proc($err, 'l',$err_led, $errortype[$errno], 'ошибка');
 					}
 
 				return true;
 			}
+
+
+
 
 		/**
 		 * EXTENSIONS ERRORS
 		 */
 		public static function captureException($exception)
 			{
-	//			$dt = date("Y-m-d H:i:s (T)");
-				$err =  "<EXTENSIONS ERROR> \n";
+				$dt = date("Y-m-d H:i:s (T)");
+				$err = "Дата: ".$dt."\n";
+			//	$err =  "<EXTENSIONS ERROR> \n";
 				// заносим все выводимые данные в буфер
-//				ob_start();
-//				?><!--<pre>--><?//
-//				print_r($exception);
-//		   	?><!--</pre>--><?//
-//				// очищаем буфер
-//				$err .= ob_get_clean();
-				foreach($exception as $val)
-				  {
-					 $err .= $val.'<br>';
-				  }
+		//		preg_replace('(.*?)', '', func_get_args($exception));
+				$err .= $exception;
+				 //	ob_start();
+			//	print_r($exception);
+				// очищаем буфер
+			//	$err .= ob_get_clean();
 			//	$err .= "\t Страница:        ".$_SERVER['REQUEST_URI']."\n";
-			//	$err .= "\t Дата:            ".$dt."\n";
+
 			//	$err .= "\t Ip пользователя: ".Get_IP()."\n";
 			//	$err .= "\t Браузер:         ".$_SERVER['HTTP_USER_AGENT']."\n";
-			//	$err .=  "</EXTENSIONS ERROR> \n\n";
-				$err_led = $err;
-            $error_processor = Error_Processor::getInstance();
-            $error_processor->err_proc($err,'lm',$err_led);
-            debugHC($err_led, "ошибка");
+			//	$err .=  "</EXTENSIONS ERROR>";
+
+            self::__err_proc($err, 'lm', $err, 'EXTENSIONS ERROR', 'ошибка');
 				return true;
 			}
 
@@ -215,27 +214,45 @@
 						//  ob_end_clean();
 
 						// Display content $error variable
-						$err_led  = "<FATAL ERROR> <br>";
+						$err_led  = "<FATAL ERROR> \n";
+						$err_led .= "\t Страница: ".$_SERVER['REQUEST_URI']."\n";
 						$err =  "<FATAL ERROR> \n";
 						foreach($error as $key => $value)
 							{
-				//				echo "<b>$key:</b> $value <br />";
-								$err_led .= "<b>$key:</b> $value <br />";
-								$err .= "\t $key:\t \t      $value \n";
+				//				echo "<b>$key:</b> $value \n";
+								$err_led .= "\t $key: $value \n";
+								$err .= "\t $key:\t \t $value \n";
 							}
-						$err_led  .= "</FATAL ERROR> <br> <br>";
+						$err_led  .= "</FATAL ERROR> \n \n";
 
 						$err .= "\t Страница:        ".$_SERVER['REQUEST_URI']."\n";
 						$err .= "\t Дата:            ".$dt."\n";
 						$err .= "\t Ip пользователя: ".Get_IP()."\n";
 						$err .= "\t Браузер:         ".$_SERVER['HTTP_USER_AGENT']."\n";
-						$err .=  "</FATAL ERROR> \n\n";
-					   $error_processor = Error_Processor::getInstance();
-					   $error_processor->err_proc($err,'lm',$err_led);
-					   debugHC($err_led, "ошибка");
+						$err .=  "</FATAL ERROR> \n";
+
+						self::__err_proc($err, 'lm', $err_led, 'E_ERROR (Фатальная ошибка)', 'ошибка');
 					}
 						return true;
 			}
+
+
+				/**
+				 * @param $err
+				 * @param $actions
+				 * @param $err_led
+				 * @param $errno
+				 * @param $error_name
+				 */
+				static function __err_proc( $err, $actions, $err_led, $errno = '', $error_name )
+				{
+					$error_processor = Error_Processor::getInstance();
+					$error_processor->err_name = $errno;
+					$error_processor->err_proc($err, $actions, $err_led);
+
+					if(DUMP_R)  dump_r($err_led);
+					if (function_exists('debugHC')) debugHC($err_led, $error_name);
+				}
 
 
 		/**
@@ -246,9 +263,11 @@
 		 * @param string $err_led
 		 *
 		 * $actions - переменная String с действиями: '' - добавление ошибок в список ошибок,
-		 * 'w' - дополнительно пишет сообщение об ошибке на экран, 'а' - дополнительно
-		 * выводит список всех сообщений на экран, "d" - дополнительно очищает стек ошибки,
-		 * 's' - дополнительно остановить исполнение, 'l' - дополнительно пишет log,
+		 * 'w' - дополнительно пишет сообщение об ошибке на экран,
+		 * 'а' - дополнительно выводит список всех сообщений на экран,
+		 * "d" - дополнительно очищает стек ошибки,
+		 * 's' - дополнительно остановить исполнение,
+		 * 'l' - дополнительно пишет log,
 		 * 'm' - дополнительно отправляет по электронной почте (значения могут быть объединены, например: 'ws')
 		 * $err_file, $err_line - имя файла и строки с ошибкой
 		 *
@@ -273,8 +292,10 @@
 				/**
 				 *  Sending mail
 				 */
-				if (substr_count($actions, 'm'))
-					{
+			if (substr_count($actions, 'm'))
+				  {
+					 if("http://www.".$_SERVER['HTTP_HOST']."/" == get_domain())
+						{
 						// Check, that messages not send too often
 						$log_file = $this->EP_log_fullname;
 						$dump     = @file($log_file);
@@ -353,6 +374,7 @@
 					{
 						die();
 					}
+			 }
 			}
 
 		/**
@@ -448,7 +470,6 @@
 					       "\t$user_id\t".date('r')."\t".Get_IP()."\n", 3, $this->event_log_fullname);
 				$this->log_send(1);
 			}
-
 	}
 
 

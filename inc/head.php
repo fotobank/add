@@ -2,17 +2,22 @@
 	error_reporting (E_ALL);
 	ini_set('display_errors', 1);
 
-	include_once (__DIR__.'/../classes/autoload.php');
+	if(!defined('DUMP_R')) define('DUMP_R', true); // запрет показа ошибок в DUMP_R ( true - показавать )
+   if(!defined('Debug_HC')) define('Debug_HC', false); // запрет показа ошибок в Debug_HackerConsole_Main ( true - показавать )
+
+	try {
+	require_once (__DIR__.'/../classes/autoload.php');
 	autoload::getInstance();
+	} catch (Exception $e) {
+	die ('ERROR: (head.php lin 11) ' . $e->getMessage());
+   }
 
 
-	require (__DIR__.'/../core/dump/dump_r.php');
-   include (__DIR__.'/config.php');
+   require_once (__DIR__.'/../classes/dump_r/dump_r.php');
+	require_once (__DIR__.'/config.php');
    require_once (__DIR__.'/func.php');
 
-
 // require_once (__DIR__.'/phpIni.php');
-
 
    header('Content-type: text/html; charset=windows-1251');
    header("X-Frame-Options: SAMEORIGIN");
@@ -28,46 +33,45 @@
 <!--		<link href='http://fonts.googleapis.com/css?family=Lobster|Comfortaa:700|Jura:600&subset=cyrillic,cyrillic-ext' rel='stylesheet' type='text/css'>-->
 
 		<?
+		// шаблонизатор
+		try {
+			require_once (__DIR__ . '/../lib/Twig/Autoloader.php');
+			Twig_Autoloader::register();
+			$templates = (isset($gb) && $gb == '/gb') ? '../templates':'templates';
+			$loader = new Twig_Loader_Filesystem($templates);
+			$twig = new Twig_Environment($loader, array(
+															  'cache'       => 'cache',
+															  'charset'=>'windows-1251',
+															  'auto_reload' => true
+															  ));
+		} catch (Exception $e) {
+			if(DUMP_R) dump_r($e->getMessage());
+		}
 
-      // использование объекта как массива
+
+      // хранилище объектов использование объекта как массива
 		$registry = new Registry();
 
-      // шаблонизатор
-		require_once (site_path . '/lib/Twig/Autoloader.php');
-
-		Twig_Autoloader::register();
-
-
-
-		if ($session->get('us_name') == 'test')
-		  {
-			 $Debug_HackerConsole_Main = Debug_HackerConsole_Main::getInstance(true);
-		  }
-		// проверка работы консоли
-		// 	debugHC("test");
-
-
 		// обработка ошибок
-
 		 $error_processor = Error_Processor::getInstance();
 		 $session = check_Session::getInstance();
 		/**
 		 *  Тесты для проверки Error_Processor
 		 * PHP set_error_handler TEST
 		 */
- //	    IMAGINE_CONSTANT;
+ 	 //   IMAGINE_CONSTANT;
 		/**
 		 * PHP set_exception_handler TEST
 		 */
-	//	   throw new Exception( 'Imagine Exception' );
+	 // 	throw new Exception( 'Imagine Exception' );
 		/**
 		 * PHP register_shutdown_function TEST ( IF YOU WANT TEST THIS, DELETE PREVIOUS LINE )
 		 */
-	//		 	imagine_function( );
+	//    imagine_function();
 
-		include (__DIR__.'/title.php');
-		$cryptinstall = '/inc/captcha/cryptographp.fct.php';
-		require_once  (__DIR__.'/captcha/cryptographp.fct.php');
+		require_once (__DIR__.'/title.php');
+		$cryptinstall = '/classes/dsp/cryptographp.fct.php';
+		require_once  (__DIR__.'/../classes/dsp/cryptographp.fct.php');
 
 
 		?>
@@ -152,7 +156,7 @@
 
 	  <script type="text/JavaScript">
 		 //подавить все сообщения об ошибках JavaScript
-		 window.onerror=null;
+ 		 window.onerror=null;
 	  </script>
 		<?
 //	$min->logs();
@@ -177,227 +181,48 @@
 
 	<!--Голова начало-->
 	<div id="head">
-	<table class="tb_head">
-		<tr>
-			<td>
-				<div class="td_head_logo">
-				<?  require_once (__DIR__.'/flash.php'); ?>
-					<a class="logo" href="/index.php"></a>
-					<div id="zagol">
-						<h1>
-							 <span class="letter1">Профессиональная
-						<div style="padding-top: 10px; padding-bottom: 10px;">	Фото и Видеосъёмка</div>
-				          в Одессе</span>
-						</h1>
-					</div>
-				</div>
-			</td>
-			<td class="td_form_ent">
 
-				<div id="form_ent">
-
-					<? if ($session->has('logged')): ?>
-						<div style="text-align: center;">
-  <span style="color:#bb5"><span style="font-size: 14px">Здравствуйте,</span><br> <span style="font-weight: bold;"><?=$session->get('us_name')?></span><br/>
-	  <?
+	<?
+	  require_once (__DIR__.'/flash.php');
 	  $user_balans = $db->query('select balans from users where id = ?i',array($session->get('userid')),'el');
 	  $_SESSION['userVer'] = ($session->has('userVer'))?$session->get('userVer'):genpass(10, 2);
 	  $_SESSION['accVer'] = ($session->has('accVer'))?$session->get('accVer'):genpass(10, 2);
 
-	  ?>
-	  <span style="font-size: 12px;"> Ваш баланс: </span>
-	  <span id="balans" style="font-weight: bold;"><?=$user_balans?></span> гр.<br/></span></div>
+     // форма логина
+		try {
+			echo $twig->render('top_head.twig', array (
+															 'logged' => $session->has('logged'),
+															 'us_name' =>  $session->get('us_name'),
+															 'user_balans' => $user_balans,
+															 'accVer' =>  $session->get('accVer'),
+															 'userVer' => $session->get('userVer')
+															 ));
+		} catch (Exception $e) {
+			if(DUMP_R) dump_r($e->getMessage());
+		}
 
-						<div style="margin-top: 8px;">
-						  <a class="korzina" style="position: absolute; top: 62px; width: 52px;" href="/basket.php">корзина</a>
-						  <a class="vihod" style="position: absolute; top: 62px; left: 80px;" href="/enter.php?logout=1">выход</a>
-						</div>
-						<div style="margin-top: 8px;">
-						  <a class="scet" style="position: absolute; width: 30px; top: 88px;" data-target="#" data-toggle="order" href="<?='/security.php?acc='.$session->get('accVer')?>">счет</a>
-						  <a class="user" href="<?='/security.php?user='.$session->get('userVer')?>" style="position: absolute; width: 88px; left: 48px; top: 88px;">пользователь</a>
-
-						</div>
-
-					<? else: ?>
-						<span>Форма входа:</span><br>
-						<form action="/enter.php" method="post">
-							<table>
-								<tr>
-									<td> Логин:</td>
-									<td><label><input class="inp_fent" name="login"> </label></td>
-								</tr>
-								<tr>
-									<td> Пароль:</td>
-									<td><label> <input class="inp_fent" type="password" name="password"> </label></td>
-								</tr>
-								<tr></tr>
-								<tr>
-									<td>
-										<input data-placement="left" rel="tooltip" class="vhod" name="submit" type="submit" value="вход" title="Добро пожаловать!"
-											data-original-title="Добро пожаловать!">
-									</td>
-									<td>
-										<a href="/registr.php" class="registracia" data-placement="right" data-original-title="Вы еще не зарегистрировались? Присоединяйтесь">регистрация</a>
-									</td>
-								</tr>
-							</table>
-							<a href="/reminder.php" style="color: #fff; text-decoration: none;" data-target="#" data-toggle="modal" data-placement="right" data-original-title="Восстановление пароля">Забыли пароль?</a>
-						</form>
-					<? endif; ?>
-				</div>
-			</td>
-		<tr>
-			<td></td>
-			<td>
-	</table>
-
-	<?
 
 	// <!-- СООБЩЕНИЕ ОБ ОШИБКЕ-->
-
-
-	if (!empty($error))
-	  {
-		 ?>
-		 <script type='text/javascript'>
-			dhtmlx.message.expire = 6000; // время жизни сообщения
-			dhtmlx.message({ type: 'error', text: 'Ошибка!<br><?=$error?>'});
-		 </script>
-		 <?
-		 unset($error);
-	  }
-
-	if ($session->has('err_msg') && $session->get('err_msg') != '')
-		{
-			?>
-			<script type='text/javascript'>
-				dhtmlx.message.expire = 6000; // время жизни сообщения
-				dhtmlx.message({ type: 'error', text: 'Ошибка!<br><?=$session->get('err_msg')?>'});
-				<!--			humane.error('Ошибка!<br>--><?//=$session->get('err_msg')?><!--')-->
-			</script>
-			<?
-		  $session->del('err_msg');
-		}
-
-	// <!-- СООБЩЕНИЕ О УПЕШНОМ ЗАВЕРШЕНИИ-->
-
-	if ($session->has('ok_msg') && $session->get('ok_msg') != '')
-		{
-			?>
-			<script type='text/javascript'>
-				humane.success("Добро пожаловать, <?=$session->get('us_name')?>!<br><span><?=$session->get('ok_msg')?></span>");
-			</script>
-			<?
-		  $session->del('ok_msg');
-		}
-
-
-	if ($session->has('ok_msg2') && $session->get('ok_msg2') != '')
-		{
-			?>
-			<script type='text/javascript'>
-					dhtmlx.message.expire = 6000;
-					dhtmlx.message({ type: 'warning', text: <?=$session->get('ok_msg2') ?>});
-			</script>
-			<?
-		  $session->del('ok_msg2');
-		}
+	new printMsg();
 	?>
+		<div id="main_menu">
+	<?
 
-
-		  <div id="main_menu">
-
-			<?
 			$value = $_SERVER['PHP_SELF'];
 			if ($_SERVER['PHP_SELF'] == '/fotobanck_adw.php')
-				{
-					$value = '/fotobanck_adw.php?unchenge_cat';
-				}
+			    {
+				$value = '/fotobanck_adw.php?unchenge_cat';
+			    }
 
-			if ($value == '/index.php')
-				{
-					$act_ln = 'gl_act';
-					$key    = 'Главная';
-					echo "
-	<a href='$value' class='$act_ln'>$key</a>
-	<a class='bt_fb' href='/fotobanck_adw.php?unchenge_cat'>Фото-банк</a>
-	<a class='bt_usl' href='/uslugi.php'>Услуги</a>
-	<a class='bt_ceny' href='/ceny.php'>Цены</a>
-	<a class='bt_konty' href='/kontakty.php'>Контакты</a>
-	<a class='bt_gb' href='/gb/'>Гостевая</a>";
-				}
-			elseif ($value == '/fotobanck_adw.php?unchenge_cat')
-				{
-					$act_ln = 'fb_act';
-					$key    = 'Фото-банк';
-					echo "
-	<a class='bt_gl' href='/index.php'>Главная</a>
-	<a href='$value' class='$act_ln'>$key</a>
-	<a class='bt_usl' href='/uslugi.php'>Услуги</a>
-	<a class='bt_ceny' href='/ceny.php'>Цены</a>
-	<a class='bt_konty' href='/kontakty.php'>Контакты</a>
-	<a class='bt_gb' href='/gb/'>Гостевая</a>";
-				}
-			elseif ($value == '/uslugi.php')
-				{
-					$act_ln = 'usl_act';
-					$key    = 'Услуги';
-					echo "
-	<a class='bt_gl' href='/index.php'>Главная</a>
-	<a class='bt_fb' href='/fotobanck_adw.php?unchenge_cat'>Фото-банк</a>
-	<a href='$value' class='$act_ln'>$key</a>
-	<a class='bt_ceny' href='/ceny.php'>Цены</a>
-	<a class='bt_konty' href='/kontakty.php'>Контакты</a>
-	<a class='bt_gb' href='/gb/'>Гостевая</a>";
-				}
-			elseif ($value == '/ceny.php')
-				{
-					$act_ln = 'cn_act';
-					$key    = 'Цены';
-					echo "
-	<a class='bt_gl' href='/index.php'>Главная</a>
-	<a class='bt_fb' href='/fotobanck_adw.php?unchenge_cat'>Фото-банк</a>
-	<a class='bt_usl' href='/uslugi.php'>Услуги</a>
-	<a href='$value' class='$act_ln'>$key</a>
-	<a class='bt_konty' href='/kontakty.php'>Контакты</a>
-	<a class='bt_gb' href='/gb/'>Гостевая</a>";
-				}
-			elseif ($value == '/kontakty.php')
-				{
-					$act_ln = 'konty_act';
-					$key    = 'Контакты';
-					echo "
-	<a class='bt_gl' href='/index.php'>Главная</a>
-	<a class='bt_fb' href='/fotobanck_adw.php?unchenge_cat'>Фото-банк</a>
-	<a class='bt_usl' href='/uslugi.php'>Услуги</a>
-	<a class='bt_ceny' href='/ceny.php'>Цены</a>
-	<a href='$value' class='$act_ln'>$key</a>
-	<a class='bt_gb' href='/gb/'>Гостевая</a>";
-				}
-			elseif ($value == '/gb/index.php')
-				{
-					$act_ln = 'gb_act';
-					$key    = 'Гостевая';
-					echo "
-	<a class='bt_gl' href='/index.php'>Главная</a>
-	<a class='bt_fb' href='/fotobanck_adw.php?unchenge_cat'>Фото-банк</a>
-	<a class='bt_usl' href='/uslugi.php'>Услуги</a>
-	<a class='bt_ceny' href='/ceny.php'>Цены</a>
-	<a class='bt_konty' href='/kontakty.php'>Контакты</a>
-	<a href='$value' class='$act_ln'>$key</a>";
-				}
-			elseif ($value == '/registr.php' or'/activation.php')
-				{
-					$act_ln = 'gb_act';
-					$key    = 'Гостевая';
-					echo "
-	<a class='bt_gl' href='/index.php'>Главная</a>
-	<a class='bt_fb' href='/fotobanck_adw.php?unchenge_cat'>Фото-банк</a>
-	<a class='bt_usl' href='/uslugi.php'>Услуги</a>
-	<a class='bt_ceny' href='/ceny.php'>Цены</a>
-	<a class='bt_konty' href='/kontakty.php'>Контакты</a>
-	<a class='bt_gb' href='/gb/'>Гостевая</a>";
-				}
+			// вывод меню
+			try {
+			   echo $twig->render('main_menu.twig', array (
+																 'value' => $value
+																 ));
+			    } catch (Exception $e) {
+				if(DUMP_R) dump_r($e->getMessage());
+			    }
+
 			?>
 
 			<object width="90" height="90" style="position: absolute; margin-left: 135px; margin-top: 26px; width: 70px; height: 80px; z-index:10;" type="application/x-shockwave-flash" data="/img/calendarb.swf">
@@ -422,4 +247,3 @@
 	</NOSCRIPT>
 
 	<!--Голова конец-->
-<?

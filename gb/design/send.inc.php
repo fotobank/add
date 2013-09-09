@@ -1,6 +1,6 @@
 <?
-$cryptinstall = '/../../inc/captcha/cryptographp.fct.php';
-require_once (__DIR__.'/../../inc/captcha/cryptographp.fct.php');
+$cryptinstall = '/../../classes/dsp/cryptographp.fct.php';
+require_once  (__DIR__.'/../../classes/dsp/cryptographp.fct.php');
  ?>
 <form action="<?=$clean_self;?>" id="guestbook" method="post" name="Sad_Raven_Guestbook">
 <table class="tb_send_f">

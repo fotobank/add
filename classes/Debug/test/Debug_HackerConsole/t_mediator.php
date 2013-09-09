@@ -1,6 +1,6 @@
 <?php
 // Include library code.
-  include_once (__DIR__.'/../../lib/config.php');
+  require_once (__DIR__.'/../../lib/config.php');
   require_once (__DIR__.'/../../lib/Debug/HackerConsole/Main.php');
 new Debug_HackerConsole_Main(true);
 

@@ -1,7 +1,7 @@
 <?php
 
 // include class
-include_once "seo.class.php";
+require_once "seo.class.php";
 // create object
 $seo = new seo ("www.somesite.com");
 
@@ -42,7 +42,7 @@ $seo->addVars($vars);
 	
 	
 	// db example /////////////////////////////
-	include_once "seo.class.php";
+	require_once "seo.class.php";
 	
 	// create object
 	$seo = new seo ("www.somesite.com");

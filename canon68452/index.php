@@ -61,12 +61,15 @@
 
 
   define('_DEBUG_', 1);
-	include_once (__DIR__.'/../classes/autoload.php');
-	autoload::getInstance();
+//	require_once (__DIR__.'/../classes/autoload.php');
+//	autoload::getInstance();
 
+	// обработка ошибок
+	$error_processor = Error_Processor::getInstance();
 
+	$Debug_HackerConsole_Main = Debug_HackerConsole_Main::getInstance(true);
 
-   new Debug_HackerConsole_Main(true);
+//   new Debug_HackerConsole_Main(true);
 
  /*function debug($v, $group="message")
   {
@@ -78,8 +81,7 @@
 
 
 
-	// обработка ошибок
-	$error_processor = Error_Processor::getInstance();
+
 
 	/**
 	 *  Тесты для проверки Error_Processor
@@ -158,42 +160,10 @@
    <script src="/inc/cropUploader/js/jquery.Jcrop.min.js"></script>
    <script src="/inc/cropUploader/js/script.js"></script>
 
-<?
 
-  function debugHC($v, $group="message")
-  {
-	 if (is_callable($f=array('Debug_HackerConsole_Main', 'out')))
-		{
-		  call_user_func($f, $v, $group);
-		}
-  }
-?>
-
-
-  <script type="text/javascript">
+ <script type="text/javascript">
 	 $(document).ready(function() {
-		$('.multiselect').multiselect({
-		  buttonClass: 'btn',
-		  buttonWidth: 'auto',
-		  includeSelectAllOption: true,
-		  buttonContainer: '<div class="btn-group" />',
-		  maxHeight: false,
-		  buttonText: function(options) {
-			 if (options.length == 0) {
-				return 'None selected <b class="caret"></b>';
-			 }
-			 else if (options.length > 3) {
-				return options.length + ' selected  <b class="caret"></b>';
-			 }
-			 else {
-				var selected = '';
-				options.each(function() {
-				  selected += $(this).text() + ', ';
-				});
-				return selected.substr(0, selected.length -2) + ' <b class="caret"></b>';
-			 }
-		  }
-		});
+		multSel();
 	 });
   </script>
 
@@ -522,10 +492,10 @@ tinyMCE.init({
 
 	<? else:?>
 
-		<script type="text/javascript" src="/js/jquery.js"></script>
-		<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+<!--		<script type="text/javascript" src="/js/jquery.js"></script>-->
+<!--		<script type="text/javascript" src="/js/bootstrap.min.js"></script>-->
 		<script type="text/javascript" src="/js/jquery.tools.min.js"></script>
-		<link href="/css/admin.css" rel="stylesheet" type="text/css"/>
+<!--		<link href="/css/admin.css" rel="stylesheet" type="text/css"/>-->
 <?
 // 	  setcookie('admnewswar',1,time()+3600); // для настройки
 

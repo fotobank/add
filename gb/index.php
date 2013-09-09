@@ -3,7 +3,7 @@
 // error_reporting(E_ALL);
 // ini_set('display_errors', 1);
 define('SR_DENIED', true);
-if (!include ("config.inc.php")) { die("Не найден рабочий файл конфигурации"); exit; }
+if (!include ("config.inc.php")) { die("Не найден рабочий файл конфигурации"); }
 if (!isset($_GET["messref"])) $messref=0; else $messref=1;
 
 ///////////   ФУНКЦИИ   ////////////
@@ -308,6 +308,7 @@ if ($name != "" && $mess != "" && isset($_POST["add"]) && $error == "")
 }
 
 ///////////   загружаем  шапку   ////////////
+	$gb = dirname($_SERVER['PHP_SELF']);
 include("$header");
 echo "<table width=100% border=0 cellspacing=0 cellpadding=0 class=p><tr><td align=center>";
 

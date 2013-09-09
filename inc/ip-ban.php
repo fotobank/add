@@ -8,7 +8,7 @@
 	 */
 
   // обработка ошибок
-	include_once (__DIR__.'/../classes/autoload.php');
+	require_once (__DIR__.'/../classes/autoload.php');
 	autoload::getInstance();
 
 
@@ -21,8 +21,9 @@
 			fclose($log);
 
 
-		  $mail_mes = "Зафиксированн подбор пароля для альбома \"".$_SESSION['current_album'].
-			"\", пользователь - \"".$session->get('us_name')."\" c Ip:".Get_IP()." забанен на ".$timeout." минут!";
+		  $mail_mes = "Внимание - ".dateToRus( time(), '%DAYWEEK%, j %MONTH% Y, G:i' )." - зафиксированн подбор пароля для альбома \"".
+			            $_SESSION['current_album']."\", пользователь - \"".$session->get('us_name')."\" c Ip:".Get_IP().
+			            " забанен на ".$timeout." минут!";
 
 		  $error_processor = Error_Processor::getInstance();
 		  $error_processor->log_evuent($mail_mes,"");
@@ -71,19 +72,16 @@
 											$begin = ((($subdata[1] + 60 * $timeout) - $now) / 60);
 										   $min = intval($begin);
 										   $sec = round((($begin - $min)*60),2);
+										   $session->set("popitka/$current_album", -10);
 
-							//			  echo "<h2>Осталось <span id='timer' long='$begin:00'>$begin:00 минут$okonc</span></h2>";
-										  $session->set("popitka/$current_album", -10);
-
-										  return json_encode(array('min' => $min,'sec' => $sec));
-
-										  break;
+										   return json_encode(array('min' => $min,'sec' => $sec));
+										   break;
 										}
 
 						  // время бана закончилось
 									if (Get_IP() == $subdata[0] && $now > ($subdata[1] + 60 * $timeout) && $current_album == $subdata[2]
-										&& $session->get("popitka/$current_album") <= 0
-										&& $session->get("popitka/$current_album") > 5 )
+										&& $session->get("popitka/$current_album") <= 0 && $session->get("popitka/$current_album") > 5 )
+
 										{
 										  $session->set("popitka/$current_album", 5);
 										}
@@ -105,4 +103,5 @@
 						  $session->set("popitka/$current_album", 5);
 						}
 				}
+			return true;
 		}

@@ -3318,3 +3318,11 @@ a:hover img { -webkit-filter:sepia(0) brightness(1) contrast(1); }
 
 *//* BLAH BLAH *//*
 figure { margin:20px auto; }*/
+
+
+.dump_r {
+   display:block; margin:0 auto;
+   position: relative;
+   max-width: 1180px;
+   z-index: 10000;
+}

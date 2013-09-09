@@ -372,7 +372,7 @@ class Form {
             if ($this->validator===NULL) {
                 $this->validator=false;
                 if(($this->getConfig("validator"))&&(file_exists($this->getConfig("validator")))) {
-                    include_once($this->getConfig("validator"));
+                    require_once($this->getConfig("validator"));
                     if (class_exists($this->getConfig("validatorClass"))) {
                         $this->validator=new Validator();
                     }else {

@@ -29,8 +29,8 @@ if(isset($_POST['newNews']))
 
 define('RECORDS_PER_PAGE', 20);
 
-include_once  ( __DIR__ . '/../canon68452/praide-analyser-cp-1251.php');
-include_once  ( __DIR__ . '/../inc/wp/comments.php');
+require_once  ( __DIR__ . '/../canon68452/praide-analyser-cp-1251.php');
+require_once  ( __DIR__ . '/../inc/wp/comments.php');
 
 
 
@@ -126,7 +126,7 @@ include_once  ( __DIR__ . '/../inc/wp/comments.php');
 				  <?
 				  // загрузка картинки
 				  if (isset($_POST['filedim'])) {
-					 include_once  ( __DIR__ . '/../inc/cropUploader/thumbUploader.php');
+					 require_once  ( __DIR__ . '/../inc/cropUploader/thumbUploader.php');
 					 $sImage = new ImageUploader();
 					 $dir = './../reklama/thumb/'; // папка для загрузки
 					 $sImage->upload($dir, 140, true);
@@ -194,10 +194,10 @@ include_once  ( __DIR__ . '/../inc/wp/comments.php');
 <?
 	if(isset($_POST['preview'])) {
 	  // превью - редактора
-			include_once  (__DIR__.'/../inc/wp/comments-post.php');
+			require_once  (__DIR__.'/../inc/wp/comments-post.php');
 	} elseif (isset($_POST['update']) || isset($_POST['insert'])) {
 	  // отправка коментария на запись или обновление
-			include_once  (__DIR__.'/../inc/wp/comment-redaktor.php');
+			require_once  (__DIR__.'/../inc/wp/comment-redaktor.php');
 			printKoment($data['id']);
 	} else {
 	  // печать комментариев

@@ -12,7 +12,7 @@
   ini_set("display_errors","1");
   ignore_user_abort(1);
 
-	include_once (__DIR__.'/../../classes/autoload.php');
+	require_once (__DIR__.'/../../classes/autoload.php');
 	autoload::getInstance();
 
    require_once (__DIR__.'/../config.php');
