@@ -1,7 +1,11 @@
 <?php
-
-	require_once (__DIR__.'/../classes/autoload.php');
-	autoload::getInstance();
+	require_once (__DIR__.'/../classes/dump_r/dump_r.php');
+	try {
+		require_once (__DIR__.'/../classes/autoload.php');
+		autoload::getInstance();
+	} catch (Exception $e) {
+		if(DUMP_R) dump_r($e->getMessage());
+	}
 
    require_once(__DIR__.'/secureSession.php');
 
@@ -17,7 +21,7 @@
 
 
 
-	require(__DIR__.'/../classes/Go/DB/autoload.php');
+	require_once (__DIR__.'/../classes/Go/DB/autoload.php');
 	\go\DB\autoloadRegister();
 	$params = array(
 		            'host'     => 'localhost',

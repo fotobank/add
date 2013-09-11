@@ -1,5 +1,5 @@
 <?php
-   include (dirname(__FILE__).'/inc/head.php');
+		 include_once (__DIR__.'/inc/head.php');
 ?>
 
 <!--[if IE]><script>

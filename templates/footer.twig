@@ -1,0 +1,57 @@
+{#{% extends "content.twig" %}#}
+
+{#{% block footer %}#}
+    <div id="footer">
+
+    <div id="foot_JavaScript1" style="position:absolute;left:550px;top:-13px;width:800px;height:25px;z-index:10;">
+        <div style="color:#000;font-size:10px;font-family:Verdana,serif;font-weight:normal;font-style:normal;text-decoration:none" id="copyrightnotice">
+        </div>
+        <script type="text/javascript">
+            var now = new Date();
+            var startYear = "2012";
+            var text = "&copy; ";
+            if (startYear != '') {
+                text = text + startYear + "-";
+            }
+            text = text + now.getFullYear() + ", www.aleks.od.ua | Все права защищены. При цитировании документа ссылка на сайт обязательна.";
+            var copyrightnotice = document.getElementById('copyrightnotice');
+            copyrightnotice.innerHTML = text;
+        </script>
+    </div>
+    <div style="padding-top: 13px; padding-left: 42%;">
+        <hfooter> Creative ls &copy; 2013</hfooter>
+    </div>
+
+   {% if SERVER_NAME == 'aleks.od.ua' %}
+        <script type="text/javascript">
+            var _paq = _paq || [];
+            _paq.push(["trackPageView"]);
+            _paq.push(["enableLinkTracking"]);
+
+            (function() {
+                var u=(("https:" == document.location.protocol) ? "https" : "http") + "://fotosait.no-ip.org/piwik/";
+                _paq.push(["setTrackerUrl", u+"piwik.php"]);
+                _paq.push(["setSiteId", "1"]);
+                var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+                g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+            })();
+        </script>
+   {% endif %}
+
+	     {#кнопка наверх#}
+    <a id="dynamic_to_top" href="#" style="display: inline;">
+        <span> </span>
+    </a>
+
+	    <script type='text/javascript'>
+		    /* <![CDATA[ */
+		    var mv_dynamic_to_top = {"text": "0", "version": "0", "min": "200", "speed": "1000", "easing": "easeInOutExpo", "margin": "20"};
+		    /* ]]> */
+	    </script>
+
+	    <script src="{{ merge_files('/cache/footer.min.js', 'js', include_Js_footer, '', include_Js_footer) }}"></script>
+
+
+    </div>
+
+{#{% endblock %}#}

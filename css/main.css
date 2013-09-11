@@ -321,7 +321,7 @@ hremind {
     width: 900px;
     height: 200px;
     top: 0;
-    left: -10px;
+    /*left: -10px;*/
     position: absolute;
 }
 
@@ -1962,7 +1962,7 @@ a strong {
     -moz-box-shadow: 0 0 5px #d1cfd1;
     -webkit-box-shadow: 0 0 5px #d1cfd1;
     -o-box-shadow: 0 0 5px #d1cfd1;
-    color: #07061f;
+    color: #0761b1;
 }
 
 .registracia:active {

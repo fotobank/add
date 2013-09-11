@@ -1,67 +1,76 @@
-<table class="tb_head">
-    <tr>
-        <td>
-            <div class="td_head_logo">
-                <a class="logo" href="/index.php"></a>
+<table class="tb_head" >
+	<tr >
+		<td >
+			<div class="td_head_logo" >
+				<a class="logo" href="/index.php" ></a >
 
-                <div id="zagol">
-                    <h1>
-							 <span class="letter1">Профессиональная
-						<div style="padding-top: 10px; padding-bottom: 10px;"> Фото и Видеосъёмка</div>
-				          в Одессе</span>
-                    </h1>
-                </div>
-            </div>
-        </td>
-        <td class="td_form_ent">
+				<div id="zagol" >
+					<h1 >
+							 <span class="letter1" >Профессиональная
+						<span style="padding-top: 10px; padding-bottom: 10px;" > Фото и Видеосъёмка</span >
+				          в Одессе</span >
+					</h1 >
+				</div >
+			</div >
+		</td >
+		<td class="td_form_ent" >
 
-            <div id="form_ent">
+			<div id="form_ent" >
 
-                {% if logged %}
-                    <div style="text-align: center;">
-      <span style="color:#bb5"><span style="font-size: 14px">Здравствуйте,</span><br> <span style="font-weight: bold;">{{ us_name }}</span><br/>
-	  <span style="font-size: 12px;"> Ваш баланс: </span>
-	  <span id="balans" style="font-weight: bold;">{{ user_balans }}</span> гр.<br/></span></div>
+				{% if logged %}
+					<div style="text-align: center;" >
+					      <span style="color:#bb5" ><span style="font-size: 14px" >Здравствуйте,</span ><br > <span
+								      style="font-weight: bold;" >{{ us_name }}</span ><br />
+						  <span style="font-size: 12px;" > Ваш баланс: </span >
+						  <span id="balans" style="font-weight: bold;" >{{ user_balans }}</span > гр.<br /></span ></div >
 
-                    <div style="margin-top: 8px;">
-                        <a class="korzina" style="position: absolute; top: 62px; width: 52px;" href="/basket.php">корзина</a>
-                        <a class="vihod" style="position: absolute; top: 62px; left: 80px;" href="/enter.php?logout=1">выход</a>
-                    </div>
-                    <div style="margin-top: 8px;">
-                        <a class="scet" style="position: absolute; width: 30px; top: 88px;" data-target="#" data-toggle="order" href="/security.php?acc={{ accVer }}">счет</a>
-                        <a class="user" href="/security.php?user={{ userVer }}" style="position: absolute; width: 88px; left: 48px; top: 88px;">пользователь</a>
+					<div style="margin-top: 8px;" >
+						<a class="korzina" style="position: absolute; top: 62px; width: 52px;" href="/basket.php" >корзина</a >
+						<a class="vihod" style="position: absolute; top: 62px; left: 80px;" href="/enter.php?logout=1" >выход</a >
+					</div >
+					<div style="margin-top: 8px;" >
+						<a class="scet" style="position: absolute; width: 30px; top: 88px;" data-target="#"
+								data-toggle="order" href="/security.php?acc={{ accVer }}" >счет</a > <a class="user"
+								href="/security.php?user={{ userVer }}"
+								style="position: absolute; width: 88px; left: 48px; top: 88px;" >пользователь</a >
 
-                    </div>
+					</div >
 
-                {% else %}
-                    <span>Форма входа:</span><br>
-                    <form action="/enter.php" method="post">
-                        <table>
-                            <tr>
-                                <td> Логин:</td>
-                                <td><label><input class="inp_fent" name="login"> </label></td>
-                            </tr>
-                            <tr>
-                                <td> Пароль:</td>
-                                <td><label> <input class="inp_fent" type="password" name="password"> </label></td>
-                            </tr>
-                            <tr></tr>
-                            <tr>
-                                <td>
-                                    <input data-placement="left" rel="tooltip" class="vhod" name="submit" type="submit" value="вход" title="Добро пожаловать!" data-original-title="Добро пожаловать!">
-                                </td>
-                                <td>
-                                    <a href="/registr.php" class="registracia" data-placement="right" data-original-title="Вы еще не зарегистрировались? Присоединяйтесь">регистрация</a>
-                                </td>
-                            </tr>
-                        </table>
-                        <a href="/reminder.php" style="color: #fff; text-decoration: none;" data-target="#" data-toggle="modal" data-placement="right" data-original-title="Восстановление пароля">Забыли
-                            пароль?</a>
-                    </form>
-                {% endif %}
-            </div>
-        </td>
-    <tr>
-        <td></td>
-        <td>
-</table>
+				{% else %}
+					<span >Форма входа:</span ><br >
+					<form action="/enter.php" method="post" >
+						<table >
+							<tr >
+								<td > Логин:</td >
+								<td ><label ><input class="inp_fent" name="login" > </label ></td >
+							</tr >
+							<tr >
+								<td > Пароль:</td >
+								<td ><label > <input class="inp_fent" type="password" name="password" > </label ></td >
+							</tr >
+							<tr ></tr >
+							<tr >
+								<td >
+									<input data-placement="left" rel="tooltip" class="vhod" name="submit" type="submit"
+											value="вход" title="Добро пожаловать!"
+											data-original-title="Добро пожаловать!" >
+								</td >
+								<td >
+									<a href="/registr.php" class="registracia" data-placement="right"
+											data-original-title="Вы еще не зарегистрировались? Присоединяйтесь" >регистрация</a >
+								</td >
+							</tr >
+						</table >
+						<a href="/reminder.php" style="color: #fff; text-decoration: none;" data-target="#"
+								data-toggle="modal" data-placement="right" data-original-title="Восстановление пароля" >Забыли
+						                                                                                                пароль?</a >
+					</form >
+				{% endif %}
+			</div >
+		</td >
+	</tr >
+	<tr >
+		<td ></td >
+		<td ></td >
+	</tr >
+</table >

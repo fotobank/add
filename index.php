@@ -1,38 +1,35 @@
 <?php
-include_once (dirname(__FILE__).'/inc/head.php');
+		include_once (__DIR__.'/inc/head.php');
 
-?>
-<div id="main">
+		$dataDB = $db->query('select txt from content where id = ?i', array(1), 'el');
+		$include_Js_footer = array('js/jquery.easing.1.3.js', 'js/dynamic.to.top.dev.js');
+		$renderData = array(
+				'title'             => $title,
+				'description'       => $description,
+				'keywords'          => $keywords,
+				'logged'            => $session->has('logged'),
+				'us_name'           => $session->get('us_name'),
+				'user_balans'       => $user_balans,
+				'accVer'            => $session->get('accVer'),
+				'userVer'           => $session->get('userVer'),
+				'value'             => $value,
+				'include_Js'        => $include_Js,
+				'prioritize_Js'     => $prioritize_Js,
+				'include_CSS'       => $include_CSS,
+				'include_Js_footer' => $include_Js_footer,
+				'SERVER_NAME'       => $_SERVER['SERVER_NAME'],
+				'dataDB'            => $dataDB
+		);
+		try {
+				echo $twig->render(mb_substr($_SERVER['PHP_SELF'], 0, -3).'twig', $renderData);
+		}
+		catch (Exception $e) {
+				if (DUMP_R) {
+						dump_r($e->getMessage());
+				}
+		}
 
 
-<!--<div id="myModal" class="modal hide fade in"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-<div class="modal-header">
-<button class="close" data-dismiss="modal">x</button>
-<h3>Заголовок</h3>
-</div>
-<div class="modal-body">
-</div>
-<div class="modal-footer">
-<a class="btn" data-dismiss="modal" href="#">Закрыть</a>
-</div>
-</div>-->
 
-<div id="cont_fb">
-<?// echo $db->query('select txt from content where id = ?i',array(1),'el'); ?>
-</div>
-<?
-/*echo "<script type='text/javascript'>
-         $(document).ready(function(){
-         $('#myModal').modal('show');
-         });
-         </script>"; */
-?>
-
-<!-- <button id="parol" style="margin-left:30%"  class="btn btn-primary" href="#myModal" data-toggle="modal">модальное окно</button>-->
-
-</div>
-<div class="end_content"></div>
-</div>
-
-<?php include (dirname(__FILE__).'/inc/footer.php');
+		include_once (dirname(__FILE__).'/inc/footer.php');
 ?>

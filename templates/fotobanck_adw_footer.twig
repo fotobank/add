@@ -1,0 +1,68 @@
+{% block content %}
+
+	{# <br>
+	 <div class="cont-list" style="margin: -10px 10px 60px 40%;" >
+		 <div class="drop-shadow lifted" >
+			 <h2 ><span style="color: #00146e;" >Выбор категорий:</span ></h2 >
+		 </div >
+	 </div >
+	 <table >
+		 <tr >
+			 <td >#}
+
+	{#foreach ($rs as $ln) #}
+
+	{# кнопки разделов #}
+
+
+	{#<a class="button gray" href="/fotobanck_adw.php?chenge_cat=<?= $ln['id'] ?>" ><?=$ln['nm']?> </a >#}
+
+
+
+
+	{#</td >
+ </tr >
+ <tr >
+	 <td >
+		 <div id="cont_fb" ></div >
+	 </td >
+ </tr >
+</table >#}
+
+
+
+
+
+
+	<script src="{{ merge_files('/cache/fotobank.min.js', 'js', include_Js_banck, '',  include_Js_banck) }}" ></script >
+
+	<script type='text/javascript' >
+
+		$('img').error(function () {
+			//		$(this).parent().css('visibility', 'hidden');
+			$(this).attr('src', '/img/bg_out.png');
+		});
+
+	</script >
+{% endblock content %}
+
+
+		</div></div>
+
+
+	{% block end_content %}
+		<div class="end_content" ></div >
+	{% endblock end_content %}
+
+
+
+	{% block footer %}
+		{% include 'footer.twig' %}
+	{% endblock footer %}
+
+
+		</body>
+	{% block html %}
+		</html>
+	{% endblock html %}
+

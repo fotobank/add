@@ -5,8 +5,8 @@
 	autoload::getInstance();
 
 	if(Debug_HC) $Debug_HackerConsole_Main = Debug_HackerConsole_Main::getInstance(true);
-	// проверка работы консоли
-	// debugHC("test");
+// проверка работы консоли
+//	if (function_exists('debugHC'))  debugHC("test");
 
 
 
@@ -294,7 +294,8 @@
 				 */
 			if (substr_count($actions, 'm'))
 				  {
-					 if("http://www.".$_SERVER['HTTP_HOST']."/" == get_domain())
+					  // письма только для aleks.od.ua
+					 if($_SERVER['HTTP_HOST'] == stristr(mb_substr(get_domain(), 0, -1),"al"))
 						{
 						// Check, that messages not send too often
 						$log_file = $this->EP_log_fullname;

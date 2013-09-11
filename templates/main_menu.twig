@@ -1,3 +1,8 @@
+<!-- begin: main_menu.twig -->
+
+{#{% extends "base.twig" %}#}
+
+{#{% block main_menu %}#}
 		{% if value  == '/index.php' %}
 
 	<a class='gl_act'   href='{{ value }}' >Главная</a>
@@ -66,7 +71,7 @@
 	<a class='bt_konty' href='/kontakty.php'>Контакты</a>
     <a class='gb_act'   href='{{ value }}' >Гостевая</a>
 
-        {% elseif value == '/registr.php' or value == '/activation.php' %}
+        {% else %}
 
 	<a class='bt_gl'    href='/index.php'>Главная</a>
 	<a class='bt_fb'    href='/fotobanck_adw.php?unchenge_cat'>Фото-банк</a>
@@ -76,3 +81,5 @@
 	<a class='bt_gb'    href='/gb/'>Гостевая</a>
 
         {% endif %}
+{#{% endblock %}#}
+<!-- end: main_menu.twig -->
