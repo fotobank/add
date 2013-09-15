@@ -1,18 +1,12 @@
 <?php
 			define ( 'BASEPATH' , realpath ( __DIR__ ) . '/' , TRUE );
-			include (BASEPATH.'inc/head.php');
-?>
-<div id="main">
-	<div class="cont-list" style="margin: 0 10px 20px 36%;"><div class="drop-shadow lifted">
-			<h2><span style="color: #00146e;">Школьники и выпускники </span></h2>
-		</div></div>
-<a class="small button full blue" href="uslugi.php"><span>Назад к категориям</span></a>
+			require_once (BASEPATH.'inc/head.php');
 
-<div id="cont_fb">
-	<? echo $db->query('select txt from content where id = ?i',array(9),'el'); ?>
-</div>
-</div>
-<div class="end_content"></div>
-</div>
-<?php include (BASEPATH.'inc/footer.php');
-?>
+
+			$renderData['autoPrev']            = new autoPrev();
+			$renderData['txt']                 = $db->query('select txt from content where id = ?i', array(9), 'el');
+			$renderData['include_Js_f_svadbi'] = array('js/prettyPhoto/js/jquery.prettyPhoto.js', 'js/montage/js/jquery.montage.js');
+			$loadTwig('.twig', $renderData);
+
+
+			require_once (BASEPATH.'inc/footer.php');

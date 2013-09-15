@@ -1,5 +1,7 @@
 <?
 require_once (__DIR__.'/../../inc/head.php');
+
+if($razdel == '/gb/index.php') { $loadTwig('.twig', $renderData); }
 ?>
 <link href="../../css/gb.css" rel="stylesheet" type="text/css" />
 <script language=JavaScript>
@@ -57,9 +59,3 @@ require_once (__DIR__.'/../../inc/head.php');
 </script>
 
 <!--Голова конец-->
-
-<?
-if($razdel == '/gb/index.php'):
-		$loadTwig('.twig', $renderData);
- endif;
-?>

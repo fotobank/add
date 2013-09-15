@@ -1,0 +1,91 @@
+{% extends "base.twig" %}
+
+
+
+
+
+    {% block content_header %}
+	    {% if block is defined and block == 'error' %}
+		    <h2 style="font-size: 36px; font-family: Georgia, 'Times New Roman', Times, serif; color: #9c3735; margin-top: 50px;">
+			    <i>Ошибка: {{ Id }}</i> {{ aId }}
+		    </h2>
+		    <p>{{ body|raw }}</p>
+		    {{ SERVER_SIGNATURE }}
+	    {% else %}
+	    {{ parent() }}
+	    {% endif %}
+    {% endblock content_header %}
+
+
+
+
+
+    {% block l_colonka %}
+	    {% if block is defined and block != 'error' %}
+	    {{ parent() }}
+	    {% endif %}
+    {% endblock l_colonka %}
+
+
+
+
+
+
+
+{% block c_colonka %}
+	{% if block is defined and block == 'time' %}
+		<script type='text/javascript'>
+			dhtmlx.message.expire = 6000; // время жизни сообщения
+			dhtmlx.message({ type: 'error', text: 'Лимит в 48 часов для подтверждения заказа прошел.'});
+		</script>
+		<div class="drop-shadow lifted" style="margin: 50px 0 0 320px;">
+			<div style="font-size: 24px;">Лимит в 48 часов для подтверждения заказа прошел.</div>
+			<div style="font-size: 24px;">Заказ необходимо пересобрать.</div>
+		</div><br><br><br><br><br><br><br>
+	{% else %}
+
+
+
+		    {% if block is defined and block == 'limit' %}
+			    <div class="drop-shadow lifted" style="margin: 100px 0 0 0;" >
+				    <div style="font-size: 20px;" >Недостаточно средств на балансе! Необходимо '{{ summ }}' гр. Пополните свой счет на сайте любым доступным
+				                                   Вам способом. Или сделайте новый заказ наложенным платежом.
+				    </div >
+			    </div >
+		    {% else %}
+
+
+					{% if block is defined and block == 'oldZakaz' %}
+						    <div class="drop-shadow lifted" style="margin: 100px 0 0 70px;">
+							    <div style="font-size: 24px;">Заказ №{{ id }} ждет своей очереди на выполнение.</div>
+							    <div style="font-size: 24px;">По его готовности Вы получите уведомление.</div>
+						    </div><br><br><br><br><br><br><br>
+
+					{% elseif block is defined and block == 'ok' %}
+
+								   {% if block is defined and block == 'nalPlat' %}
+									   <script type='text/javascript'>
+										   $('#balans').empty().append({{ balans }});
+									   </script>
+								   {% endif %}
+
+									<div class="drop-shadow lifted" style="margin: 100px 0 0 60px;">
+										<div style="font-size: 24px;">Спасибо, Ваш заказ №{{ id }} принят в обработку. </div>
+									</div>
+
+					{% endif %}
+			{% endif %}
+	{% endif %}
+
+
+{% endblock c_colonka %}
+
+
+
+
+
+    {% block r_colonka %}
+	    {% if block is defined and block != 'error' %}
+		    {{ parent() }}
+	    {% endif %}
+    {% endblock r_colonka %}

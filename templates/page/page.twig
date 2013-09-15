@@ -6,12 +6,8 @@
     {% endblock content_header %}
 
 
-    {% block l_colonka %}
 
-    {% endblock l_colonka %}
-
-
-    {% block c_colonka %}
+    {% block top %}
 
 	    <script type='text/javascript'>
 		    $(function() {
@@ -81,21 +77,20 @@
 		    })
 	    </script>
 
-	   
+    {% endblock top %}
 
 
-    {% endblock c_colonka %}
+
+ {% block l_colonka %}
+
+ {% endblock l_colonka %}
+
+
+{% block c_colonka %}
+
+{% endblock c_colonka %}
 
 
     {% block r_colonka %}
-        {#{% include 'r_colonka.twig' %}#}
+	    {{ parent() }}
     {% endblock r_colonka %}
-
-{% block end_content %}
-	{{ parent() }}
-{% endblock end_content %}
-
-
-{% block footer %}
-	{{ parent() }}
-{% endblock footer %}

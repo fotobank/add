@@ -125,29 +125,3 @@ textarea.form2:active {
 .p {
     margin: 5px 10px;
 }
-
-#form_ent td {
-    color: #999999;
-}
-
-
-
-#form_login {
-    margin: 0 0 20px;
-    padding: 0;
-    color: #999999;
-    border-collapse: collapse;
-    border-spacing: 0;
-}
-
-#form_login .inp_fent {
-    background: none repeat scroll 0 0 #CCCCCC;
-    border-radius: 7px 7px 7px 7px;
-    padding-left: 0;
-    padding-right: 8px;
-    width: 82px;
-}
-
-#form_login .inp_fent {
-    margin-bottom: 2px;
-}

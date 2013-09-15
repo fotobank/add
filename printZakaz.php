@@ -25,6 +25,12 @@
   $key = $_GET['key'];
   $data = $db->query('select * from `print` where `key` = ?string', array($key), 'row');
 //		  dump_r($data);
+
+							$renderData['block' ] = false;
+							$renderData['id' ] = false;
+							$renderData['summ' ] = false;
+							$renderData['balans' ] = false;
+
 if(!$data)
   {
 	 err_exit('Ключ не найден!');
@@ -32,7 +38,7 @@ if(!$data)
 else
   {
 
-
+					$db = go\DB\Storage::getInstance()->get('db-for-data');
 
     if((time() - intval($data['dt']) > 172800) && $data['id_nal'] != 'пополнение баланса сайта')
 		{
@@ -40,16 +46,8 @@ else
 		  //Раскомментировать следующую строку, если надо удалять просроченные записи о фото
 		  // $db->query('delete from print where id = ?',array($data['id']));
 		  // $db->query('delete from order_print where id_print = ?',array($data['id']));
-		  ?>
-		  <script type='text/javascript'>
-			 dhtmlx.message.expire = 6000; // время жизни сообщения
-			 dhtmlx.message({ type: 'error', text: 'Лимит в 48 часов для подтверждения заказа прошел.'});
-		  </script>
-		  <div class="drop-shadow lifted" style="margin: 50px 0 0 320px;">
-			 <div style="font-size: 24px;">Лимит в 48 часов для подтверждения заказа прошел.</div>
-			 <div style="font-size: 24px;">Заказ необходимо пересобрать.</div>
-		  </div><br><br><br><br><br><br><br>
-		  <?
+					$renderData['block' ] = 'time';
+
 		}
 	 else
 		{
@@ -58,57 +56,50 @@ else
 			 {
 				$_SESSION['order_msg'] = 'Недостаточно средств на балансе! Необходимо  '.$data['summ'].' гр. Пополните свой счет на сайте любым<br> доступным Вам способом.
 				 Или сделайте новый заказ наложенным платежом.';
-
-				?>
-				<div class="drop-shadow lifted" style="margin: 150px 0 0 130px;">
-			   <div style="font-size: 24px;">Недостаточно средств на балансе! Необходимо  '<?=$data['summ']?>' гр. Пополните свой счет на сайте<br> любым доступным Вам способом.
-				  Или сделайте новый заказ наложенным платежом.</div>
-		      </div>
-				<?
+							$renderData['block' ] = 'limit';
+							$renderData['summ' ] = $data['summ'];
 			 }
 		  else
 			 {
 
 				if(intval($data['zakaz']) == 1 && $data['status'] == 0) // если заказ уже был подтвержден
 				  {
-					 ?>
-					 <div class="drop-shadow lifted" style="margin: 150px 0 0 350px;">
-						<div style="font-size: 24px;">Заказ №<?=$data['id']?> ждет своей очереди на выполнение.</div>
-						<div style="font-size: 24px;">По его готовности Вы получите уведомление.</div>
-					 </div><br><br><br><br><br><br><br>
-				  <?
+									$renderData['block' ] = 'oldZakaz';
+									$renderData['id' ] = $data['id'];
 				  }
 				else
 				  {
+
+
 		                                            /** новый заказ*/
-								try {
-										$db->query('UPDATE `print` SET `zakaz` = ?b WHERE id = ?i', array('1',$data['id']));
-										if ($data['id_nal'] != 'наложенный платеж')
-											 {
-												$db->query('UPDATE `users` SET `balans` = ?f WHERE id = ?i',array($balans,$_SESSION['userid']));
-											 }
-									 }
-								catch (go\DB\Exceptions\Exception $e)
-									 {
-										 die ('<br><br><br>Ошибка при работе с базой данных: '.$e);
-									 }
+																	try {
+																			$db->query('UPDATE `print` SET `zakaz` = ?b WHERE id = ?i', array('1',$data['id']));
+																			if ($data['id_nal'] != 'наложенный платеж')
+																					{
+																					$db->query('UPDATE `users` SET `balans` = ?f WHERE id = ?i',array($balans,$_SESSION['userid']));
+																					}
+																			}
+																	catch (go\DB\Exceptions\Exception $e)
+																			{
+																						if (check_Session::getInstance()->has('DUMP_R')) {
+																									dump_r('<br><br><br>Ошибка при работе с базой данных: '.$e);
+																						}
+																			}
 
 
-		   if ($data['id_nal'] != 'наложенный платеж')
-						{
-         echo   "<script type='text/javascript'>
-					 $('#balans').empty().append($balans);
-					 </script>";
-						}
-
-	    ?>
-		  <div class="drop-shadow lifted" style="margin: 150px 0 0 350px;">
-			 <div style="font-size: 24px;">Спасибо, Ваш заказ №<?=$data['id']?> принят в обработку. </div>
-		  </div>
-      <?
 
 
-        /** письмо фотографу */
+																				if ($data['id_nal'] != 'наложенный платеж')
+																					{
+																								$renderData['block' ] = 'nalPlat';
+																								$renderData['balans' ] = $balans;
+																					}
+
+
+									          $renderData['block' ] = 'ok';
+																			$renderData['id' ] = $data['id'];
+
+									/** письмо фотографу */
 		  $letter 	= '<html><body><h2>Заказ №'.$data['id'].'</h2>';
     $user 			= $db->query('SELECT * FROM `users` WHERE `id` = ?i',array($data['id_user']),'row');
 		  $letter .= "<b>Пользователь:</b> ".$user['us_name'].' '.$user['us_surname']."<br>";
@@ -215,7 +206,7 @@ $db->close();
 		   include (__DIR__.'/error_.php');
 	 }
  }  else include (__DIR__.'/error_.php');
+// рендер страницы
+			$loadTwig('.twig', $renderData);
 
-
-  include (BASEPATH.'inc/footer.php');
-?>
+ include (BASEPATH.'inc/footer.php');

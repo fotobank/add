@@ -11,9 +11,8 @@ p, #calk {
 
 #calculate {
     width: 800px;
-    margin: 60px auto;
+    margin: 0 auto;
     position: relative;
-    /*background: #fff url(/img/calkul.jpg) no-repeat bottom center;*/
     border: 1px solid #fbdd59;
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;

@@ -1,0 +1,29 @@
+{% extends "base.twig" %}
+
+    {% block content_header %}
+	    {% if block is defined and block == 'error' %}
+		    <h2 style="font-size: 36px; font-family: Georgia, 'Times New Roman', Times, serif; color: #9c3735; margin-top: 50px;">
+			    <i>Ошибка: {{ Id }}</i> {{ aId }}
+		    </h2>
+		    <p>{{ body|raw }}</p>
+		    {{ SERVER_SIGNATURE }}
+	    {% else %}
+		    {{ parent() }}
+	    {% endif %}
+    {% endblock content_header %}
+
+
+    {% block l_colonka %}
+    {% endblock %}
+
+
+    {% block c_colonka %}
+    {% endblock %}
+
+
+    {% block r_colonka %}
+    {% endblock %}
+
+{% block end_content %}
+
+{% endblock end_content %}

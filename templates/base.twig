@@ -42,29 +42,33 @@
 				{% block content_header %}
 					{% include 'content_header.twig' %}
 				{% endblock content_header %}
-
-
-			<div class="clear"></div>
+			     <div class="clear"></div>
 
 		{% block top %}
-
 		{% endblock top %}
 
+		<div class="l_colonka">
+			&#160
 				{% block l_colonka %}
-
+					{% include 'l_colonka.twig' %}
 				{% endblock l_colonka %}
+		</div>
 
 
+					<div class="c_colonka">
+						&#160
+						{% block c_colonka %}
+							{% include 'c_colonka.twig' %}
+						{% endblock c_colonka %}
+					</div>
 
-				{% block c_colonka %}
 
-				{% endblock c_colonka %}
-
-
-
+		<div class="r_colonka">
+			&#160
 				{% block r_colonka %}
-
+					{% include 'r_colonka.twig' %}
 				{% endblock r_colonka %}
+		</div>
 
 		{% block bottom %}
 

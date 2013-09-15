@@ -37,9 +37,8 @@ function main_redir($addr = '', $close_conn = true, $code = 'HTTP/1.1 303 See Ot
 //ошибочный редирект с сообщением
 function err_exit($msg = 'Ошибка! Обратитесь к администрации.', $addr = '')
 {
-  if(empty($addr)) $addr = $_SERVER['HTTP_REFERER'];
 			check_Session::getInstance()->set('err_msg', $msg);
-  main_redir($addr);
+   main_redir($addr);
 }
 
   /**
@@ -49,7 +48,6 @@ function err_exit($msg = 'Ошибка! Обратитесь к администрации.', $addr = '')
 //успешный редирект с сообщением
 function ok_exit($msg = 'Операция успешно завершена', $addr = '')
 {
-  if(empty($addr)) $addr = $_SERVER['HTTP_REFERER'];
 		check_Session::getInstance()->set('ok_msg', $msg);
   main_redir($addr, false);
 }

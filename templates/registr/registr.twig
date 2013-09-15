@@ -7,12 +7,12 @@
 
 
     {% block l_colonka %}
-	    {% include 'l_colonka.twig' %}
+	    {{ parent() }}
     {% endblock %}
 
 
     {% block c_colonka %}
-	    <div class="c_colonka" >
+
 	    {% if err_msg %}
 		    <script language='Javascript' type='text/javascript' >
 			    humane.timeout = (6000);
@@ -143,7 +143,7 @@
 			    </div >
 		    </div >
 
-	    </div >
+
 
 	    <script type='text/javascript'>
 		    $(function() {
@@ -159,14 +159,5 @@
 
 
     {% block r_colonka %}
-	    {% include 'r_colonka.twig' %}
+	    {{ parent() }}
     {% endblock r_colonka %}
-
-{% block end_content %}
-	{{ parent() }}
-{% endblock end_content %}
-
-
-{% block footer %}
-	{{ parent() }}
-{% endblock footer %}

@@ -7,16 +7,16 @@
 
 {% block top %}
 	<div id="cont_fb">
-		<div class="cont-list" style="margin: 0 10px 20px 43%;">
+		<div class="cont-list" style="margin: 0 10px 20px 36%;">
 			<div class="drop-shadow lifted">
-				<h2><span style="color: #00146e;">Свадьбы</span></h2>
+				<h2><span style="color: #00146e;">Школьники и выпускники </span></h2>
 			</div>
 		</div>
 		<a class="small button full blue" href="/uslugi.php"><span>Назад к категориям</span></a>
 	</div>
 	<div style="clear: both;"></div>
 	<!-- вывод описания-->
-	{{ txt }}
+	{{ txt|raw }}
 	{#вывод альбомов#}
 	{{ autoPrev.printAlbum('/reklama/photo/svadbi/', 250, true) }}
 

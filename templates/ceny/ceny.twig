@@ -17,8 +17,7 @@
 {% endblock %}
 
    {% block c_colonka %}
-<div class="c_colonka">
-	   <div id="cont_fb">
+
 
 		   {{ dataDB|raw }}
 
@@ -29,7 +28,7 @@
 		   <div id="calculate" style="width: 670px;">
 			   <div id="header"><p>Перед Вами - свадебный калькулятор. С помощью него Вы сможете примерно рассчитать расходы на это торжественное событие. Все цены указанные ниже - средние. Каждая свадьба - это уникальное событие и потому стоимость, определенная с помощью свадебного калькулятора может несколько отличаться от реальных расходов. </p></div>
 
-			   <form action="index.php" method="post" id="calk">
+			   <form action="/index.php" method="post" id="calk">
 				   <table id="tableSelect" width="100%" cellpadding="0" cellspacing="0">
 					   <tr>
 						   <th>Описание</th>
@@ -43,7 +42,7 @@
 						   <td>Ведущий</td>
 						   <td class="vertical">Часы</td>
 						   <td>
-							   <select id="pos_1" name="veduschiy">
+							   <label for="pos_1" ></label ><select id="pos_1" name="veduschiy">
 								   <option value="0" selected>-</option>
 								   <option value="1">1</option>
 								   <option value="2">2</option>
@@ -65,7 +64,7 @@
 						   <td>Банкетный зал</td>
 						   <td class="vertical">Человек</td>
 						   <td>
-							   <input id="pos_2" type="text" name="people">
+							   <label for="pos_2" ></label ><input id="pos_2" type="text" name="people">
 						   </td>
 						   <td class="vertical" id="pos_2_price">2000</td>
 						   <td id="pos_2_count">0</td>
@@ -75,7 +74,7 @@
 						   <td>Теплоход</td>
 						   <td class="vertical">Человек</td>
 						   <td>
-							   <input id="pos_3" type="text" name="people_t">
+							   <label for="pos_3" ></label ><input id="pos_3" type="text" name="people_t">
 						   </td>
 						   <td class="vertical" id="pos_3_price">3000</td>
 						   <td id="pos_3_count">0</td>
@@ -85,7 +84,7 @@
 						   <td>Видеосъемка</td>
 						   <td class="vertical">Часов</td>
 						   <td>
-							   <select id="pos_4" name="video">
+							   <label for="pos_4" ></label ><select id="pos_4" name="video">
 								   <option value="0" selected>-</option>
 								   <option value="1">1</option>
 								   <option value="2">2</option>
@@ -107,7 +106,7 @@
 						   <td>Автомобиль</td>
 						   <td class="vertical">Часов</td>
 						   <td>
-							   <select id="pos_5" name="automobile">
+							   <label for="pos_5" ></label ><select id="pos_5" name="automobile">
 								   <option value="0" selected>-</option>
 								   <option value="1">1</option>
 								   <option value="2">2</option>
@@ -129,7 +128,7 @@
 						   <td>Украшение шарами</td>
 						   <td class="vertical">-</td>
 						   <td>
-							   <select id="pos_6" name="bubbles">
+							   <label for="pos_6" ></label ><select id="pos_6" name="bubbles">
 								   <option value="0" selected>Нет</option>
 								   <option value="1">Да</option>
 							   </select>
@@ -142,7 +141,7 @@
 						   <td>Украшение цветами</td>
 						   <td class="vertical">-</td>
 						   <td>
-							   <select id="pos_7" name="flowers">
+							   <label for="pos_7" ></label ><select id="pos_7" name="flowers">
 								   <option value="0" selected>Нет</option>
 								   <option value="1">Да</option>
 							   </select>
@@ -161,19 +160,10 @@
 				   style.display = (style.display == 'block') ? 'none' : 'block';
 			   }
 		   </script>
-	   </div>
-</div>
+
+
    {% endblock c_colonka %}
 
  {% block r_colonka %}
-	 {% include 'r_colonka.twig' %}
+	 {{ parent() }}
  {% endblock %}
-
-{% block end_content %}
-	{{ parent() }}
-{% endblock end_content %}
-
-
-{% block footer %}
-	{{ parent() }}
-{% endblock footer %}

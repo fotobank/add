@@ -1622,16 +1622,6 @@ a.alb_usl {
     background-image: url('/img/button_bg.png'), url('/img/button_bg.png'), -webkit-gradient(radial, 50% 100%, 0, 50% 100%, 100, from(rgba(109, 217, 250, 1)), to(rgba(109, 217, 250, 0))), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#63c7fe), to(#58bef7));
 }
 
-/* онтент блоки*/
-
-#cont_fb {
-    position: relative;
-    color: #CCC;
-    /* text-align:left;  */
-    top: 0;
-    padding: 20px 0 20px 0;
-
-}
 
 /* элемент ниже позвол€ет не наезжать подвалу на контент, он должен быть не меньше подвала по высоте */
 .end_content {
@@ -1657,27 +1647,27 @@ a.alb_usl {
     /*padding: 10px;*/
 }
 
-.l_colonka, .c_colonka, .r_colonka, .center_top, .center_left, .center_righ, .header {
+.l_colonka, .c_colonka, .center_top, .center_left, .center_righ, .header {
     float: left;
 }
 
+.r_colonka {
+    float: right;
+}
 
 .l_colonka {
     width: 240px;
     margin-left: 10px;
-    /*border-right: 0 solid #777;*/
 }
 
 .c_colonka {
-    width: 680px;
+    width: 690px;
     margin-left:10px;
-    /*border-right: 0 solid #777;*/
 }
 
 .r_colonka {
     width: 240px;
     margin-left: 10px;
-    /*border-left: 1px solid #777;*/
 }
 
 .center_top {
@@ -3243,7 +3233,10 @@ Helvetica, sans-serif;color:#888;border:1px solid #c8c6c4;vertical-align:top;bor
 
  /* центровка сообщений ѕримен€ть все три <div class="centerErr1"> */
 .centerErr1 {
-position: relative; width: 1200px; height: 50px; margin-bottom: -30px;
+    position: relative;
+    width: 1200px;
+    height: 50px;
+    margin-bottom: -30px;
 }
 .centerErr2 {
     width: 50%;
@@ -3258,6 +3251,19 @@ position: relative; width: 1200px; height: 50px; margin-bottom: -30px;
     position: relative; margin:10px 0 0 30px; padding-bottom: 3px; padding-left: 20px; padding-right: 20px; width: 500px;
 }
 
+ /*центровка--------------------*/
+.is-Table {
+    display: table;
+}
+.is-Table .Table-Cell {
+    display: table-cell;
+    vertical-align: middle;
+}
+.is-Table .Center-Block {
+    width: 50%;
+    margin: 0 auto;
+}
+ /*--------------------------------*/
 #smail {
     background:url(/img/smile.jpg) no-repeat transparent;
     height: 220px;

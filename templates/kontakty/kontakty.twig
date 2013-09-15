@@ -14,12 +14,11 @@
 {% endblock top %}
 
  {% block l_colonka %}
-	 {% include 'l_colonka.twig' %}
+	 {{ parent() }}
  {% endblock %}
 
    {% block c_colonka %}
-	   <div class="c_colonka" >
-		   <div id="cont_fb" >
+
 			   <!--[if IE]>
 			   <script >
 				   $(document).ready(function () {
@@ -54,7 +53,7 @@
 
 				   #wrap {
 					   width: 530px;
-					   margin: 0 0 0 40px;
+					   margin: 0 0 0 0;
 					   height: 820px;
 				   }
 
@@ -171,14 +170,13 @@
 					   height: 150px;
 					   padding-top: 14px;
 				   }
-
 			   </style >
 
 
-			   <table style="position: relative;" >
+			   <table style="position: relative; margin: 0 auto;" >
 				   <tr >
 					   <td >
-						   <div id="wrap" style="margin-left: 70px;" >
+						   <div id="wrap" >
 							   <div id='form_wrap' >
 								   <table width="100%" >
 									   <tr >
@@ -252,13 +250,12 @@
 								   </table >
 							   </div >
 						   </div >
-
 					   </td >
 				   </tr >
 			   </table >
-		   </div >
-	   </div >
-	   </div>
+
+
+
    {% endblock c_colonka %}
 
  {% block r_colonka %}

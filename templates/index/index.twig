@@ -7,28 +7,15 @@
 
 
     {% block l_colonka %}
-	    {% include 'l_colonka.twig' %}
+	    {{ parent() }}
     {% endblock %}
 
 
     {% block c_colonka %}
-
-        {% include 'c_colonka.twig' %}
-	    {#<div id="cont_fb">
-           {{ dataDB|raw }}
-	    </div>#}
+	    {{ parent() }}
     {% endblock %}
 
 
     {% block r_colonka %}
-        {% include 'r_colonka.twig' %}
+	    {{ parent() }}
     {% endblock %}
-
-{% block end_content %}
-	{{ parent() }}
-{% endblock end_content %}
-
-
-{% block footer %}
-	{{ parent() }}
-{% endblock footer %}

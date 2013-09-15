@@ -25,7 +25,7 @@
 
 
   if(!isset($_GET['key']) and !isset($_GET['user']) and !isset($_GET['acc']) and !isset($_POST['idZakaz']))
-	 err_exit('Неправильный вход!');
+	 err_exit('У Вас нет прав доступа на данную страницу!');
 
   if(!$session->has('logged') and (!isset($_POST['idZakaz'])))  // разрешить гостевой допуск по idZakaz
 	 err_exit('Введите свой логин и пароль. Гостевой доступ на данную страницу запрещен!');
