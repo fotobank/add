@@ -66,7 +66,7 @@ function ajaxPostQ(url, idName,  data) {
 // перезагрузка капчи
 function reload (cfg, SID) {
 
-       $(" #cryptogram ").attr("src", "/inc/captcha/cryptographp.php?cfg=" + cfg + "&" + SID + "&" + Math.round(Math.random(0)*1000)+1);
+       $(" #cryptogram ").attr("src", "/classes/dsp/cryptographp.php?cfg=" + cfg + "&" + SID + "&" + Math.round(Math.random(0)*1000)+1);
 }
 
 function returnCaptcha () {

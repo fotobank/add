@@ -37,9 +37,8 @@ function main_redir($addr = '', $close_conn = true, $code = 'HTTP/1.1 303 See Ot
 //ошибочный редирект с сообщением
 function err_exit($msg = 'Ошибка! Обратитесь к администрации.', $addr = '')
 {
-  $session = check_Session::getInstance();
   if(empty($addr)) $addr = $_SERVER['HTTP_REFERER'];
-  $session->set('err_msg', $msg);
+			check_Session::getInstance()->set('err_msg', $msg);
   main_redir($addr);
 }
 
@@ -50,9 +49,8 @@ function err_exit($msg = 'Ошибка! Обратитесь к администрации.', $addr = '')
 //успешный редирект с сообщением
 function ok_exit($msg = 'Операция успешно завершена', $addr = '')
 {
-  $session = check_Session::getInstance();
   if(empty($addr)) $addr = $_SERVER['HTTP_REFERER'];
-  $session->set('ok_msg', $msg);
+		check_Session::getInstance()->set('ok_msg', $msg);
   main_redir($addr, false);
 }
 
@@ -62,7 +60,7 @@ function ok_exit($msg = 'Операция успешно завершена', $addr = '')
   {
 	 if (isset($_COOKIE['admnews']) && $_COOKIE['admnews'] != md5(login().'///'.pass()));
 	 {
-		if(!$_SESSION['admin_logged']){
+		if(!check_Session::getInstance()->has('admin_logged')) {
 		  echo '<div class="title2">Извините ,данная функция доступна только для администратора<br/><a href="index.php">Админка</a></div>';
 		}
 	 }
@@ -73,7 +71,7 @@ function ok_exit($msg = 'Операция успешно завершена', $addr = '')
   {
 	 if (isset($_COOKIE['admnews']) && $_COOKIE['admnews'] == md5(login().'///'.pass()));
 	 {
-		if($_SESSION['admin_logged']){
+		if(check_Session::getInstance()->has('admin_logged')) {
 		  return $str;
 		}
 		return false;
@@ -97,7 +95,7 @@ function ok_exit($msg = 'Операция успешно завершена', $addr = '')
 
   function if_login($str)
   {
-		if(isset($_SESSION['logged']) && ($_SESSION['logged'])){
+		if(check_Session::getInstance()->has('logged')) {
 		  return $str;
 		}
 		return false;
@@ -142,10 +140,9 @@ function get_param($param_name,$param_index)
  */
 function fotoFolder()
    {
-	   $session = check_Session::getInstance();
 	   $db = go\DB\Storage::getInstance()->get('db-for-data');
-	   $foto_folder = $db->query('select `foto_folder` from `albums` where `id` = ?i',array($session->get('current_album')), 'el');
-      return $foto_folder;
+	   $foto_folder = $db->query('select `foto_folder` from `albums` where `id` = ?i',array(check_Session::getInstance()->get('current_album')), 'el');
+     return $foto_folder;
    }
 
   /**
@@ -340,7 +337,8 @@ function digit_to_string($dig){
 	 */
 	function iTogo()
 		{
-		  $session = check_Session::getInstance();
+
+					$session = check_Session::getInstance();
 
 			if ($session->has('basket'))
 				{
@@ -517,7 +515,9 @@ function digit_to_string($dig){
 	*/
   function get_domain()
   {
-	 $domain = "http://www.aleks.od.ua/";
+					if($_SERVER['HTTP_HOST'] != 'add.pr') {
+	      $domain = "http://www.aleks.od.ua/";
+					} else $domain = "http://add.pr/";
 	 return $domain;
   }
 
@@ -728,14 +728,14 @@ return $data;
 	 return $slug;
   }
 
-	// Return all values (array) of specified tag from XML-fragment
+	/** Return all values (array) of specified tag from XML-fragment */
 	function get_fa($text,$tag)
 	{
 		preg_match_all("/<$tag>(.*?)<\/$tag>/s",$text,$out);
 		return $out[1];
 	}
 
-	// Return first value of specified tag from XML-fragment
+	/** Return first value of specified tag from XML-fragment */
 	function get_f($text,$tag)
 	{
 		$ret = get_fa($text,$tag);
@@ -859,15 +859,8 @@ return $data;
 	 */
 	function printSet ($table, $kolonka)
 	{
-
-		if (isset($_SESSION['location']))
-		{
-			$current_c = $_SESSION['location'];
-		}
-		else
-		{
-			$current_c = NULL;
-		}
+				$session = check_Session::getInstance();
+				$current_c = $session->get('location');
 
 		$db = go\DB\Storage::getInstance()->get('db-for-data');
 		$data	= $db->query('SHOW COLUMNS FROM ?t LIKE "%?e%" ',array($table,$kolonka))->row();

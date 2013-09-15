@@ -7,20 +7,19 @@
  * To change this template use File | Settings | File Templates.
  */
   header('Content-type: text/html; charset=windows-1251');
-  // обработка ошибок
-	require_once (__DIR__.'/../classes/autoload.php');
-	autoload::getInstance();
 
-
-  $error_processor = Error_Processor::getInstance();
-  include (dirname(__FILE__).'/config.php');
-  include (dirname(__FILE__).'/func.php');
+  require_once (__DIR__.'/config.php');
+		 // обработка ошибок
+		 $error_processor = Error_Processor::getInstance();
+  require_once (__DIR__.'/func.php');
 
 
   if(isset($_POST['album']))  //подписка на сообщение о готовности альбома
 	 {
-      $userId = isset($_SESSION['userid'])?$_SESSION['userid']:false;
-		$album = $_POST['album'];
+
+		$userId =	$session -> get('userid');
+		$album = trim($_POST['album']);
+
 		if($userId)
 		  {
       $rs = $db->query('select `user_event` from `actions` where `id_user` = ?i and `id_album` = ?i and `user_event` = ?i order by `time_event` asc limit 1',
@@ -33,7 +32,9 @@
 			 array(Get_IP(),$userId,3,$album,$_SERVER['HTTP_USER_AGENT']));
 		  echo "<div class='drop-shadow lifted' style='margin: 0 0 0 340px;width: 150px'><div style='font-size: 14px;'>Вы успешно подписаны</div></div>";
 		}
-		  } else {
-		  echo "<div class='drop-shadow lifted' style='margin: 0 0 0 210px;width: 390px'><div style='font-size: 14px;'>Подписка доступна только зарегистрированным пользователям!</div></div>";
+		  } else
+		{
+		  echo "<div class='drop-shadow lifted' style='margin: 0 0 0 210px;width: 390px'>
+		        <div style='font-size: 14px;'>Подписка доступна только зарегистрированным пользователям!</div></div>";
 		}
 	 }

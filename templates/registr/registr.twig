@@ -1,0 +1,172 @@
+{% extends "base.twig" %}
+
+
+    {% block content_header %}
+	    {{ parent() }}
+    {% endblock %}
+
+
+    {% block l_colonka %}
+	    {% include 'l_colonka.twig' %}
+    {% endblock %}
+
+
+    {% block c_colonka %}
+	    <div class="c_colonka" >
+	    {% if err_msg %}
+		    <script language='Javascript' type='text/javascript' >
+			    humane.timeout = (6000);
+			    humane.error('Ошибка!<br>{{ err_msg }}');
+		    </script >
+
+		    <NOSCRIPT >
+		    <div align='center' class='drop-shadow lifted center'
+				    style='margin:10px 0 0 70px; padding-bottom: 3px; padding-left: 20px; padding-right: 20px; width: 500px;'>
+			    'Ошибка!<br>{{ err_msg }}'
+		    </div>
+		    <div style='clear: both;'></div>
+			</NOSCRIPT >
+
+        {% endif %}
+
+
+
+		    {% if ok_msg %}
+			    <div align='center' class='drop-shadow lifted'
+					    style='position: relative; margin:10px 0 0 20px; padding-bottom: 3px; padding-left: 20px; padding-right: 20px;'>
+				    Спасибо! Вы успешно зарегистрировались в системе.<br>На указанный вами e-mail было отправлено письмо со ссылкой для активации аккаунта.
+			    </div><div style='clear: both;'></div>
+			    <script language='Javascript' type='text/javascript'>
+	humane.timeout = (10000);
+	humane.success('Спасибо.<br>Вы успешно зарегистрировались в системе.<br>На указанный вами e-mail было отправлено письмо со ссылкой для активации аккаунта.');
+				    function reLoad()
+				    {location = "registr.php"}
+					setTimeout('reLoad()', 14000)
+			    </script>
+
+		    {% endif %}
+
+		    <div id="form_reg" style="margin-top: 40px;" >
+			    <div class="cont-list" style="margin: 0 0 10px 80px" >
+				    <div class="drop-shadow curved curved-vt-2" >
+					    <h2 ><b ><span style="color: #001591" >Регистрация на сайте:</span ></b ></h2 >
+				    </div >
+			    </div >
+			    <br ><br >
+
+			    <form action="" method="post" enctype="multipart/form-data" >
+				    <table >
+					    <tr >
+						    <td > Логин:*</td >
+						    <td >
+							    <input name="rLogin" class="inp_f_reg"
+									    title="Логин может состоять из букв, цифр, дефисов и подчёркиваний. Длина от 3 до 16 символов."
+									    value="{{ rLogin }} "
+									    maxlength="20" data-placement="right" >
+						    </td >
+					    </tr >
+					    <tr >
+						    <td > Пароль:*</td >
+						    <td >
+							    <input name="rPass" class="inp_f_reg" type="password"
+									    title="Длина От 8 до 20 символов. Допускаются только английские буквы, цифры и слеующие знаки:  . - _ ! ~ * : < > + "
+									    maxlength="20" value="{{ rPass }}" data-placement="right" >
+						    </td >
+					    </tr >
+					    <tr >
+						    <td >Пароль ещё раз:*</td >
+						    <td >
+							    <input name="rPass2" class="inp_f_reg" type="password" title="Повторить пароль" maxlength="20" value="{{ rPass2 }}"
+									    data-placement="right" >
+						    </td >
+					    </tr >
+					    <tr >
+						    <td >Ваше имя:*</td >
+						    <td >
+							    <input name="rName_us" class="inp_f_reg" type="text" title="Как к Вам обращаться?" value="{{ rName_us }}" maxlength="20"
+									    data-placement="right" >
+						    </td >
+					    </tr >
+					    <tr >
+						    <td >E-mail:*</td >
+						    <td >
+							    <input name="rEmail" class="inp_f_reg" type="text" title="E-mail, на который прийдут ссылки для скачивания фотографий"
+									    value="{{ rEmail }}" maxlength="20" data-placement="right" >
+						    </td >
+					    </tr >
+					    <tr >
+						    <td >Skype:</td >
+						    <td >
+							    <input name="rSkype" class="inp_f_reg" type="text" title="Для быстрой связи (заполнять не обязательно)" value="{{ rSkype }}"
+									    maxlength="20" data-placement="right" >
+						    </td >
+					    </tr >
+					    <tr >
+						    <td >Телефон:</td >
+						    <td >
+							    <input name="rPhone" id="phone" class="inp_f_reg" type="text" title="Для заказа фотографий обязательно( можно ввести потом )"
+									    onkeyup="parseField(this.name)" value="{{ rPhone }}" maxlength="20" data-placement="right" >
+						    </td >
+					    </tr >
+					    <tr >
+						    <td style="padding-right: 30px" >Проверочный код:*</td >
+						    <td >
+							    <input name="rPkey" id="captcha" class="inp_f_reg" type="text" title="Цифры внизу. Если не видны, нажмите на колечко со стрелками"
+									    value="Защита от спама" maxlength="20" data-placement="right" >
+						    </td >
+					    </tr >
+					    <tr >
+						    <td >Обновить:</td >
+						    <td >
+							    <div style="margin: 10px 0 -10px 30px;" >{{ kapca('cryptographp.cfg.php', 1) }}</div >
+						    </td >
+					    </tr >
+				    </table >
+				    <br >
+
+				    <div align="center" ><input class="metall_knopka" name="ok" type="submit" value="Отправить" ></div >
+			    </form >
+		    </div >
+
+		    <div class="cont-list" style="margin: 0 0 0 0;" >
+			    <div class="drop-shadow lifted" style="padding: 15px 25px 3px 25px; width: 630px; margin-left: 0; margin-right: 0;" >
+		    <p id="for_reg_cont" style="width: 620px;" >
+			    Регистрация необходима для хранения, покупки или бесплатного скачивания фотографий из фотобанка. Для всех зарегистрированных пользователей,
+			    активно принимающих участие в голосованиях за фотографии, предусмотрены скидочные бонусы и акции, а для пользователей, чьи фотографии набрали
+			    пять и более звездочек рейтинга в альбоме - специальное предложение. </p >
+
+		    <p id="for_reg_cont" style="width: 620px;">Пожалуйста, внимательно заполните все поля и нажмите кнопку "отправить". Указывайте реально существующий email, на него
+		                          будут приходить ссылки для скачивания выбранных Вами фотографий. Внимание! В целях безопасности, никому не передавайте свои
+		                          логин и пароль! Пароль и логин могут состоять только из ЛАТИНСКИХ букв, цифр или подчеркивания. Желательно использовать
+		                          пароль длиной больше восьми символов, включающий в себя цифры, а также большие и маленькие буквы. Поля, отмеченные
+		                          звездочкой, заполнять обязательно.</p >
+			    </div >
+		    </div >
+
+	    </div >
+
+	    <script type='text/javascript'>
+		    $(function() {
+			    $('#phone').bind("change keyup input click", function() {
+				    if (this.value.match(/[^0-9\(\)\-\+]/g)) {
+					    this.value = this.value.replace(/[^0-9\(\)\-\+]/g, '');
+				    }
+			    })
+		    })
+	    </script>
+
+    {% endblock c_colonka %}
+
+
+    {% block r_colonka %}
+	    {% include 'r_colonka.twig' %}
+    {% endblock r_colonka %}
+
+{% block end_content %}
+	{{ parent() }}
+{% endblock end_content %}
+
+
+{% block footer %}
+	{{ parent() }}
+{% endblock footer %}

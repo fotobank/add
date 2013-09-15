@@ -1,0 +1,14 @@
+d|ssss|index
+d|ss1s|index1
+sb|First section
+d|First document|125
+d|Second document|31
+se
+sb|Else section
+d|Third document|Not found document
+se
+d|s2sss|index2
+sb|One more section
+d|Fourth document|4
+se
+d|ddf|tmp1

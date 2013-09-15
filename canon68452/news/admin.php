@@ -1,4 +1,5 @@
 <?
+define ( 'BASEPATH' , realpath ( __DIR__ ) . '/' , TRUE );
 include 'sys/func.php';
 if(intval(@$_COOKIE['admnewswar'])>2){
 	echo '<div class="title">Вы превысили количество попыток вхoда,повторите через час</div>';exit;}

@@ -1,0 +1,101 @@
+{% extends "base.twig" %}
+
+
+    {% block content_header %}
+	    {{ parent() }}
+    {% endblock content_header %}
+
+
+    {% block l_colonka %}
+
+    {% endblock l_colonka %}
+
+
+    {% block c_colonka %}
+
+	    <script type='text/javascript'>
+		    $(function() {
+			    $('#phone').bind("change keyup input click", function() {
+				    if (this.value.match(/[^0-9\(\)\-\+]/g)) {
+					    this.value = this.value.replace(/[^0-9\(\)\-\+]/g, '');
+				    }
+			    })
+		    })
+	    </script>
+
+
+	    <div class="user-tabs">
+		    <ul id="myTab" class="nav nav-tabs">
+			    <li class="active">
+				    <a data-toggle="tab" href="#user" data-toggle="tab">Редактирование данных пользователя</a>
+			    </li>
+			    <li class="">
+				    <a data-toggle="tab" href="#zakaz" data-toggle="tab">Мои фотографии</a>
+			    </li>
+			    <!--<li class="dropdown">
+			  <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+				 Dropdown
+				 <b class="caret"></b>
+			  </a>
+			  <ul class="dropdown-menu">
+				 <li class="">
+					<a data-toggle="tab" href="#dropdown1">тест1</a>
+				 </li>
+				 <li class="">
+					<a data-toggle="tab" href="#dropdown2">тест2</a>
+				 </li>
+			  </ul>
+			</li>-->
+		    </ul>
+		    <div id="myTabContent" class="tab-content">
+			    <div id="user" class="tab-pane fade active in">
+
+				 {# отображение формы#}
+
+				{{ form.display("Применить", "form1_submit") }}
+
+			    </div>
+			    <div id="zakaz" class="tab-pane fade">
+				    <p>В этом разделе Вы имеете возможность скачать выкупленные фотографии. Выберите галочками нужные фотографии и нажмите на кнопку "скачать". Заказ действителен не менее пяти дней после последней закачки фотографий. </p>
+
+			 	  require_once (__DIR__.'/inc/zip.php');
+
+			    </div>
+			   {# <div id="dropdown1" class="tab-pane fade">
+			  <p>
+				 1
+			  </p>
+			</div>
+			<div id="dropdown2" class="tab-pane fade">
+			  <p>
+				 2
+			  </p>
+			</div> #}
+		    </div>
+	    </div>
+
+	    <script>
+		    $(function () {
+//			 $(" #myTab a:last ").tab('show');
+//			 $(' #myTab a[href="#zakaz"] ').tab('show');
+		    })
+	    </script>
+
+	    </div>
+
+
+    {% endblock c_colonka %}
+
+
+    {% block r_colonka %}
+        {#{% include 'r_colonka.twig' %}#}
+    {% endblock r_colonka %}
+
+{% block end_content %}
+	{{ parent() }}
+{% endblock end_content %}
+
+
+{% block footer %}
+	{{ parent() }}
+{% endblock footer %}

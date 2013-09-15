@@ -1,0 +1,62 @@
+[What is the CCI Website Security Script?]
+
+	The CCI Website Security Script is a drop-in PHP script designed to take on the burdon of dealing with certain common security problems in PHP scripts.  It is made to be added to an existing script to provide immediate, transparent security of varying types.
+
+	Far, far too often you hear about free scripts having some common vulnerability that has been seen a thousand times in other scripts - people just aren't careful enough when writing scripts.  This script is desiged to try to compensate for some of this carelessness.
+
+
+[What can the CCI Website Security Script defend against?]
+
+**HTTP REQUEST FLOODS**
+
+	This was the type of problem that the script was originally designed to deal with.  Programs can be created to flood your website with GET or POST requests in order to bog down the CPU, generate thousands of emails, fill up databases, or whatever.  Very few scripts are set up to deal with this type of attack, and commercial webhosts are prone to discontinuing your account if you are the victim of one (it's their machines that get bogged down).   This script helps protect against this type of attack.
+
+**SCRIPT DISPLAY VULNERABILITIES**
+
+	By far the most common vulnerability in PHP scripts.  Users find a cgi variable that will be displayed verbatim, and pass through some HTML code (generally some javascript code) that will send a user's cookies or what-not, to their webserver.  They use this information to steal their login or worse.  The CCI script has the ability to "sanitize" all GET, POST, and COOKIE data to convert the < > characters to their displayable but non-executable versions.  This generally negates the danger of this type of vulnerability.
+
+**GENERAL FLOOD PROTECTION**
+
+	An additional ability of this script is that you can call it from within your own script to perform time-based checking for flooding of a particular function.  This means you pass it a unique identifier, such as "messageposts" and a time value, such as 60 seconds... and optionally a threshold number (default 1), and the function will return TRUE if it has been called more than <threshold> times by the same user, without the time value number of seconds between the calls.  A very handy feature for script developers.
+
+**IP BANNING VIA .HTACCESS**
+
+	As an option (that defaults to on) this script can modify your .htaccess file to ban the IPs of users who are abusing your scripts.  This will drastically reduce CPU load due to their attempts, and prevent them from further trying to abuse your system.  You can call this IP Banning function from your own scripts as well, if you wish to ban certain IPs.  For this to work, the script must have write access to your .htaccess file (if one exists).
+
+**HTML Source Viewing/Stealing**
+
+	The script can automatically wrap pages in a javascript function which either uses the commonly used "escape" obfuscating technique, or cciSecurity's own encryption method which makes it impossible to get the actual source just using the document data.  It stores the key to the encryption in a cookie, which changes with each request - so unless a user captures the cookie data at the same time as the document, they cannot decrypt it properly after the fact!  
+
+
+[How do I use this script?]
+
+	The script is simple to use.  Simply add the following line to the very top of your scripts.  For scripts that involve multiple .PHP files, you need only add it to the top of any file that all your files include, though using the require_once function dismisses the danger of adding it to the top of ALL files:
+
+require_once("ccisecurity.php");
+
+	You may wish to open ccisecurity.php and alter the configuration variables at the top.  The default values should work for most systems, though if you wish to tweak the values for your system, it is a good idea to do so before you begin using it.
+
+
+[Configuring cciSecurity]
+
+	There are a set of variables at the top of cciSecurity.php that you should look over and tweak to your liking.  Any of the options that are more CPU intensive, or might cause problems with some scripts, have been disabled by default.  Trial and error will let you figure out which options are best for your site/script.
+
+
+[Possible Concerns: GZIP encoding / HTML encryption]
+
+	If you want to use either of these options in conjunction with ccisecurity.php, you need to make sure your script does not already use gzip encoding.  If it does TURN IT OFF IN YOUR SCRIPT and enable it in ccisecurity.php instead.  You cannot use HTML encryption if you use your script's own gzip buffer because the gzip buffer needs to be put into place before the encryption buffer.  cciSecurity makes sure the user can accept gzip encoding before using it, so don't worry about using ccisecurity's gzip rather than your own script's.
+
+
+[Possible Concerns: POST variable sanitizing]
+
+	Some script systems let you or other users post HTML codes in articles, messages, signatures, etc.  If your script requires that, make sure to keep the POST sterilization off, or it will convert all the < > characters into ;lt ;gt instead.  If you don't require any of that, turn it on - it should greatly reduce the chances of running into cross-site scripting problems (people stealing your users' cookies and such).
+
+
+[Possible Concerns: CPU Monitor]
+
+	Ok, flat out, this is a big hack.  It just runs uptime and snags the CPU load from the result.  It's probably smart to leave this off unless you have great faith in my competence as a programmer =)  I'm absolutely unsure if this will ever help, or if it's just going to slow things down because it has to execute an external command <shrug>...  Use at own risk!
+
+	
+[See a way cciSecurity can be improved?]
+
+	I'd love to see your mods and improvements on this script - I am by no means the penultimate expert on website security or php, and certainly not javascript (!!) so if you can improve on any aspect of the script, or want to discuss it's design or possible alterations, I encourage you to visit us at www.cafecounterintelligence.com - join the forums and fire away.  

@@ -1,75 +1,70 @@
-<!-- begin: main_menu.twig -->
+		{% if razdel  == '/index.php' %}
 
-{#{% extends "base.twig" %}#}
-
-{#{% block main_menu %}#}
-		{% if value  == '/index.php' %}
-
-	<a class='gl_act'   href='{{ value }}' >Главная</a>
+	<a class='gl_act'   href='{{ razdel }}' >Главная</a>
 	<a class='bt_fb'    href='/fotobanck_adw.php?unchenge_cat'>Фото-банк</a>
 	<a class='bt_usl'   href='/uslugi.php'>Услуги</a>
 	<a class='bt_ceny'  href='/ceny.php'>Цены</a>
 	<a class='bt_konty' href='/kontakty.php'>Контакты</a>
 	<a class='bt_gb'    href='/gb/'>Гостевая</a>";
 
-        {% elseif value == '/fotobanck_adw.php?unchenge_cat' %}
+        {% elseif razdel == '/fotobanck_adw.php?unchenge_cat' %}
 
 	<a class='bt_gl'    href='/index.php'>Главная</a>
-    <a class='fb_act'   href='{{ value }}' >Фото-банк</a>
+    <a class='fb_act'   href='{{ razdel }}' >Фото-банк</a>
 	<a class='bt_usl'   href='/uslugi.php'>Услуги</a>
 	<a class='bt_ceny'  href='/ceny.php'>Цены</a>
 	<a class='bt_konty' href='/kontakty.php'>Контакты</a>
 	<a class='bt_gb'    href='/gb/'>Гостевая</a>";
 
-        {% elseif value == '/uslugi.php'
-        or value == '/f_svadbi.php'
-        or value == '/f_deti.php'
-        or value == '/f_bankety.php'
-        or value == '/photoboock.php'
-        or value == '/f_vipusk.php'
-        or value == '/f_raznoe.php'
+        {% elseif razdel == '/uslugi.php'
+        or razdel == '/f_svadbi.php'
+        or razdel == '/f_deti.php'
+        or razdel == '/f_bankety.php'
+        or razdel == '/photoboock.php'
+        or razdel == '/f_vipusk.php'
+        or razdel == '/f_raznoe.php'
 
-        or value == '/v_svadby.php'
-        or value == '/v_deti.php'
-        or value == '/v_vipusk.php'
-        or value == '/v_sl_show.php'
-        or value == '/v_bankety.php'
-        or value == '/v_raznoe.php'
+        or razdel == '/v_svadby.php'
+        or razdel == '/v_deti.php'
+        or razdel == '/v_vipusk.php'
+        or razdel == '/v_sl_show.php'
+        or razdel == '/v_bankety.php'
+        or razdel == '/v_raznoe.php'
         %}
 
 	<a class='bt_gl'    href='/index.php'>Главная</a>
 	<a class='bt_fb'    href='/fotobanck_adw.php?unchenge_cat'>Фото-банк</a>
-    <a class='usl_act'  href='{{ value }}' >Услуги</a>
+    <a class='usl_act'  href='{{ razdel }}' >Услуги</a>
 	<a class='bt_ceny'  href='/ceny.php'>Цены</a>
 	<a class='bt_konty' href='/kontakty.php'>Контакты</a>
 	<a class='bt_gb'    href='/gb/'>Гостевая</a>";
 
-        {% elseif value == '/ceny.php' %}
+        {% elseif razdel == '/ceny.php' %}
 
 	<a class='bt_gl'    href='/index.php'>Главная</a>
 	<a class='bt_fb'    href='/fotobanck_adw.php?unchenge_cat'>Фото-банк</a>
 	<a class='bt_usl'   href='/uslugi.php'>Услуги</a>
-    <a class='cn_act'   href='{{ value }}' >Цены</a>
+    <a class='cn_act'   href='{{ razdel }}' >Цены</a>
 	<a class='bt_konty' href='/kontakty.php'>Контакты</a>
 	<a class='bt_gb'    href='/gb/'>Гостевая</a>";
 
-        {% elseif value == '/kontakty.php' %}
+        {% elseif razdel == '/kontakty.php' %}
 
 	<a class='bt_gl'     href='/index.php'>Главная</a>
 	<a class='bt_fb'     href='/fotobanck_adw.php?unchenge_cat'>Фото-банк</a>
 	<a class='bt_usl'    href='/uslugi.php'>Услуги</a>
 	<a class='bt_ceny'   href='/ceny.php'>Цены</a>
-    <a class='konty_act' href='{{ value }}' >Контакты</a>
+    <a class='konty_act' href='{{ razdel }}' >Контакты</a>
 	<a class='bt_gb'     href='/gb/'>Гостевая</a>
 
-        {% elseif value == '/gb/index.php' %}
+        {% elseif razdel == '/gb/index.php' %}
 
 	<a class='bt_gl'    href='/index.php'>Главная</a>
 	<a class='bt_fb'    href='/fotobanck_adw.php?unchenge_cat'>Фото-банк</a>
 	<a class='bt_usl'   href='/uslugi.php'>Услуги</a>
 	<a class='bt_ceny'  href='/ceny.php'>Цены</a>
 	<a class='bt_konty' href='/kontakty.php'>Контакты</a>
-    <a class='gb_act'   href='{{ value }}' >Гостевая</a>
+    <a class='gb_act'   href='{{ razdel }}' >Гостевая</a>
 
         {% else %}
 
@@ -81,5 +76,3 @@
 	<a class='bt_gb'    href='/gb/'>Гостевая</a>
 
         {% endif %}
-{#{% endblock %}#}
-<!-- end: main_menu.twig -->

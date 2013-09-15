@@ -1,0 +1,95 @@
+{% extends "base.twig" %}
+
+    {% block content_header %}
+	    {{ parent() }}
+    {% endblock %}
+
+{% block top %}
+	<div class="cont-list" style="margin: -10px 10px 80px 40%;"><div class="drop-shadow lifted">
+			<h2><span style="color: #00146e;"> –‡Á‰ÂÎ ”—À”√»</span></h2>
+		</div>
+	</div>
+	<div class="clear"></div>
+{% endblock top %}
+
+ {% block l_colonka %}
+	 {% include 'l_colonka.twig' %}
+ {% endblock %}
+
+
+   {% block c_colonka %}
+<div class="c_colonka">
+	    <div id="cont_fb">
+
+		 {{ dataDB_top|raw }}
+
+	    </div>
+</div>
+
+
+
+   {% endblock c_colonka %}
+
+{% block r_colonka %}
+
+	{% include 'r_colonka.twig' %}
+
+{% endblock r_colonka %}
+
+ {% block bottom %}
+
+	 <table width="100%" border="0">
+		 <tr>
+			 <td>
+				 <table class="tb_usl_foto" border="0">
+					 <tr>
+						 <td class="td_usl_ph">&nbsp;</td>
+						 <td class="td_usl_ph_sp"><a class=" usl_svad" href="/f_svadbi.php"></a></td>
+						 <td class="td_usl_ph_sp"><a class="usl_deti" href="/f_deti.php"></a></td>
+					 </tr>
+					 <tr>
+						 <td class="td_usl_ph_sp"><a class="usl_bankety" href="/f_bankety.php"></a></td>
+						 <td class="td_usl_ph_sp"><a class="usl_phknigi" href="/photoboock.php"></a></td>
+						 <td class="td_usl_ph_sp"><a class="usl_vipusk" href="/f_vipusk.php"></a></td>
+
+					 </tr>
+					 <tr>
+						 <td class="td_usl_ph_sp"><a class="usl_raznoe" href="/f_raznoe.php"></a></td>
+						 <td class="td_usl_ph_sp">&nbsp;</td>
+						 <td class="td_usl_ph_sp">&nbsp;</td>
+					 </tr>
+				 </table>
+			 </td>
+			 <td>
+				 <table class="tb_usl_video" border="0">
+					 <tr>
+						 <td class="td_usl_vd"></td>
+						 <td class="td_usl_vd_sp"><a class="usl_v_svad" href="/v_svadby.php"></a></td>
+						 <td class="td_usl_vd_sp"><a class="usl_v_deti" href="/v_deti.php"></a></td>
+					 </tr>
+					 <tr>
+						 <td class="td_usl_vd_sp"><a class="usl_v_vipusk" href="/v_vipusk.php"></a></td>
+						 <td class="td_usl_vd_sp"><a class="sl_show" href="/v_sl_show.php"></a></td>
+						 <td class="td_usl_vd_sp"><a class="usl_v_bankety" href="/v_bankety.php"></a></td>
+					 </tr>
+					 <tr>
+						 <td class="td_usl_vd_sp"><a class="usl_v_raznoe" href="/v_raznoe.php"></a></td>
+						 <td class="td_usl_vd_sp">&nbsp;</td>
+						 <td class="td_usl_vd_sp">&nbsp;</td>
+					 </tr>
+				 </table>
+			 </td>
+		 </tr>
+	 </table>
+	 {{ dataDB_bottom|raw }}
+ {% endblock bottom %}
+
+
+{% block end_content %}
+	{{ parent() }}
+{% endblock end_content %}
+
+
+{% block footer %}
+	{{ parent() }}
+{% endblock footer %}

@@ -1,6 +1,5 @@
 <?php
 		// <!-- ÑÎÎÁÙÅÍÈÅ ÎÁ ÎØÈÁÊÅ-->
-		new printMsg();
 		$db->close();
 		//		<!-- Piwik -->
 		if ($_SERVER['HTTP_HOST'] == stristr(mb_substr(get_domain(), 0, -1), "al")) {

@@ -1,0 +1,34 @@
+{% block doctype %}
+	<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+{% endblock doctype %}
+
+
+{% block head %}
+	{% include 'head.twig' %}
+{% endblock head %}
+
+	<body>
+		<div id="maket">
+			<div id="photo_preview_bg" class="hidden" onClick="hidePreview();"></div>
+			<div id="photo_preview" class="hidden"></div>
+
+			<!--Голова начало-->
+			{% block golova_menu %}
+				{% include 'golova_menu.twig' %}
+			{% endblock golova_menu %}
+			<!--Голова конец-->
+
+
+				{% block content_header %}
+					<div style="margin-top: 10px;">
+					{% include 'content_header.twig' %}
+					</div>
+				{% endblock %}
+
+			<div class="drop-shadow lifted" style="margin: 40px 0 10px 310px;">
+				<h1><div style="font-family: Georgia, 'Times New Roman', Times, serif; font-size: 30px; color: #001590; text-shadow: none;">Книга отзывов Creative line studio</div></h1>
+			</div>
+			<div style="clear: both"></div>
+			<table class="tb_main"><tr><td>
+					</td></tr><tr><td>

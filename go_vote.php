@@ -1,9 +1,10 @@
 <?php
 // error_reporting(E_ALL);
 // ini_set('display_errors', 1);
+define ( 'BASEPATH' , realpath ( __DIR__ ) . '/' , TRUE );
 error_reporting(0);
-include (dirname(__FILE__).'/inc/config.php');
-include (dirname(__FILE__).'/inc/func.php');
+include (BASEPATH.'inc/config.php');
+include (BASEPATH.'inc/func.php');
 ob_start();
 $id = intval($_POST['id']);
 $status = 'ERR';

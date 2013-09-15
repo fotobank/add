@@ -1,4 +1,6 @@
-<?php include (dirname(__FILE__).'/inc/head.php');
+<?php
+			define ( 'BASEPATH' , realpath ( __DIR__ ) . '/' , TRUE );
+			include (BASEPATH.'inc/head.php');
 ?>
 <div id="main">
 	<div class="cont-list" style="margin: 0 10px 20px 43%;"><div class="drop-shadow lifted">
@@ -13,5 +15,5 @@
 </div>
 <div class="end_content"></div>
 </div>
-<?php include (dirname(__FILE__).'/inc/footer.php');
+<?php include (BASEPATH.'inc/footer.php');
 ?>

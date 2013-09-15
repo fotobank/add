@@ -2,7 +2,7 @@
 	set_time_limit(0);
 	include (__DIR__.'/../inc/config.php');
 	include (__DIR__.'/../inc/func.php');
-   include (__DIR__.'/news/sys/func.php');
+ include (__DIR__.'/news/sys/func.php');
 
   ini_set('output_buffering', 0);
   ini_set('zlib.output_compression', 0);

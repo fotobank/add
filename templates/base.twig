@@ -1,3 +1,4 @@
+{% spaceless %}
 {% block doctype %}
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -30,23 +31,38 @@
 
 	{% block content %}
 	<div id="main">
-			<div class="header">
-				{% block content_header %}{% endblock %}
-			</div>
+
+				{% block content_header %}
+					{% include 'content_header.twig' %}
+				{% endblock content_header %}
+
 
 			<div class="clear"></div>
 
-			<div class="l_colonka">
-				{% block l_colonka %}{% endblock l_colonka %}
-			</div>
+		{% block top %}
 
-			<div class="c_colonka">
-				{% block c_colonka %}{% endblock c_colonka %}
-			</div>
+		{% endblock top %}
 
-			<div class="r_colonka">
-				{% block r_colonka %}{% endblock r_colonka %}
-			</div>
+				{% block l_colonka %}
+
+				{% endblock l_colonka %}
+
+
+
+				{% block c_colonka %}
+
+				{% endblock c_colonka %}
+
+
+
+				{% block r_colonka %}
+
+				{% endblock r_colonka %}
+
+		{% block bottom %}
+
+		{% endblock bottom %}
+
 	</div>
 	{% endblock content %}
 
@@ -74,3 +90,4 @@
 {% block html %}
      </html>
 {% endblock html %}
+{% endspaceless %}

@@ -1,0 +1,29 @@
+{#/** кнопки разделов */#}
+<br >
+<div class="cont-list" style="margin: -10px 10px 60px 40%;" >
+	<div class="drop-shadow lifted" >
+		<h2 ><span style="color: #00146e;" >Выбор категорий:</span ></h2 >
+	</div >
+</div >
+<div class="clear" ></div >
+<table >
+	<tr >
+		<td >
+
+			{% for button in buttons %}
+				{#{{ dump_t(button) }}#}
+				<a class="button gray" href="/fotobanck_adw.php?chenge_cat={{- button.id -}}" >{{- button.nm -}}</a >
+			{% else %}
+				No buttons have been found.
+			{% endfor %}
+
+		</td >
+	</tr >
+	<tr >
+		<td >
+			<div id="cont_fb" >
+
+			</div >
+		</td >
+	</tr >
+</table >

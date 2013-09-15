@@ -52,6 +52,7 @@ class autoload {
 			if (strpos($className, 'Twig') === 0) {
 				return false;
 			}
+
 			if ($lastNsPos = strrpos($className, '\\')) {
 				$namespace = substr($className, 0, $lastNsPos);
 				$className = substr($className, $lastNsPos + 1);
@@ -64,10 +65,11 @@ class autoload {
 			try {
 				require_once $file;
 			} catch (Exception $e) {
-				if(DUMP_R) dump_r($e->getMessage());
+
+						 if (check_Session::getInstance()->has('DUMP_R')) {
+										dump_r($e->getMessage());
+						 }
 			}
-
-
 
 			return true;
 		});

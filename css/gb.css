@@ -63,14 +63,18 @@ a.sml:hover {
 	width:100%;
 }
 .tb_mess {
-	width:100%;
+	width:80%;
 	color: #111111;
 	/*background:#202;*/
     -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
     border-radius: 8px;
-	border:#555 ridge 1px;
+	border: #dcdcdc ridge 2px;
 	margin-top:20px;
+
+    /*border-spacing: 1px;*/
+    /*border-collapse: separate;*/
+
 }
 .td_name {
 	width:100%;
@@ -120,4 +124,30 @@ textarea.form2:active {
 
 .p {
     margin: 5px 10px;
+}
+
+#form_ent td {
+    color: #999999;
+}
+
+
+
+#form_login {
+    margin: 0 0 20px;
+    padding: 0;
+    color: #999999;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+#form_login .inp_fent {
+    background: none repeat scroll 0 0 #CCCCCC;
+    border-radius: 7px 7px 7px 7px;
+    padding-left: 0;
+    padding-right: 8px;
+    width: 82px;
+}
+
+#form_login .inp_fent {
+    margin-bottom: 2px;
 }

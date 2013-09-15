@@ -2,7 +2,8 @@
   // error_reporting(E_ALL);
   // ini_set('display_errors', 1);
   error_reporting(0);
-  include (__DIR__.'/inc/head.php');
+		define ( 'BASEPATH' , realpath ( __DIR__ ) . '/' , TRUE );
+  include_once (BASEPATH.'inc/head.php');
 
   $session = check_Session::getInstance();
 
@@ -755,5 +756,5 @@ $_SESSION['print'] = 0;
   <div class="end_content"></div>
   </div>
 <?
-  include (__DIR__.'/inc/footer.php');
+  include_once (BASEPATH.'/inc/footer.php');
 ?>

@@ -98,7 +98,7 @@ class autoPrev {
 
 		}
 	 $this->albumList .= "</div></div>";
-	 echo $this->albumList;
+	 return $this->albumList;
   }
 
 
@@ -175,7 +175,7 @@ class autoPrev {
         $startThumb = "<script type='text/javascript'> $(function(){ ajaxPostQ('/inc/ajaxUslugi.php', '#thumb',
                        'url=".$this->startUrlThumb."'+'&galery=".$galery."'+'&height=".$this->height."')});</script>";
 		}
-	 echo $startThumb;
+	 return $startThumb;
   }
 
 

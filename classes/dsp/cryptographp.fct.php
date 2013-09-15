@@ -3,21 +3,34 @@
      require_once(__DIR__.'/../../inc/secureSession.php');
 	  startSession();
 
+		 require_once (__DIR__.'/../../classes/dump_r/dump_r.php');
+		 try {
+					require_once (__DIR__.'/../../classes/autoload.php');
+					autoload::getInstance();
+		 } catch (Exception $e) {
 
-   $_SESSION['cryptdir'] = dirname($cryptinstall);
+					if(check_Session::getInstance()->has('DUMP_R')) dump_r($e->getMessage());
+
+		 }
+
+		 $session = check_Session::getInstance();
+
+		 $session->set('cryptdir', dirname($cryptinstall));
+
 
 
 function dsp_crypt($cfg = 0, $reload = 1)
 	{
+			 $session = check_Session::getInstance();
 		// Отображает криптограммы
-		echo"<table><tr><td><img id='cryptogram' src='".$_SESSION['cryptdir']."/cryptographp.php?cfg=".$cfg."&".SID."'></td>";
+		echo"<table><tr><td><img id='cryptogram' src='".$session->get('cryptdir')."/cryptographp.php?cfg=".$cfg."&".SID."'></td>";
 		if ($reload)
 			{
 				echo"<td><a title='".($reload == 1 ? '' : $reload)
 					."' style=\"cursor:pointer\"
 					onclick=
-					\"$(' #cryptogram ').attr('src', '".$_SESSION['cryptdir']."/cryptographp.php?cfg=".$cfg."&".SID."&' +Math.round(Math.random(0)*1000)+1);\">
-					<img src=\"".$_SESSION['cryptdir']."/images/reload.png\"></a></td>";
+					\"$(' #cryptogram ').attr('src', '".$session->get('cryptdir')."/cryptographp.php?cfg=".$cfg."&".SID."&'+Math.round(Math.random(0)*1000)+1);\">
+					<img src=\"".$session->get('cryptdir')."/images/reload.png\"></a></td>";
 			}
 		echo "</tr></table>";
 	}
@@ -25,10 +38,15 @@ function dsp_crypt($cfg = 0, $reload = 1)
 
 function chk_crypt($code)
 	{
+			 $session = check_Session::getInstance();
 	  if($code != false || $code != '')
 		 {
 		// Проверка корректности кода
-		include ($_SESSION['configfile']);
+
+
+if($session->has('configfile')) {
+
+		include_once ($session->get('configfile'));
 		$code = addslashes($code);
 		$code = str_replace(' ', '', $code); // удаление введенных по ошибке пробелов
 		$code = ($difuplow ? $code : strtoupper($code));
@@ -41,23 +59,27 @@ function chk_crypt($code)
 					$code = sha1($code);
 					break;
 		}
-		if ($_SESSION['cryptcode'] and ($_SESSION['cryptcode'] == $code))
+		if ($session->get('cryptcode') == $code)
 			{
-				unset($_SESSION['cryptreload']);
+					 $session->del('cryptreload');
+
 				if ($cryptoneuse)
 					{
-						unset($_SESSION['cryptcode']);
+						$session->del('cryptcode');
 					}
 
 				return true;
 			}
 		else
 			{
-				$_SESSION['cryptreload'] = true;
+					 $session->set('cryptreload', true);
 
 				return false;
 			}
 
-		 } else 	 return true;
+		 } else return true;
+
+	}
+			 return false;
 	}
 ?>

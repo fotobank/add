@@ -8,9 +8,9 @@
  */
 header('Content-type: text/html; charset=windows-1251');
 
+// капча
 $cryptinstall = '/classes/dsp/cryptographp.fct.php';
 require_once  (__DIR__.'/classes/dsp/cryptographp.fct.php');
-
 
 
 ?>

@@ -213,8 +213,8 @@ h1 {
 
 #zagol {
     position: absolute;
-    left: 40%;
-    top: 20px;
+    left: 43%;
+    top: 25px;
 }
 
 
@@ -395,6 +395,7 @@ a.bt_dack:hover {
     padding-left: 0;
     padding-right: 8px;
     /* margin-left:-8px; */
+    margin-bottom: 1px;
 }
 
 .inp_fent:hover {
@@ -3240,6 +3241,23 @@ Helvetica, sans-serif;color:#888;border:1px solid #c8c6c4;vertical-align:top;bor
 /*центрирование строки*/
 .center {text-align: center;}
 
+ /* центровка сообщений Применять все три <div class="centerErr1"> */
+.centerErr1 {
+position: relative; width: 1200px; height: 50px; margin-bottom: -30px;
+}
+.centerErr2 {
+    width: 50%;
+    height: 80%;
+    overflow: auto;
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    z-index: 99999;
+}
+.centerErr3 {
+    position: relative; margin:10px 0 0 30px; padding-bottom: 3px; padding-left: 20px; padding-right: 20px; width: 500px;
+}
+
 #smail {
     background:url(/img/smile.jpg) no-repeat transparent;
     height: 220px;
@@ -3324,5 +3342,17 @@ figure { margin:20px auto; }*/
    display:block; margin:0 auto;
    position: relative;
    max-width: 1180px;
+   width: 1000px;
    z-index: 10000;
+}
+
+
+#form_login {
+
+    margin: 0 0 20px;
+    padding: 0;
+    color: #999999;
+    border-collapse: collapse;
+    border-spacing: 0;
+
 }

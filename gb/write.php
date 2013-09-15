@@ -2,7 +2,7 @@
 if ( !defined('SR_DENIED') )
 {
 	die("Неправильный вызов скрипта");
-	exit;
+
 }
 /*if (session_id() == "")
   {*/
@@ -10,8 +10,9 @@ if ( !defined('SR_DENIED') )
 	 require_once(__DIR__.'/../inc/secureSession.php');
 	 startSession();
  // }
-$cryptinstall = '/../inc/captcha/cryptographp.fct.php';
-include  (__DIR__.'/../inc/captcha/cryptographp.fct.php');
+// капча
+$cryptinstall = '/classes/dsp/cryptographp.fct.php';
+require_once  (__DIR__.'/../classes/dsp/cryptographp.fct.php');
 
 //error_reporting(0);
 $mail_mess = $mess;
@@ -32,7 +33,8 @@ $mail_date = mydate($date);
  $antispam = $_SESSION["antispam"];
 
 
-if ($_POST['f_antispam'] == chk_crypt($_POST['f_antispam']))
+//if ($_POST['f_antispam'] == chk_crypt($_POST['f_antispam']))
+if ($_SESSION['cryptcode'] == chk_crypt($_POST['f_antispam']))
 
 // if (($f_antispam==$antispam)&&($antispam<>"")||($spamcontrol<>"yes"))
 {

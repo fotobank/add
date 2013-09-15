@@ -1,5 +1,5 @@
 <?php
-if ( !defined('SR_DENIED') ) { die('Неправильный вызов скрипта'); exit; }
+if ( !defined('SR_DENIED') ) { die('Неправильный вызов скрипта'); }
 $TABWIDTH = "600";
 $BACKGROUND = "#FFFFFF";
 $FONT = "Verdana, Tahoma, Helvetica, Arial, sans-serif";
@@ -33,8 +33,10 @@ $saves = "data/save.dat";
 $exech = "data/autochange.dat";
 $banlist = "data/banlist.dat";
 $backup = "data/backup.dat";
-$footer = "design/footer.inc.php";
+//$footer = "design/footer.inc.php";
 $header = "design/header.inc.php";
+			$footer = "/../inc/footer.php";
+//			$header = "/..inc/header.inc.php";
 $send_form = "design/send.inc.php";
 $anti_email = "yes";
 $email_size = "2";

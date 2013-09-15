@@ -1,7 +1,7 @@
 <?php
-include (dirname(__FILE__).'/inc/config.php');
-include (dirname(__FILE__).'/inc/func.php');
-require (dirname(__FILE__).'/inc/i_resize.php');
+include (__DIR__.'/inc/config.php');
+include (__DIR__.'/inc/func.php');
+require (__DIR__.'/inc/i_resize.php');
 
 
 if (isset($_GET['num'])) {

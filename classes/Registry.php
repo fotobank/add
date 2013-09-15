@@ -44,6 +44,8 @@
 			return $this->vars[$key];
 		}
 
+
+
 		function remove($key) {
 			unset($this->vars[$key]);
 		}

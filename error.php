@@ -1,5 +1,6 @@
 <?php
-	include (dirname(__FILE__).'/inc/head.php');
+			define ( 'BASEPATH' , realpath ( __DIR__ ) . '/' , TRUE );
+	require_once (BASEPATH.'/inc/head.php');
 
 
   $id = (isset($argv[0]))?$argv[0]:404;
@@ -34,5 +35,5 @@ END;
   <?= isset($GLOBALS['SERVER_SIGNATURE'])?$GLOBALS['SERVER_SIGNATURE']:'' ?>
 
 <?php
-	include ('inc/footer.php');
+	require_once (BASEPATH.'inc/footer.php');
 ?>

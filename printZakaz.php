@@ -6,13 +6,13 @@
  * Time: 11:56
  * To change this template use File | Settings | File Templates.
  */
-
+  define ( 'BASEPATH' , realpath ( __DIR__ ) . '/' , TRUE );
   set_time_limit(0);
  //  error_reporting(E_ALL);
  //  ini_set('display_errors', 1);
   error_reporting(0);
   ignore_user_abort(1);
-  include (__DIR__.'/inc/head.php');
+  include (BASEPATH.'inc/head.php');
 
 
 
@@ -34,8 +34,6 @@ if(!$data)
   }
 else
   {
-
-	 require_once (__DIR__.'/inc/lib_mail.php');
 
 
 
@@ -224,5 +222,5 @@ $db->close();
 ?>
   </div>
 <?php
-  include (dirname(__FILE__).'/inc/footer.php');
+  include (BASEPATH.'inc/footer.php');
 ?>

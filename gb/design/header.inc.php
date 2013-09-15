@@ -1,5 +1,5 @@
 <?
-include (__DIR__.'/../../inc/head.php');
+require_once (__DIR__.'/../../inc/head.php');
 ?>
 <link href="../../css/gb.css" rel="stylesheet" type="text/css" />
 <script language=JavaScript>
@@ -33,7 +33,6 @@ include (__DIR__.'/../../inc/head.php');
 </script>
 
 <script language=JavaScript type="text/javascript">
-  <!--
   function smile(str){
 	 obj = document.Sad_Raven_Guestbook.mess;
 	 obj.focus();
@@ -55,19 +54,12 @@ include (__DIR__.'/../../inc/head.php');
 		obj.value += st_t+en_t;
 	 }
   }
-  //-->
 </script>
 
 <!--Голова конец-->
 
 <?
-if($value == '/gb/index.php'): ?>
-<div id="main">
-  <div class="drop-shadow lifted" style="margin: 40px 0 10px 310px;">
-	 <h1><div style="font-family: Georgia, 'Times New Roman', Times, serif; font-size: 30px; color: #001590; text-shadow: none;">Книга отзывов Creative line studio</div></h1>
-  </div>
-<div style="clear: both"></div>
-<table class="tb_main"><tr><td>
-</td></tr><tr><td>
-<? endif;?> 
-
+if($razdel == '/gb/index.php'):
+		$loadTwig('.twig', $renderData);
+ endif;
+?>

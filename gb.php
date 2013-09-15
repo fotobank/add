@@ -1,7 +1,9 @@
-<?php include (dirname(__FILE__).'/inc/head.php');
+<?php
+			define ( 'BASEPATH' , realpath ( __DIR__ ) . '/' , TRUE );
+			include (BASEPATH.'inc/head.php');
 ?>
 <div id="main">
 
 </div>
-<?php include (dirname(__FILE__).'/inc/footer.php');
+<?php include (BASEPATH.'inc/footer.php');
 ?>

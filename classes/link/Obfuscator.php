@@ -10,24 +10,27 @@ class link_Obfuscator
 {
 	var $seed=0;
 	var $referralSeed=0;
+
+
 	function link_Obfuscator($referralSeed=false)
-	{
-		// new seed, to obfuscate new pages
-   		srand();
-		$this->seed= rand();
-		// old seed, to check access
-		if($referralSeed===false or !is_numeric($referralSeed)) {
-			$this->referralSeed=$referralSeed;
-		} else if(is_numeric($_SESSION['referralSeed'])) {
-			$this->referralSeed=$_SESSION['referralSeed'];
-			$_SESSION['referralSeed']=$this->seed;
-		}	
-	}
+				{
+					// new seed, to obfuscate new pages
+								srand();
+					$this->seed= rand();
+							 $session = check_Session::getInstance();
+					// old seed, to check access
+					if($referralSeed===false or !is_numeric($referralSeed)) {
+						  $this->referralSeed=$referralSeed;
+					} else if(is_numeric($session->get('referralSeed'))) {
+						  $this->referralSeed=$session->get('referralSeed');;
+								$session->set('referralSeed', $this->seed);
+					}
+				}
 
 	function _obfuscate($aLink,$aSeed)
 	{
 		$sep=(strpos('?',$aLink)===false)?'?':'&';
-	  $tes = md5($aSeed .$aLink);
+	  $test = (md5($aSeed .$aLink));
 		return $aLink. $sep ."go=".md5($aSeed .$aLink);
 	}
 	
@@ -40,7 +43,7 @@ class link_Obfuscator
 	{
 		$theLink=preg_replace('/(&|\?)go=(\w)+/','',$anObfuscatedLink);
 	   $thisRef = $this->referralSeed;
-	   $test = $this->_obfuscate($theLink,$this->referralSeed);
+//				dump_r($this->_obfuscate($theLink,$this->referralSeed));
 		if($this->_obfuscate($theLink,$this->referralSeed)==$anObfuscatedLink)
 			return true;
 			
