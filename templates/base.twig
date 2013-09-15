@@ -5,10 +5,17 @@
 {% endblock doctype %}
 
 
-
+<head>
 {% block head %}
 	{% include 'head.twig' %}
 {% endblock head %}
+	{#для проверки на вклюсенный js#}
+	<script type="text/JavaScript">
+		document.cookie = 'js=1';
+	</script>
+</head>
+
+
 
 
 

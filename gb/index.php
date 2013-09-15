@@ -1,8 +1,8 @@
 <?php
 			define ( 'BASEPATH' , realpath ( __DIR__ ) . '/' , TRUE );
-		 error_reporting(0);
-		 // error_reporting(E_ALL);
-		 // ini_set('display_errors', 1);
+			error_reporting(E_ALL);
+			ini_set('display_errors', 1);
+
 		 define('SR_DENIED', true);
 		 if (!include ("config.inc.php")) {
 					die("Не найден рабочий файл конфигурации");

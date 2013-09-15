@@ -1,13 +1,20 @@
 <?php
-			define ( 'BASEPATH' , realpath ( __DIR__ ) . '/' , TRUE );
-			if(isset($_COOKIE['js']) && $_COOKIE['js'] == 1){
-						define ( 'JS' , 1 );
-			} else define ( 'JS' , 0 );
+			error_reporting(E_ALL);
+			ini_set('display_errors', 1);
 
+			if(isset($_COOKIE['js']) && $_COOKIE['js'] == 1){
+						define ( 'JS' , true );
+						unset ($_COOKIE['js']);
+			} else define ( 'JS' , false );
+     setcookie('js', '', time()-1, '/');
+
+			 define ( 'BASEPATH' , realpath ( __DIR__ ) . '/' , TRUE );
 			 require_once  (BASEPATH.'inc/head.php');
+
 			 $dataDB               = $db->query('select txt from content where id = ?i', array(1), 'el');
 			 $renderData['dataDB'] = $dataDB;
 			 $loadTwig('.twig', $renderData);
+
 			 require_once  (BASEPATH.'inc/ip-ban.php');
 			 set_time_limit(0);
 			 // include  (dirname(__FILE__).'/inc/lib/dtimediff/diftimer_class.php'); // подсчет времени между двумя событиями
@@ -653,7 +660,7 @@ if ($may_view) {
 			 $current_album = $session->get('current_album');
 			 $event = $db->query('select `event` from `albums` where `id` =?i', array($current_album), 'el');
 			 //		отключение аккордеона если фотографии не показываются
-			 if ($event == 'on') {
+			 if ($event == 'on' && JS) {
 							$acc[1] = $db->query('SELECT * FROM accordions WHERE `id_album` = ?i ', array('1'), 'assoc:collapse_numer');
 							$acc[$current_album] = $db->query('SELECT * FROM accordions WHERE `id_album` = ?i ', array($current_album), 'assoc:collapse_numer');
 							if ($acc[$current_album]) {
@@ -750,7 +757,7 @@ if ($may_view) {
 			 						<?
 
 						// выдавать контент c JS
-   //if( JS === 1 ) {
+   if( JS ) {
 			 $event = $db->query('select `event` from `albums` where `id` =?i', array($current_album), 'el');
 			 //		отключение показа фотографий в альбоме
   				if ($event == 'on') {
@@ -807,26 +814,34 @@ if ($may_view) {
 													$loadTwig('_podpiska.twig', $rs);
 
 									}
-																/*} else {
-																		*/?><!--
+																} else {
+																		?>
 																	<NOSCRIPT>
 																	<br><br>
-																	<hfooter style="margin-left: 90px; font-size: 20px; font-weight: 400; font-style: inherit; color: #df0000; text-shadow: 1px 1px 0 #d1a2a2;"
-																																>Из - за отключенной JavaScript показ фотографий невозможен!	( <a href="http://www.enable-javascript.com/ru/">Как включить JavaScript?</a >)
+																	<hfooter style="font-size: 20px; font-weight: 400; font-style: inherit; color: #df0000; text-shadow: 1px 1px 0 #d1a2a2;"
+																																>Из - за отключенной JavaScript показ фотографий невозможен!
+																																	( <a href="http://www.enable-javascript.com/ru/">Как включить JavaScript?</a >)
 																	</hfooter>
 																	</NOSCRIPT>
-																	--><?
-																	//}
+																	<?
+																	}
 
 															//else:  include (__DIR__.'/error_.php');
 							}	else {
 												?>
+
+						<br><br>
+						<hfooter style="margin-left: 35px; font-size: 20px; font-weight: 400; font-style: inherit; color: #df0000; text-shadow: 1px 1px 0 #d1a2a2;"
+									>Альбом заблокирован паролем.
+						</hfooter>
+
 												<NOSCRIPT>
 															<br><br>
 															<hfooter style="margin-left: 90px; font-size: 20px; font-weight: 400; font-style: inherit; color: #df0000; text-shadow: 1px 1px 0 #d1a2a2;"
-																		>Из - за отключенной JavaScript показ фотографий невозможен!	( <a href="http://www.enable-javascript.com/ru/">Как включить JavaScript?</a >)
+																		>При отключенной JavaScript функционал сайта заблокирован!	( <a href="http://www.enable-javascript.com/ru/">Как включить JavaScript?</a >)
 															</hfooter>
 												</NOSCRIPT>
+
 									<?
 							}
 
@@ -855,8 +870,7 @@ if ($may_view) {
 
 }
 
-			 $renderData['include_Js_banck'] =
-							array('js/visLightBox/js/visuallightbox.js', 'js/photo-prev.js', 'js/visLightBox/js/vlbdata.js');
+			 $renderData['include_Js_banck'] = array('js/visLightBox/js/visuallightbox.js', 'js/photo-prev.js', 'js/visLightBox/js/vlbdata.js');
 			 $loadTwig('_footer.twig', $renderData);
 			 include (BASEPATH.'inc/footer.php');
 ?>

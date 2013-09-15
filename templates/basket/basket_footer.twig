@@ -1,0 +1,32 @@
+{% block content %}
+
+
+	<script type='text/javascript' >
+
+		$('img').error(function () {
+			//		$(this).parent().css('visibility', 'hidden');
+			$(this).attr('src', '/img/bg_out.png');
+		});
+
+	</script >
+{% endblock content %}
+
+
+</div></div>
+
+
+{% block end_content %}
+	<div class="end_content" ></div >
+{% endblock end_content %}
+
+
+
+	{% block footer %}
+		{% include 'footer.twig' %}
+	{% endblock footer %}
+
+
+</body>
+{% block html %}
+	</html>
+{% endblock html %}

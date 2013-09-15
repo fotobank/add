@@ -1,13 +1,20 @@
 <?php
-  // error_reporting(E_ALL);
-  // ini_set('display_errors', 1);
-  error_reporting(0);
+  error_reporting(E_ALL);
+  ini_set('display_errors', 1);
+
+			if(isset($_COOKIE['js']) && $_COOKIE['js'] == 1){
+						define ( 'JS' , true );
+						unset ($_COOKIE['js']);
+			} else define ( 'JS' , false );
+			setcookie('js', '', time()-1, '/');
+
 		define ( 'BASEPATH' , realpath ( __DIR__ ) . '/' , TRUE );
   include_once (BASEPATH.'inc/head.php');
 
-  $session = check_Session::getInstance();
+			$loadTwig('.twig', $renderData);
 
-  if (!isset($_SESSION['logged']))
+  $session = check_Session::getInstance();
+  if (!$session->has('logged'))
 	 {
 		?>
 		<div class="drop-shadow lifted" style="margin: 150px 0 0 290px;" xmlns="http://www.w3.org/1999/html">
@@ -20,7 +27,7 @@
 	 {
 		if (isset($_POST['go_back']))
 		  {
-			 $_SESSION['print'] = 1;
+							$session->set('print', 1);
 		  }
 		if (isset($_POST['go_order']) && isset($_SESSION['basket']) && is_array($_SESSION['basket']) && count($_SESSION['basket']) > 0)
 		  {
@@ -43,9 +50,8 @@
 				  $order = iTogo();
 				  if ($order['price'] > $user_balans)
 					 {
-
-						$_SESSION['basket_err'] = "Ќедостаточно средств на балансе!<br> ѕополните счет или закажите печать наложенным платежем.";
-						$db->query('delete from orders where id = ?i', array($id_order));
+									$session->set('basket_err', "Ќедостаточно средств на балансе!<br> ѕополните счет или закажите печать наложенным платежем.");
+									$db->query('delete from orders where id = ?i', array($id_order));
 					 }
 				  else
 					 {
@@ -756,5 +762,5 @@ $_SESSION['print'] = 0;
   <div class="end_content"></div>
   </div>
 <?
-  include_once (BASEPATH.'/inc/footer.php');
-?>
+			$loadTwig('_footer.twig', $renderData);
+			include (BASEPATH.'inc/footer.php');

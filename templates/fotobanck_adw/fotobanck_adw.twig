@@ -3,14 +3,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 {% endblock doctype %}
 
-
+<head>
 {% block head %}
 	{% include 'head.twig' %}
-	{#проверка на вклюсенный js#}
-	<script>
-		document.cookie = 'js=1';
-	</script>
 {% endblock head %}
+</head>
 
 	<body>
 		<div id="maket">

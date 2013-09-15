@@ -8,9 +8,6 @@
  */
   define ( 'BASEPATH' , realpath ( __DIR__ ) . '/' , TRUE );
   set_time_limit(0);
- //  error_reporting(E_ALL);
- //  ini_set('display_errors', 1);
-  error_reporting(0);
   ignore_user_abort(1);
   include (BASEPATH.'inc/head.php');
 
@@ -61,13 +58,7 @@ else
 			 {
 				$_SESSION['order_msg'] = 'Недостаточно средств на балансе! Необходимо  '.$data['summ'].' гр. Пополните свой счет на сайте любым<br> доступным Вам способом.
 				 Или сделайте новый заказ наложенным платежом.';
-				/**/?><!--
-				<script type="text/javascript">
-				  location.replace("basket.php?1=1");
-				</script>
-			 --><?
-				/*die('Недостаточно средств на балансе! Необходимо  '.$data['summ'].' гр. Пополните свой счет на сайте любым<br> доступным Вам способом.
-				 Или сделайте новый заказ наложенным платежом.');*/
+
 				?>
 				<div class="drop-shadow lifted" style="margin: 150px 0 0 130px;">
 			   <div style="font-size: 24px;">Недостаточно средств на балансе! Необходимо  '<?=$data['summ']?>' гр. Пополните свой счет на сайте<br> любым доступным Вам способом.
@@ -89,7 +80,7 @@ else
 				  }
 				else
 				  {
-		                                            /*todo: новый заказ*/
+		                                            /** новый заказ*/
 								try {
 										$db->query('UPDATE `print` SET `zakaz` = ?b WHERE id = ?i', array('1',$data['id']));
 										if ($data['id_nal'] != 'наложенный платеж')
@@ -109,15 +100,17 @@ else
 					 $('#balans').empty().append($balans);
 					 </script>";
 						}
-	?>
 
+	    ?>
 		  <div class="drop-shadow lifted" style="margin: 150px 0 0 350px;">
 			 <div style="font-size: 24px;">Спасибо, Ваш заказ №<?=$data['id']?> принят в обработку. </div>
 		  </div>
-        <?
-        /*todo: письмо фотографу */
-		  $letter = '<html><body><h2>Заказ №'.$data['id'].'</h2>';
-        $user = $db->query('SELECT * FROM `users` WHERE `id` = ?i',array($data['id_user']),'row');
+      <?
+
+
+        /** письмо фотографу */
+		  $letter 	= '<html><body><h2>Заказ №'.$data['id'].'</h2>';
+    $user 			= $db->query('SELECT * FROM `users` WHERE `id` = ?i',array($data['id_user']),'row');
 		  $letter .= "<b>Пользователь:</b> ".$user['us_name'].' '.$user['us_surname']."<br>";
 		  $letter .= "<b>E-mail пользователя:</b> ".$data['email']."<br>";
 		  $letter .= "<b>Id пользователя:</b> ".$data['id_user']."<br>";
@@ -126,8 +119,10 @@ else
 		  $letter .= "<b>Номер телефона получателя:</b> ".$data['phone']."<br>";
 		  $letter .= "<b>Размер фотографий:</b> ".$data['format']." см.<br>";
 		  $letter .= "<b>Бумага:</b> ".$data['mat_gl']."<br>";
-		  $letter .= ($data['id_nal'] == 'другое') ? "<b>Способ оплаты выбранный пользователем:</b> '".$data['user_opl'].",<br>":"<b>Способ оплаты:</b> ".$data['id_nal']."<br>";
-		  $letter .= ($data['id_dost'] == 'другое') ? "<b>Способ доставки выбранный пользователем:</b> '".$data['user_dost'].",<br>":"<b>Вид доставки:</b> ".$data['id_dost']."<br>";
+		  $letter .= ($data['id_nal'] == 'другое') ? "<b>Способ оплаты выбранный пользователем:</b> '".
+																																															$data['user_opl'].",<br>":"<b>Способ оплаты:</b> ".$data['id_nal']."<br>";
+		  $letter .= ($data['id_dost'] == 'другое') ? "<b>Способ доставки выбранный пользователем:</b> '".
+																																																$data['user_dost'].",<br>":"<b>Вид доставки:</b> ".$data['id_dost']."<br>";
 		  if($data['id_dost'] == 'Самовывоз из почтового отделения Вашего города' || $data['id_dost'] == 'Доставка до двери почтовой службой (кроме Одессы)')
 			 {
 				$letter .= "<b>Наименование службы доставки:</b> ".$data['subname'].",<br>";
@@ -135,7 +130,8 @@ else
 			 }
 		  if($data['id_dost'] == 'Самовывоз из студии (в Одессе)') $letter .= "<b>Адрес студии для получения фотографий:</b> '".$data['adr_studii']."'<br>";
 		  $letter .= "<b>Примечание пользователя:</b><br>".$data['comm']."<br>";
-		  $nmAlb = $db->query('SELECT a.nm FROM albums a, photos p, order_print o WHERE a.id = p.id_album  AND o.id_photo = p.id AND o.id_print = ?i LIMIT 1',array($data['id']),'el');
+		  $nmAlb = $db->query('SELECT a.nm FROM albums a, photos p, order_print o WHERE a.id = p.id_album  AND o.id_photo = p.id AND o.id_print = ?i LIMIT 1',
+																								array($data['id']),'el');
 		  $photo_data = $db->query('select * from `order_print` where `id_print` = ?i', array($data['id']), 'assoc');
 		  $letter .= "<br><b>Название альбома:</b> '".$nmAlb."'<br>";
 		  $letter .= "<b>Номер и количество фотографий:</b><br>";
@@ -163,13 +159,13 @@ else
 		  $mail->send_letter();
 
 
-		  /* todo: обработка заказа на FTP и отправить SMS */
+		  /** обработка заказа на FTP и отправить SMS */
 		  $http = new http;
-		  /*todo: собрать заказ */
+		  /** собрать заказ */
 		  $zakazPrint = $http->post('http://'.$_SERVER['HTTP_HOST'].'/security.php', array('idZakaz' => $data['id']));
         // echo $zakazPrint;
 		  // dump_r($zakazPrint);
-		  /*todo:  SMS о поступлении заказа */
+		  /** SMS о поступлении заказа */
 		  $zakaz =
 						'Заказ №'.$data['id'].
 						' от: '.$user['us_name'].
@@ -219,8 +215,7 @@ $db->close();
 		   include (__DIR__.'/error_.php');
 	 }
  }  else include (__DIR__.'/error_.php');
-?>
-  </div>
-<?php
+
+
   include (BASEPATH.'inc/footer.php');
 ?>

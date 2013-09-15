@@ -12,9 +12,11 @@
 	require_once (__DIR__.'/../classes/autoload.php');
 	autoload::getInstance();
 
-	$error_processor = Error_Processor::getInstance();
-	include (dirname(__FILE__).'/config.php');
-	include (dirname(__FILE__).'/func.php');
+
+
+			require_once (dirname(__FILE__).'/config.php');
+			require_once (dirname(__FILE__).'/func.php');
+			$db = go\DB\Storage::getInstance()->get('db-for-data');
 
 
 if(isset($_POST['goZakazDel'])) // кнопка удаления фотографий из корзины
