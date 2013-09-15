@@ -41,12 +41,12 @@
 									$dir = NULL;
 									if ($_SERVER['PHP_SELF'] == '/gb/index.php') {
 												$twigName = '/gostevaia';
-												//			$dir      = '/uslugi';
+
 									} else {
 												$twigName = mb_substr($_SERVER['PHP_SELF'], 0, -4);
 									}
 									$dir = NULL;
-									if ($_SERVER['PHP_SELF'] == '/f_svadbi.php'
+									if (			$_SERVER['PHP_SELF'] == '/f_svadbi.php'
 													|| $_SERVER['PHP_SELF'] == '/f_deti.php'
 													|| $_SERVER['PHP_SELF'] == '/f_bankety.php'
 													|| $_SERVER['PHP_SELF'] == '/f_photoboock.php'
