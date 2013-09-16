@@ -7,13 +7,20 @@
 				* To change this template use File | Settings | File Templates.
 				*/
 			define ('BASEPATH', realpath(__DIR__).'/', true);
+			include_once (BASEPATH.'inc/config.php');
+			include_once (BASEPATH.'inc/func.php');
+
+//   dump_r($link->referralSeed);
+//			dump_r("<br>actual referral Seed:{$_SESSION['referralSeed']}<br />\n");
+//			dump_r("checked link: {$_SERVER['REQUEST_URI']}<br />\n");
+
 
 			if ($link->referralSeed) {
 						if (($link->check($_SERVER['SCRIPT_NAME'].'?go='.trim(isset($_GET['go']) ? $_GET['go'] : '')))
 										|| (isset($_GET['user']) and $_GET['user'] == $_SESSION['userForm'])
 						) {
 
-									include (BASEPATH.'inc/head.php');
+									include_once (BASEPATH.'inc/head.php');
 
 //									print "<br>actual referral Seed:".$_SESSION['referralSeed']."<br />\n";
 //									print "checked link: {$_SERVER['REQUEST_URI']}<br />\n";
@@ -128,14 +135,12 @@
 									}
 
 						} else {
-//									print "<br>actual referral Seed:".$_SESSION['referralSeed']."<br />\n";
-//									print "<br>link invalid: {$_SERVER['REQUEST_URI']} \n";
-									include (__DIR__.'/error.php');
-									die('');
+						//			print "<br>actual referral Seed:".$_SESSION['referralSeed']."<br />\n";
+						//			print "<br>link invalid: {$_SERVER['REQUEST_URI']} \n";
+									err_exit ('Прямой вход на данную страницу запрещен. Для входа используте кнопку "пользователь"', '/error.php');
 						}
 
 			} else {
-						include (__DIR__.'/error.php');
-						die('');
+						err_exit ('Доступ на страницу пользователя без авторизации невозможен. ', '/error.php');
 			}
 			include_once (BASEPATH.'inc/footer.php');

@@ -1,111 +1,114 @@
-<div id="head">
+<div id="head" >
 
-	<table class="tb_head" >
-		<tr >
-			<td >
-				<div class="td_head_logo" >
-					<a class="logo" href="/index.php" ></a >
+       <table class="tb_head" >
+              <tr >
+                     <td >
+                            <div class="td_head_logo" >
+                                   <a class="logo" href="/index.php" ></a >
 
-					<div id="zagol" >
-						<h1 >
-						<span class="letter1" >Профессиональная <br>
+                                   <div id="zagol" >
+                                          <h1 >
+						<span class="letter1" >Профессиональная <br >
 						<span style="
 						padding-top: 10px;
 						padding-bottom: 10px;
 						line-height: 1.3em;
 						letter-spacing: 0;
-						" > Фото и Видеосъёмка</span ><br>
+						" > Фото и Видеосъёмка</span ><br >
 				          в Одессе</span >
-						</h1 >
-					</div >
-				</div >
-			</td >
-			<td class="td_form_ent" >
-
-				<div id="form_ent" >
-
-					{% if logged %}
-						<div style="text-align: center;" >
-					      <span style="color:#bb5" ><span style="font-size: 14px" >Здравствуйте,</span ><br > <span style="font-weight: bold;" >{{ us_name }}</span ><br />
+                                          </h1 >
+                                   </div >
+                            </div >
+                     </td >
+                     <td class="td_form_ent" >
+                            <div id="form_ent" >
+                                   {% if logged %}
+                                          <div style="text-align: center;" >
+					      <span style="color:#bb5" ><span style="font-size: 14px" >Здравствуйте,</span ><br > <span
+                                              style="font-weight: bold;" >{{ us_name }}</span ><br />
 						  <span style="font-size: 12px;" > Ваш баланс: </span >
 						  <span id="balans" style="font-weight: bold;" >{{ user_balans }}</span > гр.<br /></span >
-						</div >
+                                          </div >
+                                          <div style="margin-top: 8px;" >
+                                                 <a class="korzina" style="position: absolute; top: 62px; width: 52px;" href="/basket.php" >корзина</a > <a
+                                                         class="vihod" style="position: absolute; top: 62px; left: 80px;" href="/enter.php?logout=1" >выход</a >
+                                          </div >
+                                          <div style="margin-top: 8px;" >
+                                                 <a class="scet" style="position: absolute; width: 30px; top: 88px;" data-target="#" data-toggle="order"
+                                                         href="/security.php?acc={{ accVer }}" >счет</a > <a class="user" href="/security.php?user={{ userVer }}"
+                                                         style="position: absolute; width: 88px; left: 48px; top: 88px;" >пользователь</a >
+                                          </div >
+                                   {% else %}
+                                          <span >Форма входа:</span ><br >
+                                          <form id="form_login" action="/enter.php" method="post" >
+                                                 <table >
+                                                        <tr >
+                                                               <td > Логин:</td >
+                                                               <td ><label ><input class="inp_fent" name="login" > </label ></td >
+                                                        </tr >
+                                                        <tr >
+                                                               <td > Пароль:</td >
+                                                               <td ><label > <input class="inp_fent" type="password" name="password" > </label ></td >
+                                                        </tr >
+                                                        <tr ></tr >
+                                                        <tr >
+                                                               <td >
+                                                                      <input data-placement="left" rel="tooltip" class="vhod" name="submit" type="submit"
+                                                                              value="вход" title="Добро пожаловать!" data-original-title="Добро пожаловать!" >
+                                                               </td >
+                                                               <td >
+                                                                      <a href="/registr.php" class="registracia" data-placement="right"
+                                                                              data-original-title="Вы еще не зарегистрировались? Присоединяйтесь" >регистрация</a >
+                                                               </td >
+                                                        </tr >
+                                                 </table >
+                                                 <a href="/reminder.php" style="color: #fff; text-decoration: none;" data-target="#" data-toggle="modal"
+                                                         data-placement="right" data-original-title="Восстановление пароля" >Забыли пароль?</a >
+                                          </form >
+                                   {% endif %}
+                            </div >
+                     </td >
+              </tr >
+              <tr >
+                     <td ></td >
+                     <td ></td >
+              </tr >
+       </table >
 
-						<div style="margin-top: 8px;" >
-							<a class="korzina" style="position: absolute; top: 62px; width: 52px;" href="/basket.php" >корзина</a > <a class="vihod"
-									style="position: absolute; top: 62px; left: 80px;" href="/enter.php?logout=1" >выход</a >
-						</div >
-						<div style="margin-top: 8px;" >
-							<a class="scet" style="position: absolute; width: 30px; top: 88px;" data-target="#" data-toggle="order"
-									href="/security.php?acc={{ accVer }}" >счет</a > <a class="user" href="/security.php?user={{ userVer }}"
-									style="position: absolute; width: 88px; left: 48px; top: 88px;" >пользователь</a >
+       {% include 'flash.twig' %}
 
-						</div >
+       <div id="main_menu" >
 
-					{% else %}
-						<span >Форма входа:</span ><br >
-						<form id="form_login" action="/enter.php" method="post" >
-							<table >
-								<tr >
-									<td > Логин:</td >
-									<td ><label ><input class="inp_fent" name="login" > </label ></td >
-								</tr >
-								<tr >
-									<td > Пароль:</td >
-									<td ><label > <input class="inp_fent" type="password" name="password" > </label ></td >
-								</tr >
-								<tr ></tr >
-								<tr >
-									<td >
-										<input data-placement="left" rel="tooltip" class="vhod" name="submit" type="submit" value="вход" title="Добро пожаловать!"
-												data-original-title="Добро пожаловать!" >
-									</td >
-									<td >
-										<a href="/registr.php" class="registracia" data-placement="right"
-												data-original-title="Вы еще не зарегистрировались? Присоединяйтесь" >регистрация</a >
-									</td >
-								</tr >
-							</table >
-							<a href="/reminder.php" style="color: #fff; text-decoration: none;" data-target="#" data-toggle="modal" data-placement="right"
-									data-original-title="Восстановление пароля" >Забыли пароль?</a >
-						</form >
-					{% endif %}
-				</div >
-			</td >
-		</tr >
-		<tr >
-			<td ></td >
-			<td ></td >
-		</tr >
-	</table >
+              {% include 'main_menu.twig' %}
 
-		{% include 'flash.twig' %}
+              <object width="90" height="90" style="position: absolute; margin-left: 135px; margin-top: 26px; width: 70px; height: 80px; z-index:10;"
+                      type="application/x-shockwave-flash" data="/img/calendarb.swf" >
+                     <param name="movie" value="img/calendar2b.swf" />
+                     <param name="wmode" value="transparent" />
+              </object >
 
-		<div id="main_menu">
+       </div >
 
-		{% include 'main_menu.twig' %}
+</div >
 
-			<object width="90" height="90" style="position: absolute; margin-left: 135px; margin-top: 26px; width: 70px; height: 80px; z-index:10;" type="application/x-shockwave-flash" data="/img/calendarb.swf">
-				<param name="movie" value="img/calendar2b.swf"/>
-				<param name="wmode" value="transparent"/>
-			</object>
+<!--[if lt IE 7]><p class="chromeframe" >Вы используете устаревший браузер. Для включения всех возможностей данного сайта необходимо обновить браузер. <a
+        href="http://browsehappy.com/" >Обновите свой браузер сейчас</a >или <a href="http://www.google.com/chromeframe/?redirect=true" >установите расширение Google
+                                                                                                                                         Chrome Frame</a >для
+                                         просмотра этого сайта.</p ><![endif]-->
 
-		</div>
-
-	</div>
-
-	<!--[if lt IE 7]><p class="chromeframe">Вы используете устаревший браузер. Для включения всех возможностей данного
-		сайта необходимо обновить браузер. <a href="http://browsehappy.com/">Обновите свой браузер сейчас</a>или
-		<a href="http://www.google.com/chromeframe/?redirect=true">установите расширение Google Chrome Frame</a>для
-		просмотра этого сайта.</p><![endif]-->
-
-	<NOSCRIPT>
-		<br><br>
-		<hfooter style="margin-left: 90px; font-size: 20px; font-weight: 400; font-style: inherit; color: #df0000; text-shadow: 1px 1px 0 #d1a2a2;"
-		>Внимание! Для полноценной работы сайта, включите в браузере поддержку JavaScript!
-		 ( <a href="http://www.enable-javascript.com/ru/">Как включить JavaScript?</a >)
-		</hfooter>
-	</NOSCRIPT>
+<NOSCRIPT >
+       <br ><br >
+       <hfooter style="
+       margin-left: 90px;
+        font-size: 20px;
+         font-weight: 400;
+          font-style: inherit;
+           color: #df0000;
+            text-shadow: 1px 1px 0 #d1a2a2;
+            " >Внимание! Для полноценной работы сайта, включите в браузере поддержку JavaScript! (<a href="http://www.enable-javascript.com/ru/" >Как включить
+                                                                                                                                                  JavaScript?</a >)
+       </hfooter >
+</NOSCRIPT >
 
 {#сообщения об ошибках и ok#}
 {{ printMsg.noJs }} {{ printMsg.withJs }}
@@ -124,3 +127,8 @@
 </script>#}
 
 {#<a href="/cart/add/123" onclick="javascript:addToCart(123); return false;" target="_blank">ytutyutyutyutyutyu</a>#}
+
+{#тест#}
+{#{{ dump('') }}#}
+{#{{ dump(accVer) }}#}
+{#{{ dump(userVer) }}#}

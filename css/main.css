@@ -3345,11 +3345,9 @@ figure { margin:20px auto; }*/
 
 
 .dump_r {
-   display:block; margin:0 auto;
-   position: relative;
-   max-width: 1180px;
-   width: 1000px;
-   z-index: 10000;
+   /*display:block; margin:0 auto;*/
+   /*position: relative;*/
+   width: 1180px;
 }
 
 
