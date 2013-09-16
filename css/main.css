@@ -651,8 +651,8 @@ a.gb_act {
 }
 
 #form_reg {
-    width: 450px;
-    height: 365px;
+    width: 600px;
+    /*height: 365px;*/
     padding-top: 10px;
     margin-left: auto;
     margin-right: auto;
@@ -3230,6 +3230,8 @@ Helvetica, sans-serif;color:#888;border:1px solid #c8c6c4;vertical-align:top;bor
 .center-bl {display:block; margin:0 auto;}
 /*центрирование строки*/
 .center {text-align: center;}
+
+.centered { display: inline-block;}
 
  /* центровка сообщений Применять все три <div class="centerErr1"> */
 .centerErr1 {

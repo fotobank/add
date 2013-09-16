@@ -2,8 +2,6 @@
 
 
 
-
-
     {% block content_header %}
 	    {% if block is defined and block == 'error' %}
 		    <h2 style="font-size: 36px; font-family: Georgia, 'Times New Roman', Times, serif; color: #9c3735; margin-top: 50px;">
@@ -29,9 +27,6 @@
 
 
 
-
-
-
 {% block c_colonka %}
 	{% if block is defined and block == 'time' %}
 		<script type='text/javascript'>
@@ -41,7 +36,8 @@
 		<div class="drop-shadow lifted" style="margin: 50px 0 0 320px;">
 			<div style="font-size: 24px;">Лимит в 48 часов для подтверждения заказа прошел.</div>
 			<div style="font-size: 24px;">Заказ необходимо пересобрать.</div>
-		</div><br><br><br><br><br><br><br>
+		</div>
+		<div class="clear"></div>
 	{% else %}
 
 
@@ -59,7 +55,8 @@
 						    <div class="drop-shadow lifted" style="margin: 100px 0 0 70px;">
 							    <div style="font-size: 24px;">Заказ №{{ id }} ждет своей очереди на выполнение.</div>
 							    <div style="font-size: 24px;">По его готовности Вы получите уведомление.</div>
-						    </div><br><br><br><br><br><br><br>
+						    </div>
+						<div class="clear"></div>
 
 					{% elseif block is defined and block == 'ok' %}
 
@@ -79,7 +76,6 @@
 
 
 {% endblock c_colonka %}
-
 
 
 
