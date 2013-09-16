@@ -77,6 +77,7 @@
 					    <td> Логин:*</td>
 					    <td>
 						    <input name="rLogin"
+						           onkeyup="parseLogin(this.name)"
 						           class="inp_f_reg"
 						           title="Логин может состоять из букв, цифр, дефисов и подчёркиваний. Длина от 3 до 16 символов."
 						           value="{{ rLogin }} "
@@ -133,12 +134,27 @@
 					               style="margin-left: 10px;" ></span ></td >
 				    </tr>
 				    <tr>
+					    <td>Фамилия:</td>
+					    <td>
+						    <input name="rSurName_us"
+						           class="inp_f_reg"
+						           type="text"
+						           title="Для идентификации в почтовой или курьерской службе при получении фотографий"
+						           value="{{ rSurName_us }}"
+						           maxlength="30"
+						           data-placement="right"
+						           id="td_surname_us">
+					    </td>
+					    <td ><span id="valid_form_surname_us" class="label label-important"
+					               style="margin-left: 10px;" ></span ></td >
+				    </tr>
+				    <tr>
 					    <td>E-mail:*</td>
 					    <td>
 						    <input name="rEmail"
 						           class="inp_f_reg"
 						           type="text"
-						           title="E-mail, на который прийдут ссылки для скачивания фотографий"
+						           title="E-mail, на который прийдут ссылки для скачивания фотографий ( пример: super@mail.de )"
 						           value="{{ rEmail }}"
 						           maxlength="30"
 						           data-placement="right"
@@ -168,14 +184,14 @@
 						    <input name="rPhone"
 						           class="inp_f_reg"
 						           type="text"
-						           title="Для заказа фотографий обязательно( можно ввести потом )"
+						           title="Для заказа фотографий обязательно - можно ввести потом ( пример: (067)-123-45-67 или 787-12-34, 767_54_68, +3-067-123-45-67 )"
 						           onkeyup="parseField(this.name)"
 						           value="{{ rPhone }}"
 						           maxlength="30"
 						           data-placement="right"
-						           id="td_phone">
+						           id="td_phone_reg">
 					    </td>
-					    <td ><span id="valid_form_phone" class="label label-important"
+					    <td ><span id="valid_form_phone_reg" class="label label-important"
 					               style=" margin-left: 10px;" ></span ></td >
 				    </tr>
 				    <tr>
@@ -197,7 +213,7 @@
 					    <td style="padding-right: 30px">Проверочный код:*</td>
 					    <td>
 						    <input name="rPkey"
-						           id="captcha"
+						           {#id="captcha"#}
 						           class="inp_f_reg"
 						           type="text"
 						           title="Цифры внизу. Если не видны, нажмите на колечко со стрелками"

@@ -29,7 +29,7 @@ $(document).ready(function() {
         var valid = $('#valid_form_name');
         var pole = $(this);
         if($(this).val() != '') {
-            var pattern = /[?a-zA-Zа-яА-Я0-9_-]{3,16}$/;
+            var pattern = /[^a-zA-Zа-яА-Я0-9_-]{2,20}$/;
             if(pattern.test($(this).val())){
                 okMsg(pole, valid);
             } else {
@@ -60,7 +60,7 @@ $(document).ready(function() {
         var valid = $('#valid_form_name_us');
         var pole = $(this);
         if($(this).val() != '') {
-            var pattern = /[?a-zA-Zа-яА-Я0-9_-]{2,30}$/;
+            var pattern = /[^a-zA-Zа-яА-Я0-9_-]{2,30}$/;
             if(pattern.test($(this).val())){
                 okMsg(pole, valid);
             } else {
@@ -68,6 +68,22 @@ $(document).ready(function() {
             }
         } else {
             errMsg(pole, valid, 'Заполните поле');
+        }
+    });
+
+
+    $('#td_surname_us').blur(function() {
+        var valid = $('#valid_form_surname_us');
+        var pole = $(this);
+        if($(this).val() != '') {
+            var pattern = /[^a-zA-Zа-яА-Я0-9_-]{2,30}$/;
+            if(pattern.test($(this).val())){
+                okMsg(pole, valid);
+            } else {
+                errMsg(pole, valid, 'Не верно');
+            }
+        } else {
+            valid.text('');
         }
     });
 
@@ -87,6 +103,25 @@ $(document).ready(function() {
         }
     });
 
+    $('#td_phone_reg').blur(function() {
+        var valid = $('#valid_form_phone_reg');
+        var pole = $(this);
+        if($(this).val() != '') {
+            var pattern = /[%a-z_@.,^=:;а-я\"*&$#№!?<>\~`|[{}\]]/i;
+            if($(this).val().length > 6 && $(this).val().length < 20 && !pattern.test($(this).val())){
+                okMsg(pole, valid);
+            } else {
+                errMsg(pole, valid, 'Не верно');
+            }
+        } else {
+            pole.css({
+                'border' : '1px solid #569b44',
+                'background' : '#cbcbcb'
+        });
+            valid.text('');
+        }
+    });
+
 
     $('#td_city').blur(function() {
         var valid = $('#valid_form_city');
@@ -99,7 +134,7 @@ $(document).ready(function() {
                 errMsg(pole, valid, 'Не верно');
             }
         } else {
-            errMsg(pole, valid, 'Заполните поле');
+            valid.text('');
         }
     });
 
@@ -113,21 +148,61 @@ $(document).ready(function() {
                 errMsg(pole, valid, 'Не верно');
             }
         } else {
+            valid.text('');
+        }
+    });
+
+    $('#td_pass1').blur(function() {
+        var valid = $('#valid_form_pass1');
+        var pole = $(this);
+        if($(this).val() != '') {
+            var pattern = /^[0-9a-z\_\-\!\~\*\:\<\>\+\.]{8,20}$/i;
+            if(pattern.test($(this).val())){
+                okMsg(pole, valid);
+            } else {
+                errMsg(pole, valid, 'Не верно');
+            }
+        } else {
             errMsg(pole, valid, 'Заполните поле');
         }
     });
 
 
-    /*$(function () {
-        $('#td_phone').bind("change keyup input click", function () {
-            if (this.value.match(/[^0-9\(\)\-\+]/g)) {
-                this.value = this.value.replace(/[^0-9\(\)\-\+]/g, '');
+    $('#td_pass2').blur(function() {
+        var valid = $('#valid_form_pass2');
+        var pole = $(this);
+        if($(this).val() != '') {
+            var pattern = /^[0-9a-z\_\-\!\~\*\:\<\>\+\.]{8,20}$/i;
+            if(pattern.test($(this).val()) && $(this).val() === $('#td_pass1').val()){
+                okMsg(pole, valid);
+            } else {
+                errMsg(pole, valid, 'Не верно');
             }
-        })
-    })*/
+        } else {
+            errMsg(pole, valid, 'Заполните поле');
+        }
+    });
+
+
+    $('#td_key').blur(function() {
+        var valid = $('#valid_form_key');
+        var pole = $(this);
+        if(pole.val() != '') {
+            if(pole.val().length >= 1 && pole.val().length < 6){
+                pole.css({'border' : '1px solid #569b44'});
+                valid.text('');
+            } else {
+                errMsg(pole, valid, 'Не верно');
+            }
+        } else {
+            errMsg(pole, valid, 'Заполните поле');
+        }
+    });
+
 
 
 });
+
 
 
 function parseField(id) {
@@ -136,7 +211,7 @@ function parseField(id) {
     if (str.match(/[^0-9-_]+/gi)) {
 
         jQuery(obj).css({'border-color': '#980000', 'background-color': '#EDCECE'});
-        jQuery(obj).val(str.replace(/[^0-9-_]+/gi, ''));
+        jQuery(obj).val(str.replace(/[^0-9-()_]+/gi, ''));
 
         setTimeout(function () {
             jQuery(obj).css({'border-color': '#85BFF2', 'background-color': '#FFFFFF'});
@@ -144,3 +219,16 @@ function parseField(id) {
     }
 }
 
+function parseLogin(id) {
+    var obj = '[name="' + id + '"]';
+    var str = new String(jQuery(obj).val());
+    if (str.match(/[^a-zA-Zа-яА-Я0-9_-]{2,20}$/gi)) {
+
+        jQuery(obj).css({'border-color': '#980000', 'background-color': '#EDCECE'});
+        jQuery(obj).val(str.replace(/[^a-zA-Zа-яА-Я0-9_-]{2,20}$/gi, ''));
+
+        setTimeout(function () {
+            jQuery(obj).css({'border-color': '#85BFF2', 'background-color': '#FFFFFF'});
+        }, 1000)
+    }
+}

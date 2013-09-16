@@ -9,6 +9,7 @@
 								$rSkype   = 'Не обязательно';
 								$rPhone   = 'Можно ввести потом';
 								$rName_us = 'Настоящее имя';
+								$rSurName_us = 'Фамилия';
 								$rCity    = 'Город, поселок (и т.д.) проживания';
 								$ok_msg   = false;
 								$err_msg  = NULL;
@@ -18,15 +19,17 @@
 												$rPass2   = trim($_POST['rPass2']);
 												$rEmail   = trim($_POST['rEmail']);
 												$rName_us = trim($_POST['rName_us']);
+												$rSurName_us = trim($_POST['rSurName_us']);
 												$rPhone   = trim($_POST['rPhone']);
 												$rSkype   = trim($_POST['rSkype']);
 												$rPkey    = trim($_POST['rPkey']);
 												$rCity    = trim($_POST['rCity']);
 												$rIp      = Get_IP();
 												if ($rLogin != 'Имя для входа (Login)') {
-																if (preg_match("/[?a-zA-Zа-яА-Я0-9_-]{3,20}$/", $rLogin)) {
+																if (preg_match("/[^a-zA-Zа-яА-Я0-9_-]{3,20}$/", $rLogin)) {
 																				if ($rEmail != 'Рабочий E-mail') {
-																								if ($rName_us != 'Настоящее имя' || preg_match("/[?a-zA-Zа-яА-Я0-9_-]{2,20}$/", $rName_us)) {
+																								if ($rName_us != 'Настоящее имя' || preg_match("/[^a-zA-Zа-яА-Я0-9_-]{2,20}$/", $rName_us)) {
+
 																												if (preg_match("/[0-9a-z_]+@[0-9a-z_^\.-]+\.[a-z]{2,3}/i", $rEmail)) {
 																																if ($rPass != '' || $rPass2 != '') {
 																																				if ($rPass === $rPass2) {
@@ -44,48 +47,41 @@
 																																																				}
 																																																				if ((strlen($rPhone) == '')
 																																																								|| (strlen($rPhone) >= 7)
-																																																											&& (!preg_match("/[%a-z_@.,^=:;а-я\"*()&$#№!?<>\~`|[{}\]]/i",
+																																																											&& (!preg_match("/[%a-z_@.,^=:;а-я\"*&$#№!?<>\~`|[{}\]]/i",
 																																																																$rPhone))
 																																																				) {
-																																																								/*if ($rCity != 'Для отправки заказанных фотографий фотографий ( можно ввести потом )' || preg_match("/[?a-zA-Zа-яА-Я0-9_-]{2,30}$/", $rCity)) {		*/
+																																																								if ($rCity != 'Для отправки заказанных фотографий фотографий ( можно ввести потом )' || preg_match("/[?a-zA-Zа-яА-Я0-9_-]{2,30}$/", $rCity)) {
 																																																								if ($rSkype == 'Не обязательно') {
 																																																												$rSkype = '';
 																																																								}
-																																																								$time = time();
-																																																								// проверка капчи
-																																																								if ($rPkey == chk_crypt($rPkey)) {
-																																																												// Устанавливаем соединение с бд(не забудьте подставить ваши значения сервер-логин-пароль)
-																																																												try {
-																																																																// Получаем Id, под которым юзер добавился в базу
-																																																																$id = $db->query('INSERT INTO users (login, pass, email, us_name, timestamp, ip, phone, skype)
-                                																																	 VALUES (?,?,?,?,?i,?,?,?)',
-																																																																				array(
-																																																																									$rLogin, $mdPassword, $rEmail,
-																																																																									$rName_us, $time, $rIp,
-																																																																									$rPhone, $rSkype
-																																																																				), 'id');
-																																																												}
-																																																												catch (go\DB\Exceptions\Exception  $e) {
-																																																																trigger_error("Ошибка при работе с базой данных во время регистрации пользователя! Файл - registr.php.");
-																																																																$err_msg = "Ошибка при работе с базой данных!";
-																																																																die("<div align='center' class='err_f_reg'>Ошибка при работе с базой данных!</div>");
-																																																												}
-																																																												// Составляем "keystring" для активации
-																																																												$key  = md5(substr($rEmail, 0, 2).$id.substr($rLogin,
-																																																																0,
-																																																																2));
-																																																												$date = date("d.m.Y", $time);
-																																																												// Компонуем письмо
-																																																												$title   =
-																																																																'Потвеждение регистрации на сайте Creative line studio';
-																																																												$headers =
-																																																																"Content-type: text/plain; charset=windows-1251\r\n";
-																																																												$headers .= "From: Администрация Creative line studio <webmaster@aleks.od.ua> \r\n";
-																																																												$subject = '=?koi8-r?B?'
-																																																																							.base64_encode(convert_cyr_string($title,
-																																																																				"w",
-																																																																				"k")).'?=';
-																																																												$letter  = <<< LTR
+																																																$time = time();
+																																																// проверка капчи
+																																																if ($rPkey == chk_crypt($rPkey)) {
+																																																				// Устанавливаем соединение с бд(не забудьте подставить ваши значения сервер-логин-пароль)
+																																																				try {
+																																																								// Получаем Id, под которым юзер добавился в базу
+																																																								$id = $db('INSERT INTO users (login, pass, email, us_name, timestamp, ip, phone, skype, city, us_surname)
+																																																										VALUES (?string,?string,?string,?string,?i,?string,?string,?string,?string,?string)',
+																																																												array(
+																																																																	$rLogin, $mdPassword, $rEmail,
+																																																																	$rName_us, $time, $rIp,
+																																																																	$rPhone, $rSkype, $rCity,$rSurName_us
+																																																												), 'id');
+																																																				}
+																																																				catch (go\DB\Exceptions\Exception  $e) {
+																																																								trigger_error("Ошибка при работе с базой данных во время регистрации пользователя! Файл - registr.php.");
+																																																								$err_msg = "Ошибка при работе с базой данных!";
+																																																								die("<div align='center' class='err_f_reg'>Ошибка при работе с базой данных!</div>");
+																																																				}
+																																																				// Составляем "keystring" для активации
+																																																				$key  = md5(substr($rEmail, 0, 2).$id.substr($rLogin, 0, 2));
+																																																				$date = date("d.m.Y", $time);
+																																																				// Компонуем письмо
+																																																				$title   =	 'Потвеждение регистрации на сайте Creative line studio';
+																																																				$headers =  "Content-type: text/plain; charset=windows-1251\r\n";
+																																																				$headers .= "From: Администрация Creative line studio <webmaster@aleks.od.ua> \r\n";
+																																																				$subject =  '=?koi8-r?B?'	.base64_encode(convert_cyr_string($title, "w",	"k")).'?=';
+																																																				$letter  = <<< LTR
 													  Здравствуйте, $rName_us.
 													  Вы успешно зарегистрировались на Creative line studio.
 													  После активации аккаунта Вам станут доступны скачивание, покупка или голосование за понравившуюся фотографию.
@@ -122,12 +118,16 @@ LTR;
 
 																																																				} else {
 																																																								$err_msg =
-																																																												"Телефон указан неправильно! (должно быть больше 6 цифр)";
+																																																												"Ошибка в названии города!";
+																																																								}
+																																																				} else {
+																																																								$err_msg =
+																																																												"Телефон указан неправильно! (должно быть больше 6 цифр)<br> пример: (067)-123-45-67";
 																																																				}
 																																																} else {
 																																																				$err_msg
 																																																								=
-																																																								"Пользователь с таким E-mail уже существует!<br>Нажмите на восстановление пароля или зарегистрируйтесь на другой E-mail.";
+																																																								"Пользователь с таким E-mail уже существует!<br>Нажмите на восстановление пароля<br> или зарегистрируйтесь на другой E-mail.";
 																																																}
 																																												} else {
 																																																$err_msg = "Пользователь с таким логином уже существует!";
@@ -146,7 +146,9 @@ LTR;
 																												} else {
 																																$err_msg = "Указанный `E-mail` имеет недопустимый формат!";
 																												}
-
+																							/*	} else {
+																												$err_msg = "Заполните поле `Фамилия`!";
+																								}*/
 																								} else {
 																												$err_msg = "Заполните поле `Ваше имя`!";
 																								}
@@ -172,7 +174,8 @@ LTR;
 												'rPhone'   => $rPhone,
 												'err_msg'  => $err_msg,
 												'ok_msg'   => $ok_msg,
-												'rCity'    => $rCity
+												'rCity'    => $rCity,
+												'rSurName_us' => $rSurName_us
 								);
 								$renderData = array_merge($renderData, $regData);
 								$loadTwig('.twig', $renderData);

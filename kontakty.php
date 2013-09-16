@@ -12,7 +12,7 @@
 			if (isset($_POST["go"])) {
 						$e1    = NULL;
 						$uname = trim(htmlspecialchars($_POST["uname"]));
-						if (strlen($uname) == "0" || (!preg_match("/[?a-zA-Zа-яА-Я0-9_-]{3,16}$/", $uname))) {
+						if (strlen($uname) == "0" || (!preg_match("/[^a-zA-Zа-яА-Я0-9_-]{3,16}$/", $uname))) {
 									$e1 .= "Недопустимые символы!";
 						}
 						$e2    = NULL;
