@@ -14,15 +14,10 @@
 	  </head>
 
 
-
-
-
 	  {% block body %}
 		  <body>
-
 		  {% block maket %}
 			  <div id="maket">
-
 				  <div id="photo_preview_bg" class="hidden" onClick="hidePreview();"></div>
 				  <div id="photo_preview" class="hidden"></div>
 
@@ -34,14 +29,15 @@
 				  <!--Голова конец-->
 
 
-
 				  {% block content %}
 	<div id="main">
+
 
 		{% block content_header %}
 			{% include 'content_header.twig' %}
 		{% endblock content_header %}
 		<div class="clear"></div>
+
 
 		{% block top %}
 			<div class="cont-list" style="margin: -10px 10px 80px 40%;" >
@@ -51,6 +47,7 @@
 			</div >
 			<div class="clear" ></div >
 		{% endblock top %}
+
 
 		<div class="l_colonka">
 			&#160
@@ -92,7 +89,6 @@
 						 <td class="td_usl_ph_sp" ><a class="usl_bankety" href="/f_bankety.php" ></a ></td >
 						 <td class="td_usl_ph_sp" ><a class="usl_phknigi" href="/f_photoboock.php" ></a ></td >
 						 <td class="td_usl_ph_sp" ><a class="usl_vipusk" href="/f_vipusk.php" ></a ></td >
-
 					 </tr >
 					 <tr >
 						 <td class="td_usl_ph_sp" ><a class="usl_raznoe" href="/f_raznoe.php" ></a ></td >
@@ -128,9 +124,7 @@
 
 </div>
 {% endblock content %}
-
 <div class="clear"></div>
-
 </div>
 {% endblock maket %}
 
@@ -138,7 +132,6 @@
 	{% block end_content %}
 		<div class="end_content"></div>
 	{% endblock end_content %}
-
 
 
 	{% block footer %}
