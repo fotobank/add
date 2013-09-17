@@ -1,34 +1,81 @@
-{% extends "base.twig" %}
+{#{% extends "base.twig" %}#}
 
-    {% block content_header %}
-	    {{ parent() }}
-    {% endblock %}
-
-{% block top %}
-	<div class="cont-list" style="margin: -10px 10px 80px 40%;" >
-		<div class="drop-shadow lifted" >
-			<h2 ><span style="color: #00146e;" > Раздел УСЛУГИ</span ></h2 >
-		</div >
-	</div >
-	<div class="clear" ></div >
-{% endblock top %}
+  {% spaceless %}
+	  {% block doctype %}
+		  <!DOCTYPE html>
+		  <html xmlns="http://www.w3.org/1999/xhtml">
+	  {% endblock doctype %}
 
 
- {% block l_colonka %}
- {% endblock %}
+	  <head>
+		  {% block head %}
+			  {% include 'head.twig' %}
+		  {% endblock head %}
+	  </head>
 
 
-   {% block c_colonka %}
-
-			   {{ dataDB_top|raw }}
-
-   {% endblock c_colonka %}
 
 
-{% block r_colonka %}
 
-{% endblock r_colonka %}
+	  {% block body %}
+		  <body>
 
+		  {% block maket %}
+			  <div id="maket">
+
+				  <div id="photo_preview_bg" class="hidden" onClick="hidePreview();"></div>
+				  <div id="photo_preview" class="hidden"></div>
+
+
+				  <!--Голова начало-->
+				  {% block golova_menu %}
+					  {% include 'golova_menu.twig' %}
+				  {% endblock golova_menu %}
+				  <!--Голова конец-->
+
+
+
+				  {% block content %}
+	<div id="main">
+
+		{% block content_header %}
+			{% include 'content_header.twig' %}
+		{% endblock content_header %}
+		<div class="clear"></div>
+
+		{% block top %}
+			<div class="cont-list" style="margin: -10px 10px 80px 40%;" >
+				<div class="drop-shadow lifted" >
+					<h2 ><span style="color: #00146e;" > Раздел УСЛУГИ</span ></h2 >
+				</div >
+			</div >
+			<div class="clear" ></div >
+		{% endblock top %}
+
+		<div class="l_colonka">
+			&#160
+			{% block l_colonka %}
+				{% include 'rubriki.twig' %}
+				{#{% include 'l_colonka.twig' %}#}
+			{% endblock l_colonka %}
+		</div>
+
+
+		<div class="c_colonka">
+			&#160
+			{% block c_colonka %}
+				{{ dataDB_top|raw }}
+				{#{% include 'c_colonka.twig' %}#}
+			{% endblock c_colonka %}
+		</div>
+
+
+<div class="r_colonka">
+	&#160
+	{% block r_colonka %}
+		{#{% include 'r_colonka.twig' %}#}
+	{% endblock r_colonka %}
+</div>
 
 
  {% block bottom %}
@@ -77,3 +124,33 @@
 	 </table >
 	 {{ dataDB_bottom|raw }}
  {% endblock bottom %}
+
+
+</div>
+{% endblock content %}
+
+<div class="clear"></div>
+
+</div>
+{% endblock maket %}
+
+
+	{% block end_content %}
+		<div class="end_content"></div>
+	{% endblock end_content %}
+
+
+
+	{% block footer %}
+		{% include 'footer.twig' %}
+	{% endblock footer %}
+
+
+</body>
+{% endblock body %}
+
+
+{% block html %}
+	</html>
+{% endblock html %}
+{% endspaceless %}

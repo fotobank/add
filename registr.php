@@ -26,10 +26,12 @@
 												$rCity    = trim($_POST['rCity']);
 												$rIp      = Get_IP();
 												if ($rLogin != 'Имя для входа (Login)') {
-																if (preg_match("/[^a-zA-Zа-яА-Я0-9_-]{3,20}$/", $rLogin)) {
+																if (preg_match("/[?a-zA-Zа-яА-Я0-9_-]{3,20}$/", $rLogin)) {
 																				if ($rEmail != 'Рабочий E-mail') {
-																								if ($rName_us != 'Настоящее имя' || preg_match("/[^a-zA-Zа-яА-Я0-9_-]{2,20}$/", $rName_us)) {
-
+																								if ($rName_us != '' && $rName_us != 'Настоящее имя' || preg_match("/[?a-zA-Zа-яА-Я0-9_-]{2,20}$/", $rName_us)) {
+																												$rName_us = ($rName_us == 'Настоящее имя')?'':$rName_us;
+																										if ($rSurName_us == '' || $rSurName_us == 'Фамилия' || preg_match("/[?a-zA-Zа-яА-Я0-9_-]{2,20}$/", $rSurName_us)) {
+																														$rSurName_us = ($rSurName_us == 'Фамилия')?'':$rSurName_us;
 																												if (preg_match("/[0-9a-z_]+@[0-9a-z_^\.-]+\.[a-z]{2,3}/i", $rEmail)) {
 																																if ($rPass != '' || $rPass2 != '') {
 																																				if ($rPass === $rPass2) {
@@ -50,7 +52,9 @@
 																																																											&& (!preg_match("/[%a-z_@.,^=:;а-я\"*&$#№!?<>\~`|[{}\]]/i",
 																																																																$rPhone))
 																																																				) {
-																																																								if ($rCity != 'Для отправки заказанных фотографий фотографий ( можно ввести потом )' || preg_match("/[?a-zA-Zа-яА-Я0-9_-]{2,30}$/", $rCity)) {
+																																																								if ($rCity != 'Для отправки заказанных фотографий фотографий ( можно ввести потом )'
+																																																												|| preg_match("/[?a-zA-Zа-яА-Я0-9_-]{2,30}$/", $rCity)) {
+																																																												$rCity = ($rCity == 'Для отправки заказанных фотографий фотографий ( можно ввести потом )' )?'':$rCity;
 																																																								if ($rSkype == 'Не обязательно') {
 																																																												$rSkype = '';
 																																																								}
@@ -146,9 +150,9 @@ LTR;
 																												} else {
 																																$err_msg = "Указанный `E-mail` имеет недопустимый формат!";
 																												}
-																							/*	} else {
+																								} else {
 																												$err_msg = "Заполните поле `Фамилия`!";
-																								}*/
+																								}
 																								} else {
 																												$err_msg = "Заполните поле `Ваше имя`!";
 																								}

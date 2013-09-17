@@ -29,7 +29,7 @@ $(document).ready(function() {
         var valid = $('#valid_form_name');
         var pole = $(this);
         if($(this).val() != '') {
-            var pattern = /[^a-zA-Zà-ÿÀ-ß0-9_-]{2,20}$/;
+            var pattern = /[?a-zA-Zà-ÿÀ-ß0-9_-]{2,20}$/;
             if(pattern.test($(this).val())){
                 okMsg(pole, valid);
             } else {
@@ -60,7 +60,7 @@ $(document).ready(function() {
         var valid = $('#valid_form_name_us');
         var pole = $(this);
         if($(this).val() != '') {
-            var pattern = /[^a-zA-Zà-ÿÀ-ß0-9_-]{2,30}$/;
+            var pattern = /[?a-zA-Zà-ÿÀ-ß0-9_-]{2,30}$/;
             if(pattern.test($(this).val())){
                 okMsg(pole, valid);
             } else {
@@ -76,7 +76,7 @@ $(document).ready(function() {
         var valid = $('#valid_form_surname_us');
         var pole = $(this);
         if($(this).val() != '') {
-            var pattern = /[^a-zA-Zà-ÿÀ-ß0-9_-]{2,30}$/;
+            var pattern = /[?a-zA-Zà-ÿÀ-ß0-9_-]{2,30}$/;
             if(pattern.test($(this).val())){
                 okMsg(pole, valid);
             } else {
