@@ -10,12 +10,7 @@
 	<tr >
 		<td >
 
-			{% for button in buttons %}
-				{#{{ dump_t(button) }}#}
-				<a class="button gray" href="/fotobanck_adw.php?chenge_cat={{- button.id -}}" >{{- button.nm -}}</a >
-			{% else %}
-				No buttons have been found.
-			{% endfor %}
+
 
 		</td >
 	</tr >
@@ -27,3 +22,39 @@
 		</td >
 	</tr >
 </table >
+
+<div style="width:240px; float: left;">
+	<div class="block lifted silver" >
+		<h2 class="silver">Категории</h2>
+			{% if buttons is defined and buttons|length > 0 %}
+				{% for button in buttons %}
+					{#{{ dump_t(button) }}#}
+					<a class="button small gray " href="/fotobanck_adw.php?chenge_cat={{- button.id -}}" style="width: 220px;">{{- button.nm -}}</a ><br>
+				{% endfor %}
+			{% else %}
+			<p>Разделы не найдены</p>
+			{% endif %}
+	</div>
+</div>
+
+
+<div class="clear"></div>
+
+<div class="center">
+	<div class="centered">
+<div class="block lifted centered" style="width: 1100px; float: right; margin-top: 40px; text-align: left; ">
+	<h2>Фотобанк</h2>
+	<div class="post">
+		<h1>
+			<a title="Ссылка на запись Немного о нас" rel="bookmark" href="javascript:void(0)" >О фотобанке</a>
+		</h1>
+	</div>
+	<div class="post">
+		oipiopiopiopyuiyuiyuiyui
+	</div>
+</div>
+	</div>
+
+
+</div>
+<div class="clear"></div>

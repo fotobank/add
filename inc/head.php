@@ -1,36 +1,52 @@
 <?php
-			 error_reporting(E_ALL);
-			 ini_set('display_errors', 1);
+	//		 error_reporting(E_ALL);
+			 ini_set('display_errors', 0);
+				/** -----------------------------------------------------------------------------------*/
 			 header('Content-type: text/html; charset=windows-1251');
 			 header("X-Frame-Options: SAMEORIGIN");
+				/** -----------------------------------------------------------------------------------*/
 			 require_once (__DIR__.'/config.php');
 			 require_once (__DIR__.'/func.php');
+				/** -----------------------------------------------------------------------------------*/
 			 // seo
 			 require_once (__DIR__.'/title.php');
+				/** -----------------------------------------------------------------------------------*/
 			 // обработка ошибок
-			 $error_processor = Error_Processor::getInstance();
+		//	 $error_processor = Error_Processor::getInstance();
+				/** -----------------------------------------------------------------------------------*/
+				$odebug = odebugger_class::getInstance('RU');
+				$odebug -> CSS = 'default'; // set the CSS
+				$odebug -> HTML = 'default'; // set the HTML template
+//				$odebug -> REALTIME = false; // не выводить ошибки на экран
+//				$odebug -> printError();
+//				$odebug -> showLog();
+//				$odebug -> showAll();
+				/** -----------------------------------------------------------------------------------*/
 			 $session         = check_Session::getInstance();
+				/** -----------------------------------------------------------------------------------*/
 			 // запрет показа ошибок в DUMP_R ( true - показавать )
 			 $session->set('DUMP_R', true);
 			 // запрет показа ошибок в Debug_HackerConsole_Main ( true - показавать )
 			 $session->set('Debug_HC', true);
-			 /**
-				*  Тесты для проверки Error_Processor
+			 /** -----------------------------------------------------------------------------------*/
+				/**  Тесты для проверки Error_Processor
 				* PHP set_error_handler TEST
 				*/
-			 // IMAGINE_CONSTANT;
+			  IMAGINE_CONSTANT;
 			 /**
 				* PHP set_exception_handler TEST
 				*/
-			 // throw new Exception( 'Imagine Exception' );
+				//trigger_error ('La variable ', E_USER_WARNING);
+		  //	throw new Exception( 'Imagine Exception' );
 			 /**
 				* PHP register_shutdown_function TEST ( IF YOU WANT TEST THIS, DELETE PREVIOUS LINE )
 				*/
-			 // imagine_function();
+			 //  imagine_function();
+				/** ----------------------------------------------------------------------------------*/
 			 // капча
 			 $cryptinstall = '/classes/dsp/cryptographp.fct.php';
 			 require_once  (__DIR__.'/../classes/dsp/cryptographp.fct.php');
-
+				/** ----------------------------------------------------------------------------------*/
 			 $include_CSS = array(
 							// кнопка вверх
 							'css/dynamic-to-top.css',
@@ -73,13 +89,12 @@
 							'js/bootstrap-modalmanager.js',
 							'js/bootstrap-modal.js'
 			 );
-
-			 // шаблонизатор
+				/** ----------------------------------------------------------------------------------*/
 			 try {
 							require_once (__DIR__.'/../lib/Twig/Autoloader.php');
 							Twig_Autoloader::register();
 							$loadTwig = new loadTwig();
-//							require_once ('plugins_Twig.php');
+//					require_once ('plugins_Twig.php');
 
 			 }
 			 catch (Exception $e) {
@@ -87,6 +102,7 @@
 										 dump_r($e->getMessage());
 							}
 			 }
+				/** ----------------------------------------------------------------------------------*/
 			 $user_balans         = $db->query('select balans from users where id = ?i', array($session->get('userid')), 'el');
 			 $_SESSION['userVer'] = ($session->has('userVer')) ? $session->get('userVer') : genpass(10, 2);
 			 $_SESSION['accVer']  = ($session->has('accVer')) ? $session->get('accVer') : genpass(10, 2);
@@ -95,7 +111,6 @@
 			 if ($_SERVER['PHP_SELF'] == '/fotobanck_adw.php') {
 							$razdel = '/fotobanck_adw.php?unchenge_cat';
 			 }
-			 flush();
 
 						$printErr = $session->get('err_msg').$session->get('ok_msg').$session->get('ok_msg2');
 
@@ -103,8 +118,6 @@
 									{
 												$printErr .= $error;
 									}
-
-
 
 			 $renderData = array(
 							// SEO в top
@@ -128,6 +141,7 @@
 							// проверка в футере для pivic и запуск только для aleks.od.ua
 							'SERVER_NAME'       => $_SERVER['SERVER_NAME'],
 							// системные сообщения
-							'printMsg'										=>	new printMsg()
+							'printMsg'										=>	new printMsg(),
+							'odebug'												=> $odebug
 			 );
 // <!-- Голова конец -->

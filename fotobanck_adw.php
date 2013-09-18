@@ -866,6 +866,9 @@ if ($may_view) {
 							/**  кнопки разделов (категорий) */
 							$buttons['buttons'] = $db->query('select * from `categories` order by `id_num` asc', NULL, 'assoc:id');
 							$loadTwig('_kategorii.twig', $buttons);
+
+
+
 			 }
 
 }

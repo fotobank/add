@@ -664,8 +664,11 @@ a.gb_act {
     color: #000000;
     font-size: 18px;
     font-family: "Times New Roman", Times, serif;
-    padding-left: 10px;
     margin-bottom: 20px;
+}
+
+#form_reg form {
+    padding-left: 10px;
 }
 
 /*страничка пользователя*/
@@ -1452,9 +1455,6 @@ a.alb_usl {
 
 .button {
     font: 15px Verdana, Arial, Helvetica, sans-serif; /* Рубленый шрифт заголовка */
-    /* A semi-transparent text shadow */
-    /* text-shadow:1px 1px 0 rgba(255,255,255,0.4); */
-    /* Overriding the default underline styling of the links */
     text-decoration: none !important;
     white-space: nowrap;
     display: inline-block;
@@ -1462,8 +1462,8 @@ a.alb_usl {
     position: relative;
     cursor: pointer;
     /* Размер кнопки */
-    padding: 1px 30px;
-    background-repeat: no-repeat;
+    padding: 2px 5px;
+    /*background-repeat: no-repeat;*/
     /* Следующие два правила откаты, в случае, если браузер не поддерживает несколько фонов. */
     /*background-image: url(/img/button_bg.png);*/
     /* Несколько версии происхождения. Фоновые изображения определяются индивидуально в цвете классов */
@@ -1484,7 +1484,7 @@ a.alb_usl {
     transition: background-position 1s;
     font-weight: bolder;
     position: relative;
-    margin: 20px 0 0 0;
+    margin: 5px 0 0 0;
 }
 
 .button span {
@@ -1512,7 +1512,7 @@ a.alb_usl {
 /* Размер и положение кнопки */
 
 .button.small {
-    font-size: 12px;
+    font-size: 14px;
     font-weight: bolder;
 }
 
@@ -1575,15 +1575,19 @@ a.alb_usl {
     border: 1px solid #a5a5a5 !important;
     background-color: #a9adb1;
 
-    background-image: url('/img/button_bg.png'), url('/img/button_bg.png'), -moz-radial-gradient(center bottom, circle, rgba(197, 199, 202, 1) 0, rgba(197, 199, 202, 0) 100px), -moz-linear-gradient(#c5c7ca, #92989c);
-    background-image: url('/img/button_bg.png'), url('/img/button_bg.png'), -webkit-gradient(radial, 50% 100%, 0, 50% 100%, 100, from(rgba(197, 199, 202, 1)), to(rgba(197, 199, 202, 0))), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#c5c7ca), to(#92989c));
+    background-image: url('/img/button_bg.png'), url('/img/button_bg.png'), -moz-radial-gradient(center bottom, circle,
+    rgba(197, 199, 202, 1) 0, rgba(197, 199, 202, 0) 100px), -moz-linear-gradient(#c5c7ca, #92989c);
+    background-image: url('/img/button_bg.png'), url('/img/button_bg.png'), -webkit-gradient(radial, 50% 100%, 0, 50% 100%, 100,
+    from(rgba(197, 199, 202, 1)), to(rgba(197, 199, 202, 0))), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#c5c7ca), to(#92989c));
 }
 
 .gray.button:hover {
     background-color: #b6bbc0;
 
-    background-image: url('/img/button_bg.png'), url('/img/button_bg.png'), -moz-radial-gradient(center bottom, circle, rgba(202, 205, 208, 1) 0, rgba(202, 205, 208, 0) 100px), -moz-linear-gradient(#d1d3d6, #9fa5a9);
-    background-image: url('/img/button_bg.png'), url('/img/button_bg.png'), -webkit-gradient(radial, 50% 100%, 0, 50% 100%, 100, from(rgba(202, 205, 208, 1)), to(rgba(202, 205, 208, 0))), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#d1d3d6), to(#9fa5a9));
+    background-image: url('/img/button_bg.png'), url('/img/button_bg.png'), -moz-radial-gradient(center bottom, circle,
+    rgba(202, 205, 208, 1) 0, rgba(202, 205, 208, 0) 100px), -moz-linear-gradient(#d1d3d6, #9fa5a9);
+    background-image: url('/img/button_bg.png'), url('/img/button_bg.png'), -webkit-gradient(radial, 50% 100%, 0, 50% 100%, 100,
+    from(rgba(202, 205, 208, 1)), to(rgba(202, 205, 208, 0))), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#d1d3d6), to(#9fa5a9));
 }
 
 /* Зелёная */
@@ -3229,9 +3233,14 @@ Helvetica, sans-serif;color:#888;border:1px solid #c8c6c4;vertical-align:top;bor
 /*центрирование блока*/
 .center-bl {display:block; margin:0 auto;}
 /*центрирование строки*/
-.center {text-align: center;}
+.center {
+    text-align: center;
+}
 
-.centered { display: inline-block;}
+.centered {
+    display: inline-block;
+    text-align: left;
+}
 
  /* центровка сообщений Применять все три <div class="centerErr1"> */
 .centerErr1 {
@@ -3347,18 +3356,33 @@ figure { margin:20px auto; }*/
 
 
 .dump_r {
-   /*display:block; margin:0 auto;*/
-   /*position: relative;*/
    width: 1180px;
 }
 
-
 #form_login {
-
     margin: 0 0 20px;
     padding: 0;
     color: #999999;
     border-collapse: collapse;
     border-spacing: 0;
+}
 
+.tagged {
+    background: none repeat scroll 0 0 #f5efe7;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 0 1px 1px  0 #c2c2c2;
+    clear: both;
+    color: #555;
+    font-size: 13px;
+    font-style: italic;
+    padding-right: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 10px;
+}
+
+/*odebugger*/
+.displayBox span code {
+    background-color: transparent;
+    border: 0 solid #E1E1E8;
 }
