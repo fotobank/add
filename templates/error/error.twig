@@ -12,6 +12,22 @@
 	    {% endif %}
     {% endblock content_header %}
 
+{#вывод ошибок#}
+						{% if odebug.showRealtime() == true %}
+							{% block showDebug %}
+								<div class="center">
+									<div class="centered">
+										{{ odebug.showAll() }}
+									</div>
+								</div>
+								<div class="center">
+									<div class="centered">
+										{#{{ odebug.showLog() }}#}
+									</div>
+								</div>
+							{% endblock showDebug %}
+						{% endif %}
+
 
     {% block l_colonka %}
     {% endblock %}

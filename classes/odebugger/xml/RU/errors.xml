@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<errors>
+	<error>
+<label>Undefined index:</label>
+<translation>индекс был использован без определения </translation>
+<suggestion> Проверьте максимальный и минимальный пределы вашего массива </suggestion>
+</error>
+<error>
+<label>Supplied argument is not a valid resource</label>
+<translation>поставляется аргумент не является допустимым ресурсом в этом контексте </translation>
+<suggestion> Убедитесь, что аргумент является ресурсом в этом контексте ( например, если вы использовали : mysql_query () , убедитесь, что эта функция вернула действующий ресурс , и не имеет значение False </suggestion>
+</error>
+<error>
+<label>Undefined offset:</label>
+<translation>offest использоваться не определен </translation>
+<suggestion> Убедитесь, что такое смещение не за пределами ее элемента (например, если $sString = 'привет' , эхо $sString [8] приведет к  ошибке : 8 выходит за пределы 'привет' строки из 5 символов) </suggestion>
+</error>
+<error>
+<label>Undefined variable:</label>
+<translation>переменная была использована без определения </translation>
+<suggestion> Определите переменную до использования или проверьте её существование с : if ( isset ($variable) ) </suggestion>
+</error>
+<error>
+<label>Cannot send session cache limiter - headers already sent</label>
+<translation> заголовки были уже отправлены в браузер, так что вы не можете добавить больше сейчас </translation>
+<suggestion> Функции отправки заголовков ( header(), session_start()... ) не может быть использована после любого вывода в формате HTML , за исключением использования ob_start () (см. документацию PHP) </suggestion>
+</error>
+<error>
+<label>failed to open stream</label>
+<translation> Не удалось открыть поток </translation>
+<suggestion>Поток не может быть открыт : проверить, что этот поток существует, или что у вас есть на это разрешение (поток : файлы и т.д. ..) </suggestion>
+</error>
+<error>
+<label>Call to a member function on a non-object</label>
+<translation>Скрипт пытался вызвать методэлемента, который не является объектом </translation>
+<suggestion> Убедитесь, что действительно работаете с объектом. Здесь : $oObj -> method();; эта ошибка означает, что $oObj не является объектом </suggestion>
+</error>
+<error>
+<label>Invalid argument supplied for foreach()</label>
+<translation>Аргументом для foreach() не является веским аргументом для этой функции </translation>
+<suggestion>В foreach() ($aArg as $clef => $valeur), эта ошибка означает, что $aArg не является массивом , не объектом , ни типом, который может быть использован с foreach() </suggestion>
+</error>
+<error>
+<label>Use of undefined constant - assumed</label>
+<translation>Попытка использования неопределенной константы в сценарии</translation>
+<suggestion>Константа не была определена ( с помощью define () ), или Вы пытались использовать переменную без знака $ ( echo Var ); , или ассоциативный индекс в массиве не разграничен с одинарной или двойные кавычкой ( echo $aTab[nom] )</suggestion>
+</error>
+<error>
+<label>Division by zero</label>
+<translation>Сценария попытались сделать деление на ноль </translation>
+переменных <suggestion> Проверка использованной переменной в сценарии для этой операции. </suggestion>
+</error>
+<error>
+<label>MySQL: A link to the server could not be established</label>
+<translation>Сценарий не удалось установить соединение с сервером MySQL </translation>
+<suggestion> Проверьте параметры, используемые в связи </suggestion>
+</error>
+<error>
+<label>unexpected error</label>
+<translation>Сценария возвратил неизвестную ошибку </translation>
+<suggestion>Неопределенная ошибка</suggestion>
+</error>
+<error>
+<label>Failed opening required (include_path=)</label>
+<translation>Не удалось включить файл </translation>
+<suggestion>Проверьте определены ли пути</suggestion>
+</error>
+<error>
+<label>Out of range year.</label>
+<translation>Сценарий вне диапазона года </translation>
+<suggestion>Проверьте дату , это может быть неправильно </suggestion>
+</error>
+<error>
+<label>Unable to save result set</label>
+<translation>Невозможно сохранить результат </translation>
+<suggestion>Проверьте атрибуты файла и путь созранения документа </suggestion>
+</error>
+<error>
+<label>Illegal directory offset</label>
+<translation>Сценария попытались получить доступ к каталогу незаконное смещение </translation>
+<suggestion>Проверьте это смещение , оно не должно существовать и вне пределов этого каталога </suggestion>
+</error>
+<error>
+<label>Failed opening for inclusion (include_path=)</label>
+<translation>Не удалось включить файл </translation>
+<suggestion>Проверьте определены ли пути</suggestion>
+</error>
+<error>
+<label>open(, O_RDWR) failed: ()</label>
+<translation>Не удалось открыть </translation>
+<suggestion>Проверьте определены ли пути</suggestion>
+</error>
+<error>
+<label>invalid calendar ID</label>
+<translation>Invalid ID календарь </translation>
+<suggestion>Вы дали неправильный аргумент , проверить это ID </suggestion>
+</error>
+<error>
+<label>Unable to call () - function does not exist</label>
+<translation>Вызываемая функция в сценарии не существует</translation>
+<suggestion>Эта функция не существует. Убедитесь, что скрипт может получить доступ для определения функции , или если он представляет собой внутреннюю функцию , что расширение он принадлежит тоже был загружен в PHP </suggestion>
+</error>
+<error>
+<label>length may not be negative</label>
+<translation>длины не может быть отрицательным </translation>
+<suggestion> Проверьте ваши расчеты , чтобы получить эту длину </suggestion>
+</error>
+<error>
+<label>Bad field offset specified</label>
+<translation>Нежелательном смещение поля </translation>
+<suggestion>Этот сценария попытались получить доступ смещение поля которое не существует , проверьте это смещение </suggestion>
+</error>
+<error>
+<label>%s(): invalid calendar ID</label>
+<translation>Invalid ID календарь </translation>
+<suggestion>Вы дали неправильный аргумент , проверить этот ID </suggestion>
+</error>
+<error>
+<label>Square root of negative number</label>
+<translation>Ths сценарий пытались вычислить значение квадратного корня из отрицательного числа </translation>
+<suggestion>Вы не можете сделать этого, проверьте increminated числа </suggestion>
+</error>
+<error>
+<label>(): invalid calendar ID</label>
+<translation>ID Calendrier Invalide </translation>
+<suggestion>Вы дали неправильный аргумент , проверить это ID </suggestion>
+</error>
+<error>
+<label>Sybase: Bad row offset</label>
+<translation>Нежелательного смещения строк </translation>
+<suggestion>Ths сценария попытались получить доступсмещение строки , которая не существует , проверьте это смещение </suggestion>
+</error>
+<error>
+<label>could not read valid bz2 data from stream</label>
+<translation>Сценарий не мог прочитать BZ2 архива из этого потока </translation>
+<suggestion>Архив мог быть поврежден, или это просто не BZ2 допустимый формат файла </suggestion>
+</error>
+<error>
+<label>failed to open stream: No such file or directory</label>
+<translation>Сценарий не мог открыть поток : файл или каталог не существует </translation>
+<suggestion>Проверьте допустимо используемый путь</suggestion>
+</error>
+<error>
+<label>Wrong parameter count for</label>
+<translation>Cript не дает ожидаемого числа параметров для этой функции </translation>
+<suggestion>Проверьте параметры этой функции </suggestion>
+</error>
+<error>
+<label>Trying to get property of non-object</label>
+<translation>Попытка получить свойство несуществующего объекта</translation>
+<suggestion>Проверьте параметры этой функции </suggestion>
+</error>
+</errors>

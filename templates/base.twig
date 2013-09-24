@@ -1,116 +1,128 @@
 {% spaceless %}
-{% block doctype %}
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-{% endblock doctype %}
+	{% block doctype %}
+		<!DOCTYPE html>
+		<html xmlns="http://www.w3.org/1999/xhtml">
+	{% endblock doctype %}
 
 
-<head>
-{% block head %}
-	{% include 'head.twig' %}
-{% endblock head %}
-</head>
+	<head>
+		{% block head %}
+			{% include 'head.twig' %}
+		{% endblock head %}
+	</head>
+
+
+	{% block body %}
+		<body>
+
+		{% block maket %}
+			<div id="maket">
+
+				<div id="photo_preview_bg"
+				     class="hidden"
+				     onClick="hidePreview();"></div>
+				<div id="photo_preview"
+				     class="hidden"></div>
+
+
+				<!--Голова начало-->
+				{% block golova_menu %}
+					{% include 'golova_menu.twig' %}
+				{% endblock golova_menu %}
+				<!--Голова конец-->
+
+
+				{% block content %}
+					<div id="main">
+
+
+						{#вывод ошибок#}
+						{% if odebug.showRealtime() == true and odebug.isError > 0 %}
+							{% block showDebug %}
+								<div class="center">
+									<div class="centered">
+										{{ odebug.showAll() }}
+									</div>
+								</div>
+								<div class="center">
+									<div class="centered">
+										{#{{ odebug.showLog() }}#}
+									</div>
+								</div>
+							{% endblock showDebug %}
+						{% endif %}
 
 
 
+						{% block content_header %}
+							{% include 'content_header.twig' %}
+						{% endblock content_header %}
+						<div class="clear"></div>
 
 
-{% block body %}
-<body>
+						{% block top %}
+						{% endblock top %}
 
-{% block maket %}
-<div id="maket">
-
-	<div id="photo_preview_bg" class="hidden" onClick="hidePreview();"></div>
-	<div id="photo_preview" class="hidden"></div>
-
-
-	<!--Голова начало-->
-	{% block golova_menu %}
-		{% include 'golova_menu.twig' %}
-	{% endblock golova_menu %}
-	<!--Голова конец-->
+						<div class="l_colonka">
+							&#160
+							{% block l_colonka %}
+								{% include 'l_colonka.twig' %}
+							{% endblock l_colonka %}
+						</div>
 
 
-	{% block content %}
-	<div id="main">
+						<div class="c_colonka">
+							&#160
+							{% block c_colonka %}
+								{% include 'c_colonka.twig' %}
+							{% endblock c_colonka %}
+						</div>
 
 
-		<div class="center">
-			<div class="centered">
-				<div class="noteclassic" style="width: 1000px;">
-					{% block showDebug %}
-						{#{{- odebug.showLog()-}}#}
-						{#{{- odebug.showAll() -}}#}
-						{{- odebug.printError() -}}
-					{% endblock showDebug %}
-				</div>
-			</div>
-		</div>
-		<div class="clear"></div>
+						<div class="r_colonka">
+							&#160
+							{% block r_colonka %}
+								{% include 'r_colonka.twig' %}
+							{% endblock r_colonka %}
+						</div>
 
+						{% block bottom %}
 
+						{% endblock bottom %}
 
-				{% block content_header %}
-					{% include 'content_header.twig' %}
-				{% endblock content_header %}
-			     <div class="clear"></div>
-
-		{% block top %}
-		{% endblock top %}
-
-		<div class="l_colonka">
-			&#160
-				{% block l_colonka %}
-					{% include 'l_colonka.twig' %}
-				{% endblock l_colonka %}
-		</div>
-
-
-					<div class="c_colonka">
-						&#160
-						{% block c_colonka %}
-							{% include 'c_colonka.twig' %}
-						{% endblock c_colonka %}
 					</div>
+				{% endblock content %}
+
+				<div class="clear"></div>
+
+			</div>
+		{% endblock maket %}
 
 
-		<div class="r_colonka">
-			&#160
-				{% block r_colonka %}
-					{% include 'r_colonka.twig' %}
-				{% endblock r_colonka %}
-		</div>
-
-		{% block bottom %}
-
-		{% endblock bottom %}
-
-	</div>
-	{% endblock content %}
-
-	<div class="clear"></div>
-
-</div>
-{% endblock maket %}
-
-
-	{% block end_content %}
-		<div class="end_content"></div>
-	{% endblock end_content %}
+		{% block end_content %}
+			<div class="end_content"></div>
+		{% endblock end_content %}
 
 
 
-	{% block footer %}
-		{% include 'footer.twig' %}
-	{% endblock footer %}
+		{% block footer %}
+			{% include 'footer.twig' %}
+		{% endblock footer %}
 
 
-</body>
-{% endblock body %}
+		{#замена удаленных картинок#}
+		<script type='text/javascript' >
+			$('img').error(function () {
+				//		$(this).parent().css('visibility', 'hidden');
+				$(this).attr('src', '/img/bg_out.png');
+			});
+		</script >
+
+		</body>
+	{% endblock body %}
 
 
-{% block html %}
-     </html>
-{% endblock html %}
+	{% block html %}
+		</html>
+	{% endblock html %}
 {% endspaceless %}

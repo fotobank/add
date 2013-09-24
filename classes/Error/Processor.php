@@ -50,6 +50,7 @@
 
 										 // определяем режим вывода ошибок
 										 ini_set('display_errors', 'On');
+											error_reporting(0);
 										 // определеяем уровень протоколирования ошибок
 										 error_reporting(E_ALL | E_STRICT);
 										 set_error_handler(array('Error_Processor', 'userErrorHandler'));
@@ -329,6 +330,7 @@
 
 																	 }
 														}
+
 														if (substr_count($actions, 'w')) {
 																	 echo $this->err_led;
 														}

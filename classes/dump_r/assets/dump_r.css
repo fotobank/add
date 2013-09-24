@@ -144,3 +144,10 @@
 	display: none;
 }
 */
+
+.val {
+    width: auto;
+    max-width: 1180px;
+    word-wrap: break-word;
+    padding: 0 10px;
+}

@@ -1,6 +1,6 @@
 <?php
-	//		 error_reporting(E_ALL);
-			 ini_set('display_errors', 0);
+			 error_reporting(E_ALL);
+			 ini_set('display_errors', 1);
 				/** -----------------------------------------------------------------------------------*/
 			 header('Content-type: text/html; charset=windows-1251');
 			 header("X-Frame-Options: SAMEORIGIN");
@@ -12,36 +12,7 @@
 			 require_once (__DIR__.'/title.php');
 				/** -----------------------------------------------------------------------------------*/
 			 // обработка ошибок
-		//	 $error_processor = Error_Processor::getInstance();
-				/** -----------------------------------------------------------------------------------*/
-				$odebug = odebugger_class::getInstance('RU');
-				$odebug -> CSS = 'default'; // set the CSS
-				$odebug -> HTML = 'default'; // set the HTML template
-//				$odebug -> REALTIME = false; // не выводить ошибки на экран
-//				$odebug -> printError();
-//				$odebug -> showLog();
-//				$odebug -> showAll();
-				/** -----------------------------------------------------------------------------------*/
-			 $session         = check_Session::getInstance();
-				/** -----------------------------------------------------------------------------------*/
-			 // запрет показа ошибок в DUMP_R ( true - показавать )
-			 $session->set('DUMP_R', true);
-			 // запрет показа ошибок в Debug_HackerConsole_Main ( true - показавать )
-			 $session->set('Debug_HC', true);
-			 /** -----------------------------------------------------------------------------------*/
-				/**  “есты дл€ проверки Error_Processor
-				* PHP set_error_handler TEST
-				*/
-			  IMAGINE_CONSTANT;
-			 /**
-				* PHP set_exception_handler TEST
-				*/
-				//trigger_error ('La variable ', E_USER_WARNING);
-		  //	throw new Exception( 'Imagine Exception' );
-			 /**
-				* PHP register_shutdown_function TEST ( IF YOU WANT TEST THIS, DELETE PREVIOUS LINE )
-				*/
-			 //  imagine_function();
+				require_once (__DIR__.'/errorDump.php');
 				/** ----------------------------------------------------------------------------------*/
 			 // капча
 			 $cryptinstall = '/classes/dsp/cryptographp.fct.php';
@@ -142,6 +113,8 @@
 							'SERVER_NAME'       => $_SERVER['SERVER_NAME'],
 							// системные сообщени€
 							'printMsg'										=>	new printMsg(),
-							'odebug'												=> $odebug
+							'odebug'												=> $odebug,
+							'odebugCSSLOG'						=> $odebugCSSLOG,
+							'odebugCSS'									=> $odebugCSS
 			 );
 // <!-- √олова конец -->

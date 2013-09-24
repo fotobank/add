@@ -42,10 +42,6 @@ class Debug_HackerConsole_Main
         $GLOBALS['Debug_HackerConsole_Main_LAST'] =& $this;
     }
 
-   function __destruct()
-	 {
-
-	 }
 
     /**
      * string attachToHtml(string $pageHtml)

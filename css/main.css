@@ -3182,7 +3182,7 @@ div.readmorecontent{text-align:right;margin-right:10px;}
 .yarlist li a{background:url(/img/icon-arrow.png) 0 50% no-repeat;padding-left:18px;}
 
 
-.noteclassic,.noteimportant,.notewarning,.notetip,.notehelp,.notesmile{
+.noteclassic,.noteimportant,.notewarning,.notetip,.notehelp,.notesmile {
     width:84%;
     border-radius:10px 10px;
     -moz-border-radius:10px 10px;-webkit-border-radius:10px 10px;
@@ -3203,7 +3203,28 @@ div.readmorecontent{text-align:right;margin-right:10px;}
 
 .noteclassic{
     background-color:#EEF;
-    background-image:url(/img/note.png);
+    background-image:url('/img/note.png');
+}
+
+.errNotice {
+    width:84%;
+    border-radius:10px 10px;
+    -moz-border-radius:10px 10px;-webkit-border-radius:10px 10px;
+    padding:10px 20px 10px 80px;
+    margin: 15px 5px 5px 7px;
+    -webkit-box-shadow:2px 2px 3px #999;-moz-box-shadow:2px 2px 3px #999;
+    min-height:40px;
+    height:auto;
+    overflow:visible;
+    position:relative;
+    bottom:6px;
+    right:6px;
+    border:1px solid #999999;
+    background-position:20px 50%;
+    background-repeat:no-repeat;
+    text-align:justify;
+    background-color:#EEF;
+    background-image:url('/img/warning.png');
 }
 
 input.subscribe-field{width:130px;padding:5px 0 5px 30px;background:url(/img/rss-mail.png) 3px 50% no-repeat;font:12px Arial,
@@ -3385,4 +3406,22 @@ figure { margin:20px auto; }*/
 .displayBox span code {
     background-color: transparent;
     border: 0 solid #E1E1E8;
+}
+
+.sourceValeur code {
+    background-color: transparent;
+    border: 0 solid #E1E1E8;
+}
+
+
+table.logFile code {
+    background-color: transparent;
+    border: 0 solid #E1E1E8;
+}
+
+table.logFile {
+    position: relative;
+    width: 1000px;
+    font-family: tahoma,serif;
+    margin-top: 20px;
 }

@@ -1,5 +1,5 @@
 <?php
-			define ( 'BASEPATH' , realpath ( __DIR__ ) . '/' , TRUE );
+		define ( 'BASEPATH' , realpath ( __DIR__ ) . '/' , TRUE );
 		include_once (BASEPATH.'inc/head.php');
 
 

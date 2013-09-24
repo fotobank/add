@@ -29,10 +29,10 @@
 						'password' => 'fianit8546',
 						'dbname'   => 'creative_ls',
 						'charset'  => 'cp1251',
-						//    '_debug'   => true,
+//			'_debug'   => true,
 						'_debug'   => false,
 						'_lazy'    => false,
 			);
 			$db      = go\DB\DB::create($params, 'mysql');
-			$Storage = go\DB\Storage::getInstance();
-			$Storage->set($db, 'db-for-data');
+//	$Storage = go\DB\Storage::getInstance();
+			go\DB\Storage::getInstance()->set($db, 'db-for-data');

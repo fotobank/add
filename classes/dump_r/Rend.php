@@ -96,7 +96,7 @@ class Rend {
 
 		$dump_id = 'dump-' . rand(100,999);
 
-		$buf .= '<pre class="dump_r" id="' . $dump_id . '">';
+		$buf .= '<pre class="dump_r" id="' . $dump_id . '" >';
 		$buf .= "<div class=\"file-line\">{$file} (line {$line})</div>";
 
 		// select renderer

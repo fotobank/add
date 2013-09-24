@@ -7,10 +7,11 @@
 
 	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="/favicon.ico"/>
 	<link rel="shortcut icon" href="/img/ico_nmain.gif"/>
-	<link rel="stylesheet" href="/css/main.css" type="text/css">
 	<link rel="stylesheet" href="{{ merge_files('/cache/head.min.css', 'css',  include_CSS , '',  include_CSS ) }}"/>
 	<script type="text/JavaScript" src="{{ merge_files('/cache/head.min.js', 'js',  include_Js , '',  prioritize_Js ) }}"></script>
-
+	{{ odebug.setCss(odebugCSS) }}
+	{{ odebug.setCssLog(odebugCSSLOG) }}
+	<link rel="stylesheet" href="/css/main.css" type="text/css">
 
 	<!--[if lt IE 9]>
 	<script type='text/javascript'>
