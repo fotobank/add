@@ -9,15 +9,11 @@
 <table >
 	<tr >
 		<td >
-
-
-
 		</td >
 	</tr >
 	<tr >
 		<td >
 			<div id="cont_fb" >
-
 			</div >
 		</td >
 	</tr >
@@ -29,14 +25,13 @@
 			{% if buttons is defined and buttons|length > 0 %}
 				{% for button in buttons %}
 					{#{{ dump_t(button) }}#}
-					<a class="button small gray " href="/fotobanck_adw.php?chenge_cat={{- button.id -}}" style="width: 220px;">{{- button.nm -}}</a ><br>
+					<a class="button small gray" href="/fotobanck_adw.php?chenge_cat={{- button.id -}}" >{{- button.nm -}}</a ><br>
 				{% endfor %}
 			{% else %}
 			<p>Разделы не найдены</p>
 			{% endif %}
 	</div>
 </div>
-
 
 <div class="clear"></div>
 

@@ -1,9 +1,9 @@
 <?php
 header ('Content-type: text/html; charset=utf-8');
-require_once 'class.php';
+require_once 'errorClass.php';
 
-//$odebug = new odebugger ('FR'); // French localization
-$odebug = new odebugger_class ('EN'); // uncomment this one to localize to English
+//$odebug = new debugger ('FR'); // French localization
+$odebug = debugger_errorClass::getInstance('EN'); // uncomment this one to localize to English
 
 $odebug -> CSS = 'default'; // set the CSS
 $odebug -> HTML = 'default'; // set the HTML template

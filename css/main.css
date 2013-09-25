@@ -102,11 +102,20 @@ a:active {
 }
 
 p {
-    font-size: 14px;
+   /* font-size: 14px;
     font-weight: normal;
-    text-indent: 5px; /* Отступ первой строки в пикселах */
+    text-indent: 5px; *//* Отступ первой строки в пикселах *//*
     color: #000;
-    font-family: "Times New Roman", Times, serif;
+    font-family: "Times New Roman", Times, serif;*/
+
+    font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    font-style: normal;
+    color: #222222;
+    line-height: 1.46em;
+    letter-spacing: 0;
+    text-shadow: none;
 }
 
 /*@font-face {
@@ -1512,7 +1521,7 @@ a.alb_usl {
 /* Размер и положение кнопки */
 
 .button.small {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: bolder;
 }
 
@@ -1574,6 +1583,7 @@ a.alb_usl {
     color: #339 !important;
     border: 1px solid #a5a5a5 !important;
     background-color: #a9adb1;
+    width: 208px;
 
     background-image: url('/img/button_bg.png'), url('/img/button_bg.png'), -moz-radial-gradient(center bottom, circle,
     rgba(197, 199, 202, 1) 0, rgba(197, 199, 202, 0) 100px), -moz-linear-gradient(#c5c7ca, #92989c);
@@ -2116,7 +2126,7 @@ a strong {
      -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 3), 0 0 5px rgba(0, 0, 0, 0.1) inset;
      -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 3), 0 0 5px rgba(0, 0, 0, 0.1) inset;
      box-shadow:0 1px 4px rgba(0, 0, 0, 3), 0 0 5px rgba(0, 0, 0, 0.1) inset;	
-     /* border: 1px solid #aaa;  Параметры рамки 	  
+     /* border: 1px solid #aaa;  Параметры рамки
 	cursor: pointer;	
 } */
 
@@ -3034,7 +3044,7 @@ div.error{
     background: #ebebeb;
     border:1px solid #acacac;
     margin:0 0 10px;
-    padding:0 10px 10px;
+    padding:0 10px 15px;
     box-shadow:0 0 2px #CCCCCC inset;
     position:relative;
     -webkit-border-radius: 5px; /* Safari 3-4, iOS 1-3.2, Android ?1.6 */
@@ -3092,15 +3102,21 @@ div.error{
 }
 
 .yellow {
+    background:  #fd9d00; /* для не поддерживающих css3 браузеров */
     background: -moz-linear-gradient(top, #fdef00, #fd9d00);
     background: -webkit-gradient(linear, left top, left bottom, from(#fdef00), to(#fd9d00));
     filter: progid:DXImageTransform.Microsoft.gradient(enabled='true',startColorstr=#fdef00,endColorstr=#fd9d00,GradientType=0); zoom: 1;
+    background-image: -o-linear-gradient(top,  #fdef00,  #fd9d00);/* для Opera11+ */
 }
 
 .silver {
+    background:  #ccc; /* для не поддерживающих css3 браузеров */
     background: -moz-linear-gradient(top, #fff, #ccc);
     background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ccc));
     filter: progid:DXImageTransform.Microsoft.gradient(enabled='true',startColorstr=#fff,endColorstr=#ccc,GradientType=0); zoom: 1;
+    background-image: -o-linear-gradient(top,  #fff,  #ccc);/* для Opera11+ */
+
+
 }
 
 .block h3{
@@ -3146,7 +3162,6 @@ div.error{
     margin: 0;
     padding: 0;
     vertical-align: baseline;
-
 }
 
 .c_colonka .entry {
@@ -3235,13 +3250,22 @@ Helvetica, sans-serif;color:#888;border:1px solid #c8c6c4;vertical-align:top;bor
 .subscribeform button:hover{cursor:pointer;text-shadow:1px 1px 0 rgba(0, 0, 0, 0.4);background:none repeat scroll 0 0 #30A146;}
 .block p a img{margin-left: -5px;}
 .c_colonka .block p {
-    font-size: 16px;
+   /* font-size: 16px;
     font-weight: normal;
     color: #000;
     font-family: "Times New Roman", Times, serif;
     line-height: 1.3;
     text-indent: 15px;
-    margin: 10px 0;
+    margin: 10px 0;*/
+
+    font-family: Bardelin;
+    font-size: 14px;
+    font-weight: 400;
+    font-style: normal;
+    color: #222222;
+    line-height: 1.46em;
+    letter-spacing: 0em;
+    text-shadow: none;
 }
 .r_colonka p{margin: 15px 5px; font-size: 14px;}
 .l_colonka p{margin: 15px 5px; font-size: 14px;}
@@ -3402,7 +3426,7 @@ figure { margin:20px auto; }*/
     margin-top: 10px;
 }
 
-/*odebugger*/
+/*debugger*/
 .displayBox span code {
     background-color: transparent;
     border: 0 solid #E1E1E8;

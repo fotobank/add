@@ -1,9 +1,9 @@
 <?php
-			define ( 'BASEPATH' , realpath ( __DIR__ ) . '/' , TRUE );
+	define ( 'BASEPATH' , realpath ( __DIR__ ) . '/' , TRUE );
 	include  (BASEPATH.'inc/head.php');
 	include  (BASEPATH.'inc/ip-ban.php');
 
-	// include  (dirname(__FILE__).'/inc/lib/dtimediff/diftimer_class.php'); // подсчет времени между двумя событиями
+//	 include  (dirname(__FILE__).'/inc/lib/dtimediff/diftimer_class.php'); // подсчет времени между двумя событиями
 
 	$ip = Get_IP(); // Ip пользователя
 	//Количество фоток на странице

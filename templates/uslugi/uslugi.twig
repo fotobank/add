@@ -32,6 +32,21 @@
 				  {% block content %}
 	<div id="main">
 
+		{#вывод ошибок#}
+		{% if odebug.showRealtime() == true and odebug.isError > 0 %}
+			{% block showDebug %}
+				<div class="center">
+					<div class="centered">
+						{{ odebug.showAll() }}
+					</div>
+				</div>
+				<div class="center">
+					<div class="centered">
+						{#{{ odebug.showLog() }}#}
+					</div>
+				</div>
+			{% endblock showDebug %}
+		{% endif %}
 
 		{% block content_header %}
 			{% include 'content_header.twig' %}
@@ -40,12 +55,12 @@
 
 
 		{% block top %}
-			<div class="cont-list" style="margin: -10px 10px 80px 40%;" >
+			{#<div class="cont-list" style="margin: -10px 10px 80px 40%;" >
 				<div class="drop-shadow lifted" >
 					<h2 ><span style="color: #00146e;" > Раздел УСЛУГИ</span ></h2 >
 				</div >
 			</div >
-			<div class="clear" ></div >
+			<div class="clear" ></div >#}
 		{% endblock top %}
 
 
@@ -54,16 +69,24 @@
 			&#160
 			{% block l_colonka %}
 				{% include 'rubriki.twig' %}
-				{#{% include 'l_colonka.twig' %}#}
 			{% endblock l_colonka %}
 		</div>
-
+		{#{% include 'rubriki.twig' %}#}
 
 		<div class="c_colonka">
 			&#160
 			{% block c_colonka %}
-				{{ dataDB_top|raw }}
-				{#{% include 'c_colonka.twig' %}#}
+				<!-- вывод описания-->
+				<div class="block lifted">
+					<h2>Альбомы</h2>
+					<div class="post">
+						<h1>
+							<a title="Ссылка на запись Немного о нас" rel="bookmark" href="javascript:void(0)" >Школа и выпускники</a>
+						</h1>
+					</div>
+					{{ dataDB_top|raw }}
+				</div>
+				<div class="clear"></div>
 			{% endblock c_colonka %}
 		</div>
 
@@ -77,9 +100,16 @@
 </div>
 
 
-
-
+	<div class="clear"></div>
  {% block bottom %}
+	 <div class="block lifted">
+		 <h2>Альбомы</h2>
+		 <div class="post">
+			 <h1>
+				 <a title="Ссылка на запись Немного о нас" rel="bookmark" href="javascript:void(0)" >Школа и выпускники</a>
+			 </h1>
+		 </div>
+	 <div class="clear"></div>
 	 <table width="100%" border="0" >
 		 <tr >
 			 <td >
@@ -123,6 +153,7 @@
 		 </tr >
 	 </table >
 	 {{ dataDB_bottom|raw }}
+	 </div>
  {% endblock bottom %}
 
 

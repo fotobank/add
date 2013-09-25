@@ -2,31 +2,33 @@
 				require_once (__DIR__.'/../../inc/func.php');
 				require_once (__DIR__.'/../../classes/autoload.php');
 				autoload::getInstance();
-				if (check_Session::getInstance()->has('Debug_HC')) {
+				/*if (check_Session::getInstance()->has('Debug_HC')) {
 								$Debug_HackerConsole_Main = Debug_HackerConsole_Main::getInstance(true);
+				}*/
+				function dump_d($this) {
+
+								return dump_r(iconv("UTF-8", "WINDOWS-1251", print_r($this, true)));
 				}
 
-				function dump_d($this) {
-				 return  dump_r(iconv("UTF-8", "WINDOWS-1251", print_r($this, true)));
-}
+
 
 				/**
-					* CLASS odebugger
+					* CLASS debugger_errorClass
 					*
 					*
 					*/
-				class odebugger_class {
+				class debugger_errorClass {
 
 
 								/**
 									* @var array mailOptions
 									*/
 								private $mailOptions = array(
-												'mail_period'  => 5, // Minimal period for sending an error message (in minutes)
-												'from_addr'    => "webmaster@aleks.od.ua",
-												'from_name'    => "Ошибки в скриптах",
-												'to_addr'      => "aleksjurii@gmail.com",
-												'log_max_size' => 250 //// Max size of a log before it will sended and cleared (in kb)
+												'mail_Period'  => 5, // Minimal period for sending an error message (in minutes)
+												'from_Addr'    => "webmaster@aleks.od.ua",
+												'from_Name'    => "Ошибки в скриптах",
+												'to_Addr'      => "aleksjurii@gmail.com",
+												'log_Max_Size' => 250 //// Max size of a log before it will sended and cleared (in kb)
 								);
 								/**
 									* private (string) sAssertion
@@ -103,29 +105,29 @@
 
 								/**
 									* private (array) aCanBeSet
-									* class properties that can be set via odebugger::__set()
+									* class properties that can be set via debugger_errorClass::__set()
 									*/
 								private $aCanBeSet = array(
-												'mailPeriod' => "mailOptions['mail_period']",
-												'fromAddr'   => "mailOptions['from_addr']",
-												'fromName'   => "mailOptions['from_name']",
-												'toAddr'     => "mailOptions['to_addr']",
-												'logMaxSize' => "mailOptions['log_max_size']",
-												'LINES'      => 'iNbLines',
-												'REALTIME'   => "aOptions['REALTIME']",
-												'LOGFILE'    => "aOptions['LOGFILE']",
-												'ERROUTPUT'  => "aOptions['ERROUTPUT']",
-												'HTML'       => 'sTemplateHTML',
-												'CSS'        => 'sTemplateCSS',
-												'HTMLLOG'    => 'sTemplateHTMLLOG',
-												'CSSLOG'     => 'sTemplateCSSLOG',
-												'ERROR'      => "aOptions['ERROR']",
-												'EXCEPTION'  => "aOptions['EXCEPTION']",
-												'log_File'			=> "sFile"
+												'mail_Period'  => "mailOptions['mail_Period']",
+												'from_Addr'    => "mailOptions['from_Addr']",
+												'from_Name'    => "mailOptions['from_Name']",
+												'to_Addr'      => "mailOptions['to_Addr']",
+												'log_Max_Size' => "mailOptions['log_Max_Size']",
+												'LINES'        => "iNbLines",
+												'REALTIME'     => "aOptions['REALTIME']",
+												'LOGFILE'      => "aOptions['LOGFILE']",
+												'ERROUTPUT'    => "aOptions['ERROUTPUT']",
+												'HTML'         => "sTemplateHTML",
+												'CSS'          => "sTemplateCSS",
+												'HTMLLOG'      => "sTemplateHTMLLOG",
+												'CSSLOG'       => "sTemplateCSSLOG",
+												'ERROR'        => "aOptions['ERROR']",
+												'EXCEPTION'    => "aOptions['EXCEPTION']",
+												'log_File'     => "sFile"
 								);
 
 								/**
-									* 	автовключение вывода при наличии ошибки
+									*  автовключение вывода при наличии ошибки
 									*/
 								public $isError = 0;
 
@@ -151,7 +153,7 @@
 									* @var null
 									* имя лог файла
 									*/
-								private  $sFile = NULL;
+								private $sFile = NULL;
 
 								/**
 									* private (object) XML_ERRORS
@@ -217,12 +219,12 @@
 									*
 									* @param string $sLang
 									*
-									* @return null|odebugger_class
+									* @return null|debugger_errorClass
 									*/
 								static function getInstance($sLang = 'EN') {
 
 												if (self::$instance == NULL) {
-																self::$instance = new odebugger_class($sLang);
+																self::$instance = new debugger_errorClass($sLang);
 												}
 
 												return self::$instance;
@@ -250,10 +252,10 @@
 												$this->XML_ERRORS->load(__DIR__.'/xml/'.$this->sLang.'/errors.xml');
 												$this->XML_TYPES = new DOMDocument('1.0', 'utf-8');
 												$this->XML_TYPES->load(__DIR__.'/xml/'.$this->sLang.'/types.xml');
-												$this->XML_DOC  = new DOMDocument ('1.0', 'utf-8'); // windows-1251 utf-8
+												$this->XML_DOC               = new DOMDocument ('1.0', 'utf-8'); // windows-1251 utf-8
 												$this->XML_DOC->formatOutput = true;
-												$root           = $this->XML_DOC->createElement("ROOT");
-												$this->XML_ROOT = $this->XML_DOC->appendChild($root);
+												$root                        = $this->XML_DOC->createElement("ROOT");
+												$this->XML_ROOT              = $this->XML_DOC->appendChild($root);
 												if (!is_dir(__DIR__.'/../../logs')) {
 																mkdir(__DIR__.'/../../logs', 0744);
 												}
@@ -268,7 +270,6 @@
 
 
 
-
 								/**
 									* Функция перехвата фатальных ошибок
 									* UNCATCHABLE ERRORS
@@ -278,34 +279,34 @@
 												$error = error_get_last();
 												$dt    = date("Y-m-d H:i:s (T)");
 												if ($error) {
-																$err      = "<FATAL> \n";
+																$sVars    = "<FATAL> \n";
 																$message  = '';
 																$sErrFile = '';
 																$iErrLine = '';
 																foreach ($error as $key => $value) {
-																				$err .= "\t $key:\t \t $value \n";
+																				$sVars .= "\t $key:\t \t $value \n";
 																				if ($key == 'file') $sErrFile = $value;
 																				if ($key == 'line') $iErrLine = $value;
 																				if ($key == 'message') $message = $value;
 																				if ($key == 'type') $message = $value;
 																}
-																$err .= "\t Страница:        ".$_SERVER['REQUEST_URI']."\n";
-																$err .= "\t Дата:            ".$dt."\n";
-																$err .= "\t Ip пользователя: ".Get_IP()."\n";
-																$err .= "\t Браузер:         ".$_SERVER['HTTP_USER_AGENT']."\n";
-																$err .= "</FATAL> \n";
-																$err      = iconv('windows-1251', 'utf-8', $err);
+																$sVars .= "\t Страница:        ".$_SERVER['REQUEST_URI']."\n";
+																$sVars .= "\t Дата:            ".$dt."\n";
+																$sVars .= "\t Ip пользователя: ".Get_IP()."\n";
+																$sVars .= "\t Браузер:         ".$_SERVER['HTTP_USER_AGENT']."\n";
+																$sVars .= "</FATAL> \n";
+																$sVars    = iconv('windows-1251', 'utf-8', $sVars);
 																$aTempArr = array('TRANSLATION' => 'Остановка скрипта из-за фатальной ошибки', 'SUGGESTION' => 'Проверьте скрипт на ошибки');
 																$errType  = 'Fatal Error';
 																$this->setCssLog('default_log');
 																$this->setCss('default');
 																// включить вывод всех ошибок при Fatal Error
 																$this->aOptions['ERROUTPUT'] = true;
-																$this->buildLog($errType, $message, $sErrFile, $iErrLine, $aTempArr, $err);
+																$this->buildLog($errType, $message, $sErrFile, $iErrLine, $aTempArr, $sVars);
 												}
+
 												return true;
 								}
-
 
 
 								/**
@@ -370,9 +371,11 @@
 																if (empty ($aDiff)) {
 																				$aTempArr['TRANSLATION'] = iconv('utf-8', 'windows-1251', $oLabel->nextSibling->nextSibling->nodeValue);
 																				$aTempArr['SUGGESTION']  = iconv('utf-8', 'windows-1251', $oLabel->nextSibling->nextSibling->nextSibling->nextSibling->nodeValue);
+
 																				return $aTempArr;
 																}
 												}
+
 												return false;
 								}
 
@@ -416,6 +419,9 @@
 												}
 												$sVars    = $e->getTraceAsString();
 												$aTempArr = array('TRANSLATION' => '', 'SUGGESTION' => '');
+												$this->setCssLog('default_log');
+												$this->setCss('default');
+												$this->aOptions['ERROUTPUT'] = true;
 												$this->buildLog($sType, $sErrStr, $sErrFile, $iErrLine, $aTempArr, $sVars);
 								}
 
@@ -434,13 +440,14 @@
 
 												$aTempArr = $this->checkErrorMessage($sErrStr);
 												$sType    = $this->checkTypeTrans($cErrno);
-												$sVars    = 'n/a';
 												if (!is_null($this->sAssertion)) {
 																$sErrFile         = $this->sAssertion;
 																$this->sAssertion = NULL;
 												}
+												$sVars = debugger_SHOWCONTEXT::notify();
 												$this->buildLog($sType, $sErrStr, $sErrFile, $iErrLine, $aTempArr, $sVars);
 								}
+
 
 
 								/**
@@ -495,7 +502,6 @@
 																				$numLine++;
 																}
 																unset($numLine);
-
 																foreach ($aSourceElem as $oSourceElem) {
 																				$oSource->appendChild($oSourceElem);
 																}
@@ -525,23 +531,23 @@
 									*  Sending mail
 									*/
 								function sendMail() {
-										// письма только для aleks.od.ua
-					//					if ($_SERVER['HTTP_HOST'] == stristr(mb_substr(get_domain(), 0, -1), "al")) {
+
+												// письма только для aleks.od.ua
+												//					if ($_SERVER['HTTP_HOST'] == stristr(mb_substr(get_domain(), 0, -1), "al")) {
 												if (file_exists($this->sFile) or filesize($this->sFile) != 0) {
-												$dom = new DOMDocument('1.0', 'utf-8');
-												$dom->load($this->sFile);
-												$dates = $dom->getElementsByTagName('DATE_MAIL');
-												$dateTime =	'';
-												foreach($dates as $date)
-												{
-																$dateTime =	$date->nodeValue;
-												}
-												if (strtotime($dateTime) < strtotime("-".$this->mailOptions['mail_period']." minutes") or $dateTime ===	'') {
-																//  включить вывод на email
+																$dom = new DOMDocument('1.0', 'utf-8');
+																$dom->load($this->sFile);
+																$dates    = $dom->getElementsByTagName('DATE_MAIL');
+																$dateTime = '';
+																foreach ($dates as $date) {
+																				$dateTime = $date->nodeValue;
+																}
+																if (strtotime($dateTime) < strtotime("-".$this->mailOptions['mail_Period']." minutes") or $dateTime === '') {
+																				//  включить вывод на email
 																				$this->printMail = true;
-																				$styleErr = file_get_contents(__DIR__.'/../../classes/odebugger/css/default.dat');
-																				$_HTTP_REF = isset($_SERVER['HTTP_REFERER']) ? "<b>\$HTTP_REFERER:</b> ".$_SERVER['HTTP_REFERER']."<br>" : '';
-																				$mail_mes  = $styleErr."
+																				$styleErr        = file_get_contents(__DIR__.'/../../classes/debugger/css/default.dat');
+																				$_HTTP_REF       = isset($_SERVER['HTTP_REFERER']) ? "<b>\$HTTP_REFERER:</b> ".$_SERVER['HTTP_REFERER']."<br>" : '';
+																				$mail_mes        = $styleErr."
 																											 <u><b>Error:</b></u><br>".$this->showAll()."<br>
 																											 <span style='color: #900000; font-size: 12px; font-weight: bold;' >
 																											 <b>\$_SERVER_NAME</b> = ".$_SERVER['SERVER_NAME']."<br>
@@ -561,9 +567,9 @@
 																								$mail_mes .= " $I=$val<br></span>";
 																				}
 																				$mail            = new Mail_sender;
-																				$mail->from_addr = $this->mailOptions['from_addr'];
-																				$mail->from_name = $this->mailOptions['from_name'];
-																				$mail->to        = $this->mailOptions['to_addr'];
+																				$mail->from_Addr = $this->mailOptions['from_Addr'];
+																				$mail->from_Name = $this->mailOptions['from_Name'];
+																				$mail->to        = $this->mailOptions['to_Addr'];
 																				$mail->subj      = "Произошла ошибка: ";
 																				$mail->body_type = 'text/html';
 																				$mail->body      = $mail_mes;
@@ -573,9 +579,9 @@
 																}
 												}
 								}
-//			}
 
 
+								//			}
 								/**
 									* public function showAll ()
 									* show the whole current xml log
@@ -583,8 +589,8 @@
 									*/
 								public function showAll() {
 
-												if($this->logMail) {
-																$xml=new DOMDocument('1.0', 'utf-8');
+												if ($this->logMail) {
+																$xml = new DOMDocument('1.0', 'utf-8');
 																if (file_exists($this->sFile) and filesize($this->sFile) != 0) {
 																				$xml->load($this->sFile);
 																				echo ('Отправка log файла');
@@ -596,13 +602,13 @@
 												$sQuery = '//ERROR';
 												if ($xpath->query($sQuery)->length > 0) {
 																$oNodeLists = $xpath->query($sQuery);
-																$err = '';
+																$err        = '';
 																foreach ($oNodeLists as $oNodeList) {
 																				$this->currentNode = $oNodeList;
-																							 $err .=	$this->printMe();
+																				$err .= $this->printMe();
 																}
-																if($this->printMail) {
-															    	return ($err);
+																if ($this->printMail) {
+																				return ($err);
 																} else {
 																				echo ($err);
 																}
@@ -612,8 +618,8 @@
 
 								/**
 									* public function showLog ()
-									* show the whole current log in a table, with stats (best used after odebugger::loadXML())
-									* показать весь текущий журнал в таблице, со статистикой (лучше всего использовать после odebugger :: LoadXml ())
+									* show the whole current log in a table, with stats (best used after debugger_errorClass::loadXML())
+									* показать весь текущий журнал в таблице, со статистикой (лучше всего использовать после debugger_errorClass :: LoadXml ())
 									*
 									* @Return (string) sHtml : the generated HTML
 									*/
@@ -637,7 +643,7 @@
 												$sQuery     = '//ERROR/TYPE';
 												$oNodeLists = $xpath->query($sQuery);
 												$sCountType = '';
-												$aTypes = array();
+												$aTypes     = array();
 												if ($oNodeLists->length > 0) {
 																foreach ($oNodeLists as $oNodeList) {
 																				$aTypes[] = $oNodeList->nodeValue;
@@ -651,6 +657,7 @@
 												$sVersion = @phpversion();
 												$sHtml    = str_replace($this->aIndex[100], $sCountType, $sHtml);
 												$sHtml    = str_replace($this->aIndex[101], $sVersion, $sHtml);
+
 												return $sHtml;
 								}
 
@@ -667,35 +674,36 @@
 												$sHtml     = file_get_contents(__DIR__.'/templates/'.$this->sTemplateHTML.'.dat');
 												$nodeLists = $this->currentNode->childNodes;
 												$iId       = $this->currentNode->getAttribute('id');
-												$i = 0;
+												$i         = 0;
 												for ($n = 0; $n < $nodeLists->length; $n++) {
-															if($nodeLists->item($n)->nodeType == 1) {
-																$sName = $nodeLists->item($i)->nodeName;
-																if ($sName === 'SOURCE') {
-																				$sourceNodeList = $nodeLists->item($i)->childNodes;
-																				$sValeur        = '';
-																				for ($j = 0; $j < $sourceNodeList->length; $j++) {
-																								$sValeur .= str_replace(array('<?php', '?>', '<?'), '', $sourceNodeList->item($j)->nodeValue);
+																if ($nodeLists->item($n)->nodeType == 1) {
+																				$sName = $nodeLists->item($i)->nodeName;
+																				if ($sName === 'SOURCE') {
+																								$sourceNodeList = $nodeLists->item($i)->childNodes;
+																								$sValeur        = '';
+																								for ($j = 0; $j < $sourceNodeList->length; $j++) {
+																												$sValeur .= str_replace(array('<?php', '?>', '<?'), '', $sourceNodeList->item($j)->nodeValue);
+																								}
+																								$sValeur = highlight_string('<?php '."\r\n".$sValeur.'?>', true);
+																				} else {
+																								$sValeur = $nodeLists->item($i)->nodeValue;
 																				}
-																				$sValeur = highlight_string('<?php '."\r\n".$sValeur.'?>', true);
-																} else {
-																				$sValeur = $nodeLists->item($i)->nodeValue;
+																				$sId          = uniqid().'_'.$iId;
+																				$sValeur      = iconv("UTF-8", "windows-1251", $sValeur);
+																				$aReplacement = array($sName, $sValeur);
+																				$sHtml        = str_replace($this->aIndex[$i], $aReplacement, $sHtml);
+																				$sHtml        = str_replace('{ID}', $sId, $sHtml);
+																				$i++;
 																}
-																$sId          = uniqid().'_'.$iId;
-																$sValeur      = iconv("UTF-8", "windows-1251", $sValeur);
-																$aReplacement = array($sName, $sValeur);
-																$sHtml        = str_replace($this->aIndex[$i], $aReplacement, $sHtml);
-																$sHtml        = str_replace('{ID}', $sId, $sHtml);
-																$i++;
-															}
 												}
+
 												return $sHtml;
 								}
 
 
 								/**
 									* private function printMeLog ()
-									* display a caught error, used by odebugger::showLog()
+									* display a caught error, used by debugger_errorClass::showLog()
 									*
 									* @Return (string) sHtml : the generated HTML
 									*/
@@ -754,7 +762,7 @@
 									*/
 								public function loadXML($sFile = NULL) {
 
-												if($sFile === NULL) {
+												if ($sFile === NULL) {
 																$xml = $this->sFile;
 												} else {
 																$xml = $_SERVER['DOCUMENT_ROOT'].'/logs/'.$sFile;
@@ -778,77 +786,77 @@
 												if (isset($_SERVER['PHP_SELF']) && $_SERVER['PHP_SELF'] != '/error.php') {
 																if (!file_exists($this->sFile) or filesize($this->sFile) == 0) {
 																				$this->XML_DOC->save($this->sFile);
+
 																				return true;
 																}
 																$doc               = new DOMDocument('1.0', 'utf-8');
 																$doc->formatOutput = true;
-																if	($doc->load($this->sFile)) {
+																if ($doc->load($this->sFile)) {
 																				$root = $doc->documentElement;
 																				if ($this->XML_DOC->getElementsByTagName('ERROR')->length > 0) {
-																				$nodeLists = $this->XML_DOC->getElementsByTagName('ERROR');
+																								$nodeLists = $this->XML_DOC->getElementsByTagName('ERROR');
 																								foreach ($nodeLists as $nodeList) {
 																												$this->currentNode = $nodeList;
-																												$iNewId = $root->getElementsByTagName('ERROR')->length + 1;
+																												$iNewId            = $root->getElementsByTagName('ERROR')->length + 1;
 																												$this->currentNode->setAttribute('xml:id', '_'.$iNewId);
 																												$node = $doc->importNode($this->currentNode, true); //выбираем корневой узел
 																												$root->appendChild($node); //добавляем дочерний к корневому
 																								}
 																								//	записать если присутствует тег 'DATE'
 																								if ($this->XML_DOC->getElementsByTagName('DATE')->length > 0) {
-																		  								$this->sendMail();
-																												if($this->printMail) {
-																												$dateMail = $doc->createElement('DATE_MAIL', date('d-m-Y H:i:s'));
-																												$node = $doc->importNode($dateMail, true); //выбираем корневой узел
-																												$root->appendChild($node); //добавляем дочерний к корневому
-																												$this->printMail = false;
+																												$this->sendMail();
+																												if ($this->printMail) {
+																																$dateMail = $doc->createElement('DATE_MAIL', date('d-m-Y H:i:s'));
+																																$node     = $doc->importNode($dateMail, true); //выбираем корневой узел
+																																$root->appendChild($node); //добавляем дочерний к корневому
+																																$this->printMail = false;
 																												}
 																												$doc->save($this->sFile);
 																												unset($doc);
 																								}
-																			  	}
 																				}
-																if (filesize($this->sFile) > ($this->mailOptions['log_max_size'] * 1024)) {
-																				$dom = new DOMDocument('1.0', 'utf-8');
-																				$dom->load($this->sFile);
-																				$dates = $dom->getElementsByTagName('DATE_MAIL');
-																				$dateTime =	'';
-																				foreach($dates as $date)
-																				{
-																								$dateTime =	$date->nodeValue;
-																				}
- 																						if (strtotime($dateTime) < strtotime("-".$this->mailOptions['mail_period']." minutes") or $dateTime ===	'') {
-																								//  включить вывод на email
-																								$this->printMail = true;
-																								// включить вывод лога на email
-																								$this->logMail = true;
-																								$styleErr = file_get_contents(__DIR__.'/../../classes/odebugger/css/default.dat');
-																								$mail_mes  = $styleErr."<html><body><h1>Report of errors log</h1><br>".$this->showAll()."<br>";
-																								$mail_mes .= ' <p>This letter was created and a log on server was cleared at '.date('Y-m-d').'.<br>
+																}
+																if (filesize($this->sFile) > ($this->mailOptions['log_Max_Size'] * 1024)) {
+																				/*	$dom = new DOMDocument('1.0', 'utf-8');
+																					$dom->load($this->sFile);
+																					$dates = $dom->getElementsByTagName('DATE_MAIL');
+																					$dateTime =	'';
+																					foreach($dates as $date)
+																					{
+																									$dateTime =	$date->nodeValue;
+																					}*/
+																				// 																					if (strtotime($dateTime) < strtotime("-".$this->mailOptions['mail_Period']." minutes") or $dateTime ===	'') {
+																				//  включить вывод на email
+																				$this->printMail = true;
+																				// включить вывод лога на email
+																				$this->logMail = true;
+																				$styleErr      = file_get_contents(__DIR__.'/../../classes/debugger/css/default.dat');
+																				$mail_mes      = $styleErr."<html><body><h1>Report of errors log</h1><br>".$this->showAll()."<br>";
+																				$mail_mes .= ' <p>This letter was created and a log on server was cleared at '.date('Y-m-d').'.<br>
 																																								This message was sent automatically by robot, please don\'t reply!</p></body></html>';
-																								$mail            = new Mail_sender;
-																								$mail->from_addr = $this->mailOptions['from_addr'];
-																								$mail->from_name = $this->mailOptions['from_name'];
-																								$mail->to        = $this->mailOptions['to_addr'];
-																								$mail->subj      = 'Report of errors log';
-																								$mail->body_type = 'text/html';
-																								$mail->body      = $mail_mes;
-																								$mail->priority  = 2;
-																								$mail->prepare_letter();
-																								$mail->send_letter();
-																								$this->logMail = false;
-																								$this->printMail = false;
-																								$dateMail = $this->XML_DOC->createElement('DATE_MAIL', date('d-m-Y H:i:s'));
-																								$node = $this->XML_DOC->importNode($dateMail, true); //выбираем корневой узел
-																								$root = $this->XML_DOC->documentElement;
-																								$root->appendChild($node); //добавляем дочерний к корневому
+																				$mail            = new Mail_sender;
+																				$mail->from_Addr = $this->mailOptions['from_Addr'];
+																				$mail->from_Name = $this->mailOptions['from_Name'];
+																				$mail->to        = $this->mailOptions['to_Addr'];
+																				$mail->subj      = 'Report of errors log';
+																				$mail->body_type = 'text/html';
+																				$mail->body      = $mail_mes;
+																				$mail->priority  = 2;
+																				$mail->prepare_letter();
+																				$mail->send_letter();
+																				$this->logMail   = false;
+																				$this->printMail = false;
+																				$dateMail        = $this->XML_DOC->createElement('DATE_MAIL', date('d-m-Y H:i:s'));
+																				$node            = $this->XML_DOC->importNode($dateMail, true); //выбираем корневой узел
+																				$root            = $this->XML_DOC->documentElement;
+																				$root->appendChild($node); //добавляем дочерний к корневому
+																				unlink($this->sFile);
+																				/*} else {
 																								unlink($this->sFile);
-																				} else {
-																								unlink($this->sFile);
-																				}
+																				}*/
 																}
 												}
 								}
-
 
 
 								/**
@@ -891,7 +899,7 @@
 																				if (!is_int($mVal)) {
 																								return false;
 																				}
-																				$this->mailOptions['mail_period'] = $mVal;
+																				$this->mailOptions['mail_Period'] = $mVal;
 
 																				return true;
 																				break;
@@ -899,7 +907,7 @@
 																				if (!is_string($mVal)) {
 																								return false;
 																				}
-																				$this->mailOptions['from_addr'] = $mVal;
+																				$this->mailOptions['from_Addr'] = $mVal;
 
 																				return true;
 																				break;
@@ -907,7 +915,7 @@
 																				if (!is_string($mVal)) {
 																								return false;
 																				}
-																				$this->mailOptions['from_name'] = $mVal;
+																				$this->mailOptions['from_Name'] = $mVal;
 
 																				return true;
 																				break;
@@ -915,7 +923,7 @@
 																				if (!is_string($mVal)) {
 																								return false;
 																				}
-																				$this->mailOptions['to_addr'] = $mVal;
+																				$this->mailOptions['to_Addr'] = $mVal;
 
 																				return true;
 																				break;
@@ -923,7 +931,7 @@
 																				if (!is_int($mVal)) {
 																								return false;
 																				}
-																				$this->mailOptions['log_max_size'] = $mVal;
+																				$this->mailOptions['log_Max_Size'] = $mVal;
 
 																				return true;
 																				break;

@@ -17,13 +17,30 @@
 			<!--Голова начало-->
 			{% block golova_menu %}
 				{% include 'golova_menu.twig' %}
+				<div style="margin-top: 10px;">	</div>
 			{% endblock golova_menu %}
 			<!--Голова конец-->
 
 
-				{% block content_header %}
-					<div style="margin-top: 10px;">
-					{% include 'content_header.twig' %}
-					</div>
-				{% endblock %}
+				{#вывод ошибок#}
+				{% if odebug.showRealtime() == true and odebug.isError > 0 %}
+					{% block showDebug %}
+						<div class="center">
+							<div class="centered">
+								{{ odebug.showAll() }}
+							</div>
+						</div>
+						<div class="center">
+							<div class="centered">
+								{#{{ odebug.showLog() }}#}
+							</div>
+						</div>
+					{% endblock showDebug %}
+				{% endif %}
 
+
+				{% block content_header %}
+
+					{% include 'content_header.twig' %}
+
+				{% endblock content_header %}

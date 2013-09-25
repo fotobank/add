@@ -1,7 +1,7 @@
 <?php
 header ('Content-type: text/html; charset=utf-8');
-require_once 'class/odebugger.cls.php';
-$odebug = new odebugger ('FR');
+require_once 'errorClass.php';
+$odebug = debugger_errorClass::getInstance('EN');;
 
 $odebug -> HTMLLOG = 'default_log'; // set the HTML
 $odebug -> CSSLOG = 'default_log'; // set the CSS

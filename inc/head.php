@@ -29,9 +29,9 @@
 							'js/jsmessage/codebase/themes/message_default.css',
 							// сообщения
 							'js/humane/themes/jackedup.css',
-							//		  'js/humane/themes/libnotify.css',
-							//		  'js/humane/themes/bigbox.css',
-							//		  'css/main.css',
+//		  'js/humane/themes/libnotify.css',
+//		  'js/humane/themes/bigbox.css',
+//		  'css/main.css',
 							'js/visLightBox/data/vlboxCustom.css',
 							'js/visLightBox/data/visuallightbox.css',
 							'js/prettyPhoto/css/prettyPhoto.css',
@@ -89,7 +89,6 @@
 									{
 												$printErr .= $error;
 									}
-
 			 $renderData = array(
 							// SEO в top
 							'title'             => $title,
