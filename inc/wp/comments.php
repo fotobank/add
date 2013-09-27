@@ -8,12 +8,11 @@
 	 */
 function printKoment($newsId)
 {
-	$db = go\DB\Storage::getInstance()->get('db-for-data');
 	//  $pattern = 'SELECT u.*, k.* FROM komments k, users u WHERE k.news_id = ?i AND k.user_id = u.id ORDER BY k.parents_id, k.data ASC';
 	//  $pattern = 'SELECT k.* FROM komments k LEFT JOIN users u ON k.news_id = ?i and k.user_id = u.id ORDER BY k.parents_id, k.data ASC';
 	//  $pattern = 'SELECT k.*, u.url, u.us_name, u.email FROM komments k LEFT JOIN users u ON k.news_id = ?i and k.user_id = u.id  ORDER BY k.parents_id, k.data ASC';
 	$pattern  = 'SELECT k.*, u.url, u.us_name, u.email FROM komments k LEFT JOIN users u ON k.user_id = u.id WHERE k.news_id = ?i ORDER BY k.parents_id, k.data ASC';
-	$komments = $db->query($pattern, array($newsId), 'assoc');
+	$komments = go\DB\query($pattern, array($newsId), 'assoc');
 
 	/*
 	  include( __DIR__ . '/../inc/Gravatar.php');
@@ -129,7 +128,7 @@ function printKoment($newsId)
 		echo comments($komments);
 
 		$respond = (if_adm('')) ? "Присоединяйтесь к обсуждению!" : "Ответить";
-		$idKomment = $db->query('SELECT `id` FROM `komments` ORDER BY `id` DESC LIMIT 1')->el();
+		$idKomment = go\DB\query('SELECT `id` FROM `komments` ORDER BY `id` DESC LIMIT 1')->el();
 
 		?>
 	</ol>

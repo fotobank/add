@@ -23,7 +23,7 @@
 				{
 					$time = time();
 					$user =
-						$db->query("SELECT `id`, `email`, `status`, `timestamp` FROM `users` WHERE `login`=(?string)  LIMIT 1",
+						go\DB\query("SELECT `id`, `email`, `status`, `timestamp` FROM `users` WHERE `login`=(?string)  LIMIT 1",
 							array($login),
 							'numeric');
 // Есть ли пользователь с таким логином?
@@ -39,7 +39,7 @@
 // Успел ли юзер активировать логин? (если нет - удаляем из базы)
 					elseif ($user[3] - $time > 5 * 24 * 60 * 60)
 						{
-							$db->query("DELETE FROM users WHERE login= ? LIMIT 1", array($login));
+							go\DB\query("DELETE FROM users WHERE login= ? LIMIT 1", array($login));
 							echo("<div id='form_act'>Срок активации истёк! Регистрируйтесь, пожалуйста, заново.</div>");
 						}
 // Поверяем "keystring"
@@ -50,7 +50,7 @@
 					else
 						{
 // Если все проверки пройдены - активируем логин!
-							$db->query("UPDATE users SET status = 1 WHERE login='$login'");
+							go\DB\query("UPDATE users SET status = 1 WHERE login='$login'");
 							echo "<div id='form_act'> Активация прошла успешно.</div>";
 						}
 				}

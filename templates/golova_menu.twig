@@ -143,7 +143,9 @@
 
 
 {#сообщения об ошибках и ok#}
+{% if printMsg is defined %}
 {{ printMsg.noJs }} {{ printMsg.withJs }}
+{% endif %}
 
 {#
 <form>

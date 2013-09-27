@@ -37,10 +37,10 @@
 																																				if ($rPass === $rPass2) {
 																																								if (preg_match("/^[0-9a-z\_\-\!\~\*\:\<\>\+\.]{8,20}$/i", $rPass)) {
 																																												$mdPassword = md5($rPass);
-																																												$cnt        = intval($db->query('select count(*) cnt from users where login = ?string',
+																																												$cnt        = intval(go\DB\query('select count(*) cnt from users where login = ?string',
 																																																array($rLogin), 'el'));
 																																												if ($cnt <= 0) {
-																																																$cnt = intval($db->query('select count(*) cnt from users where email = ?string',
+																																																$cnt = intval(go\DB\query('select count(*) cnt from users where email = ?string',
 																																																				array($rEmail),
 																																																				'el'));
 																																																if ($cnt <= 0) {
@@ -108,7 +108,7 @@ LTR;
 																																																																$headers)
 																																																												) {
 																																																																// Если письмо не отправилось, удаляем юзера из базы
-																																																																$db->query('DELETE FROM users WHERE login= (?string) LIMIT 1',
+																																																																go\DB\query('DELETE FROM users WHERE login= (?string) LIMIT 1',
 																																																																				array($rLogin));
 																																																																$err_msg =
 																																																																				"Произошла ошибка при отправке письма.<br> Попробуйте зарегистрироваться еще раз.";

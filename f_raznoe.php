@@ -10,7 +10,7 @@
 
 <div id="cont_fb" style="text-align: center;">
 
-	<? echo $db->query('select txt from content where id = ?i',array(10),'el'); ?>
+	<? echo go\DB\query('select txt from content where id = ?i',array(10),'el'); ?>
 
 </div>
 </div>

@@ -26,11 +26,11 @@ function deleteDir($dir)
       if ($_POST['thumb'] == '/')
          {
          $id = $_POST['confirm_id'];
-         $db->query('delete from photos  where id_album = ?i', array($id));
-	      $db->query('delete from accordions where id_album = ?i', array($id));
-         $album_foto = $db->query('select img from albums where id = ?i', array($id), 'el');
+         go\DB\query('delete from photos  where id_album = ?i', array($id));
+	      go\DB\query('delete from accordions where id_album = ?i', array($id));
+         $album_foto = go\DB\query('select img from albums where id = ?i', array($id), 'el');
          unlink("../images/$album_foto");
-	      $db->query('delete from albums where id = ?i', array($id));
+	      go\DB\query('delete from albums where id = ?i', array($id));
          }
 
       ok_exit('Удален каталог: ' .$_POST['path'], '../canon68452/index.php');

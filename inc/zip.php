@@ -45,11 +45,11 @@ if (isset($_POST['createpdf'])) {
 }
 $link = "/core/users/page.php?user=".$_SESSION['userForm']."#user";
 
-/*$orders = $db->query('SELECT *
+/*$orders = go\DB\query('SELECT *
                      FROM download_photo
                      WHERE id_user = ?i',
                      array($_SESSION['userid']), 'assoc:id_order');*/
-$orders = $db->query('SELECT id
+$orders = go\DB\query('SELECT id
                      FROM orders
                      WHERE id_user = ?i', array($_SESSION['userid']), 'assoc');
 
@@ -92,12 +92,12 @@ if ($orders) {
 															</thead>
 															<tbody>
 															<?
-															$orderFoto = $db->query('SELECT * FROM download_photo WHERE id_order = ?i', array($order['id']), 'assoc');
+															$orderFoto = go\DB\query('SELECT * FROM download_photo WHERE id_order = ?i', array($order['id']), 'assoc');
 
 															if ($orderFoto) {
 																		foreach ($orderFoto as $key => $foto) {
 																					$trClass = ($key % 2 == 0) ? "success" : "warning";
-																					$name = $db->query('SELECT `nm` FROM `photos` WHERE `id` = ?i', array($foto['id_photo']), 'el')
+																					$name = go\DB\query('SELECT `nm` FROM `photos` WHERE `id` = ?i', array($foto['id_photo']), 'el')
 																					?>
 																					<tr class="<?= $trClass ?>">
 																								<td><?=$key + 1?></td>

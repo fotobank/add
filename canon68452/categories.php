@@ -5,16 +5,16 @@ if(!isset($_SESSION['admin_logged']))
 if(isset($_POST['go_add']))
 {
   $nm = $_POST['nm'];
-  $id = $db->query('insert into categories (nm) values (?string)', array($nm), 'id');
-  $id_max = intval($db->query('select `id_num` from categories order by id_num desc limit 1', null, 'el')) + 1;
-  $db->query('update categories set id_num = ?i where id = ?i', array($id_max,$id));
+  $id = go\DB\query('insert into categories (nm) values (?string)', array($nm), 'id');
+  $id_max = intval(go\DB\query('select `id_num` from categories order by id_num desc limit 1', null, 'el')) + 1;
+  go\DB\query('update categories set id_num = ?i where id = ?i', array($id_max,$id));
 }
 
 if(isset($_POST['go_delete']))
 {
 	$id = $_POST['go_delete'];
-	$db->query('update albums set id_category = 0 where id_category = ?i', array($id));
-	$db->query('delete from categories where id_num = ?i', array($id));
+	go\DB\query('update albums set id_category = 0 where id_category = ?i', array($id));
+	go\DB\query('delete from categories where id_num = ?i', array($id));
 }
 
 if(isset($_POST['go_update']))
@@ -22,7 +22,7 @@ if(isset($_POST['go_update']))
   $id = $_POST['go_update'];
   $categories = $_POST['categories'];
   $txt = $_POST['txt'];
-  $db->query("update categories set txt = ?string where id_num = ?i", array($categories,$id));
+  go\DB\query("update categories set txt = ?string where id_num = ?i", array($categories,$id));
 }
 
 if(isset($_POST['go_edit_name']))
@@ -30,22 +30,22 @@ if(isset($_POST['go_edit_name']))
 	$id = $_POST['go_edit_name'];
   $nm = $_POST['nm'];
   if(empty($nm)) $nm = '-----';
-  $db->query('update categories set nm = ?string where id_num = ?i', array($nm,$id));
+  go\DB\query('update categories set nm = ?string where id_num = ?i', array($nm,$id));
 }
 
 if(isset($_POST['go_updown']))
 {
   $id = $_POST['go_updown'];
-  $id_cat = intval($db->query('select id_num from categories where id_num = ?i', array($id), 'el'));
+  $id_cat = intval(go\DB\query('select id_num from categories where id_num = ?i', array($id), 'el'));
   if($id_cat > 0)
   {
     if(isset($_POST['up']))
     {
-    	$rs = $db->query('select id_num from categories where id_num < ?i order by id_num desc limit 0, 1',array($id_cat), 'el');
+    	$rs = go\DB\query('select id_num from categories where id_num < ?i order by id_num desc limit 0, 1',array($id_cat), 'el');
     }
     else
     {
-    	$rs = $db->query('select id_num from categories where id_num > ?i order by id_num asc limit 0, 1',array($id_cat), 'el');
+    	$rs = go\DB\query('select id_num from categories where id_num > ?i order by id_num asc limit 0, 1',array($id_cat), 'el');
     }
   	if($rs)
   	{
@@ -55,9 +55,9 @@ if(isset($_POST['go_updown']))
   }
   if($id_cat > 0 && isset($swap_id) && $swap_id > 0)
   {
-    $db->query('update categories set id_num = 0 where id_num = ?i', array($swap_id));
-    $db->query('update categories set id_num = ?i where id_num = ?i', array($swap_id,$id_cat));
-	$db->query('update categories set id_num = ?i where id_num = 0',array($id_cat));
+    go\DB\query('update categories set id_num = 0 where id_num = ?i', array($swap_id));
+    go\DB\query('update categories set id_num = ?i where id_num = ?i', array($swap_id,$id_cat));
+	go\DB\query('update categories set id_num = ?i where id_num = 0',array($id_cat));
 	$_SESSION['current_kontent'] = $swap_id;
   }
 }
@@ -77,7 +77,7 @@ if(isset($_POST['chenge_kontent']))
    {
    $_SESSION['current_kontent'] = intval($_POST['id']);
    }
-   $rs = $db->query('select * from categories order by id asc', null, 'assoc');
+   $rs = go\DB\query('select * from categories order by id asc', null, 'assoc');
 if($rs)
  {
   if(isset($_SESSION['current_kontent'])) {
@@ -106,7 +106,7 @@ if($rs)
   <?
   }
   if(isset($_SESSION['current_kontent'])): 
-  $rs = $db->query('select * from categories where id_num = ?i', array($_SESSION['current_kontent']), 'assoc');
+  $rs = go\DB\query('select * from categories where id_num = ?i', array($_SESSION['current_kontent']), 'assoc');
   if($rs)
   {
 	foreach ($rs as $ln)

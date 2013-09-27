@@ -8,13 +8,13 @@ if (isset($_POST['go_update'])) {
 	foreach ($_POST as $i => $val) {
 		if ($i != 'go_update') {
 			$nam = explode("|", $i);
-			$db->query('update `nastr` set `param_value` = ?string where `param_name` = ?string and `param_index` = ?i',
+			go\DB\query('update `nastr` set `param_value` = ?string where `param_name` = ?string and `param_index` = ?i',
 						  array($val, $nam['0'], $nam['1']));
 		}
 	}
 }
 
-$rs = $db->query('select * from nastr order by id asc', NULL, 'assoc');
+$rs = go\DB\query('select * from nastr order by id asc', NULL, 'assoc');
 if ($rs) {
 	?>
 

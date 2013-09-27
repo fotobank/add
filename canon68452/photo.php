@@ -18,8 +18,8 @@ if (isset($_POST['go_add']) && isset($_SESSION['current_album']) && intval($_SES
 						$nm = '-----';
 					}
 				try {
-				$id_photo    = $db->query('insert into photos (id_album, nm) values (?i,?string)', array($_SESSION['current_album'],$nm), 'id');
-				$foto_folder = $db->query('select foto_folder from albums where id = ?i',array($_SESSION['current_album']).'el');
+				$id_photo    = go\DB\query('insert into photos (id_album, nm) values (?i,?string)', array($_SESSION['current_album'],$nm), 'id');
+				$foto_folder = go\DB\query('select foto_folder from albums where id = ?i',array($_SESSION['current_album']).'el');
 				} catch (go\DB\Exceptions\Query $e) {
 					echo 'SQL-query: '.$e->getQuery()."\n";
 					echo 'Error description: '.$e->getError()."\n";
@@ -31,11 +31,11 @@ if (isset($_POST['go_add']) && isset($_SESSION['current_album']) && intval($_SES
 
 				if (move_uploaded_file($_FILES['preview']['tmp_name'], $target_name))
 					{
-						$db->query('update photos set img = ?string, price = ?scalar where id = ?i',array($img,$price,$id_photo));
+						go\DB\query('update photos set img = ?string, price = ?scalar where id = ?i',array($img,$price,$id_photo));
 					}
 				else
 					{
-						$db->query('delete from photos where id = ?i', array($id_photo));
+						go\DB\query('delete from photos where id = ?i', array($id_photo));
 						die('Error uploading file!');
 					}
 
@@ -45,7 +45,7 @@ if (isset($_POST['go_add']) && isset($_SESSION['current_album']) && intval($_SES
 
 if (isset($_POST['chenge_album'])) $_SESSION['current_album'] = intval($_POST['album_id']);
 
-$rs = $db->query('select * from albums order by order_field asc', null, 'assoc:order_field');
+$rs = go\DB\query('select * from albums order by order_field asc', null, 'assoc:order_field');
 if ($rs)
 	{
 		if (isset($_SESSION['current_album']))
@@ -87,13 +87,13 @@ if (isset($_SESSION['current_album'])):
 				$pg = 1;
 			}
 		$start = ($pg - 1) * RECORDS_PER_PAGE;
-		$rs = $db->query('SELECT SQL_CALC_FOUND_ROWS * FROM photos where `id_album` = ?i order by `id` asc limit ?i, ?i',
+		$rs = go\DB\query('SELECT SQL_CALC_FOUND_ROWS * FROM photos where `id_album` = ?i order by `id` asc limit ?i, ?i',
 			              array(($_SESSION['current_album']),$start,RECORDS_PER_PAGE), 'assoc');
 		// $rs = mysql_query('select * from photos where id_album = '.intval($_SESSION['current_album']).' order by id asc');
 		if ($rs)
 			{
-				$record_count = intval($db->query('select FOUND_ROWS() as cnt', null, 'el'));
-				$foto_folder  = $db->query('select foto_folder from albums where id = ?i',array($_SESSION['current_album']),'el');
+				$record_count = intval(go\DB\query('select FOUND_ROWS() as cnt', null, 'el'));
+				$foto_folder  = go\DB\query('select foto_folder from albums where id = ?i',array($_SESSION['current_album']),'el');
 				?>
 				<ul class="thumbnails" style="margin-left: -15px;">
 					<?

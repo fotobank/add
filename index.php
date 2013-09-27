@@ -3,7 +3,7 @@
 		include_once (BASEPATH.'inc/head.php');
 
 
-		$renderData['dataDB' ] =  $db->query('select txt from content where id = ?i', array(1), 'el');
+		$renderData['dataDB'] =  go\DB\query('select txt from content where id = ?string', array(1), 'el');
 		$loadTwig('.twig', $renderData);
 
 

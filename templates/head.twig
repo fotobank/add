@@ -7,14 +7,20 @@
 
 	<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="/favicon.ico"/>
 	<link rel="shortcut icon" href="/img/ico_nmain.gif"/>
+	{% if include_CSS is defined %}
 	<link rel="stylesheet" href="{{ merge_files('/cache/head.min.css', 'css',  include_CSS , '',  include_CSS ) }}"/>
+	{% endif %}
 	{#<link rel="stylesheet" href="/js/visLightBox/data/vlboxCustom.css"/>
 	<link rel="stylesheet" href="/js/visLightBox/data/visuallightbox.css"/>
 	<link rel="stylesheet" href="/js/prettyPhoto/css/prettyPhoto.css"/>
 	<link rel="stylesheet" href="/js/badger/badger.css"/>#}
+	{% if include_Js is defined and prioritize_Js is defined %}
 	<script type="text/JavaScript" src="{{ merge_files('/cache/head.min.js', 'js',  include_Js , '',  prioritize_Js ) }}"></script>
+	{% endif %}
+	{% if odebug is defined %}
 	{{ odebug.setCss(odebugCSS) }}
 	{{ odebug.setCssLog(odebugCSSLOG) }}
+	{% endif %}
 	<link rel="stylesheet" href="/css/main.css" type="text/css">
 
 	<!--[if lt IE 9]>

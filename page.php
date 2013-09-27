@@ -50,7 +50,7 @@
 									$form->set("showAfterSuccess", true); // показывать форму после правильного ввода
 									$form->set("cleanAfterSuccess", false); // очищать поля после правильного ввода
 									$form->JSprotection("36CxgD");
-									$loader = $db->query('SELECT `login`, `email`,  `skype`,  `phone`,  `block`,  `mail_me`, `us_name`,  `us_surname`, `city` FROM `users` WHERE `id` = ?i',
+									$loader = go\DB\query('SELECT `login`, `email`,  `skype`,  `phone`,  `block`,  `mail_me`, `us_name`,  `us_surname`, `city` FROM `users` WHERE `id` = ?i',
 																														array($session->get('userid')), 'row');
 									$block = ($loader['block'] == 1) ? 'Для правильной работы почтовых служб, пожалуйста, указывайте свои точные данные.
 																																															Ваши контактные данные будут использоваться только в пределах данного
@@ -98,7 +98,7 @@
 		                                                        																														Длина от 3 до 20 символов.");
 
 									/** рендер страницы */
-									//	$renderData['dataDB' ] =  $db->query('select txt from content where id = ?i', array(1), 'el');
+									//	$renderData['dataDB' ] =  go\DB\query('select txt from content where id = ?i', array(1), 'el');
 									$renderData['form'] = $form;
 									$loadTwig('.twig', $renderData);
 									/**
@@ -113,7 +113,7 @@
 										* удаление аккаунта
 										*/
 									if (isset($result['delUser'])) {
-												$db->query('DELETE FROM `users` WHERE `id`=?i', array($_SESSION['userid']));
+												go\DB\query('DELETE FROM `users` WHERE `id`=?i', array($_SESSION['userid']));
 												unset($result);
 												$db->close();
 												session_destroy();
@@ -129,7 +129,7 @@
 															unset($result['pass2']);
 												}
 												$result['mail_me'] = isset($result['mail_me']) ? $result['mail_me'] : 'off';
-												$db->query('UPDATE `users` SET ?set WHERE `id`=?i', array($result, $session->get('userid')));
+												go\DB\query('UPDATE `users` SET ?set WHERE `id`=?i', array($result, $session->get('userid')));
 												$session->set('user', $result['login']);
 												$session->set('us_name', $result['us_name']);
 									}

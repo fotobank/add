@@ -13,11 +13,11 @@
 	if (isset($_POST['go_delete']))
 		{
 			$id          = $_POST['go_delete'];
-			$img_name    = $db->query('select `img` from photos where `id` = ?i',array($id), 'el');
-			$foto_folder = $db->query('select `foto_folder` from albums where `id` = ?i',array($_SESSION['current_album']),'el');
+			$img_name    = go\DB\query('select `img` from photos where `id` = ?i',array($id), 'el');
+			$foto_folder = go\DB\query('select `foto_folder` from albums where `id` = ?i',array($_SESSION['current_album']),'el');
 			$source      = $_SERVER['DOCUMENT_ROOT'].$foto_folder.intval($_SESSION['current_album']).'/'.$img_name;
 			if(isset($img_name)) unlink($source);
-			$db->query('delete from photos where id = ?i',array($id));
+			go\DB\query('delete from photos where id = ?i',array($id));
 	   	header("Content-type: image/png");
 			echo "<img style='width: 140px; float: left; margin-left: 5px;' src= '/img/not_foto.png'>";
 		}
@@ -30,7 +30,7 @@
 				{
 					$nm = 'Не заданно';
 				}
-			$db->query('update photos set nm = ?string where id = ?i', array($nm,$id));
+			go\DB\query('update photos set nm = ?string where id = ?i', array($nm,$id));
 		}
 
 
@@ -38,5 +38,5 @@
 		{
 			$id    = $_POST['go_edit_price'];
 			$price = $_POST['price'];
-			$db->query('update photos set price = ?string where id = ?i', array($price,$id));
+			go\DB\query('update photos set price = ?string where id = ?i', array($price,$id));
 		}

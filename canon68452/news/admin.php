@@ -4,8 +4,7 @@ include 'sys/func.php';
 if(intval(@$_COOKIE['admnewswar'])>2){
 	echo '<div class="title">Вы превысили количество попыток вхoда,повторите через час</div>';exit;}
 
-  $db = go\DB\Storage::getInstance()->get('db-for-data');
-  $mp = $db->query('SELECT * FROM `config` WHERE id=?i',array(1),'row');
+  $mp = go\DB\query('SELECT * FROM `config` WHERE id=?i',array(1),'row');
 
 switch(@$_GET['act']){
 	default:

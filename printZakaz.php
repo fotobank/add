@@ -23,7 +23,7 @@
   if(!isset($_GET['key']))
     err_exit('Ключ не найден!');
   $key = $_GET['key'];
-  $data = $db->query('select * from `print` where `key` = ?string', array($key), 'row');
+  $data = go\DB\query('select * from `print` where `key` = ?string', array($key), 'row');
 //		  dump_r($data);
 
 							$renderData['block' ] = false;
@@ -38,14 +38,12 @@ if(!$data)
 else
   {
 
-					$db = go\DB\Storage::getInstance()->get('db-for-data');
-
     if((time() - intval($data['dt']) > 172800) && $data['id_nal'] != 'пополнение баланса сайта')
 		{
 
 		  //Раскомментировать следующую строку, если надо удалять просроченные записи о фото
-		  // $db->query('delete from print where id = ?',array($data['id']));
-		  // $db->query('delete from order_print where id_print = ?',array($data['id']));
+		  // go\DB\query('delete from print where id = ?',array($data['id']));
+		  // go\DB\query('delete from order_print where id_print = ?',array($data['id']));
 					$renderData['block' ] = 'time';
 
 		}
@@ -73,10 +71,10 @@ else
 
 		                                            /** новый заказ*/
 																	try {
-																			$db->query('UPDATE `print` SET `zakaz` = ?b WHERE id = ?i', array('1',$data['id']));
+																			go\DB\query('UPDATE `print` SET `zakaz` = ?b WHERE id = ?i', array('1',$data['id']));
 																			if ($data['id_nal'] != 'наложенный платеж')
 																					{
-																					$db->query('UPDATE `users` SET `balans` = ?f WHERE id = ?i',array($balans,$_SESSION['userid']));
+																					go\DB\query('UPDATE `users` SET `balans` = ?f WHERE id = ?i',array($balans,$_SESSION['userid']));
 																					}
 																			}
 																	catch (go\DB\Exceptions\Exception $e)
@@ -101,7 +99,7 @@ else
 
 									/** письмо фотографу */
 		  $letter 	= '<html><body><h2>Заказ №'.$data['id'].'</h2>';
-    $user 			= $db->query('SELECT * FROM `users` WHERE `id` = ?i',array($data['id_user']),'row');
+    $user 			= go\DB\query('SELECT * FROM `users` WHERE `id` = ?i',array($data['id_user']),'row');
 		  $letter .= "<b>Пользователь:</b> ".$user['us_name'].' '.$user['us_surname']."<br>";
 		  $letter .= "<b>E-mail пользователя:</b> ".$data['email']."<br>";
 		  $letter .= "<b>Id пользователя:</b> ".$data['id_user']."<br>";
@@ -121,15 +119,15 @@ else
 			 }
 		  if($data['id_dost'] == 'Самовывоз из студии (в Одессе)') $letter .= "<b>Адрес студии для получения фотографий:</b> '".$data['adr_studii']."'<br>";
 		  $letter .= "<b>Примечание пользователя:</b><br>".$data['comm']."<br>";
-		  $nmAlb = $db->query('SELECT a.nm FROM albums a, photos p, order_print o WHERE a.id = p.id_album  AND o.id_photo = p.id AND o.id_print = ?i LIMIT 1',
+		  $nmAlb = go\DB\query('SELECT a.nm FROM albums a, photos p, order_print o WHERE a.id = p.id_album  AND o.id_photo = p.id AND o.id_print = ?i LIMIT 1',
 																								array($data['id']),'el');
-		  $photo_data = $db->query('select * from `order_print` where `id_print` = ?i', array($data['id']), 'assoc');
+		  $photo_data = go\DB\query('select * from `order_print` where `id_print` = ?i', array($data['id']), 'assoc');
 		  $letter .= "<br><b>Название альбома:</b> '".$nmAlb."'<br>";
 		  $letter .= "<b>Номер и количество фотографий:</b><br>";
 		  $koll = 0;
 		  foreach ($photo_data as  $val)
 			 {
-				$name = $db->query('select `nm` from `photos` where id =?i',array($val['id_photo']),'el');
+				$name = go\DB\query('select `nm` from `photos` where id =?i',array($val['id_photo']),'el');
 				$letter .= "Фотография № ".$name." - ".$val['koll']."шт.<br>";
 				$koll += $val['koll'];
 			 }

@@ -35,8 +35,8 @@ if($link->check($_SERVER['SCRIPT_NAME'].'?go='.trim(isset($_GET['go'])?$_GET['go
 
 if (isset($_GET['idZakaz']))
 {
-  $data       = $db->query('select * from `print` where `id` = ?i', array($_GET['idZakaz']), 'row');
-  $photo_data = $db->query('select * from `order_print` where `id_print` = ?i', array($data['id']), 'assoc');
+  $data       = go\DB\query('select * from `print` where `id` = ?i', array($_GET['idZakaz']), 'row');
+  $photo_data = go\DB\query('select * from `order_print` where `id_print` = ?i', array($data['id']), 'assoc');
 if (!$photo_data)
   {
 	 ?>
@@ -53,7 +53,7 @@ else
   $FTP_PSWD_FROM = get_param('ftp_pass', 0);
   if ($data['id_dost'] == 'Самовывоз из студии (в Одессе)')
 	 {
-		$param_index = $db->query('SELECT `param_index` FROM `nastr` WHERE `param_value` = ?string',
+		$param_index = go\DB\query('SELECT `param_index` FROM `nastr` WHERE `param_value` = ?string',
 		  array($data['adr_studii']),'el');
 		$FTP_HOST_TO = get_param('ftp_pecat_host', $param_index);
 		$FTP_USER_TO = get_param('ftp_pecat_user', $param_index);
@@ -111,7 +111,7 @@ if ($FTP_HOST_FROM && $FTP_USER_FROM && $FTP_PSWD_FROM)
 		}
 	 foreach ($photo_data as $foto)
 		{
-		  $from = $db->query('select p.ftp_path
+		  $from = go\DB\query('select p.ftp_path
 															 FROM order_print  o, photos  p
 															 WHERE o.id_print = ?i
 															 AND o.id_photo = p.id

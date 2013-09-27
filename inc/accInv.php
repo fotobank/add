@@ -30,13 +30,13 @@ if (!isset($_SESSION['logged']))
 	 </div>
   <?
   } else {
-  $rs = $db->query('SELECT `transaction_id`,`id`,`status` FROM `account_inv` WHERE `id_user` = ?i  ORDER BY `id` DESC LIMIT 2',array($_SESSION['userid']),'assoc');
+  $rs = go\DB\query('SELECT `transaction_id`,`id`,`status` FROM `account_inv` WHERE `id_user` = ?i  ORDER BY `id` DESC LIMIT 2',array($_SESSION['userid']),'assoc');
 
   $id = ($rs)?$rs[0]['id']:false;
   if($rs && $rs[0]['status'] != '' || $id == false)
 	 {
   // чистка базы от невыполненных запросов
-  /*$db->query('DELETE account_inv, actions
+  /*go\DB\query('DELETE account_inv, actions
 				  FROM account_inv, actions
 				  WHERE account_inv.status = (?string)
 				  AND  account_inv.id_user = ?i
@@ -44,8 +44,8 @@ if (!isset($_SESSION['logged']))
 				  ',array('',$_SESSION['userid']));*/
 
   // id пополнения счета
-	 $id = $db->query('INSERT INTO `account_inv` (`id_user`) VALUES (?i)',array($_SESSION['userid']),'id');
-	 $db->query('INSERT INTO `actions` (`ip`,`id_user`,`user_event`,`id_account_inv`,`brauzer`)
+	 $id = go\DB\query('INSERT INTO `account_inv` (`id_user`) VALUES (?i)',array($_SESSION['userid']),'id');
+	 go\DB\query('INSERT INTO `actions` (`ip`,`id_user`,`user_event`,`id_account_inv`,`brauzer`)
 	 VALUES (?string ,?i, ?string, ?i,?string)',array(Get_IP(),$_SESSION['userid'],'пополнение счета',$id,$_SERVER['HTTP_USER_AGENT']),'id');
 	 }
 ?>

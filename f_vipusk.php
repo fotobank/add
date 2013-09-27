@@ -4,7 +4,7 @@
 
 
 			$renderData['autoPrev']            = new autoPrev();
-			$renderData['txt']                 = $db->query('select txt from content where id = ?i', array(9), 'el');
+			$renderData['txt']                 = go\DB\query('select txt from content where id = ?i', array(9), 'el');
 			$renderData['include_Js_f_svadbi'] = array('js/prettyPhoto/js/jquery.prettyPhoto.js', 'js/montage/js/jquery.montage.js');
 			$loadTwig('.twig', $renderData);
 

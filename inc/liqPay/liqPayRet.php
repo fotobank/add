@@ -42,7 +42,7 @@
 					 </div>
 					 <?
 					 $user_balans += floatval($xmlArray['amount']);
-					 $db->query('update users set balans = ?f where id = ?i',array($user_balans, $_SESSION['userid']));
+					 go\DB\query('update users set balans = ?f where id = ?i',array($user_balans, $_SESSION['userid']));
 					 echo   "<script type='text/javascript'>
 					 $('#balans').empty().append($user_balans);
 					 </script>";
@@ -83,7 +83,7 @@
 				  'sender_phone' => $xmlArray['sender_phone'],
 				);
 				$id = $xmlArray['order_id'];
-            $db->query('UPDATE `account_inv` SET ?set WHERE `id`=?i',array($set,$id));
+            go\DB\query('UPDATE `account_inv` SET ?set WHERE `id`=?i',array($set,$id));
 			 }
 		}
   }

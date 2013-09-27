@@ -1,6 +1,6 @@
 <?php
 		// <!-- СООБЩЕНИЕ ОБ ОШИБКЕ-->
-		$db->close();
+       go\DB\Storage::getInstance()->get()->close();
 		//		<!-- Piwik -->
 		if ($_SERVER['HTTP_HOST'] == stristr(mb_substr(get_domain(), 0, -1), "al")) {
 				// Эта функция вызовет API, чтобы получить лучшие ключевые слова для данного URL.

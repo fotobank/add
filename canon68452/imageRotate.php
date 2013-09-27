@@ -13,8 +13,8 @@
 	 {
 		$id          = $_POST['go_turn'];
 		$povorot     = intval($_POST['povorot']);
-		$img_name    = $db->query('select img from photos where id = ?i',array($id), 'el');
-		$foto_folder = $db->query('select foto_folder from albums where id = ?i', array($_SESSION['current_album']),'el');
+		$img_name    = go\DB\query('select img from photos where id = ?i',array($id), 'el');
+		$foto_folder = go\DB\query('select foto_folder from albums where id = ?i', array($_SESSION['current_album']),'el');
 		$source      = $_SERVER['DOCUMENT_ROOT'].$foto_folder.intval($_SESSION['current_album']).'/'.$img_name;
 		$tmp_file    = $_SERVER['DOCUMENT_ROOT'].'/tmp/'.$img_name;
 		$ext         = strtolower(substr($source, strrpos($source, '.') + 1));

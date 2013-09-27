@@ -40,7 +40,7 @@
 						}
 						$eAll = $e1.$e2.$e3.$e4.$e5;
 			}
-			$dataDB       = $db->query('select txt from content where id = ?i', array(4), 'el');
+			$dataDB       = go\DB\query('select txt from content where id = ?i', array(4), 'el');
 			$dataKontakty = array(
 						// данные из запроса базы данных
 						'dataDB' => $dataDB,

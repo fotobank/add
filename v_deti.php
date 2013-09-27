@@ -10,7 +10,7 @@
   <a class="small button full blue" href="uslugi.php"><span>Назад к категориям</span></a>
 
 <div id="cont_fb">
-	<? echo $db->query('select txt from content where id = ?i',array(12),'el'); ?>
+	<? echo go\DB\query('select txt from content where id = ?i',array(12),'el'); ?>
 </div>
 </div>
 <div class="end_content"></div>

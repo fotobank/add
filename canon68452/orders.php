@@ -5,9 +5,9 @@ if (!isset($_SESSION['admin_logged'])) {
 define('RECORDS_PER_PAGE', 20);
 if (isset($_POST['delete_order'])) {
 	$id = $_POST['delete_order'];
-	$db->query("delete from orders where id = ?i", array($id));
-	$db->query("delete from order_items where id_order = ?i", array($id));
-	$db->query("delete from download_photo where id_order = ?i", array($id));
+	go\DB\query("delete from orders where id = ?i", array($id));
+	go\DB\query("delete from order_items where id_order = ?i", array($id));
+	go\DB\query("delete from download_photo where id_order = ?i", array($id));
 }
 
 $pg = isset($_GET['pg']) ? intval($_GET['pg']) : 1;
@@ -16,7 +16,7 @@ if ($pg < 1) {
 }
 $start = ($pg - 1) * RECORDS_PER_PAGE;
 
-$rs = $db->query('select SQL_CALC_FOUND_ROWS r.*, u.login, u.us_name
+$rs = go\DB\query('select SQL_CALC_FOUND_ROWS r.*, u.login, u.us_name
                      from orders r, users u
                     where u.id = r.id_user
                     order by id desc limit ?i, ?i', array($start, RECORDS_PER_PAGE), 'assoc');
@@ -25,7 +25,7 @@ $rs = $db->query('select SQL_CALC_FOUND_ROWS r.*, u.login, u.us_name
 	<ul class="nav nav-tabs">
 		<?
 		if ($rs) {
-			$record_count = intval($db->query('SELECT FOUND_ROWS() as cnt', NULL, 'el'));
+			$record_count = intval(go\DB\query('SELECT FOUND_ROWS() as cnt', NULL, 'el'));
 			$n            = 1;
 			foreach ($rs as $ln) {
 				if ($n == 1) {
@@ -43,7 +43,7 @@ $rs = $db->query('select SQL_CALC_FOUND_ROWS r.*, u.login, u.us_name
 		?>
 	</ul>
 	<?
-	$rs = $db->query('select SQL_CALC_FOUND_ROWS r.*, u.login, u.us_name
+	$rs = go\DB\query('select SQL_CALC_FOUND_ROWS r.*, u.login, u.us_name
                      from orders r, users u
                     where u.id = r.id_user
 	                 order by id desc limit ?i, ?i', array($start, RECORDS_PER_PAGE), 'assoc');
@@ -86,7 +86,7 @@ $rs = $db->query('select SQL_CALC_FOUND_ROWS r.*, u.login, u.us_name
 							</td>
 						</tr>
 						<?
-						$tmp = $db->query('select o.*, p.img, a.nm AS anm, p.nm AS pnm, p.price, p.id_album, a.foto_folder
+						$tmp = go\DB\query('select o.*, p.img, a.nm AS anm, p.nm AS pnm, p.price, p.id_album, a.foto_folder
   		                from download_photo o, photos p, albums a
   		                where p.id = o.id_photo and p.id_album = a.id and o.id_order = ?i', array($ln['id']), 'assoc');
 
@@ -120,10 +120,10 @@ $rs = $db->query('select SQL_CALC_FOUND_ROWS r.*, u.login, u.us_name
 						}
 						$sum = $sum.' грн.';
 						if ($kol == 0) {
-							$db->query('select SQL_CALC_FOUND_ROWS o.id_order
+							go\DB\query('select SQL_CALC_FOUND_ROWS o.id_order
   		                from order_items o
   		                where o.id_order = ?i', array($ln['id']), 'assoc');
-							$kol = $db->query("SELECT FOUND_ROWS()", NULL, 'el');
+							$kol = go\DB\query("SELECT FOUND_ROWS()", NULL, 'el');
 							$sum = 'фотографии удаленны из базы';
 						}
 						?>

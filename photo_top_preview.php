@@ -10,11 +10,11 @@ header('Content-type: text/html; charset=windows-1251');
 		$id = intval($_GET['id']);
 		if ($id > 0)
 			{
-				$rs = $db->query('select * from `photos` where `id` = ?i',array($id),'row');
+				$rs = go\DB\query('select * from `photos` where `id` = ?i',array($id),'row');
 				if ($rs)
 					{
 						$photo_data = $rs;
-						$id_foto = $db->query('select `id` from `photos` where `id_album` = ?i
+						$id_foto = go\DB\query('select `id` from `photos` where `id_album` = ?i
 							       order by votes desc, id asc limit 0, 5',array($photo_data['id_album']),'col');
 						if ($id_foto)
 							{
@@ -84,8 +84,8 @@ header('Content-type: text/html; charset=windows-1251');
 												<td valign="top" width="33%" align="right">
 													<?
 													$id_album = isset($_SESSION['current_album']) ? $_SESSION['current_album'] : null;
-													$vote_price = floatval($db->query('select vote_price from albums where id = ?i', array($id_album), 'el'));
-												   $user_balans = $db->query('select balans from users where id = ?i',array($_SESSION['userid']),'el');
+													$vote_price = floatval(go\DB\query('select vote_price from albums where id = ?i', array($id_album), 'el'));
+												   $user_balans = go\DB\query('select balans from users where id = ?i',array($_SESSION['userid']),'el');
 												  ?>
 												  <input type="button" value="Голосовать" style="cursor: pointer;" onClick="goVote('<?=$user_balans?>','<?=$vote_price?>','<?=$photo_data['id']?>');"/><br/>
 													Голосов: (<?=$photo_data['votes']?>)

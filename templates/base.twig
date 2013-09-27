@@ -36,6 +36,7 @@
 					<div id="main">
 
 						{#вывод ошибок#}
+						{% if odebug is defined %}
 						{% if odebug.showRealtime() == true and odebug.isError > 0 %}
 							{% block showDebug %}
 								<div class="center">
@@ -49,6 +50,7 @@
 									</div>
 								</div>
 							{% endblock showDebug %}
+						{% endif %}
 						{% endif %}
 
 

@@ -16,7 +16,6 @@
 
 			require_once (dirname(__FILE__).'/config.php');
 			require_once (dirname(__FILE__).'/func.php');
-			$db = go\DB\Storage::getInstance()->get('db-for-data');
 
 
 if(isset($_POST['goZakazDel'])) // кнопка удаления фотографий из корзины
@@ -51,7 +50,7 @@ if(isset($_POST['goZakazAdd'])) // изменение количества фотографий в корзине
 								$fDel = 1;
 							}
 				   }
-				$rs = $db->query('SELECT * FROM `photos` WHERE `id` = ?i',array($id),'row');
+				$rs = go\DB\query('SELECT * FROM `photos` WHERE `id` = ?i',array($id),'row');
 				$print = iTogo();
 				$prKoll = $print['koll']; // общее кол-во фото для печати
 				$koll = $_SESSION['basket'][$id]; // кол-во фото для печати

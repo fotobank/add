@@ -73,8 +73,7 @@ function imageresize($outfile,$infile,$neww,$newh,$quality,$warermark=0,$ip_mark
 			$sIP = Get_IP(); // Определяем IP посетителя
 				  // $infile = iconv('utf-8', 'cp1251', $infile);
 			$zap = basename ($infile);
-			$db = go\DB\Storage::getInstance()->get('db-for-data');
-			$rs = $db->query('SELECT nm FROM photos WHERE img = ?string',array($zap), 'el');
+			$rs = go\DB\query('SELECT nm FROM photos WHERE img = ?string',array($zap), 'el');
 			$text = win2uni("Ваш IP-adress: {$sIP}, фотография # {$rs}");
       //  imagestring($img_o, 3, $w_n/2-240, $h_n*0.05, $text, $iTextColor); // Рисуем текст
 			

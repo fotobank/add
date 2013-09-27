@@ -13,17 +13,14 @@ if  ((!isset($_COOKIE['cryptcookietest'])) and ($_GET[$_GET['sn']]==""))
 if ($_GET[$_GET['sn']]=="") unset ($_GET['sn']);
 require_once(__DIR__.'/../../inc/secureSession.php');
 startSession();
-//session_start();
 
 
-// N'accepte que les fichiers de config du meme répertoire
 if (is_file($_GET['cfg']) and dirname($_GET['cfg'])=='.' ) $_SESSION['configfile']=$_GET['cfg']; 
    else  $_SESSION['configfile']="cryptographp.cfg.php";
 
 include($_SESSION['configfile']);  
 
 
-// Vérifie si l'utilisateur a le droit de (re)générer un cryptogramme
 if ($_SESSION['cryptcptuse']>=$cryptusemax) {
    header("Content-type: image/png");
    readfile('images/erreur1.png'); 
@@ -43,7 +40,7 @@ if ($delai < $cryptusetimer) {
           }
    }
 
-// Création du cryptogramme temporaire
+
 $imgtmp = imagecreatetruecolor($cryptwidth,$cryptheight);
 $blank  = imagecolorallocate($imgtmp,255,255,255);
 $black   = imagecolorallocate($imgtmp,0,0,0);
@@ -72,7 +69,7 @@ for ($i=1;$i<= $charnb;$i++) {
      $x +=$charspace;
      } 
 
-// Calcul du racadrage horizontal du cryptogramme temporaire
+
 $xbegin=0;
 $x=0;
 while (($x<$cryptwidth)and(!$xbegin)) {
@@ -99,8 +96,7 @@ $xvariation = round(($cryptwidth/2)-(($xend-$xbegin)/2));
 imagedestroy ($imgtmp);
 
 
-// Création du cryptogramme définitif
-// Création du fond
+
 $img = imagecreatetruecolor($cryptwidth,$cryptheight); 
 
 if ($bgimg and is_dir($bgimg)) {
@@ -129,7 +125,7 @@ if ($bgimg) {
 
 function ecriture()
 {
-// Création de l'écriture
+
 global  $img, $ink, $charR, $charG, $charB, $charclear, $xvariation, $charnb, $charcolorrnd, $charcolorrndlevel, $tword, $charspace;
 if (function_exists ('imagecolorallocatealpha')) $ink = imagecolorallocatealpha($img,$charR,$charG,$charB,$charclear);
    else $ink = imagecolorallocate ($img,$charR,$charG,$charB);
@@ -137,7 +133,7 @@ if (function_exists ('imagecolorallocatealpha')) $ink = imagecolorallocatealpha(
 $x = $xvariation;
 for ($i=1;$i<=$charnb;$i++) {       
        
-    if ($charcolorrnd){   // Choisit des couleurs au hasard
+    if ($charcolorrnd){
        $ok = false;
        do {
           $rndR = rand(0,255); $rndG = rand(0,255); $rndB = rand(0,255);
@@ -164,7 +160,7 @@ for ($i=1;$i<=$charnb;$i++) {
 
 
 function noisecolor()
-// Fonction permettant de déterminer la couleur du bruit et la forme du pinceau
+
  {
  global $img, $noisecolorchar, $ink, $bg, $brushsize;
  switch ($noisecolorchar) {
@@ -184,7 +180,7 @@ function noisecolor()
 
 
 function bruit()
-// Ajout de bruits: point, lignes et cercles aléatoires
+
 {
 global $noisepxmin, $noisepxmax, $noiselinemin, $noiselinemax, $nbcirclemin, $nbcirclemax,$img, $cryptwidth, $cryptheight;
 $nbpx = rand($noisepxmin,$noisepxmax);
@@ -205,28 +201,22 @@ if ($noiseup) {
           }
 
 
-// Création du cadre
+
 if ($bgframe) {
    $framecol = imagecolorallocate($img,($bgR*3+$charR)/4,($bgG*3+$charG)/4,($bgB*3+$charB)/4);
    imagerectangle($img,0,0,$cryptwidth-1,$cryptheight-1,$framecol);
    }
  
-            
-// Transformations supplémentaires: Grayscale et Brouillage
-// Vérifie si la fonction existe dans la version PHP installée
+
 if (function_exists('imagefilter')) {
    if ($cryptgrayscal) imagefilter ( $img,IMG_FILTER_GRAYSCALE);
    if ($cryptgaussianblur) imagefilter ( $img,IMG_FILTER_GAUSSIAN_BLUR);
    }
 
 
-// Conversion du cryptogramme en Majuscule si insensibilité à la casse
 $word = ($difuplow?$word:strtoupper($word));
 
 
-// Retourne 2 informations dans la session: 
-// - Le code du cryptogramme (crypté ou pas)
-// - La Date/Heure de la création du cryptogramme au format integer "TimeStamp" 
 switch (strtoupper($cryptsecure)) {    
        case "MD5"  : $_SESSION['cryptcode'] = md5($word); break;
        case "SHA1" : $_SESSION['cryptcode'] = sha1($word); break;
@@ -236,7 +226,6 @@ $_SESSION['crypttime'] = time();
 $_SESSION['cryptcptuse']++;       
   
 
-// Envoi de l'image finale au navigateur 
 switch (strtoupper($cryptformat)) {  
        case "JPG"  :
 	     case "JPEG" : if (imagetypes() & IMG_JPG)  {

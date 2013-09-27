@@ -21,7 +21,7 @@
 
   if(isset($_POST['prMail']))
 	 {
-		$user_data = $db->query('SELECT * FROM `users` WHERE id = ?i', array($_SESSION['userid']), 'row');
+		$user_data = go\DB\query('SELECT * FROM `users` WHERE id = ?i', array($_SESSION['userid']), 'row');
 		$letter = "Здравствуйте, ".iconv('utf-8', 'windows-1251', $user_data['us_name'])."!\r\n";
 		$letter .= "Кто-то (возможно, Вы) запросил реквизиты пополнения счета для сайта  http://".$_SERVER['HTTP_HOST']."\r\n";
 		$letter .= "Если вы не запрашивали реквизиты, пожалуйста, просто удалите это письмо.\r\n\n";

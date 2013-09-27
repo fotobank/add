@@ -32,7 +32,7 @@
 						'us_name_komm'	 => $comment_author,
 						'url_komm' 		 => $comment_author_url );
 
-	 $db->query('UPDATE `komments` SET ?set WHERE `id` = ?i', array($set, $comment_post_ID));
+	 go\DB\query('UPDATE `komments` SET ?set WHERE `id` = ?i', array($set, $comment_post_ID));
   }
 
 
@@ -50,5 +50,5 @@
 		$pattern = 'INSERT INTO komments (news_id, parents_id , text, data, email_komm, us_name_komm, url_komm) VALUES (?i, ?i, ?string, ?i, ?string, ?string, ?string)';
 		$dt    = array($news_id, $comment_parent, $comment_content, time(), $comment_author_email, $comment_author, $comment_author_url);
 	   }
-	   $db->query($pattern, $dt);
+	   go\DB\query($pattern, $dt);
   }

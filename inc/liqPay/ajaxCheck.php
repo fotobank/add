@@ -29,7 +29,7 @@
   if(isset($_POST['trId']))
 	 {
 
-		$rs = $db->query('SELECT `transaction_id`,`id`,`status`,`amount` FROM `account_inv` WHERE `id_user` = ?i  ORDER BY `id` DESC LIMIT 2',array($_SESSION['userid']),'assoc');
+		$rs = go\DB\query('SELECT `transaction_id`,`id`,`status`,`amount` FROM `account_inv` WHERE `id_user` = ?i  ORDER BY `id` DESC LIMIT 2',array($_SESSION['userid']),'assoc');
 
 		$transaction_id = $rs[1]['transaction_id'];
 		$transaction_order_id = $rs[1]['id'];
@@ -88,10 +88,10 @@
 
 		if ($status == "success" && $rs[1]['status'] != "success")
 		  {
-			 $user_balans = $db->query('select balans from users where id = ?i',array($_SESSION['userid']),'el');
+			 $user_balans = go\DB\query('select balans from users where id = ?i',array($_SESSION['userid']),'el');
 			 $user_balans += floatval($rs[1]['amount']);
-			 $db->query('update `users` set `balans` = ?f where `id` = ?i',array($user_balans, $_SESSION['userid']));
-			 $db->query('update `account_inv` set `status` = ?string where `id` = ?i',array($status, $rs[1]['id']));
+			 go\DB\query('update `users` set `balans` = ?f where `id` = ?i',array($user_balans, $_SESSION['userid']));
+			 go\DB\query('update `account_inv` set `status` = ?string where `id` = ?i',array($status, $rs[1]['id']));
 			 echo   "<script type='text/javascript'>
 					 $('#balans').empty().append($user_balans);
 					 </script>";

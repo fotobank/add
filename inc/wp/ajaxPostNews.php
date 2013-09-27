@@ -16,8 +16,8 @@
 	  {
 		 $idNews 	 = GetFormValue($_POST['idNews']);
 		 $idKomments = GetFormValue($_POST['idKomments']);
-		 $komment 	 = $db->query('select * from `komments` where `id` = ?i',array($idKomments), 'row');
-		 $user	 	 = $db->query('select * from `users` where `id` = ?i',array($komment['user_id']), 'row');
+		 $komment 	 = go\DB\query('select * from `komments` where `id` = ?i',array($idKomments), 'row');
+		 $user	 	 = go\DB\query('select * from `users` where `id` = ?i',array($komment['user_id']), 'row');
 		 $author_r	 = iconv('windows-1251', 'utf-8',  $user['us_name']);
 
 		 $email 	 =  ($komment['email_komm'])?$komment['email_komm']:$user['email'];
@@ -43,7 +43,7 @@
 
 		$pattern = 'INSERT INTO komments (news_id, parents_id , text, data, email_komm, us_name_komm, url_komm) VALUES (?i, ?i, ?string, ?i, ?string, ?string, ?string)';
 		$dt = array($newsId, $comment_parent, $content, time(), $comment_author_email, $comment_author, $comment_author_url);
-		$db->query($pattern, $dt);
+		go\DB\query($pattern, $dt);
 	 }
 
   // изменить контент
@@ -65,7 +65,7 @@
 							 'us_name_komm' => $comment_author,
 							 'url_komm' 	 => $comment_author_url );
 
-		  $db->query('UPDATE `komments` SET ?set WHERE `id` = ?i', array($set, $idKomments));
+		  go\DB\query('UPDATE `komments` SET ?set WHERE `id` = ?i', array($set, $idKomments));
 	  }
 
 
@@ -73,7 +73,7 @@
   if (isset($_POST['idDelKomments'])) {
 
 	 $id = trim($_POST['idDelKomments']);
-	 $db->query('delete from `komments` where `id` = ?i', array($id));
+	 go\DB\query('delete from `komments` where `id` = ?i', array($id));
 	 echo 'Комментарий удален';
 
 }

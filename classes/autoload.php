@@ -52,6 +52,9 @@ class autoload {
 			if (strpos($className, 'Twig') === 0) {
 				return false;
 			}
+						if (strpos($className, 'go\DB') === 0) {
+										return false;
+						}
 
 			if ($lastNsPos = strrpos($className, '\\')) {
 				$namespace = substr($className, 0, $lastNsPos);
@@ -61,8 +64,8 @@ class autoload {
 			$fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className).'.php';
 			$file = site_path.'classes'.DIRSEP.$fileName;
 
-
 			try {
+//		echo $file.'<br>';
 				require_once $file;
 			} catch (Exception $e) {
 

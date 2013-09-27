@@ -129,8 +129,7 @@ class form_Validator {
 		return $args[3];
 	 }
 
-	 $db = go\DB\Storage::getInstance()->get('db-for-data');
-	 $rs = $db->query('SELECT `id` FROM `users` WHERE `login`=?string',array($value),'el');
+	 $rs = go\DB\query('SELECT `id` FROM `users` WHERE `login`=?string',array($value),'el');
 
 	 if ($rs && $rs != $_SESSION['userid']) {
 		return "ѕользователь с таким логином уже существует, выберите, пожалуйста, другой.";

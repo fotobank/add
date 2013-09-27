@@ -11,7 +11,7 @@
 			 define ( 'BASEPATH' , realpath ( __DIR__ ) . '/' , TRUE );
 			 require_once  (BASEPATH.'inc/head.php');
 
-			 $dataDB               = $db->query('select txt from content where id = ?i', array(1), 'el');
+			 $dataDB               = go\DB\query('select txt from content where id = ?i', array(1), 'el');
 			 $renderData['dataDB'] = $dataDB;
 			 $loadTwig('.twig', $renderData);
 
@@ -23,7 +23,7 @@
 			 define('PHOTOS_ON_PAGE', 70);
 			 if (isset($_GET['album_id'])) {
 							$current_album = $session->set('current_album', intval($_GET['album_id']));
-							$album_data    = $db->query('select * from albums where id = ?i', array($current_album), 'row');
+							$album_data    = go\DB\query('select * from albums where id = ?i', array($current_album), 'row');
 							$session->set("album_name/$current_album", "$album_data[nm]");
 							if ($album_data['pass'] != '' && $session->has("popitka/$current_album") == false) {
 										 $session->set("popitka/$current_album", 5);
@@ -168,11 +168,10 @@
 														$current_page = 1;
 										 }
 										 $start        = ($current_page - 1) * PHOTOS_ON_PAGE;
-										 $db           = go\DB\Storage::getInstance()->get('db-for-data');
-										 $rs           = $db->query(
+										 $rs           = go\DB\query(
 														'select SQL_CALC_FOUND_ROWS p.* from photos p where id_album = ?i order by img ASC, id ASC limit ?i, '.PHOTOS_ON_PAGE,
 														array($_SESSION['current_album'], $start), 'assoc');
-										 $record_count =	$db->query('select FOUND_ROWS() as cnt', NULL, 'el'); // количество записей
+										 $record_count =	go\DB\query('select FOUND_ROWS() as cnt', NULL, 'el'); // количество записей
 										 if ($rs) {
 														?>
 														<!-- 3 -->
@@ -264,14 +263,13 @@
 							$widthSait    = 1200; // px
 							$margP        = 50; // предпологаемый правый маргин px
 							if ($may_view) {
-										 $start	=	$current_page * PHOTOS_ON_PAGE;
-										 $db		=	go\DB\Storage::getInstance()->get('db-for-data');
-										 $rs		= $db->query(
+										 $start	=	$current_page * PHOTOS_ON_PAGE;										
+										 $rs		= go\DB\query(
 																					'select SQL_CALC_FOUND_ROWS p.* from photos p where id_album = ?i
 																					 order by img ASC, id ASC limit ?i,'.PHOTOS_ON_PAGE,
 																					array($session->get('current_album'), $start), 'assoc');
 
-										 $record_count	=	$db->query('select FOUND_ROWS() as cnt', NULL, 'el'); // количество записей
+										 $record_count	=	go\DB\query('select FOUND_ROWS() as cnt', NULL, 'el'); // количество записей
 										 $_SESSION['record_count'][$session->get('current_album')] = $record_count;
 										 if ($rs) {
 														?>
@@ -399,8 +397,7 @@
 										 <!-- 1 -->
 										 <hr class="style-one" style="margin: 0 0 -20px 0;" />
 										 <?
-										 $db = go\DB\Storage::getInstance()->get('db-for-data');
-										 $rs = $db->query('select * from photos where id_album = ?i
+										 $rs = go\DB\query('select * from photos where id_album = ?i
 						   order by votes desc, id asc limit 0, 5', array($session->get('current_album')), 'assoc');
 										 $id_foto = array();
 										 if ($rs) {
@@ -476,8 +473,7 @@
 										 <!-- 1 -->
 										 <hr class="style-one" style="margin: 0 0 -20px 0;" />
 										 <?
-										 $db = go\DB\Storage::getInstance()->get('db-for-data');
-										 $rs = $db->query('select * from photos where id_album = ?i
+										 $rs = go\DB\query('select * from photos where id_album = ?i
 						            order by votes desc, id asc limit 0, 5', array($session->get('current_album')), 'assoc');
 										 $id_foto = array();
 										 if ($rs) {
@@ -598,7 +594,7 @@
 			 if ($session->has('current_album')) {
 
 			 $current_album = $session->get('current_album');
-			 $album_data = $db->query('select * from albums where id = ?i', array($current_album), 'row');
+			 $album_data = go\DB\query('select * from albums where id = ?i', array($current_album), 'row');
 			 $may_view = false;
 			 if ($album_data) {
 							$may_view = true;
@@ -643,7 +639,7 @@
 
 			 parol($may_view);
 
-			 $razdel = $db->query('select nm from `categories` where id = ?i', array($session->get('current_cat')), 'el');
+			 $razdel = go\DB\query('select nm from `categories` where id = ?i', array($session->get('current_cat')), 'el');
 
 			 //	dump_r($razdel);
 
@@ -658,11 +654,11 @@
 if ($may_view) {
 
 			 $current_album = $session->get('current_album');
-			 $event = $db->query('select `event` from `albums` where `id` =?i', array($current_album), 'el');
+			 $event = go\DB\query('select `event` from `albums` where `id` =?i', array($current_album), 'el');
 			 //		отключение аккордеона если фотографии не показываются
 			 if ($event == 'on' && JS) {
-							$acc[1] = $db->query('SELECT * FROM accordions WHERE `id_album` = ?i ', array('1'), 'assoc:collapse_numer');
-							$acc[$current_album] = $db->query('SELECT * FROM accordions WHERE `id_album` = ?i ', array($current_album), 'assoc:collapse_numer');
+							$acc[1] = go\DB\query('SELECT * FROM accordions WHERE `id_album` = ?i ', array('1'), 'assoc:collapse_numer');
+							$acc[$current_album] = go\DB\query('SELECT * FROM accordions WHERE `id_album` = ?i ', array($current_album), 'assoc:collapse_numer');
 							if ($acc[$current_album]) {
 
 										 if ($acc[$current_album][1]['accordion_nm'] != '') {
@@ -758,16 +754,16 @@ if ($may_view) {
 
 						// выдавать контент c JS
    if( JS ) {
-			 $event = $db->query('select `event` from `albums` where `id` =?i', array($current_album), 'el');
+			 $event = go\DB\query('select `event` from `albums` where `id` =?i', array($current_album), 'el');
 			 //		отключение показа фотографий в альбоме
   				if ($event == 'on') {
 										//		<!-- вывод топ 5  -->
 										top5Modern($may_view, $rs, $ln, $source, $sz, $sz_string);
 										if (!$session->has('record_count/'.$current_album)) {
-													$rs = $db->query(
+													$rs = go\DB\query(
 																	'select SQL_CALC_FOUND_ROWS p.* from photos p where id_album = ?i',
 																	array($current_album), 'assoc');
-													$session->set('record_count/'.$current_album, $db->query('select FOUND_ROWS() as cnt', NULL, 'el')); // количество записей
+													$session->set('record_count/'.$current_album, go\DB\query('select FOUND_ROWS() as cnt', NULL, 'el')); // количество записей
 										}
 										$pager =	new Pager2($session->get("record_count/$current_album"), PHOTOS_ON_PAGE, new pagerHtmlRenderer());
 										$pager->setDelta(3);
@@ -856,15 +852,15 @@ if ($may_view) {
 
 			 if ($current_cat > 0) {
 							/** Вывести поле nm из бд в шапку */
-							$rs['razdel'] = $db->query('select nm from categories where id = ?i', array($session->get("current_cat")), 'el');
-							$rs['albums'] = $db->query('select * from albums where id_category = ?i order by order_field asc', array($current_cat), 'assoc');
+							$rs['razdel'] = go\DB\query('select nm from categories where id = ?i', array($session->get("current_cat")), 'el');
+							$rs['albums'] = go\DB\query('select * from albums where id_category = ?i order by order_field asc', array($current_cat), 'assoc');
 							/** Вывод текстовой информации на страницы разделов */
-							$rs['txt'] = $db->query('select txt from categories where id = ?i', array($current_cat), 'el');
+							$rs['txt'] = go\DB\query('select txt from categories where id = ?i', array($current_cat), 'el');
 							/**  Печать альбомов*/
 							$loadTwig('_razdel.twig', $rs);
 			 } else {
 							/**  кнопки разделов (категорий) */
-							$buttons['buttons'] = $db->query('select * from `categories` order by `id_num` asc', NULL, 'assoc:id');
+							$buttons['buttons'] = go\DB\query('select * from `categories` order by `id_num` asc', NULL, 'assoc:id');
 							$loadTwig('_kategorii.twig', $buttons);
 
 

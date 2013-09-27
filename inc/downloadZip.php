@@ -15,7 +15,7 @@ if(!isset($_SESSION['logged']))
 if(!isset($_GET['key']))
   err_exit('Ключ не найден!');
 $key = $_GET['key'];
-$rs = $db->query('select * from download_photo where download_key = ?string', array($key), 'row');
+$rs = go\DB\query('select * from download_photo where download_key = ?string', array($key), 'row');
 if(!$rs)
   {
 	 err_exit('Ключ не найден!');
@@ -26,12 +26,12 @@ else
 	 if((time() - intval($data['dt_start']) > 172800) && intval($data['downloads']) > 0)
 		{
 		  //Раскомментировать следующую строку, если надо удалять просроченные записи о фото
-		  //$db->query('delete from download_photo where id = ?',array($data['id']));
+		  //go\DB\query('delete from download_photo where id = ?',array($data['id']));
 		  err_exit('Лимит в 48 часов для скачивания фото прошел!');
 		}
 	 else
 		{
-		  $rs = $db->query('select * from photos where id = ?i', array($data['id_photo']), 'row');
+		  $rs = go\DB\query('select * from photos where id = ?i', array($data['id_photo']), 'row');
 		  if(!$rs)
 			 {
 				err_exit('Фотография не найдена!');
@@ -106,7 +106,7 @@ else
 					 }
 					 imagedestroy($img);
 					 unlink($local_file);
-					 $db->query('update download_photo set downloads = downloads + 1 where id = ?i', array($data['id']));
+					 go\DB\query('update download_photo set downloads = downloads + 1 where id = ?i', array($data['id']));
 				  }
 				else
 				  {

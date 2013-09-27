@@ -35,7 +35,7 @@
 			 $id_order   = 0;
 			 try
 				{
-				  $id_order = $db->query('insert into orders (id_user, dt) values (?i,?i)', array($_SESSION['userid'], time()),'id');
+				  $id_order = go\DB\query('insert into orders (id_user, dt) values (?i,?i)', array($_SESSION['userid'], time()),'id');
 				}
 			 catch (go\DB\Exceptions\Query $e)
 				{
@@ -51,7 +51,7 @@
 				  if ($order['price'] > $user_balans)
 					 {
 									$session->set('basket_err', "Недостаточно средств на балансе!<br> Пополните счет или закажите печать наложенным платежем.");
-									$db->query('delete from orders where id = ?i', array($id_order));
+									go\DB\query('delete from orders where id = ?i', array($id_order));
 					 }
 				  else
 					 {
@@ -60,15 +60,15 @@
 						$id_user      = intval($_SESSION['userid']);
 						foreach ($_SESSION['basket'] as $ind => $val)
 						  {
-							 $id_item = $db->query('insert into order_items (id_order, id_photo) values (?i,?i)',array($id_order, $ind),'id');
+							 $id_item = go\DB\query('insert into order_items (id_order, id_photo) values (?i,?i)',array($id_order, $ind),'id');
 							 $key               = md5($id_item.$tm.$id_order.mt_rand(1, 10000));
-							 $id                = intval($db->query('insert into download_photo (id_user, id_order, id_order_item, id_photo, dt_start, download_key)
+							 $id                = intval(go\DB\query('insert into download_photo (id_user, id_order, id_order_item, id_photo, dt_start, download_key)
                                 values (?i,?i,?i,?i,?i,?string)',
 								array($id_user, $id_order, $id_item, $ind, $tm, $key),
 								'id'));
 							 $download_ids[$id] = $key;
 						  }
-						$user_data = $db->query('select * from users where id = ?i', array($id_user), 'row');
+						$user_data = go\DB\query('select * from users where id = ?i', array($id_user), 'row');
 						$title     = 'Фотографии Creative line studio';
 						$headers   = "Content-type: text/plain; charset=windows-1251\r\n";
 						$headers .= "From: Creative line studio \r\n";
@@ -83,9 +83,9 @@
 						// Отправляем письмо
 						if (!mail($user_data['email'], $subject, $letter, $headers))
 						  {
-							 $db->query('delete from orders where id = ?i', array($id_order));
-							 $db->query('delete from order_items where id_order = ?i', array($id_order));
-							 $db->query('delete from download_photo where id_order = ?i', array($id_order));
+							 go\DB\query('delete from orders where id = ?i', array($id_order));
+							 go\DB\query('delete from order_items where id_order = ?i', array($id_order));
+							 go\DB\query('delete from download_photo where id_order = ?i', array($id_order));
 							 $_SESSION['basket_err'] = "Ошибка отправки подтверждения! Возможно сайт перегружен. Пожалуйста, зайдите позже.";
 							 trigger_error("Ошибка отправки письма со ссылками!");
 						  }
@@ -94,7 +94,7 @@
 							 $_SESSION['basket'] = array();
 							 $_SESSION['zakaz'] = array();
 							 $_SESSION['basket_ok'] = "Заказ оплачен! Вам на E-mail отправлено письмо со списком ссылок для скачивания фото!";
-							 $db->query('update users set balans = balans - ?f where id = ?i', array($order['price'], $id_user));
+							 go\DB\query('update users set balans = balans - ?f where id = ?i', array($order['price'], $id_user));
 						  }
 						?>
 						<script type="text/javascript">
@@ -151,7 +151,7 @@ if (isset($_POST['okei']) && is_array($session->get('basket')) && count($session
 			 $data    = array($tm, $id_user,$name,$subname,$phone,$email,$adr_poluc,$adr_studii,$nPocta,$id_nal,$id_dost,$user_dost,$user_opl,$ramka,$mat_gl,$format,$comm,
 									 $summ,$zakaz);
 			 try {
-				$id_order = $db->query($pattern, $data)->id(); // номер заказа
+				$id_order = go\DB\query($pattern, $data)->id(); // номер заказа
 				if($id_order)
 				  {
 					 foreach ($session->get('basket') as $ind => $val)
@@ -161,7 +161,7 @@ if (isset($_POST['okei']) && is_array($session->get('basket')) && count($session
 				  }
 
 					 $key      = sha1(md5($id_order.md5($tm.mt_rand(1, 10000))));
-					 $db->query('UPDATE `print` SET `key` = ?string WHERE id = ?i', array($key,$id_order));
+					 go\DB\query('UPDATE `print` SET `key` = ?string WHERE id = ?i', array($key,$id_order));
 					 $album_name = '';
 					 foreach($_SESSION['album_name'] as $val)
 						{
@@ -197,7 +197,7 @@ if (isset($_POST['okei']) && is_array($session->get('basket')) && count($session
 					 $letter .= "Номер и количество фотографий:\r\n";
 					 foreach ($_SESSION['basket'] as $ind => $val)
 						{
-						  $name = $db->query('select `nm` from `photos` where id =?i',array($ind),'el');
+						  $name = go\DB\query('select `nm` from `photos` where id =?i',array($ind),'el');
 						  $letter .= "Фотография № ".$name." - ".$val."шт.\r\n";
 						}
 					 $letter .= "К оплате: ".$summ."гр. (".str_digit_str($summ)."гр.)\r\n\r\n";
@@ -207,8 +207,8 @@ if (isset($_POST['okei']) && is_array($session->get('basket')) && count($session
 					 // Отправляем письмо
 					 if (!mail($email, $subject, $letter, $headers))
 						{
-						  $db->query('delete from `print` where `id` = ?i', array($id_order));
-						  $db->query('delete from `order_print` where `id_print` = ?i', array($id_order));
+						  go\DB\query('delete from `print` where `id` = ?i', array($id_order));
+						  go\DB\query('delete from `order_print` where `id_print` = ?i', array($id_order));
 						  $_SESSION['basket_err'] = "Ошибка отправки подтверждения! Возможно сайт перегружен. Пожалуйста, зайдите позже.";
 						  trigger_error("Ошибка отправки письма подтверждения!");
 						}
@@ -276,7 +276,7 @@ $_SESSION['print'] = 0;
 		<?
  				  foreach ($session->get('zakaz/album_name') as $id => $key)
 					 {
-						$rs = $db->query('select `pecat`, `pecat_A4` FROM `albums` WHERE `id` =?i', array($id), 'row')
+						$rs = go\DB\query('select `pecat`, `pecat_A4` FROM `albums` WHERE `id` =?i', array($id), 'row')
 						?>
 						<span class="label label-info" style="margin: 0 0 0 0;">
 					    Цена на напечатанные фотографии в альбоме "<?=$key?>": 10x15см, 13x18см - <?=$rs['pecat']?>
@@ -524,7 +524,7 @@ $_SESSION['print'] = 0;
 
 
 				 <?
-				   $rs = $db->query('select * from nastr order by id asc', NULL, 'assoc');
+				   $rs = go\DB\query('select * from nastr order by id asc', NULL, 'assoc');
 	          	$spOpl = array();
 				   $spDost = array();
 				   $adr_pecat = array();
@@ -551,7 +551,7 @@ $_SESSION['print'] = 0;
 						 $adr_pecat[] = 'выбрать';
 			   	 	 $pocta['выбрать']  = 'выбрать';
 				 	}
-				  $rs = $db->query('select * from users where id =?i', array($_SESSION['userid']), 'row');
+				  $rs = go\DB\query('select * from users where id =?i', array($_SESSION['userid']), 'row');
 				  ?>
 				  <div id="form_bask" style="display: none;">
 					 <div id="prFormOpl" style="position: relative; width: 350px;left: 10px;">

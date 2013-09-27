@@ -15,14 +15,14 @@ if (isset($_POST['update_balans']))
     {
         $id = $_POST['update_balans'];
         $balans = $_POST['balans'];
-        $db->query('update users set balans = ?scalar where id = ?i', array($balans, $id));
+        go\DB\query('update users set balans = ?scalar where id = ?i', array($balans, $id));
     }
 
 if (isset($_POST['update_level']))
 	{
 		$id = $_POST['update_level'];
 		$level = intval($_POST['level']);
-		$db->query('update users set level = ?i where id = ?i', array($level, $id));
+		go\DB\query('update users set level = ?i where id = ?i', array($level, $id));
 	}
 
 if (isset($_POST['checkbox']))
@@ -30,13 +30,13 @@ if (isset($_POST['checkbox']))
 		$id = $_POST['checkbox'];
 		$block = $_POST['block'];
 		$block = ($block == 0) ? 1 : 0;
-		$db->query('update users set block = ?i where id = ?i', array($block, $id));
+		go\DB\query('update users set block = ?i where id = ?i', array($block, $id));
 	}
 
 if (isset($_POST['delete_user']))
     {
         $id = $_POST['delete_user'];
-	    $db->query('delete from users where id = ?i',array($id));
+	    go\DB\query('delete from users where id = ?i',array($id));
     }
 
 $pg = isset($_GET['pg']) ? intval($_GET['pg']) : 1;
@@ -46,10 +46,10 @@ if ($pg < 1)
 	}
 $start = ($pg - 1) * RECORDS_PER_PAGE;
 
-$rs = $db->query('SELECT  SQL_CALC_FOUND_ROWS u.* FROM  users u order by id desc limit ?i, ?i', array($start,RECORDS_PER_PAGE), 'assoc');
+$rs = go\DB\query('SELECT  SQL_CALC_FOUND_ROWS u.* FROM  users u order by id desc limit ?i, ?i', array($start,RECORDS_PER_PAGE), 'assoc');
 if ($rs)
 {
-$record_count = intval($db->query('SELECT FOUND_ROWS() as cnt',null, 'el'));
+$record_count = intval(go\DB\query('SELECT FOUND_ROWS() as cnt',null, 'el'));
 ?>
 
 <table class="table table-striped table-bordered table-condensed table-hover">
@@ -121,7 +121,7 @@ $record_count = intval($db->query('SELECT FOUND_ROWS() as cnt',null, 'el'));
 			            </div>
 	            </td>
 	            <?
-	            $action = $db->query("SELECT time_event , ip FROM actions WHERE id_user =?i ORDER BY time_event DESC LIMIT 1",array($ln['id']),'row');
+	            $action = go\DB\query("SELECT time_event , ip FROM actions WHERE id_user =?i ORDER BY time_event DESC LIMIT 1",array($ln['id']),'row');
 			 if($action)
 				  {
 	            ?>
@@ -149,7 +149,7 @@ $record_count = intval($db->query('SELECT FOUND_ROWS() as cnt',null, 'el'));
 				  ?>
 	            <td style="text-align: center; vertical-align: middle">
 		            <?
-					  $rs = $db->query('SELECT `id_subs`, `time_subs` FROM `subs_user_on` WHERE `id_user` =?i',array($ln['id']),'assoc');
+					  $rs = go\DB\query('SELECT `id_subs`, `time_subs` FROM `subs_user_on` WHERE `id_user` =?i',array($ln['id']),'assoc');
 		            if($rs)
 			            {
 				            ?>
@@ -160,7 +160,7 @@ $record_count = intval($db->query('SELECT FOUND_ROWS() as cnt',null, 'el'));
 							            $key = 0;
 							            foreach ($rs as $data)
 								            {
-									            $subs = $db->query('SELECT * FROM `subs` WHERE `id` =?i',array($data['id_subs']),'row');
+									            $subs = go\DB\query('SELECT * FROM `subs` WHERE `id` =?i',array($data['id_subs']),'row');
 									            ?>
 									            <li class="span2" style="clear: both;margin-left: 10px;">
 											         <b>Акция № <?=$data['id_subs']?> подписка:  <?=$data['time_subs']?></b><br>
@@ -208,10 +208,10 @@ $record_count = intval($db->query('SELECT FOUND_ROWS() as cnt',null, 'el'));
                 </td>
                 <?
                 // купил - общее количество
-                $rez_vsego = $db->query("SELECT SQL_CALC_FOUND_ROWS order_items.id_photo FROM  orders JOIN  creative_ls.order_items ON
+                $rez_vsego = go\DB\query("SELECT SQL_CALC_FOUND_ROWS order_items.id_photo FROM  orders JOIN  creative_ls.order_items ON
                 orders.id = order_items.id_order && orders.id_user = ?i ORDER BY order_items.id_photo ASC ",
 	                array($ln['id']), 'row'); // общее количество купленных фотографий с названиями
-                $foto_zak = intval($db->query("SELECT FOUND_ROWS()",null, 'el')); // количество записей о купленных фотографиях в базе
+                $foto_zak = intval(go\DB\query("SELECT FOUND_ROWS()",null, 'el')); // количество записей о купленных фотографиях в базе
 
                 // кнопка с заказами - детально (удаленные альбомы пропускаются)
                 ?>
@@ -224,11 +224,11 @@ $record_count = intval($db->query('SELECT FOUND_ROWS() as cnt',null, 'el'));
                                 <button class="btn btn-success dropdown-toggle" data-toggle="dropdown"><?=$foto_zak.' шт'?>
                                     <span class="caret"></span></button>
                                 <?
-                                $rez_fakt = $db->query("SELECT SQL_CALC_FOUND_ROWS albums.foto_folder, photos.id_album , photos.img , albums.nm AS anm , photos.nm AS pnm
+                                $rez_fakt = go\DB\query("SELECT SQL_CALC_FOUND_ROWS albums.foto_folder, photos.id_album , photos.img , albums.nm AS anm , photos.nm AS pnm
 	FROM  orders JOIN  creative_ls.order_items JOIN creative_ls.photos  JOIN creative_ls.albums ON
 	orders.id = order_items.id_order && orders.id_user = ?i && photos.id = order_items.id_photo && photos.id_album = albums.id
 	ORDER BY order_items.id_photo ASC ", array($ln['id']), 'assoc'); // общее количество купленных фотографий без удаленных фотографий
-                                $udal = $foto_zak - intval($db->query("SELECT FOUND_ROWS()",null, 'el'));
+                                $udal = $foto_zak - intval(go\DB\query("SELECT FOUND_ROWS()",null, 'el'));
                                 ?>
                                 <ul class="dropdown-menu pull-right"><?
                                     if ($rez_fakt)

@@ -24,13 +24,12 @@
 				* @return string
 				*/
 			 function checkData($where, $type) {
-
-							$db        = go\DB\Storage::getInstance()->get('db-for-data');
+			 
 							$user_data = NULL;
 							$error     = false;
 							$session   = check_Session::getInstance();
 							try {
-										 $user_data = $db->query('select * from users where ?col = ?', array($type, $where), 'row');
+										 $user_data = go\DB\query('select * from users where ?col = ?', array($type, $where), 'row');
 
 							}
 							catch (go\DB\Exceptions\Exception  $e) {

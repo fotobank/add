@@ -106,13 +106,13 @@ if (isset($_POST['go_add']))
 				 }
 			  try
 				 {
-					$id_album = $db->query('insert into `albums` (nm) VALUES (?string)', array($nm), 'id');
+					$id_album = go\DB\query('insert into `albums` (nm) VALUES (?string)', array($nm), 'id');
 				 }
 			  catch (go\DB\Exceptions\Exception $e)
 				 {
 					die('Ошибка при работе с базой данных');
 				 }
-			  $db->query('insert into `accordions` (id_album,collapse_numer,collapse_nm,accordion_nm) VALUES (?scalar,?i,?string,?string)',
+			  go\DB\query('insert into `accordions` (id_album,collapse_numer,collapse_nm,accordion_nm) VALUES (?scalar,?i,?string,?string)',
 				 array($id_album,'1','default','default'));
 			  $img         = 'id'.$id_album.'.'.$ext;
 			  $target_name = $_SERVER['DOCUMENT_ROOT'].'/images/'.$img;
@@ -124,7 +124,7 @@ if (isset($_POST['go_add']))
 					$ip_marker = 0;
 					if (imageresize($target_name, $file_load, 200, 200, 75, $watermark, $ip_marker, $sharping) == 'true')
 					  {
-						 $db->query('update albums set id_category = ?i, img = ?, order_field = ?i, descr = ?, foto_folder = ? where id = ?i',
+						 go\DB\query('update albums set id_category = ?i, img = ?, order_field = ?i, descr = ?, foto_folder = ? where id = ?i',
 							array($id_category, $img, $id_album, $descr, $foto_folder, $id_album));
 						 mkdir('../'.$foto_folder.$id_album, 0777, true) or die($php_errormsg);
 						 unlink($file_load);
@@ -133,14 +133,14 @@ if (isset($_POST['go_add']))
 					  }
 					else
 					  {
-						 $db->query('delete from albums where id ?i', array($id_album));
+						 go\DB\query('delete from albums where id ?i', array($id_album));
 						 unlink($file_load);
 						 die('Для обработки принимаются только JPG, PNG или GIF имеющие размер не более 15Mb.');
 					  }
 				 }
 			  else
 				 {
-					$db->query('delete from albums where id ?i', array($id_album));
+					go\DB\query('delete from albums where id ?i', array($id_album));
 					unlink($file_load);
 					die('Не могу загрузить файл в папку "tmp"');
 
@@ -172,7 +172,7 @@ if (isset($_POST['go_edit_name']))
 			{
 				$nm = '-----';
 			}
-		$db->query('update albums set nm = ? where id = ?i', array($nm, $id));
+		go\DB\query('update albums set nm = ? where id = ?i', array($nm, $id));
 	}
 
 
@@ -182,7 +182,7 @@ if (isset($_POST['go_edit_descr']))
 	{
 		$id    = $_POST['go_edit_descr'];
 		$descr = $_POST['descr'];
-		$db->query('update albums set descr = ? where id = ?i', array($descr, $id));
+		go\DB\query('update albums set descr = ? where id = ?i', array($descr, $id));
 	}
 
 
@@ -207,7 +207,7 @@ if (isset($_POST['go_edit_nastr']))
 		$vote_time_on = isset($_REQUEST['vote_time_on']);
 	   $event = (isset($_POST['event']) == 'on')?'on':'off';
 	   $on_off = (isset($_POST['on_off']) == 'on')?'on':'off';
-		$db->query('update albums set
+		go\DB\query('update albums set
 		price = ?f,
 		pecat = ?f,
 		pecat_A4 = ?f,
@@ -242,7 +242,7 @@ if (isset($_POST['go_edit_nastr']))
 					$event,
 					$on_off,
 			      $id));
-		$db->query('update photos set price = ?f, pecat = ?f, pecat_A4 = ?f where id_album = ?i', array($price,$pecat,$pecat_A4, $id));
+		go\DB\query('update photos set price = ?f, pecat = ?f, pecat_A4 = ?f where id_album = ?i', array($price,$pecat,$pecat_A4, $id));
 		$_SESSION['current_album'] = $id;
 		$_SESSION['current_cat']   = $id_category;
 
@@ -275,7 +275,7 @@ if (isset($_POST['go_ftp_upload']))
 	{
 
 		$id         = $_POST['go_ftp_upload'];
-		$album_data = $db->query('select * from albums where id = ?i', array($id), 'row');
+		$album_data = go\DB\query('select * from albums where id = ?i', array($id), 'row');
 		if ($album_data)
 			{
 				//Выбираем данные по альбому и настройки FTP-сервера
@@ -375,7 +375,7 @@ if (isset($_POST['go_ftp_upload']))
 											}
 										//Создаем запись в БД
 										$nm           = substr($f_name, 0, strrpos($f_name, '.'));
-										$id_photo     = $db->query('insert into photos (id_album, nm) values (?i,?string)',
+										$id_photo     = go\DB\query('insert into photos (id_album, nm) values (?i,?string)',
 											array($album_data['id'], $nm),'id');
 										$tmp_name     = 'id'.$id_photo.'.jpg';
 										$foto_folder  = $album_data['foto_folder'];
@@ -400,13 +400,13 @@ if (isset($_POST['go_ftp_upload']))
 										)
 											{
 												unlink($local_file);
-												$db->query("update photos set img = ?string, price = ?scalar, ftp_path = ?string where id = ?i",
+												go\DB\query("update photos set img = ?string, price = ?scalar, ftp_path = ?string where id = ?i",
 													array($tmp_name, $album_data['price'], $remote_file, $id_photo));
 											}
 										else
 											{
 												unlink($local_file);
-												$db->query('delete from photos where id = ?i', array($id_photo));
+												go\DB\query('delete from photos where id = ?i', array($id_photo));
 												echo ('Файл на FTP'.$remote_file.' - битый!'); ?><br><?php;
 												$all--;
 											}
@@ -437,20 +437,20 @@ if (isset($_POST['go_updown']))
 		$swap_id       = 0;
 		$swap_order    = 0;
 		$id            = $_POST['go_updown'];
-		$current_order = $db->query('select order_field from albums where id = ?i', array($id), 'el');
+		$current_order = go\DB\query('select order_field from albums where id = ?i', array($id), 'el');
 		if ($current_order)
 			{
 				if (isset($_POST['up']))
 					{
 						$rs =
-							$db->query('select id, order_field from albums where order_field < ?i order by order_field desc limit 0, 1',
+							go\DB\query('select id, order_field from albums where order_field < ?i order by order_field desc limit 0, 1',
 								array($current_order),
 								'row');
 					}
 				else
 					{
 						$rs =
-							$db->query('select id, order_field from albums where order_field > ?i order by order_field asc limit 0, 1',
+							go\DB\query('select id, order_field from albums where order_field > ?i order by order_field asc limit 0, 1',
 								array($current_order),
 								'row');
 					}
@@ -462,8 +462,8 @@ if (isset($_POST['go_updown']))
 			}
 		if ($current_order > 0 && $swap_id > 0)
 			{
-				$db->query('update albums set order_field = ?i where id = ?i', array($current_order, $swap_id));
-				$db->query('update albums set order_field = ?i where id = ?i', array($swap_order, $id));
+				go\DB\query('update albums set order_field = ?i where id = ?i', array($current_order, $swap_id));
+				go\DB\query('update albums set order_field = ?i where id = ?i', array($swap_order, $id));
 			}
 	}
 
@@ -517,7 +517,7 @@ if (isset($_POST['go_updown']))
 								<div>
 									<label for="prependedInput"></label><select id="prependedInput" class="span2" name="id_category" style="margin-bottom: 0;" class="multiselect">
 										<?
-										$tmp = $db->query('select * from `categories` order by id asc')->assoc();
+										$tmp = go\DB\query('select * from `categories` order by id asc')->assoc();
 										foreach ($tmp as $tmp2)
 											{
 												?>
@@ -597,7 +597,7 @@ if (isset($_POST['go_delete']))
 		$id           = $_POST['go_delete'];
 	   $thumb        = trim($_POST['go_del_thumb']);
 		$album_folder = $id;
-		$foto_folder  = $db->query('select foto_folder from albums where id = ?i', array($id), 'el');
+		$foto_folder  = go\DB\query('select foto_folder from albums where id = ?i', array($id), 'el');
 		echo "<script type='text/javascript'>
                              $(document).ready(function load() {
                              $('#static').modal('show');
@@ -636,7 +636,7 @@ if (isset($_POST['chenge_cat']))
 	{
 		$_SESSION['current_cat'] = intval($_POST['id']);
 	}
-$rs_cat = $db->query('select DISTINCT c.nm, c.id
+$rs_cat = go\DB\query('select DISTINCT c.nm, c.id
   		      from categories c, albums a
   		    	where  c.id = a.id_category
   		      order by a.order_field asc')->assoc();
@@ -687,7 +687,7 @@ if (isset($_POST['chenge_album']))
 
 if (isset($_SESSION['current_cat']))
 	{
-		$rs = $db->query('select c.nm, a.*
+		$rs = go\DB\query('select c.nm, a.*
   		      from categories c, albums a
   		      where  c.id = a.id_category
   		      and  a.id_category = '.intval($_SESSION['current_cat']).'
@@ -724,7 +724,7 @@ if (isset($_SESSION['current_cat']))
 
 				<?
 				if (isset($_SESSION['current_album'])):
-						$rs = $db->query('select * from albums where id = ?i', array($_SESSION['current_album']), 'assoc');
+						$rs = go\DB\query('select * from albums where id = ?i', array($_SESSION['current_album']), 'assoc');
 						if ($rs)
 							{
 								foreach ($rs as $ln)
@@ -889,7 +889,7 @@ if (isset($_SESSION['current_cat']))
 																				<select id="id_category" class="multiselect" name="id_category">
 																					<?
 																					$tmp =
-																						$db->query('select * from `categories` order by id asc',
+																						go\DB\query('select * from `categories` order by id asc',
 																							NULL,
 																							'assoc');
 																					foreach ($tmp as $tmp2)
@@ -1033,10 +1033,10 @@ if (isset($_POST['add_par']))
 		$coll_name = $_POST['nm'];
 		$id_album  = $_POST['id_album'];
 		$coll_num  =
-			($db->query('select collapse_numer from accordions where id_album = ?i order by collapse_numer desc limit 1',
+			(go\DB\query('select collapse_numer from accordions where id_album = ?i order by collapse_numer desc limit 1',
 				array($id_album),
 				'el')) + 1;
-		$db->query('insert into accordions (accordion_nm,collapse_nm,id_album,collapse_numer) values (?string,?string,?i,?i)',
+		go\DB\query('insert into accordions (accordion_nm,collapse_nm,id_album,collapse_numer) values (?string,?string,?i,?i)',
 			array($ac_nm, $coll_name, $id_album, $coll_num));
 
 	}
@@ -1045,7 +1045,7 @@ if (isset($_POST['go_del']))
 	{
 		$id_album = $_POST['go_del'];
 		$coll_num = $_POST['collapse_numer'];
-		$db->query('delete from accordions where `id_album` =?i and `collapse_numer` = ?i', array($id_album, $coll_num));
+		go\DB\query('delete from accordions where `id_album` =?i and `collapse_numer` = ?i', array($id_album, $coll_num));
 	}
 
 if (isset($_POST['go_update']))
@@ -1054,7 +1054,7 @@ if (isset($_POST['go_update']))
 		$collapse_numer = $_POST['collapse_numer'];
 		$txt            = iconv('utf-8', 'cp1251', trim($_POST['txt_coll']));
 		$id_album       = $_POST['go_update'];
-		$db->query("update accordions set collapse = ?string where id_album = ?i and collapse_numer =?i ",
+		go\DB\query("update accordions set collapse = ?string where id_album = ?i and collapse_numer =?i ",
 			array($txt, $id_album, $collapse_numer));
 	}
 
@@ -1062,7 +1062,7 @@ if (isset($_POST['go_edit_nm']))
 	{
 		$id = $_POST['go_edit_nm'];
 		$nm = $_POST['nm'];
-		$db->query('update accordions set accordion_nm =? where id_album = ?i', array($nm, $id));
+		go\DB\query('update accordions set accordion_nm =? where id_album = ?i', array($nm, $id));
 	}
 
 if (isset($_POST['go_edit_name_coll']))
@@ -1070,7 +1070,7 @@ if (isset($_POST['go_edit_name_coll']))
 		$id  = $_POST['go_edit_name_coll'];
 		$nm  = $_POST['nm'];
 		$num = $_POST['collapse_numer'];
-		$db->query('update accordions set collapse_nm =? where id_album = ?i and collapse_numer =?i',
+		go\DB\query('update accordions set collapse_nm =? where id_album = ?i and collapse_numer =?i',
 			array($nm, $id, $num));
 	}
 
@@ -1085,25 +1085,25 @@ if (isset($_POST['go_up_down']))
 				if (isset($_POST['up']))
 					{
 						$swap_id =
-							$db->query('select collapse_numer from accordions where id_album =?i and collapse_numer < ?i order by collapse_numer desc limit 0, 1',
+							go\DB\query('select collapse_numer from accordions where id_album =?i and collapse_numer < ?i order by collapse_numer desc limit 0, 1',
 								array($id_album, $id_cat),
 								'el');
 					}
 				else
 					{
 						$swap_id =
-							$db->query('select collapse_numer from accordions where id_album =?i and collapse_numer > ?i order by collapse_numer asc limit 0, 1',
+							go\DB\query('select collapse_numer from accordions where id_album =?i and collapse_numer > ?i order by collapse_numer asc limit 0, 1',
 								array($id_album, $id_cat),
 								'el');
 					}
 
 					if (isset($swap_id) && $swap_id > 0)
 						{
-							$db->query('update accordions set collapse_numer = 0 where id_album =?i and  collapse_numer = ?i',
+							go\DB\query('update accordions set collapse_numer = 0 where id_album =?i and  collapse_numer = ?i',
 								array($id_album, $swap_id));
-							$db->query('update accordions set collapse_numer = ?i where id_album =?i and  collapse_numer = ?i',
+							go\DB\query('update accordions set collapse_numer = ?i where id_album =?i and  collapse_numer = ?i',
 								array($swap_id, $id_album, $id_cat));
-							$db->query('update accordions set collapse_numer = ?i where id_album =?i and  collapse_numer = 0',
+							go\DB\query('update accordions set collapse_numer = ?i where id_album =?i and  collapse_numer = 0',
 								array($id_cat, $id_album));
 							$_SESSION['current_kont'] = $swap_id;
 						}
@@ -1124,12 +1124,12 @@ if (isset($_POST['collapse_nm']))
 
 if (isset($_SESSION['current_album']))
 	{
-		$rs = $db->query('select * from accordions where id_album = ?i or id_album = ?i order by id_album asc',
+		$rs = go\DB\query('select * from accordions where id_album = ?i or id_album = ?i order by id_album asc',
 				array($_SESSION['current_album'], '1'), 'assoc');
 		if ($rs)
 			{
 
-			$acc_nm = $db->query('select accordion_nm from accordions where id_album = ?i',
+			$acc_nm = go\DB\query('select accordion_nm from accordions where id_album = ?i',
 				array(isset($_SESSION['alb_num']) ? $_SESSION['alb_num'] : $_SESSION['current_album']), 'el');
 				?>
 				<div><strong>Изменить заголовок:</strong> (Если названия нет - аккордеон выключен) <strong>Название
@@ -1214,7 +1214,7 @@ if (isset($_POST['collapse_nm']))
 if (isset($_SESSION['collapse_numer']) && isset($_SESSION['alb_num']))
 	{
 		$rs =
-			$db->query('select * from accordions where id_album =?i and collapse_numer = ?i',
+			go\DB\query('select * from accordions where id_album =?i and collapse_numer = ?i',
 				array($_SESSION['alb_num'], $_SESSION['collapse_numer']),
 				'row');
 		if ($rs)

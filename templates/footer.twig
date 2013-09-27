@@ -22,7 +22,7 @@
         <hfooter> Creative ls &copy; 2013</hfooter>
     </div>
 
-   {% if SERVER_NAME == 'aleks.od.ua' %}
+   {% if SERVER_NAME is defined and SERVER_NAME == 'aleks.od.ua' %}
         <script type="text/javascript">
             var _paq = _paq || [];
             _paq.push(["trackPageView"]);
@@ -39,19 +39,17 @@
    {% endif %}
 
 	     {#кнопка наверх#}
+	    {% if include_Js_footer is defined %}
     <a id="dynamic_to_top" href="#" style="display: inline;">
         <span> </span>
     </a>
-
 	    <script type='text/javascript'>
 		    /* <![CDATA[ */
 		    var mv_dynamic_to_top = {"text": "0", "version": "0", "min": "200", "speed": "1000", "easing": "easeInOutExpo", "margin": "20"};
 		    /* ]]> */
 	    </script>
-
 	    <script src="{{ merge_files('/cache/footer.min.js', 'js', include_Js_footer, '', include_Js_footer) }}"></script>
-
-
+	    {% endif %}
     </div>
 
 {#{% endblock %}#}

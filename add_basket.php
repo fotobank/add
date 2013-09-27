@@ -14,7 +14,7 @@
 		  {
 			 if ($id)
 				{
-				  $rs = $db->query('select p.id_album, a.nm
+				  $rs = go\DB\query('select p.id_album, a.nm
 				                    from photos p, albums a
 				                    where p.id_album = a.id
 				                    and p.id = ?i', array($id), 'row');

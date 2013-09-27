@@ -253,12 +253,11 @@
 							$current_page = 1;
 						}
 					$start        = ($current_page - 1) * PHOTOS_ON_PAGE;
-					$db = go\DB\Storage::getInstance()->get('db-for-data');
-					$rs = $db->query(
+					$rs = go\DB\query(
 					'select SQL_CALC_FOUND_ROWS p.* from photos p where id_album = ?i
 					 order by img ASC, id ASC limit ?i,'.PHOTOS_ON_PAGE,
 					array($_SESSION['current_album'], $start),'assoc');
-					$record_count = $db->query('select FOUND_ROWS() as cnt', NULL, 'el'); // количество записей
+					$record_count = go\DB\query('select FOUND_ROWS() as cnt', NULL, 'el'); // количество записей
 					if ($rs)
 						{
 							?>
@@ -365,8 +364,7 @@
 					<!-- 1 -->
 					<hr class="style-one" style="margin: 0 0 -20px 0;"/>
 					<?
-					$db = go\DB\Storage::getInstance()->get('db-for-data');
-					$rs = $db->query('select * from photos where id_album = ?i
+					$rs = go\DB\query('select * from photos where id_album = ?i
 						   order by votes desc, id asc limit 0, 5',array($_SESSION['current_album']),'assoc');
 					$id_foto = array();
 				if ($rs)
@@ -514,7 +512,7 @@
 
 	if (isset($_SESSION['current_album'])):
 
-	$album_data = $db->query('select * from albums where id = ?i', array($_SESSION['current_album']),'row');
+	$album_data = go\DB\query('select * from albums where id = ?i', array($_SESSION['current_album']),'row');
 	$may_view = false;
 	if ($album_data)
 		{
@@ -590,7 +588,7 @@
 	$razdel = NULL;
 	if (isset($_SESSION['current_cat']))
 		{
-			$razdel = $db->query('select nm from `categories` where id = ?i', array($_SESSION['current_cat']),'el');
+			$razdel = go\DB\query('select nm from `categories` where id = ?i', array($_SESSION['current_cat']),'el');
 		}
 	/*else
 		{*/
@@ -610,12 +608,12 @@
 	if ($may_view && isset($_SESSION['current_album'])):
 
 
-	$event = $db->query('select `event` from `albums` where `id` =?i', array($_SESSION['current_album']), 'el');
+	$event = go\DB\query('select `event` from `albums` where `id` =?i', array($_SESSION['current_album']), 'el');
 	//		отключение аккордеона если фотографии не показываются
 	if ($event == 'on')
 	{
-	$acc[1] = $db->query('SELECT * FROM accordions WHERE `id_album` = ?i ',array('1'), 'assoc:collapse_numer');
-	$acc[$_SESSION['current_album']] = $db->query('SELECT * FROM accordions WHERE `id_album` = ?i ',array($_SESSION['current_album']), 'assoc:collapse_numer');
+	$acc[1] = go\DB\query('SELECT * FROM accordions WHERE `id_album` = ?i ',array('1'), 'assoc:collapse_numer');
+	$acc[$_SESSION['current_album']] = go\DB\query('SELECT * FROM accordions WHERE `id_album` = ?i ',array($_SESSION['current_album']), 'assoc:collapse_numer');
 	if ($acc[$_SESSION['current_album']])
 		{
 			if($acc[$_SESSION['current_album']][1]['accordion_nm'] != '')
@@ -706,7 +704,7 @@
 
   if(isset($_SESSION['current_album']))
 	 {
-  $event = $db->query('select `event` from `albums` where `id` =?i', array($_SESSION['current_album']), 'el');
+  $event = go\DB\query('select `event` from `albums` where `id` =?i', array($_SESSION['current_album']), 'el');
 //		отключение показа фотографий в альбоме
   if ($event == 'on')
 	 {
@@ -798,7 +796,7 @@ else:
 				$razdel = '';
 				if (isset($_SESSION['current_cat']))
 					{
-				   $razdel = $db->query('select nm from categories where id = ?i',array($_SESSION['current_cat']),'el');
+				   $razdel = go\DB\query('select nm from categories where id = ?i',array($_SESSION['current_cat']),'el');
 					}
 				?>
 				<div class="cont-list" style="margin: 20px 10px 30px 0;"><div class="drop-shadow lifted">
@@ -816,11 +814,11 @@ else:
 
 				<!-- Подготовка вывода альбомов на страницы разделов   -->
 				<?
-				$rs = $db->query('select * from albums where id_category = ?i order by order_field asc',array($current_cat),'assoc');
+				$rs = go\DB\query('select * from albums where id_category = ?i order by order_field asc',array($current_cat),'assoc');
 				/**
 				 * @todo  Вывод текстовой информации на страницы разделов
 				 */
-				echo $db->query('select txt from categories where id = ?i',array($current_cat),'el');
+				echo go\DB\query('select txt from categories where id = ?i',array($current_cat),'el');
 				/**
 				 * @todo Печать альбомов
 				 */
@@ -895,7 +893,7 @@ else:
 						<td>
 
 							<?
-							$rs = $db->query('select * from `categories` order by `id_num` asc',NULL,'assoc:id');
+							$rs = go\DB\query('select * from `categories` order by `id_num` asc',NULL,'assoc:id');
  							foreach ($rs as $ln)
 								{
 									/**

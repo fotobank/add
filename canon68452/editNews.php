@@ -4,10 +4,10 @@ if (!isset($_SESSION['admin_logged'])) die();
 if(isset($_POST['deleteNews']))
   {
 	 $deleteNews = $_POST['deleteNews'];
-	 $img = $db->query("SELECT `img` FROM `news` WHERE `id` = ?i",array($deleteNews),'el');
+	 $img = go\DB\query("SELECT `img` FROM `news` WHERE `id` = ?i",array($deleteNews),'el');
 	 unlink($img);
-	 $db->query("delete from `news` where `id` = ?i", array($deleteNews));
-	 $db->query("delete from `komments` where `news_id` = ?i", array($deleteNews));
+	 go\DB\query("delete from `news` where `id` = ?i", array($deleteNews));
+	 go\DB\query("delete from `komments` where `news_id` = ?i", array($deleteNews));
   }
 
 if(isset($_POST['newNews']))
@@ -15,7 +15,7 @@ if(isset($_POST['newNews']))
 	 $list    = array('','Новость', '', '', 'Юрий','',0,'','','',0,0,'c_colonka','главная');
 	 $pattern = 'INSERT INTO `news` VALUES (?list)';
 	 $data    = array($list);
-	 $idNews  = $db->query($pattern, $data)->id();
+	 $idNews  = go\DB\query($pattern, $data)->id();
 
 	 echo "<script type='text/javascript'>
 			 location.href = 'index.php?page=8&newsId='+$idNews;
@@ -36,8 +36,7 @@ require_once  ( __DIR__ . '/../inc/wp/comments.php');
 
 	function printPubl($newsId,$pg)
 {
-  $db = go\DB\Storage::getInstance()->get('db-for-data');
-  $data = $db->query('SELECT * FROM `news` WHERE `id` = ?i',array($newsId),'row');
+  $data = go\DB\query('SELECT * FROM `news` WHERE `id` = ?i',array($newsId),'row');
 // инициализация переменных -------------------------------------------------------------------
   if (isset($_SESSION['location'])) unset($_SESSION['location']);
   $_SESSION['location'] = explode(',',$data['location']);
@@ -131,7 +130,7 @@ require_once  ( __DIR__ . '/../inc/wp/comments.php');
 					 $dir = './../reklama/thumb/'; // папка для загрузки
 					 $sImage->upload($dir, 140, true);
 					 $imgNews = $dir.'imgNews-'.trim($_POST['newsId']).'.jpg';
-					 $db->query('UPDATE `news` SET `img` = ?  WHERE `id` = ?i', array($imgNews, $_POST['newsId']));
+					 go\DB\query('UPDATE `news` SET `img` = ?  WHERE `id` = ?i', array($imgNews, $_POST['newsId']));
 				  }
 				  ?>
 				  <div class="info">
@@ -253,11 +252,11 @@ if(isset($_POST['newsId']))
 				 $location .= $val.',';
 			  }
 
-		 $db->query('UPDATE `news` SET `location` = ?  WHERE `id` = ?i', array($location, $_POST['newsId']));
+		 go\DB\query('UPDATE `news` SET `location` = ?  WHERE `id` = ?i', array($location, $_POST['newsId']));
 	  }
 
 	 $location = mb_substr($location, 0, -1);
-	 $db->query('UPDATE `news` SET ?set WHERE `id` = ?i', array($set, $_POST['newsId']));
+	 go\DB\query('UPDATE `news` SET ?set WHERE `id` = ?i', array($set, $_POST['newsId']));
 
 	 $_SESSION['kolonka'] = isset($_POST['kolonka'])?$_POST['kolonka']:'c_colonka';
 	 if (isset($_SESSION['location'])) unset($_SESSION['location']);
@@ -273,7 +272,7 @@ if ($pg < 1)
   }
 $start = ($pg - 1) * RECORDS_PER_PAGE;
 
-   $name = $db->query('select `name`, `id` from `news`')->assoc();
+   $name = go\DB\query('select `name`, `id` from `news`')->assoc();
    $record_count = count($name);
 if(isset($_GET['newsId']))  $_SESSION['newsId'] = $_GET['newsId'];
    $newsId = isset($_SESSION['newsId'])?$_SESSION['newsId']:1;

@@ -6,14 +6,14 @@ if(isset($_POST['go_update']))
 {
   $id = $_POST['go_update'];
   $content = $_POST['content'];
-  $db->query("update content set txt = ?string where id = ?i", array($content,$id));
+  go\DB\query("update content set txt = ?string where id = ?i", array($content,$id));
 }
 
 if(isset($_POST['chenge_kontent']))
    {
    $_SESSION['current_kontent'] = intval($_POST['id']);
    }
-   $rs = $db->query('select * from content order by id asc', null, 'assoc');
+   $rs = go\DB\query('select * from content order by id asc', null, 'assoc');
 if($rs)
  {
   if(isset($_SESSION['current_kontent'])) {
@@ -43,7 +43,7 @@ if($rs)
 <?
 }
 if(isset($_SESSION['current_kontent'])): 
-   $rs = $db->query('select * from content where id = ?i', array($_SESSION['current_kontent']), 'assoc');
+   $rs = go\DB\query('select * from content where id = ?i', array($_SESSION['current_kontent']), 'assoc');
 if($rs)
 {
 	  foreach($rs as $ln)
@@ -97,7 +97,7 @@ if(isset($_POST['chenge_kontent2']))
    {
    $_SESSION['current_kontent2'] = intval($_POST['id']);
    }
-   $rs2 = $db->query('select * from content order by id asc', null, 'assoc');
+   $rs2 = go\DB\query('select * from content order by id asc', null, 'assoc');
   if($rs2)
 {
   if(isset($_SESSION['current_kontent2'])) {
@@ -126,7 +126,7 @@ if(isset($_POST['chenge_kontent2']))
 <?
 }
 if(isset($_SESSION['current_kontent2'])): 
-   $rs2 = $db->query('select * from content where id = ?i', array($_SESSION['current_kontent2']), 'assoc');
+   $rs2 = go\DB\query('select * from content where id = ?i', array($_SESSION['current_kontent2']), 'assoc');
 if($rs2)
 {
 	  foreach($rs2 as $ln)

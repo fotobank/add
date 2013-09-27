@@ -3401,7 +3401,8 @@ figure { margin:20px auto; }*/
 
 
 .dump_r {
-   width: 1180px;
+    width: auto;
+    max-width: 1180px;
 }
 
 #form_login {

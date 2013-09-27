@@ -23,8 +23,7 @@ function main_redir($addr = '', $close_conn = true, $code = 'HTTP/1.1 303 See Ot
 
   if ($close_conn)
 	 {
-		$db = go\DB\Storage::getInstance()->get('db-for-data');
-		$db->close();
+          go\DB\Storage::getInstance()->get()->close();
 	 }
   exit();
  }
@@ -79,15 +78,13 @@ function ok_exit($msg = 'Операция успешно завершена', $addr = '')
 
   function login()
   {
-	 $db = go\DB\Storage::getInstance()->get('db-for-data');
-	 return $db->query('SELECT `admnick` FROM `config` WHERE id=1', '', 'el');
+	 return go\DB\query('SELECT `admnick` FROM `config` WHERE id=1', '', 'el');
   }
 
 
   function pass()
   {
-	 $db = go\DB\Storage::getInstance()->get('db-for-data');
-	 return $db->query('SELECT `admpass` FROM `config` WHERE id=1', '', 'el');
+	 return go\DB\query('SELECT `admpass` FROM `config` WHERE id=1', '', 'el');
   }
 
 
@@ -113,8 +110,7 @@ function ok_exit($msg = 'Операция успешно завершена', $addr = '')
 	*/
 function get_param($param_name,$param_index)
 {
-	$db = go\DB\Storage::getInstance()->get('db-for-data');
-	$rs = $db->query('select `param_value` from `nastr` where `param_name` = (?string) AND `param_index` = ?i',array($param_name,$param_index), 'el');
+	$rs = go\DB\query('select `param_value` from `nastr` where `param_name` = (?string) AND `param_index` = ?i',array($param_name,$param_index), 'el');
 	$value = $rs ? $rs : false;
 	return $value;
 }
@@ -127,8 +123,7 @@ function get_param($param_name,$param_index)
 	*/
   function get_user($kolonka,$user_id)
   {
-	 $db = go\DB\Storage::getInstance()->get('db-for-data');
-	 $rs = $db->query('select ?c from `users` where `id` = ?i',array($kolonka,$user_id), 'el');
+	 $rs = go\DB\query('select ?c from `users` where `id` = ?i',array($kolonka,$user_id), 'el');
 	 $value = $rs ? $rs : false;
 	 return $value;
   }
@@ -138,8 +133,7 @@ function get_param($param_name,$param_index)
  */
 function fotoFolder()
    {
-	   $db = go\DB\Storage::getInstance()->get('db-for-data');
-	   $foto_folder = $db->query('select `foto_folder` from `albums` where `id` = ?i',array(check_Session::getInstance()->get('current_album')), 'el');
+	   $foto_folder = go\DB\query('select `foto_folder` from `albums` where `id` = ?i',array(check_Session::getInstance()->get('current_album')), 'el');
      return $foto_folder;
    }
 
@@ -153,8 +147,7 @@ function getPassword($password,$id){
 //	stripslashes($password);
 //	$ipassword = trim(md5($password));
 //	$update = mysql_query("UPDATE users SET pass = '$ipassword' WHERE id = '$id'")or die(mysql_error()) ;
-	$db = go\DB\Storage::getInstance()->get('db-for-data');
-	$update = $db->query('UPDATE users SET pass = md5(?string) WHERE id = ?i',array($password,$id)) or die(mysql_error()) ;
+	$update = go\DB\query('UPDATE users SET pass = md5(?string) WHERE id = ?i',array($password,$id)) or die(mysql_error()) ;
 	if($update){return true;}
 	return false;
 }
@@ -354,8 +347,7 @@ function digit_to_string($dig){
 					if($basket !='')
 						{
 					$basket = substr($basket, 0, strlen($basket) - 1); // отрезаем последний символ от строки
-					$db = go\DB\Storage::getInstance()->get('db-for-data');
-					$rs = $db->query('SELECT * FROM `photos` WHERE `id` IN ('.$basket.')')->assoc();
+					$rs = go\DB\query('SELECT * FROM `photos` WHERE `id` IN ('.$basket.')')->assoc();
 					$sum = array();
 					$sum['pecat'] = 0;
 					$sum['pecat_A4'] = 0;
@@ -836,8 +828,7 @@ return $data;
 			$current_c = 'c_colonka';
 		}
 
-		$db = go\DB\Storage::getInstance()->get('db-for-data');
-		$data	= $db->query('SHOW COLUMNS FROM ?t LIKE "%?e%" ',array($table,$kolonka))->row();
+		$data	= go\DB\query('SHOW COLUMNS FROM ?t LIKE "%?e%" ',array($table,$kolonka))->row();
 		preg_match_all('/\(([^)]+)\)/', str_replace("'", '', $data['Type']), $values);
 		$enum_fileds = explode(',', $values[1][0]);
 		foreach ($enum_fileds as $field)
@@ -860,8 +851,7 @@ return $data;
 				$session = check_Session::getInstance();
 				$current_c = $session->get('location');
 
-		$db = go\DB\Storage::getInstance()->get('db-for-data');
-		$data	= $db->query('SHOW COLUMNS FROM ?t LIKE "%?e%" ',array($table,$kolonka))->row();
+		$data	= go\DB\query('SHOW COLUMNS FROM ?t LIKE "%?e%" ',array($table,$kolonka))->row();
 		preg_match_all('/\(([^)]+)\)/', str_replace("'", '', $data['Type']), $values);
 		$enum_fileds = explode(',', $values[1][0]);
 		foreach ($enum_fileds as $field)

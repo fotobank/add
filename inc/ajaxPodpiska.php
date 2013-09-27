@@ -22,13 +22,13 @@
 
 		if($userId)
 		  {
-      $rs = $db->query('select `user_event` from `actions` where `id_user` = ?i and `id_album` = ?i and `user_event` = ?i order by `time_event` asc limit 1',
+      $rs = go\DB\query('select `user_event` from `actions` where `id_user` = ?i and `id_album` = ?i and `user_event` = ?i order by `time_event` asc limit 1',
 		  array($userId,$album,3),'el');
 		if($rs && $rs == 'подписка')
 		  {
 			 echo "<div class='drop-shadow lifted' style='margin: 0 0 0 310px;width: 210px'><div style='font-size: 14px;'>Вы уже подписаны на этот альбом</div></div>";
 		  } else {
-		  $rs = $db->query('INSERT INTO `actions` (`ip`,`id_user`,`user_event`,`id_album`,`brauzer`) VALUES (?string,?i,?i,?i,?string)',
+		  $rs = go\DB\query('INSERT INTO `actions` (`ip`,`id_user`,`user_event`,`id_album`,`brauzer`) VALUES (?string,?i,?i,?i,?string)',
 			 array(Get_IP(),$userId,3,$album,$_SERVER['HTTP_USER_AGENT']));
 		  echo "<div class='drop-shadow lifted' style='margin: 0 0 0 340px;width: 150px'><div style='font-size: 14px;'>Вы успешно подписаны</div></div>";
 		}

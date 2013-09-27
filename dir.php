@@ -8,7 +8,7 @@ if (isset($_GET['num'])) {
 
  $file = (string) $_GET['num'];
 	$file = 'id'.$file.'.jpg';
-	$rs = $db->query('SELECT a.*, p.id_album FROM albums a, photos p WHERE p.img = ? && p.id_album = a.id LIMIT 1',array($file),'row');
+	$rs = go\DB\query('SELECT a.*, p.id_album FROM albums a, photos p WHERE p.img = ? && p.id_album = a.id LIMIT 1',array($file),'row');
 	$foto_folder = $rs['foto_folder'];
 	$watermark = $rs['watermark'];
 	$ip_marker = $rs['ip_marker'];
