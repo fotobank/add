@@ -7,7 +7,7 @@
 					* To change this template use File | Settings | File Templates.
 					*/
 				/** -----------------------------------------------------------------------------------*/
-				// simplehtml
+				// simplehtml - класс разбора xml
 				require_once(__DIR__.'/../classes/simplehtml/inc_func.php');
 				/** -----------------------------------------------------------------------------------*/
 				$odebug           = debugger_errorClass::getInstance('RU');
@@ -26,17 +26,10 @@
 				$odebug->to_Addr      = "robot@aleks.od.ua"; // robot@aleks.od.ua aleksjurii@gmail.com
 				$odebug->log_Max_Size = 150; //Max size of a log before it will sended and cleared (in kb)
 				// $odebug -> checkCode ('./classes/debugger/test.php'); // проверка кода
-				/** -----------------------------------------------------------------------------------*/
-				$session = check_Session::getInstance();
-				/** -----------------------------------------------------------------------------------*/
-				// запрет показа ошибок в DUMP_R ( true - показавать )
-				$session->set('DUMP_R', true);
-				// запрет показа ошибок в Debug_HackerConsole_Main ( true - показавать )
-				$session->set('Debug_HC', false);
 /** -----------------------------------------------------------------------------------*/
 /**  Тесты для проверки Error_Processor */
 /** PHP set_error_handler TEST */
-//	IMAGINE_CONSTANT;
+	IMAGINE_CONSTANT;
 /** PHP set_exception_handler TEST */
 //  trigger_error ('Сообщение пользователя', E_USER_WARNING);
 //	throw new Exception( 'Imagine Exception' );

@@ -54,7 +54,7 @@
 							echo "<div id='form_act'> Активация прошла успешно.</div>";
 						}
 				}
-			$db->close();
+			go\DB\Storage::getInstance()->get()->close();
 		}
 	?>
 </div></div>

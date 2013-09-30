@@ -54,5 +54,5 @@ ob_end_clean();
 
 echo json_encode(array('status' => $status, 'msg' => $msg, 'balans' => $balans, 'votpr' => $vote['vote_price'] , 'votes' => $votes));
 
-$db->close(true);
+go\DB\Storage::getInstance()->get()->close(true);
 ?>

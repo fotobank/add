@@ -198,7 +198,7 @@ else
   echo  $sendSMS;
   }*/
 
-$db->close();
+go\DB\Storage::getInstance()->get()->close();
 	 }else{
 	//	print "<br>link invalid: ${_SERVER['REQUEST_URI']} \n";
 		   include (__DIR__.'/error_.php');

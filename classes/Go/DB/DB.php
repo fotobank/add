@@ -1,15 +1,15 @@
 <?php
 /**
- * goDB2: áèáëèîòåêà äëÿ ðàáîòû ñ ðåëÿöèîííûìè áàçàìè äàííûõ èç PHP
+ * goDB2: Ð±Ð¸Ð±Ð»Ð¸Ð¾Ñ‚ÐµÐºÐ° Ð´Ð»Ñ Ñ€Ð°Ð±Ð¾Ñ‚Ñ‹ Ñ Ñ€ÐµÐ»ÑÑ†Ð¸Ð¾Ð½Ð½Ñ‹Ð¼Ð¸ Ð±Ð°Ð·Ð°Ð¼Ð¸ Ð´Ð°Ð½Ð½Ñ‹Ñ… Ð¸Ð· PHP
  *
  * @package go\DB
  * @link    https://github.com/vasa-c/go-db source
  * @link    https://github.com/vasa-c/go-db/wiki documentation
  * @version 2.0.2 beta
- * @author  Ãðèãîðüåâ Îëåã aka vasa_c (http://blgo.ru/)
+ * @author  Ð“Ñ€Ð¸Ð³Ð¾Ñ€ÑŒÐµÐ² ÐžÐ»ÐµÐ³ aka vasa_c (http://blgo.ru/)
  * @license MIT (http://www.opensource.org/licenses/mit-license.php)
  * @uses    PHP >= 5.3
- * @uses    äëÿ êàæäîãî àäàïòåðà ñâîè ðàñøèðåíèÿ
+ * @uses    Ð´Ð»Ñ ÐºÐ°Ð¶Ð´Ð¾Ð³Ð¾ Ð°Ð´Ð°Ð¿Ñ‚ÐµÑ€Ð° ÑÐ²Ð¾Ð¸ Ñ€Ð°ÑÑˆÐ¸Ñ€ÐµÐ½Ð¸Ñ
  */
 
 namespace go\DB;
@@ -22,21 +22,21 @@ abstract class DB
 /*** STATIC: ***/
 
     /**
-     * Ñîçäàòü îáúåêò äëÿ äîñòóïà ê áàçå
+     * Ð¡Ð¾Ð·Ð´Ð°Ñ‚ÑŒ Ð¾Ð±ÑŠÐµÐºÑ‚ Ð´Ð»Ñ Ð´Ð¾ÑÑ‚ÑƒÐ¿Ð° Ðº Ð±Ð°Ð·Ðµ
      *
      * @throws \go\DB\Exceptions\Config
-     *         íåâåðíûå êîíôèãóðàöèîííûå ïàðàìåòðû
+     *         Ð½ÐµÐ²ÐµÑ€Ð½Ñ‹Ðµ ÐºÐ¾Ð½Ñ„Ð¸Ð³ÑƒÑ€Ð°Ñ†Ð¸Ð¾Ð½Ð½Ñ‹Ðµ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹
      * @throws \go\DB\Exceptions\Connect
-     *         îøèáêà ïîäêëþ÷åíèÿ
+     *         Ð¾ÑˆÐ¸Ð±ÐºÐ° Ð¿Ð¾Ð´ÐºÐ»ÑŽÑ‡ÐµÐ½Ð¸Ñ
      *
      * @param array $params
-     *        ïàðàìåòðû ïîäêëþ÷åíèÿ ê áàçå
+     *        Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹ Ð¿Ð¾Ð´ÐºÐ»ÑŽÑ‡ÐµÐ½Ð¸Ñ Ðº Ð±Ð°Ð·Ðµ
      * @param string $adapter [optional]
-     *        àäàïòåð áàçû (åñëè íå óêàçàí â $params)
+     *        Ð°Ð´Ð°Ð¿Ñ‚ÐµÑ€ Ð±Ð°Ð·Ñ‹ (ÐµÑÐ»Ð¸ Ð½Ðµ ÑƒÐºÐ°Ð·Ð°Ð½ Ð² $params)
      * @return \go\DB\DB
-     *         îáúåêò äëÿ äîñòóïà ê áàçå
+     *         Ð¾Ð±ÑŠÐµÐºÑ‚ Ð´Ð»Ñ Ð´Ð¾ÑÑ‚ÑƒÐ¿Ð° Ðº Ð±Ð°Ð·Ðµ
      */
-    final public static function create(array $params, $adapter = NULL) {
+    final public static function create(array $params, $adapter = null) {
         $adapter = isset($params['_adapter']) ? $params['_adapter'] : $adapter;
         $adapter = \strtolower($adapter);
         $classname = __NAMESPACE__.'\\Adapters\\'.$adapter;
@@ -48,7 +48,7 @@ abstract class DB
     }
 
     /**
-     * Ïîëó÷èòü ñïèñîê äîñòóïíûõ àäàïòåðîâ
+     * ÐŸÐ¾Ð»ÑƒÑ‡Ð¸Ñ‚ÑŒ ÑÐ¿Ð¸ÑÐ¾Ðº Ð´Ð¾ÑÑ‚ÑƒÐ¿Ð½Ñ‹Ñ… Ð°Ð´Ð°Ð¿Ñ‚ÐµÑ€Ð¾Ð²
      *
      * @return array
      */
@@ -68,37 +68,37 @@ abstract class DB
 /*** PUBLIC: ***/
 
     /**
-     * Âûïîëíèòü çàïðîñ ê áàçå äàííûõ
+     * Ð’Ñ‹Ð¿Ð¾Ð»Ð½Ð¸Ñ‚ÑŒ Ð·Ð°Ð¿Ñ€Ð¾Ñ Ðº Ð±Ð°Ð·Ðµ Ð´Ð°Ð½Ð½Ñ‹Ñ…
      *
      * @throws \go\DB\Exceptions\Connect
-     *         îøèáêà ïðè îòëîæåííîì ïîäêëþ÷åíèè
+     *         Ð¾ÑˆÐ¸Ð±ÐºÐ° Ð¿Ñ€Ð¸ Ð¾Ñ‚Ð»Ð¾Ð¶ÐµÐ½Ð½Ð¾Ð¼ Ð¿Ð¾Ð´ÐºÐ»ÑŽÑ‡ÐµÐ½Ð¸Ð¸
      * @throws \go\DB\Exceptions\Closed
-     *         ïîäêëþ÷åíèå çàêðûòî
+     *         Ð¿Ð¾Ð´ÐºÐ»ÑŽÑ‡ÐµÐ½Ð¸Ðµ Ð·Ð°ÐºÑ€Ñ‹Ñ‚Ð¾
      * @throws \go\DB\Exceptions\Templater
-     *         îøèáêà øàáëîíèçàòîðà çàïðîñà
+     *         Ð¾ÑˆÐ¸Ð±ÐºÐ° ÑˆÐ°Ð±Ð»Ð¾Ð½Ð¸Ð·Ð°Ñ‚Ð¾Ñ€Ð° Ð·Ð°Ð¿Ñ€Ð¾ÑÐ°
      * @throws \go\DB\Exceptions\Query
-     *         îøèáêà â çàïðîñå
+     *         Ð¾ÑˆÐ¸Ð±ÐºÐ° Ð² Ð·Ð°Ð¿Ñ€Ð¾ÑÐµ
      * @throws \go\DB\Exceptions\Fetch
-     *         îøèáêà ïðè ðàçáîðå ðåçóëüòàòà
+     *         Ð¾ÑˆÐ¸Ð±ÐºÐ° Ð¿Ñ€Ð¸ Ñ€Ð°Ð·Ð±Ð¾Ñ€Ðµ Ñ€ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚Ð°
      *
      * @param string $pattern
-     *        øàáëîí çàïðîñà
+     *        ÑˆÐ°Ð±Ð»Ð¾Ð½ Ð·Ð°Ð¿Ñ€Ð¾ÑÐ°
      * @param array $data [optional]
-     *        âõîäÿùèå äàííûå äëÿ çàïðîñà
+     *        Ð²Ñ…Ð¾Ð´ÑÑ‰Ð¸Ðµ Ð´Ð°Ð½Ð½Ñ‹Ðµ Ð´Ð»Ñ Ð·Ð°Ð¿Ñ€Ð¾ÑÐ°
      * @param string $fetch [optional]
-     *        ôîðìàò ïðåäñòàâëåíèÿ ðåçóëüòàòà
+     *        Ñ„Ð¾Ñ€Ð¼Ð°Ñ‚ Ð¿Ñ€ÐµÐ´ÑÑ‚Ð°Ð²Ð»ÐµÐ½Ð¸Ñ Ñ€ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚Ð°
      * @param string $prefix [optional]
-     *        ïðåôèêñ òàáëèö äëÿ äàííîãî êîíêðåòíîãî çàïðîñà
+     *        Ð¿Ñ€ÐµÑ„Ð¸ÐºÑ Ñ‚Ð°Ð±Ð»Ð¸Ñ† Ð´Ð»Ñ Ð´Ð°Ð½Ð½Ð¾Ð³Ð¾ ÐºÐ¾Ð½ÐºÑ€ÐµÑ‚Ð½Ð¾Ð³Ð¾ Ð·Ð°Ð¿Ñ€Ð¾ÑÐ°
      * @return \go\DB\Result
-     *         ðåçóëüòàò â çàäàííîì ôîðìàòå
+     *         Ñ€ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚ Ð² Ð·Ð°Ð´Ð°Ð½Ð½Ð¾Ð¼ Ñ„Ð¾Ñ€Ð¼Ð°Ñ‚Ðµ
      */
-    final public function query($pattern, $data = NULL, $fetch = NULL, $prefix = NULL) {
+    final public function query($pattern, $data = null, $fetch = null, $prefix = null) {
         $query = $this->makeQuery($pattern, $data, $prefix);
         return $this->plainQuery($query, $fetch);
     }
 
     /**
-     * Âûïîëíåíèå "÷èñòîãî" çàïðîñà
+     * Ð’Ñ‹Ð¿Ð¾Ð»Ð½ÐµÐ½Ð¸Ðµ "Ñ‡Ð¸ÑÑ‚Ð¾Ð³Ð¾" Ð·Ð°Ð¿Ñ€Ð¾ÑÐ°
      *
      * @throws \go\DB\Exceptions\Connect
      * @throws \go\DB\Exceptions\Closed
@@ -106,13 +106,13 @@ abstract class DB
      * @throws \go\DB\Exceptions\Fetch
      *
      * @param string $query
-     *        SQL-çàïðîñ
+     *        SQL-Ð·Ð°Ð¿Ñ€Ð¾Ñ
      * @param string $fetch [optional]
-     *        ôîðìàò ïðåäñòàâëåíèÿ ðåçóëüòàòà
+     *        Ñ„Ð¾Ñ€Ð¼Ð°Ñ‚ Ð¿Ñ€ÐµÐ´ÑÑ‚Ð°Ð²Ð»ÐµÐ½Ð¸Ñ Ñ€ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚Ð°
      * @return \go\DB\Result
-     *         ðåçóëüòàò â çàäàííîì ôîðìàòå
+     *         Ñ€ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚ Ð² Ð·Ð°Ð´Ð°Ð½Ð½Ð¾Ð¼ Ñ„Ð¾Ñ€Ð¼Ð°Ñ‚Ðµ
      */
-    final public function plainQuery($query, $fetch = NULL) {
+    final public function plainQuery($query, $fetch = null) {
         $this->forcedConnect();
         $implementation = $this->connector->getImplementation();
         $connection     = $this->connector->getConnection();
@@ -124,7 +124,7 @@ abstract class DB
             $errorCode  = $implementation->getErrorCode($connection);
             throw new Exceptions\Query($query, $errorInfo, $errorCode);
         }
-        $this->debugLog($query, $duration, NULL);
+        $this->debugLog($query, $duration, null);
         $fetcher = $this->createFetcher($cursor);
         if (is_null($fetch)) {
             return $fetcher;
@@ -133,9 +133,9 @@ abstract class DB
     }
 
     /**
-     * Âûçîâ îáúåêòà, êàê ôóíêöèè - ïåðåàäðåñàöèÿ íà query()
+     * Ð’Ñ‹Ð·Ð¾Ð² Ð¾Ð±ÑŠÐµÐºÑ‚Ð°, ÐºÐ°Ðº Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¸ - Ð¿ÐµÑ€ÐµÐ°Ð´Ñ€ÐµÑÐ°Ñ†Ð¸Ñ Ð½Ð° query()
      *
-     * Ñëåäóþùèå äâà ïðèìåðà èäåíòè÷íû:
+     * Ð¡Ð»ÐµÐ´ÑƒÑŽÑ‰Ð¸Ðµ Ð´Ð²Ð° Ð¿Ñ€Ð¸Ð¼ÐµÑ€Ð° Ð¸Ð´ÐµÐ½Ñ‚Ð¸Ñ‡Ð½Ñ‹:
      * @example $db->query('SELECT * FROM `table`');
      * @example $db('SELECT * FROM `table`');
      *
@@ -151,12 +151,12 @@ abstract class DB
      * @param string $prefix [optional]
      * @return \go\DB\Result
      */
-    final public function __invoke($pattern, $data = NULL, $fetch = NULL, $prefix = NULL) {
+    final public function __invoke($pattern, $data = null, $fetch = null, $prefix = null) {
         return $this->query($pattern, $data, $fetch, $prefix);
     }
 
     /**
-     * Óñòàíîâëåíî ëè ñîåäèíåíèå ôàêòè÷åñêè
+     * Ð£ÑÑ‚Ð°Ð½Ð¾Ð²Ð»ÐµÐ½Ð¾ Ð»Ð¸ ÑÐ¾ÐµÐ´Ð¸Ð½ÐµÐ½Ð¸Ðµ Ñ„Ð°ÐºÑ‚Ð¸Ñ‡ÐµÑÐºÐ¸
      *
      * @return bool
      */
@@ -168,7 +168,7 @@ abstract class DB
     }
 
     /**
-     * Çàêðûòî ëè ñîåäèíåíèå
+     * Ð—Ð°ÐºÑ€Ñ‹Ñ‚Ð¾ Ð»Ð¸ ÑÐ¾ÐµÐ´Ð¸Ð½ÐµÐ½Ð¸Ðµ
      *
      * @return bool
      */
@@ -178,12 +178,12 @@ abstract class DB
 
 
     /**
-     * Ïðèíóäèòåëüíî óñòàíîâèòü ñîåäèíåíèå, åñëè îíî åù¸ íå óñòàíîâëåíî
+     * ÐŸÑ€Ð¸Ð½ÑƒÐ´Ð¸Ñ‚ÐµÐ»ÑŒÐ½Ð¾ ÑƒÑÑ‚Ð°Ð½Ð¾Ð²Ð¸Ñ‚ÑŒ ÑÐ¾ÐµÐ´Ð¸Ð½ÐµÐ½Ð¸Ðµ, ÐµÑÐ»Ð¸ Ð¾Ð½Ð¾ ÐµÑ‰Ñ‘ Ð½Ðµ ÑƒÑÑ‚Ð°Ð½Ð¾Ð²Ð»ÐµÐ½Ð¾
      *
      * @throws \go\DB\Exceptions\Connect
-     *         îøèáêà ïîäêëþ÷åíèÿ
+     *         Ð¾ÑˆÐ¸Ð±ÐºÐ° Ð¿Ð¾Ð´ÐºÐ»ÑŽÑ‡ÐµÐ½Ð¸Ñ
      * @throws \go\DB\Exceptions\Closed
-     *         ïîäêëþ÷åíèå çàêðûòî "æåñòêèì" îáðàçîì
+     *         Ð¿Ð¾Ð´ÐºÐ»ÑŽÑ‡ÐµÐ½Ð¸Ðµ Ð·Ð°ÐºÑ€Ñ‹Ñ‚Ð¾ "Ð¶ÐµÑÑ‚ÐºÐ¸Ð¼" Ð¾Ð±Ñ€Ð°Ð·Ð¾Ð¼
      */
     final public function forcedConnect() {
         if ($this->hardClosed) {
@@ -198,14 +198,12 @@ abstract class DB
     }
 
     /**
-     * Çàêðûòü ñîåäèíåíèå
+     * Ð—Ð°ÐºÑ€Ñ‹Ñ‚ÑŒ ÑÐ¾ÐµÐ´Ð¸Ð½ÐµÐ½Ð¸Ðµ
      *
      * @param bool $soft [optional]
-     *        "ìÿãêîå" çàêðûòèå: ñ âîçìîæíîñòüþ âîññòàíîâëåíèÿ
-	  *
-	  * @return bool
-	  */
-  final public function close($soft = false) { // @todo close
+     *        "Ð¼ÑÐ³ÐºÐ¾Ðµ" Ð·Ð°ÐºÑ€Ñ‹Ñ‚Ð¸Ðµ: Ñ Ð²Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ð¾ÑÑ‚ÑŒÑŽ Ð²Ð¾ÑÑÑ‚Ð°Ð½Ð¾Ð²Ð»ÐµÐ½Ð¸Ñ
+     */
+    final public function close($soft = false) { // @todo close
         if ($this->hardClosed) {
             return false;
         }
@@ -219,18 +217,17 @@ abstract class DB
     }
 
     /**
-     * Óñòàíîâèòü ïðåôèêñ òàáëèö
+     * Ð£ÑÑ‚Ð°Ð½Ð¾Ð²Ð¸Ñ‚ÑŒ Ð¿Ñ€ÐµÑ„Ð¸ÐºÑ Ñ‚Ð°Ð±Ð»Ð¸Ñ†
      *
      * @param string $prefix
-	  * @return bool
-	  */
-  final public function setPrefix($prefix) {
+     */
+    final public function setPrefix($prefix) {
         $this->prefix = $prefix;
         return true;
     }
 
     /**
-     * Ïîëó÷èòü ïðåôèêñ òàáëèö
+     * ÐŸÐ¾Ð»ÑƒÑ‡Ð¸Ñ‚ÑŒ Ð¿Ñ€ÐµÑ„Ð¸ÐºÑ Ñ‚Ð°Ð±Ð»Ð¸Ñ†
      *
      * @return string
      */
@@ -239,13 +236,12 @@ abstract class DB
     }
 
     /**
-     * Óñòàíîâèòü îáðàáîò÷èê îòëàäî÷íîé èíôîðìàöèè
+     * Ð£ÑÑ‚Ð°Ð½Ð¾Ð²Ð¸Ñ‚ÑŒ Ð¾Ð±Ñ€Ð°Ð±Ð¾Ñ‚Ñ‡Ð¸Ðº Ð¾Ñ‚Ð»Ð°Ð´Ð¾Ñ‡Ð½Ð¾Ð¹ Ð¸Ð½Ñ„Ð¾Ñ€Ð¼Ð°Ñ†Ð¸Ð¸
      *
-     * @param bool $callback
-     *        îáðàáîò÷èê (true - ñòàíäàðòíûé)
-	  * @return bool
-	  */
-  final public function setDebug($callback = true) { // @todo cli
+     * @param callback $callback
+     *        Ð¾Ð±Ñ€Ð°Ð±Ð¾Ñ‚Ñ‡Ð¸Ðº (true - ÑÑ‚Ð°Ð½Ð´Ð°Ñ€Ñ‚Ð½Ñ‹Ð¹)
+     */
+    final public function setDebug($callback = true) { // @todo cli
         if ($callback === true) {
             if (php_sapi_name() == 'cli') {
                 $callback = new Helpers\Debuggers\OutConsole();
@@ -258,7 +254,7 @@ abstract class DB
     }
 
     /**
-     * Ïîëó÷èòü îáðàáîò÷èê îòëàäî÷íîé èíôîðìàöèè
+     * ÐŸÐ¾Ð»ÑƒÑ‡Ð¸Ñ‚ÑŒ Ð¾Ð±Ñ€Ð°Ð±Ð¾Ñ‚Ñ‡Ð¸Ðº Ð¾Ñ‚Ð»Ð°Ð´Ð¾Ñ‡Ð½Ð¾Ð¹ Ð¸Ð½Ñ„Ð¾Ñ€Ð¼Ð°Ñ†Ð¸Ð¸
      *
      * @return callback
      */
@@ -267,23 +263,23 @@ abstract class DB
     }
 
     /**
-     * Îòêëþ÷èòü îòïðàâêó îòëàäî÷íîé èíôîðìàöèè
+     * ÐžÑ‚ÐºÐ»ÑŽÑ‡Ð¸Ñ‚ÑŒ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²ÐºÑƒ Ð¾Ñ‚Ð»Ð°Ð´Ð¾Ñ‡Ð½Ð¾Ð¹ Ð¸Ð½Ñ„Ð¾Ñ€Ð¼Ð°Ñ†Ð¸Ð¸
      */
     final public function disableDebug() {
-        $this->debugCallback = NULL;
+        $this->debugCallback = null;
         return true;
     }
 
     /**
-     * Ïîëó÷èòü âíóòðåííþþ ðåàëèçàöèþ ïîäêëþ÷åíèÿ ê áàçå
+     * ÐŸÐ¾Ð»ÑƒÑ‡Ð¸Ñ‚ÑŒ Ð²Ð½ÑƒÑ‚Ñ€ÐµÐ½Ð½ÑŽÑŽ Ñ€ÐµÐ°Ð»Ð¸Ð·Ð°Ñ†Ð¸ÑŽ Ð¿Ð¾Ð´ÐºÐ»ÑŽÑ‡ÐµÐ½Ð¸Ñ Ðº Ð±Ð°Ð·Ðµ
      *
      * @throws \go\DB\Exceptions\Connect
      * @throws \go\DB\Exceptions\Closed
      *
      * @param bool $connect
-     *        ïîäêëþ÷èòüñÿ, åñëè íå ïîäêëþ÷åíû
+     *        Ð¿Ð¾Ð´ÐºÐ»ÑŽÑ‡Ð¸Ñ‚ÑŒÑÑ, ÐµÑÐ»Ð¸ Ð½Ðµ Ð¿Ð¾Ð´ÐºÐ»ÑŽÑ‡ÐµÐ½Ñ‹
      * @return mixed
-     *         íèçêîóðîâíåâàÿ ðåàëèçàöèÿ èëè FALSE åñëè åù¸ íå ñîçäàíà
+     *         Ð½Ð¸Ð·ÐºÐ¾ÑƒÑ€Ð¾Ð²Ð½ÐµÐ²Ð°Ñ Ñ€ÐµÐ°Ð»Ð¸Ð·Ð°Ñ†Ð¸Ñ Ð¸Ð»Ð¸ FALSE ÐµÑÐ»Ð¸ ÐµÑ‰Ñ‘ Ð½Ðµ ÑÐ¾Ð·Ð´Ð°Ð½Ð°
      */
     final public function getImplementationConnection($connect = true) {
         if ($connect && (!$this->connector->isConnected())) {
@@ -293,7 +289,7 @@ abstract class DB
     }
 
     /**
-     * Ñôîðìèðîâàòü çàïðîñ íà îñíîâàíèè øàáëîíà è äàííûõ
+     * Ð¡Ñ„Ð¾Ñ€Ð¼Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ Ð·Ð°Ð¿Ñ€Ð¾Ñ Ð½Ð° Ð¾ÑÐ½Ð¾Ð²Ð°Ð½Ð¸Ð¸ ÑˆÐ°Ð±Ð»Ð¾Ð½Ð° Ð¸ Ð´Ð°Ð½Ð½Ñ‹Ñ…
      *
      * @throws \go\DB\Exceptions\Templater
      *
@@ -302,7 +298,7 @@ abstract class DB
      * @param string $prefix
      * @return string
      */
-    public function makeQuery($pattern, $data, $prefix = NULL) {
+    public function makeQuery($pattern, $data, $prefix = null) {
         $this->forcedConnect();
         if (is_null($prefix)) {
             $prefix = $this->prefix;
@@ -315,10 +311,10 @@ abstract class DB
 /*** PROTECTED: ***/
 
     /**
-     * Ñêðûòûé êîíñòðóêòîð - èçâíå íå ñîçäàòü
+     * Ð¡ÐºÑ€Ñ‹Ñ‚Ñ‹Ð¹ ÐºÐ¾Ð½ÑÑ‚Ñ€ÑƒÐºÑ‚Ð¾Ñ€ - Ð¸Ð·Ð²Ð½Ðµ Ð½Ðµ ÑÐ¾Ð·Ð´Ð°Ñ‚ÑŒ
      *
      * @param array $params
-     *        êîíôèãóðàöèîííûå ïàðàìåòðû áàçû
+     *        ÐºÐ¾Ð½Ñ„Ð¸Ð³ÑƒÑ€Ð°Ñ†Ð¸Ð¾Ð½Ð½Ñ‹Ðµ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹ Ð±Ð°Ð·Ñ‹
      */
     protected function __construct($params) {
         $this->separateParams($params);
@@ -332,23 +328,23 @@ abstract class DB
     }
 
     /**
-     * Äåñòðóêòîð
+     * Ð”ÐµÑÑ‚Ñ€ÑƒÐºÑ‚Ð¾Ñ€
      */
     public final function __destruct() {
         $this->connector->close();
         $this->connector->removeLink();
-        $this->connector = NULL;
+        $this->connector = null;
     }
 
     /**
-     * Îáðàáîò÷èê êëîíèðîâàíèÿ îáúåêòà
+     * ÐžÐ±Ñ€Ð°Ð±Ð¾Ñ‚Ñ‡Ð¸Ðº ÐºÐ»Ð¾Ð½Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ñ Ð¾Ð±ÑŠÐµÐºÑ‚Ð°
      */
     public function __clone() {
         $this->connector->addLink($this->connected);
     }
 
     /**
-     * Ñîçäàòü îáúåêò ïîäêëþ÷åíèÿ ê áàçå
+     * Ð¡Ð¾Ð·Ð´Ð°Ñ‚ÑŒ Ð¾Ð±ÑŠÐµÐºÑ‚ Ð¿Ð¾Ð´ÐºÐ»ÑŽÑ‡ÐµÐ½Ð¸Ñ Ðº Ð±Ð°Ð·Ðµ
      *
      * @return \go\DB\Helpers\Connector
      */
@@ -357,7 +353,7 @@ abstract class DB
     }
 
     /**
-     * Ñîçäàòü øàáëîíèçàòîð çàïðîñà
+     * Ð¡Ð¾Ð·Ð´Ð°Ñ‚ÑŒ ÑˆÐ°Ð±Ð»Ð¾Ð½Ð¸Ð·Ð°Ñ‚Ð¾Ñ€ Ð·Ð°Ð¿Ñ€Ð¾ÑÐ°
      *
      * @param string $pattern
      * @param array $data
@@ -369,7 +365,7 @@ abstract class DB
     }
 
     /**
-     * Ñîçäàòü îáúåêò ïðåäñòàâëåíèÿ ðåçóëüòàòà
+     * Ð¡Ð¾Ð·Ð´Ð°Ñ‚ÑŒ Ð¾Ð±ÑŠÐµÐºÑ‚ Ð¿Ñ€ÐµÐ´ÑÑ‚Ð°Ð²Ð»ÐµÐ½Ð¸Ñ Ñ€ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚Ð°
      *
      * @param mixed $cursor
      * @return \go\DB\Result
@@ -379,7 +375,7 @@ abstract class DB
     }
 
     /**
-     * Ðàçáîð è ñîðòèðîâêà ïàðàìåòðîâ íà ñèñòåìíûå è ïîäêëþ÷åíèÿ
+     * Ð Ð°Ð·Ð±Ð¾Ñ€ Ð¸ ÑÐ¾Ñ€Ñ‚Ð¸Ñ€Ð¾Ð²ÐºÐ° Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð¾Ð² Ð½Ð° ÑÐ¸ÑÑ‚ÐµÐ¼Ð½Ñ‹Ðµ Ð¸ Ð¿Ð¾Ð´ÐºÐ»ÑŽÑ‡ÐµÐ½Ð¸Ñ
      *
      * @throws \go\DB\Exceptions\ConfigSys
      *
@@ -403,7 +399,7 @@ abstract class DB
     }
 
     /**
-     * Îòïðàâêà çàïðîñà â îòëàä÷èê
+     * ÐžÑ‚Ð¿Ñ€Ð°Ð²ÐºÐ° Ð·Ð°Ð¿Ñ€Ð¾ÑÐ° Ð² Ð¾Ñ‚Ð»Ð°Ð´Ñ‡Ð¸Ðº
      *
      * @param string $query
      * @param float $duration
@@ -419,56 +415,56 @@ abstract class DB
 /*** VARS: ***/
 
     /**
-     * Êýø ñïèñêà äîñòóïíûõ àäàïòåðîâ
+     * ÐšÑÑˆ ÑÐ¿Ð¸ÑÐºÐ° Ð´Ð¾ÑÑ‚ÑƒÐ¿Ð½Ñ‹Ñ… Ð°Ð´Ð°Ð¿Ñ‚ÐµÑ€Ð¾Ð²
      *
      * @var array
      */
     private static $availableAdapters;
 
     /**
-     * Îáúåêò-ïîäêëþ÷àëêà
+     * ÐžÐ±ÑŠÐµÐºÑ‚-Ð¿Ð¾Ð´ÐºÐ»ÑŽÑ‡Ð°Ð»ÐºÐ°
      *
      * @var \go\DB\Helpers\Connector
      */
     protected $connector;
 
     /**
-     * Ñèñòåìíûå ïàðàìåòðû
+     * Ð¡Ð¸ÑÑ‚ÐµÐ¼Ð½Ñ‹Ðµ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹
      *
      * @var array
      */
     protected $paramsSys;
 
     /**
-     * Ïàðàìåòðû ïîäêëþ÷åíèÿ ê áàçå
+     * ÐŸÐ°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹ Ð¿Ð¾Ð´ÐºÐ»ÑŽÑ‡ÐµÐ½Ð¸Ñ Ðº Ð±Ð°Ð·Ðµ
      *
      * @var array
      */
     protected $paramsDB;
 
     /**
-     * Òåêóùèé ïðåôèêñ èì¸í òàáëèö
+     * Ð¢ÐµÐºÑƒÑ‰Ð¸Ð¹ Ð¿Ñ€ÐµÑ„Ð¸ÐºÑ Ð¸Ð¼Ñ‘Ð½ Ñ‚Ð°Ð±Ð»Ð¸Ñ†
      *
      * @var string
      */
     protected $prefix;
 
     /**
-     * Îòëàä÷èê çàïðîñîâ
+     * ÐžÑ‚Ð»Ð°Ð´Ñ‡Ð¸Ðº Ð·Ð°Ð¿Ñ€Ð¾ÑÐ¾Ð²
      *
      * @var callback
      */
     protected $debugCallback;
 
     /**
-     * Óñòàíîâëåíî ëè ïîäêëþ÷åíèå äëÿ äàííîãî îáúåêòà áàçû
+     * Ð£ÑÑ‚Ð°Ð½Ð¾Ð²Ð»ÐµÐ½Ð¾ Ð»Ð¸ Ð¿Ð¾Ð´ÐºÐ»ÑŽÑ‡ÐµÐ½Ð¸Ðµ Ð´Ð»Ñ Ð´Ð°Ð½Ð½Ð¾Ð³Ð¾ Ð¾Ð±ÑŠÐµÐºÑ‚Ð° Ð±Ð°Ð·Ñ‹
      *
      * @var bool
      */
     protected $connected = false;
 
     /**
-     * Çàêðûòî ëè ïîäêëþ÷åíèå æ¸ñòêèì îáðàçîì
+     * Ð—Ð°ÐºÑ€Ñ‹Ñ‚Ð¾ Ð»Ð¸ Ð¿Ð¾Ð´ÐºÐ»ÑŽÑ‡ÐµÐ½Ð¸Ðµ Ð¶Ñ‘ÑÑ‚ÐºÐ¸Ð¼ Ð¾Ð±Ñ€Ð°Ð·Ð¾Ð¼
      *
      * @var bool
      */
@@ -476,29 +472,29 @@ abstract class DB
 }
 
 /**
- * Ñîçäàòü îáúåêò äëÿ äîñòóïà ê áàçå
- * (àëèàñ DB::create)
+ * Ð¡Ð¾Ð·Ð´Ð°Ñ‚ÑŒ Ð¾Ð±ÑŠÐµÐºÑ‚ Ð´Ð»Ñ Ð´Ð¾ÑÑ‚ÑƒÐ¿Ð° Ðº Ð±Ð°Ð·Ðµ
+ * (Ð°Ð»Ð¸Ð°Ñ DB::create)
  *
  * @throws \go\DB\Exceptions\Config
  * @throws \go\DB\Exceptions\Connect
  *
  * @param array $params
- *        ïàðàìåòðû ïîäêëþ÷åíèÿ ê áàçå
+ *        Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹ Ð¿Ð¾Ð´ÐºÐ»ÑŽÑ‡ÐµÐ½Ð¸Ñ Ðº Ð±Ð°Ð·Ðµ
  * @param string $adapter [optional]
- *        àäàïòåð áàçû (åñëè íå óêàçàí â $params)
+ *        Ð°Ð´Ð°Ð¿Ñ‚ÐµÑ€ Ð±Ð°Ð·Ñ‹ (ÐµÑÐ»Ð¸ Ð½Ðµ ÑƒÐºÐ°Ð·Ð°Ð½ Ð² $params)
  * @return \go\DB\DB
- *         îáúåêò äëÿ äîñòóïà ê áàçå
+ *         Ð¾Ð±ÑŠÐµÐºÑ‚ Ð´Ð»Ñ Ð´Ð¾ÑÑ‚ÑƒÐ¿Ð° Ðº Ð±Ð°Ð·Ðµ
  */
-function create(array $params, $adapter = NULL) {
+function create(array $params, $adapter = null) {
     return DB::create($params, $adapter);
 }
 
 /**
- * Çàïðîñ ê öåíòðàëüíîé áàçå öåíòðàëüíîãî õðàíèëèùà
- * (àëèàñ Storage::query)
+ * Ð—Ð°Ð¿Ñ€Ð¾Ñ Ðº Ñ†ÐµÐ½Ñ‚Ñ€Ð°Ð»ÑŒÐ½Ð¾Ð¹ Ð±Ð°Ð·Ðµ Ñ†ÐµÐ½Ñ‚Ñ€Ð°Ð»ÑŒÐ½Ð¾Ð³Ð¾ Ñ…Ñ€Ð°Ð½Ð¸Ð»Ð¸Ñ‰Ð°
+ * (Ð°Ð»Ð¸Ð°Ñ Storage::query)
  *
  * @throws \go\DB\Exceptions\StorageDBCentral
- *         íåò öåíòðàëüíîé áàçû
+ *         Ð½ÐµÑ‚ Ñ†ÐµÐ½Ñ‚Ñ€Ð°Ð»ÑŒÐ½Ð¾Ð¹ Ð±Ð°Ð·Ñ‹
  * @throws \go\DB\Exceptions\Connect
  * @throws \go\DB\Exceptions\Closed
  * @throws \go\DB\Exceptions\Templater
@@ -510,6 +506,6 @@ function create(array $params, $adapter = NULL) {
  * @param string $fetch [optional]
  * @param string $prefix [optional]
  */
-function query($pattern, $data = NULL, $fetch = NULL, $prefix = NULL) {
+function query($pattern, $data = null, $fetch = null, $prefix = null) {
     return Storage::getInstance()->query($pattern, $data, $fetch, $prefix);
 }

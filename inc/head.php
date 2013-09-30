@@ -14,6 +14,13 @@
        // обработка ошибок
        require_once (__DIR__.'/errorDump.php');
        /** -----------------------------------------------------------------------------------*/
+       $session = check_Session::getInstance();
+       /** -----------------------------------------------------------------------------------*/
+       // запрет показа ошибок в DUMP_R ( true - показавать )
+       $session->set('DUMP_R', true);
+       // запрет показа ошибок в Debug_HackerConsole_Main ( true - показавать )
+       $session->set('Debug_HC', false);
+       /** -----------------------------------------------------------------------------------*/
        // капча
        $cryptinstall = '/classes/dsp/cryptographp.fct.php';
        require_once  (__DIR__.'/../classes/dsp/cryptographp.fct.php');
@@ -49,8 +56,7 @@
               'js/main.js',
               'js/ajax.js',
               'js/no-copy.js',
-              'js/badger/badger.js',
-              'js/jquery.waitforimages.js'
+              'js/badger/badger.js'
        );
        $prioritize_Js = array(
               'js/jquery-1.10.2.min.js',

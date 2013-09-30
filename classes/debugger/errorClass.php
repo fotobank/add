@@ -246,7 +246,7 @@
                      $this->XML_TYPES = new DOMDocument('1.0', 'utf-8');
                      $this->XML_TYPES->load(__DIR__.'/xml/'.$this->sLang.'/types.xml');
                      $this->XML_DOC               = new DOMDocument ('1.0', 'utf-8'); // windows-1251 utf-8
-                     $this->XML_DOC->formatOutput = true;
+              //       $this->XML_DOC->formatOutput = true;
                      $root                        = $this->XML_DOC->createElement("ROOT");
                      $this->XML_ROOT              = $this->XML_DOC->appendChild($root);
                      if (!is_dir($_SERVER['DOCUMENT_ROOT'].'/logs')) {
@@ -269,8 +269,7 @@
                */
               public function captureShutdown() {
 
-                     $error = error_get_last();
-                     $dt    = date("Y-m-d H:i:s (T)");
+                     $error = error_get_last();;
                      if ($error) {
                             $message  = '';
                             $sErrFile = '';
@@ -457,7 +456,7 @@
                             $oNewLog = $this->XML_DOC->createElement('ERROR');
                             $iNewId  = $this->XML_ROOT->getElementsByTagName('ERROR')->length + 1;
                             $oNewLog = $this->XML_ROOT->appendChild($oNewLog);
-                            $oNewLog->setAttribute('xml:id', '_'.$iNewId);
+                            $oNewLog->setAttribute('id', $iNewId);
                             $aElem[] = $this->XML_DOC->createElement('DATE', date('d-m-Y H:i:s'));
                             $aElem[] = $this->XML_DOC->createElement('TYPE', $sType);
                             // $sErrStr = utf8_encode($sErrStr);
@@ -472,7 +471,7 @@
                             $aElem[]     = $this->XML_DOC->createElement('MEMORY', $iMemory);
                             $aElem[]     = $this->XML_DOC->createElement('TRANSLATION', iconv("WINDOWS-1251", "UTF-8", $aTempArr['TRANSLATION']));
                             $aElem[]     = $this->XML_DOC->createElement('SUGGESTION', iconv("WINDOWS-1251", "UTF-8", $aTempArr['SUGGESTION']));
-                            $aElem[]     = $this->XML_DOC->createElement('CONTEXT', $sVars);
+                            $aElem[]     = $this->XML_DOC->createElement('CONTEXT', htmlspecialchars($sVars, ENT_QUOTES));
                             $oSource     = $this->XML_DOC->createElement('SOURCE');
                             $aSourceElem = array();
                             $numLine     = $iErrLine + 1 - $this->iNbLines;
@@ -573,10 +572,10 @@
               public function showAll() {
 
                      if ($this->logMail) {
+                            // Отправка log файла
                             $xml = new DOMDocument('1.0', 'utf-8');
                             if (file_exists($this->sFile) and filesize($this->sFile) != 0) {
                                    $xml->load($this->sFile);
-                                   echo ('Отправка log файла');
                             }
                      } else {
                             $xml = $this->XML_DOC;
@@ -772,15 +771,22 @@
                                    return true;
                             }
                             $doc               = new DOMDocument('1.0', 'utf-8');
-                            $doc->formatOutput = true;
-                            $doc->load($this->sFile);
+                          //  $doc->formatOutput = true;
+
+
+                            /*$dom = file_get_html($this->sFile);
+                            $iNewId1 = $dom->find('ERROR[id]', -1)->id+1;
+                            dump_d($iNewId1);*/
+
+                            if($doc->load($this->sFile)) {
                             $root = $doc->documentElement;
+                            if($root) {
                                    if ($this->XML_DOC->getElementsByTagName('ERROR')->length > 0) {
                                           $nodeLists = $this->XML_DOC->getElementsByTagName('ERROR');
                                           foreach ($nodeLists as $nodeList) {
                                                  $this->currentNode = $nodeList;
                                                  $iNewId            = $root->getElementsByTagName('ERROR')->length + 1;
-                                                 $this->currentNode->setAttribute('xml:id', '_'.$iNewId);
+                                                 $this->currentNode->setAttribute('id', $iNewId);
                                                  $node = $doc->importNode($this->currentNode, true); //выбираем корневой узел
                                                  $root->appendChild($node); //добавляем дочерний к корневому
                                           }
@@ -797,6 +803,8 @@
                                                  unset($doc);
                                           }
                                    }
+                            }
+                            }
 
                             if (filesize($this->sFile) > ($this->mailOptions['log_Max_Size'] * 1024)) {
                                    //  включить вывод на email

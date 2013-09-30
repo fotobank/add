@@ -116,5 +116,5 @@ else
 		}
 
   }
-$db->close();
+go\DB\Storage::getInstance()->get()->close();
 ?>

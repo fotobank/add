@@ -40,6 +40,6 @@
 		  }
 		ob_end_clean();
 		echo json_encode(array('status' => $status, 'msg' => $msg));
-		$db->close(true);
+		go\DB\Storage::getInstance()->get()->close(true);
 	 }
 ?>

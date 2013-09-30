@@ -65,7 +65,7 @@
 										 $session->set('err_msg', "Пользователь с данным '$type' не найден.<br>");
 										 $ret = 'false';
 							}
-							$db->close();
+							go\DB\Storage::getInstance()->get()->close();
 
 							return $ret;
 			 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Автозагрузка классов в goDB
+ * РђРІС‚РѕР·Р°РіСЂСѓР·РєР° РєР»Р°СЃСЃРѕРІ РІ goDB
  *
  * @example
  * <code>
@@ -9,18 +9,18 @@
  * </code>
  *
  * @package go\DB
- * @author  Григорьев Олег aka vasa_c (http://blgo.ru/)
+ * @author  Р“СЂРёРіРѕСЂСЊРµРІ РћР»РµРі aka vasa_c (http://blgo.ru/)
  */
 
 namespace go\DB;
 
 /**
- * Загрузить класс по имени
+ * Р—Р°РіСЂСѓР·РёС‚СЊ РєР»Р°СЃСЃ РїРѕ РёРјРµРЅРё
  * 
  * @param string $classname
- *        имя требуемого класса
+ *        РёРјСЏ С‚СЂРµР±СѓРµРјРѕРіРѕ РєР»Р°СЃСЃР°
  * @return bool
- *         был ли загружен класс (FALSE - класс не найден или не относится к go\DB)
+ *         Р±С‹Р» Р»Рё Р·Р°РіСЂСѓР¶РµРЅ РєР»Р°СЃСЃ (FALSE - РєР»Р°СЃСЃ РЅРµ РЅР°Р№РґРµРЅ РёР»Рё РЅРµ РѕС‚РЅРѕСЃРёС‚СЃСЏ Рє go\DB)
  */
 function autoload($classname) {
     if (\strpos($classname, __NAMESPACE__) !== 0) {
@@ -36,7 +36,7 @@ function autoload($classname) {
 }
 
 /**
- * Зарегистрировать автозагрузчик для goDB
+ * Р—Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°С‚СЊ Р°РІС‚РѕР·Р°РіСЂСѓР·С‡РёРє РґР»СЏ goDB
  */
 function autoloadRegister() {
     \spl_autoload_register('\go\DB\autoload');

@@ -140,7 +140,7 @@ if ($id > 0)
             <?
             }
     }
-		$db->close(true);
+		go\DB\Storage::getInstance()->get()->close(true);
 
 ?>
 

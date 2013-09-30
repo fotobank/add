@@ -115,7 +115,7 @@
 									if (isset($result['delUser'])) {
 												go\DB\query('DELETE FROM `users` WHERE `id`=?i', array($_SESSION['userid']));
 												unset($result);
-												$db->close();
+												go\DB\Storage::getInstance()->get()->close();
 												session_destroy();
 												echo "<script>window.document.location.href='/index.php'</script>";
 									}

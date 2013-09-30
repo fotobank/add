@@ -13,9 +13,7 @@
 
 		 }
 
-		 $session = check_Session::getInstance();
-
-		 $session->set('cryptdir', dirname($cryptinstall));
+       check_Session::getInstance()->set('cryptdir', dirname($cryptinstall));
 
 
 
