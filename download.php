@@ -1,7 +1,53 @@
 <?php
-			define ( 'BASEPATH' , realpath ( __DIR__ ) . '/' , TRUE );
+			define ( 'BASEPATH' , realpath ( __DIR__ ) . '/' , true );
 include (BASEPATH.'/inc/config.php');
 include (BASEPATH.'/inc/func.php');
+
+       /**
+        * @param        $filepath
+        * @param string $mimetype
+        *
+        * $filepath &ndash; путь к файлу, который мы хотим отдать
+        * $mimetype &ndash; тип отдаваемых данных (можно не менять)
+        */
+       function func_download_file($filepath, $mimetype = 'application/octet-stream') {
+              $fsize = filesize($filepath); // берем размер файла
+              $ftime = date('D, d M Y H:i:s T', filemtime($filepath)); // определяем дату его модификации
+
+              $fd = @fopen($filepath, 'rb'); // открываем файл на чтение в бинарном режиме
+
+              if (isset($_SERVER['HTTP_RANGE'])) { // поддерживается ли докачка?
+                     $range = $_SERVER['HTTP_RANGE']; // определяем, с какого байта скачивать файл
+                     $range = str_replace('bytes=', '', $range);
+                     list($range, $end) = explode('-', $range);
+
+                     if (!empty($range)) {
+                            fseek($fd, $range);
+                     }
+              } else { // докачка не поддерживается
+                     $range = 0;
+              }
+
+              if ($range) {
+                     header($_SERVER['SERVER_PROTOCOL'].' 206 Partial Content'); // говорим браузеру, что это часть какого-то контента
+              } else {
+                     header($_SERVER['SERVER_PROTOCOL'].' 200 OK'); // стандартный ответ браузеру
+              }
+
+              // прочие заголовки, необходимые для правильной работы
+              header('Content-Disposition: attachment; filename='.basename($filepath));
+              header('Last-Modified: '.$ftime);
+              header('Accept-Ranges: bytes');
+              header('Content-Length: '.($fsize - $range));
+              if ($range) {
+                     header("Content-Range: bytes $range-".($fsize - 1).'/'.$fsize);
+              }
+              header('Content-Type: '.$mimetype);
+
+              fpassthru($fd); // отдаем часть файла в браузер (программу докачки)
+              fclose($fd);
+              exit;
+       }
 
 if(!isset($_SESSION['logged']))
   err_exit('Для скачивания фото необходимо залогиниться на сайте!');

@@ -160,42 +160,50 @@
                */
               private $aIndex = array(
                      0   => array(
-                            '{DATE_TITRE}',
-                            '{DATE_VALUE}'
+                            '{DATE_START_TITRE}',
+                            '{DATE_START_VALUE}'
                      ),
                      1   => array(
+                            '{DATE_NEW_TITRE}',
+                            '{DATE_NEW_VALUE}'
+                     ),
+                     2   => array(
+                            '{KOLL_TITRE}',
+                            '{KOLL_VALUE}'
+                     ),
+                     3   => array(
                             '{TYPE_TITRE}',
                             '{TYPE_VALUE}'
                      ),
-                     2   => array(
+                     4   => array(
                             '{MSG_TITRE}',
                             '{MSG_VALUE}'
                      ),
-                     3   => array(
+                     5   => array(
                             '{FILE_TITRE}',
                             '{FILE_VALUE}'
                      ),
-                     4   => array(
+                     6   => array(
                             '{LINE_TITRE}',
                             '{LINE_VALUE}'
                      ),
-                     5   => array(
+                     7   => array(
                             '{MEM_TITRE}',
                             '{MEM_VALUE}'
                      ),
-                     6   => array(
+                     8   => array(
                             '{TRANS_TITRE}',
                             '{TRANS_VALUE}'
                      ),
-                     7   => array(
+                     9   => array(
                             '{SUGG_TITRE}',
                             '{SUGG_VALUE}'
                      ),
-                     8   => array(
+                     10  => array(
                             '{CONTEXT_TITRE}',
                             '{CONTEXT_VALUE}'
                      ),
-                     9   => array(
+                     11  => array(
                             '{SOURCE_TITRE}',
                             '{SOURCE_VALUE}'
                      ),
@@ -245,10 +253,9 @@
                      $this->XML_ERRORS->load(__DIR__.'/xml/'.$this->sLang.'/errors.xml');
                      $this->XML_TYPES = new DOMDocument('1.0', 'utf-8');
                      $this->XML_TYPES->load(__DIR__.'/xml/'.$this->sLang.'/types.xml');
-                     $this->XML_DOC               = new DOMDocument ('1.0', 'utf-8'); // windows-1251 utf-8
-              //       $this->XML_DOC->formatOutput = true;
-                     $root                        = $this->XML_DOC->createElement("ROOT");
-                     $this->XML_ROOT              = $this->XML_DOC->appendChild($root);
+                     $this->XML_DOC  = new DOMDocument ('1.0', 'utf-8');
+                     $root           = $this->XML_DOC->createElement("ROOT");
+                     $this->XML_ROOT = $this->XML_DOC->appendChild($root);
                      if (!is_dir($_SERVER['DOCUMENT_ROOT'].'/logs')) {
                             mkdir($_SERVER['DOCUMENT_ROOT'].'/logs', 0744);
                      }
@@ -269,7 +276,8 @@
                */
               public function captureShutdown() {
 
-                     $error = error_get_last();;
+                     $error = error_get_last();
+                     ;
                      if ($error) {
                             $message  = '';
                             $sErrFile = '';
@@ -453,33 +461,50 @@
                             if ($iErrLine < 0) {
                                    $iErrLine = 0;
                             }
+                            $koll      = 1;
+                            $dateStart = date('d-m-Y H:i:s');
+                            if (file_exists($this->sFile) and filesize($this->sFile) != 0) {
+                                   $sxml = simplexml_load_file($this->sFile);
+                                   foreach ($sxml->ERROR as $error) {
+                                          if ($error->PHP_MESSAGE == iconv("WINDOWS-1251", "UTF-8", $sErrStr)) {
+                                                 $koll      = intval($error->KOLL) + 1;
+                                                 $dateStart = ((string)$error->DATE_START);
+                                                 break;
+                                          }
+                                   }
+                            }
+                            // включить phpINFO в отчет
+                            /*if ((!file_exists($this->sFile) or filesize($this->sFile) == 0) and $this->XML_ROOT->getElementsByTagName('PHP_INFO')->length == 0) {
+                                   $php_INFO  = debugger_SHOWCONTEXT::php_INFO();
+                                   $phpNewLog = $this->XML_DOC->createElement("PHP_INFO", $php_INFO);
+                                   $this->XML_ROOT->appendChild($phpNewLog);
+                            }*/
+                            unset($sxml);
                             $oNewLog = $this->XML_DOC->createElement('ERROR');
                             $iNewId  = $this->XML_ROOT->getElementsByTagName('ERROR')->length + 1;
                             $oNewLog = $this->XML_ROOT->appendChild($oNewLog);
                             $oNewLog->setAttribute('id', $iNewId);
-                            $aElem[] = $this->XML_DOC->createElement('DATE', date('d-m-Y H:i:s'));
+                            $aElem[] = $this->XML_DOC->createElement('DATE_START', $dateStart);
+                            $aElem[] = $this->XML_DOC->createElement('DATE_NEW', date('d-m-Y H:i:s'));
+                            $aElem[] = $this->XML_DOC->createElement('KOLL', $koll);
                             $aElem[] = $this->XML_DOC->createElement('TYPE', $sType);
                             // $sErrStr = utf8_encode($sErrStr);
-                            $aElem[] = $this->XML_DOC->createElement('PHP_MESSAGE', iconv("WINDOWS-1251", "UTF-8", $sErrStr));
-                            $aElem[] = $this->XML_DOC->createElement('FILE', $sErrFile);
-                            $aElem[] = $this->XML_DOC->createElement('LINE', $iErrLine + 1);
-                            if (function_exists('memory_get_usage')) {
-                                   $iMemory = @memory_get_usage();
-                            } else {
-                                   $iMemory = 'n/a';
-                            }
+                            $aElem[]     = $this->XML_DOC->createElement('PHP_MESSAGE', iconv("WINDOWS-1251", "UTF-8", $sErrStr));
+                            $aElem[]     = $this->XML_DOC->createElement('FILE', $sErrFile);
+                            $aElem[]     = $this->XML_DOC->createElement('LINE', $iErrLine + 1);
+                            $iMemory     = function_exists('memory_get_usage') ? @memory_get_usage() : 'n/a';
                             $aElem[]     = $this->XML_DOC->createElement('MEMORY', $iMemory);
                             $aElem[]     = $this->XML_DOC->createElement('TRANSLATION', iconv("WINDOWS-1251", "UTF-8", $aTempArr['TRANSLATION']));
                             $aElem[]     = $this->XML_DOC->createElement('SUGGESTION', iconv("WINDOWS-1251", "UTF-8", $aTempArr['SUGGESTION']));
-                            $aElem[]     = $this->XML_DOC->createElement('CONTEXT', htmlspecialchars($sVars, ENT_QUOTES));
+                            $aElem[]     = $this->XML_DOC->createElement('CONTEXT', $sVars);
                             $oSource     = $this->XML_DOC->createElement('SOURCE');
                             $aSourceElem = array();
                             $numLine     = $iErrLine + 1 - $this->iNbLines;
                             foreach ($this->getLine($sErrFile, $iErrLine) as $iLine => $sLine) {
-                                   //		$sLine = utf8_encode($sLine);
+                                   // $sLine = utf8_encode($sLine);
                                    if ($iLine === $iErrLine) {
                                           $aSourceElem[] = $this->XML_DOC->createElement('SOURCE_LINE_ERROR',
-                                                 $numLine.') '.trim(iconv("WINDOWS-1251", "UTF-8", ' /** ЛИНИЯ ОШИБКИ => */ '.$sLine), '\t'));
+                                                 $numLine.') '.trim(iconv("WINDOWS-1251", "UTF-8", ' /** ЛИНИЯ ОШИБКИ => */ '.$sLine), "\t"));
 
                                    } else {
                                           $aSourceElem[] =
@@ -498,7 +523,7 @@
                             $this->currentNode = $oNewLog;
                             $this->isError++;
                             // превью и лог для fatal error
-                            //	если fatal error
+                            // если fatal error
                             if ($this->aOptions['ERROUTPUT'] === true) {
                                    //	и если включен показ
                                    if (true === $this->aOptions['REALTIME']) {
@@ -558,7 +583,9 @@
                                    $mail->priority  = 1;
                                    $mail->prepare_letter();
                                    $mail->send_letter();
+                                   unset($mail);
                             }
+                            unset($dom);
                      }
               }
 
@@ -656,28 +683,33 @@
                      $sHtml     = file_get_contents(__DIR__.'/templates/'.$this->sTemplateHTML.'.dat');
                      $nodeLists = $this->currentNode->childNodes;
                      $iId       = $this->currentNode->getAttribute('id');
-                     $i         = 0;
                      for ($n = 0; $n < $nodeLists->length; $n++) {
                             if ($nodeLists->item($n)->nodeType == 1) {
-                                   $sName = $nodeLists->item($i)->nodeName;
+                                   $sName = $nodeLists->item($n)->nodeName;
                                    if ($sName === 'SOURCE') {
-                                          $sourceNodeList = $nodeLists->item($i)->childNodes;
+                                          $sourceNodeList = $nodeLists->item($n)->childNodes;
                                           $sValeur        = '';
                                           for ($j = 0; $j < $sourceNodeList->length; $j++) {
                                                  $sValeur .= str_replace(array('<?php', '?>', '<?'), '', $sourceNodeList->item($j)->nodeValue);
                                           }
                                           $sValeur = highlight_string('<?php '."\r\n".$sValeur.'?>', true);
+                                   } elseif ($sName === 'CONTEXT') {
+                                          $php_INFO    = debugger_SHOWCONTEXT::php_INFO();
+                                          $content     = $nodeLists->item($n)->nodeValue;
+                                          $contentData = $content.$php_INFO;
+                                          $contentTeg  = $contentData;
+                                          $sValeur     = $contentTeg;
                                    } else {
-                                          $sValeur = $nodeLists->item($i)->nodeValue;
+                                          $sValeur = $nodeLists->item($n)->nodeValue;
                                    }
                                    $sId          = uniqid().'_'.$iId;
                                    $sValeur      = iconv("UTF-8", "windows-1251", $sValeur);
                                    $aReplacement = array($sName, $sValeur);
-                                   $sHtml        = str_replace($this->aIndex[$i], $aReplacement, $sHtml);
+                                   $sHtml        = str_replace($this->aIndex[$n], $aReplacement, $sHtml);
                                    $sHtml        = str_replace('{ID}', $sId, $sHtml);
-                                   $i++;
                             }
                      }
+
                      return $sHtml;
               }
 
@@ -725,9 +757,7 @@
                      if (file_exists($sErrFile)) {
                             $aLines = file($sErrFile);
                             for ($i = $iErrLine - $this->iNbLines; $i <= $iErrLine + $this->iNbLines; $i++) {
-                                   if (isset ($aLines[$i])) {
-                                          $aSource[$i] = $aLines[$i];
-                                   }
+                                   if (isset ($aLines[$i])) $aSource[$i] = $aLines[$i];
                             }
                      }
 
@@ -763,49 +793,67 @@
                */
               public function saveToFile() {
 
-                     // не записывать если пришли со страницы '/error.php'
+                     /** не записывать если пришли со страницы '/error.php' */
                      if (true === $this->aOptions['LOGFILE'] && isset($_SERVER['PHP_SELF']) && $_SERVER['PHP_SELF'] != '/error.php') {
                             if (!file_exists($this->sFile) or filesize($this->sFile) == 0) {
-                                   $this->XML_DOC->save($this->sFile);
-
-                                   return true;
-                            }
-                            $doc               = new DOMDocument('1.0', 'utf-8');
-                          //  $doc->formatOutput = true;
-
-
-                            /*$dom = file_get_html($this->sFile);
-                            $iNewId1 = $dom->find('ERROR[id]', -1)->id+1;
-                            dump_d($iNewId1);*/
-
-                            if($doc->load($this->sFile)) {
-                            $root = $doc->documentElement;
-                            if($root) {
-                                   if ($this->XML_DOC->getElementsByTagName('ERROR')->length > 0) {
-                                          $nodeLists = $this->XML_DOC->getElementsByTagName('ERROR');
-                                          foreach ($nodeLists as $nodeList) {
-                                                 $this->currentNode = $nodeList;
-                                                 $iNewId            = $root->getElementsByTagName('ERROR')->length + 1;
-                                                 $this->currentNode->setAttribute('id', $iNewId);
-                                                 $node = $doc->importNode($this->currentNode, true); //выбираем корневой узел
-                                                 $root->appendChild($node); //добавляем дочерний к корневому
-                                          }
+                                   $root = $this->XML_DOC->documentElement;
                                           //	записать если присутствует тег 'DATE'
-                                          if ($this->XML_DOC->getElementsByTagName('DATE')->length > 0) {
-                                                 $this->sendMail();
+                                          if ($this->XML_DOC->getElementsByTagName('DATE_NEW')->length > 0) {
+                                                    $this->sendMail();
                                                  if ($this->printMail) {
-                                                        $dateMail = $doc->createElement('DATE_MAIL', date('d-m-Y H:i:s'));
-                                                        $node     = $doc->importNode($dateMail, true); //выбираем корневой узел
+                                                        $dateMail = $this->XML_DOC->createElement('DATE_MAIL', date('d-m-Y H:i:s'));
+                                                        $node     = $this->XML_DOC->importNode($dateMail, true); //выбираем корневой узел
                                                         $root->appendChild($node); //добавляем дочерний к корневому
                                                         $this->printMail = false;
                                                  }
-                                                 $doc->save($this->sFile);
-                                                 unset($doc);
+                                          $this->XML_DOC->save($this->sFile);
+                                          }
+                                   return true;
+                                   }
+                            }
+                            /** Конвертируем XML-файл в объект */
+                            $sxml    = simplexml_load_file($this->sFile);
+                            $sxmlNew = simplexml_import_dom($this->XML_DOC);
+                            foreach ($sxmlNew->xpath("//ERROR") as $errorNew) {
+                                   /** $saveVar - переменная trigger записи новой ошибки */
+                                   $saveVar = NULL;
+                                   foreach ($sxml->xpath("//ERROR") as $errorFile) {
+                                          if ((string)$errorFile->FILE == (string)$errorNew->FILE and (int)$errorFile->LINE == (int)$errorNew->LINE) {
+                                                 foreach ($errorFile as $teg => $child) {
+                                                        if ($teg != "SOURCE") {
+                                                               $errorFile->$teg = $errorNew->$teg;
+                                                        }
+                                                 }
+                                                 $saveVar = true;
+                                          }
+                                   }
+                                   if ($saveVar == NULL) {
+                                          /** записать если ошибка в файле не найдена */
+                                          $idNew     = count($sxml->ERROR) + 1;
+                                          $errorSave = $sxml->addChild('ERROR');
+                                          $errorSave->addAttribute('ID', $idNew);
+                                          foreach ($errorNew as $teg => $childData) {
+                                                 if ($teg == "SOURCE") {
+                                                        if (!$sourse = $errorSave->SOURCE) {
+                                                               $sourse = $errorSave->addChild("SOURCE");
+                                                        }
+                                                        foreach ($childData as $teg => $SOURCE_LINE) {
+                                                               $sourse->addChild($teg, $SOURCE_LINE);
+                                                        }
+                                                 } else {
+                                                        $errorSave->addChild($teg, $childData);
+                                                 }
+                                          }
+                                          $this->sendMail();
+                                          if ($this->printMail) {
+                                                 $errorSave->addChild('DATE_MAIL', date('d-m-Y H:i:s'));
+                                                 $this->printMail = false;
                                           }
                                    }
                             }
-                            }
-
+                            $sxml->asXML($this->sFile);
+                            unset($sxml);
+                            unset($sxmlNew);
                             if (filesize($this->sFile) > ($this->mailOptions['log_Max_Size'] * 1024)) {
                                    //  включить вывод на email
                                    $this->printMail = true;
@@ -832,6 +880,7 @@
                                    $root            = $this->XML_DOC->documentElement;
                                    $root->appendChild($node); //добавляем дочерний к корневому
                                    unlink($this->sFile);
+                                   unset($mail);
                             }
                      }
               }
@@ -844,7 +893,7 @@
                */
               public function __destruct() {
 
-                     $this->saveToFile('_error_log.xml');
+                     $this->saveToFile();
               }
 
 

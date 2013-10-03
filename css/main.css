@@ -3258,13 +3258,13 @@ Helvetica, sans-serif;color:#888;border:1px solid #c8c6c4;vertical-align:top;bor
     text-indent: 15px;
     margin: 10px 0;*/
 
-    font-family: Bardelin;
+    font-family: Bardelin,serif;
     font-size: 14px;
     font-weight: 400;
     font-style: normal;
     color: #222222;
     line-height: 1.46em;
-    letter-spacing: 0em;
+    letter-spacing: 0;
     text-shadow: none;
 }
 .r_colonka p{margin: 15px 5px; font-size: 14px;}

@@ -1,12 +1,27 @@
 <div class="displayBox errNotice" style="width: 1000px; margin: 20px 0 0 0; position: relative;">
 
-	<span class="dateTitre">
-	[{DATE_TITRE}]
+	<span class="dateStartTitre">
+	[{DATE_START_TITRE}]
 	</span>
-	<span class="dateValeur">
-	{DATE_VALUE}
-	</span>			
-	
+	<span class="dateStartValeur">
+	{DATE_START_VALUE}
+	</span>
+
+	<span class="dateNewTitre">
+    	[{DATE_NEW_TITRE}]
+    	</span>
+    	<span class="dateNewValeur">
+    	{DATE_NEW_VALUE}
+    	</span>
+
+	<span class="kollTitre">
+    	[{KOLL_TITRE}]
+    	</span>
+    	<span class="kollValeur">
+    	{KOLL_VALUE}
+    	</span>
+
+
 	<span class="memTitre">
 	[{MEM_TITRE}]
 	</span>
@@ -73,7 +88,6 @@
 	SHOW {SOURCE_TITRE}
 	</span>
 	<br />
-	
 	<span class="sourceValeur" id="source_{ID}">
 	{SOURCE_VALUE}
 	</span>			

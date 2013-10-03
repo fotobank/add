@@ -8,16 +8,42 @@ div.displayBox {
 }
 
 /**
-* DATE
+* DATE_START
 */
-span.dateTitre {
+span.dateStartTitre {
 	color: #900000;
 	font-size: 10px;
 	font-weight: bold;
 }
-span.dateValeur {
+span.dateStartValeur {
 	font-weight: bold;
 }
+
+/**
+* DATE_NEW
+*/
+span.dateNewTitre {
+	color: #900000;
+	font-size: 10px;
+	font-weight: bold;
+}
+span.dateNewValeur {
+	font-weight: bold;
+}
+
+/**
+* KOLL
+*/
+
+span.kollTitre {
+    color: #900000;
+    font-size: 10px;
+    font-weight: bold;
+   }
+span.kollValeur {
+    font-weight: bold;
+   }
+
 /**
 * TYPE
 */
@@ -83,7 +109,7 @@ span.transTitre {
 	color: #900000;
 	font-size: 10px;
 	font-weight: bold;
-	font-style: italic;
+/**	font-style: italic; */
 }
 span.transValeur {
 	font-weight: bold;
@@ -97,7 +123,7 @@ span.suggTitre {
 	color: #900000;
 	font-size: 10px;
 	font-weight: bold;
-	font-style: italic;
+	/** font-style: italic; */
 }
 span.suggValeur {
 	font-weight: bold;
@@ -115,7 +141,8 @@ span.contextTitre {
 }
 span.contextValeur {
 	display: none;
-	font-size: 12px;
+	color: #000000;
+    font-size: 11px;
 }
 
 /**

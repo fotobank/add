@@ -5,6 +5,22 @@
         */
        class debugger_SHOWCONTEXT	{
 
+              /**
+               * @return string
+               */
+              public static function php_INFO() {
+                     $body = '<ul>'.self::_makeSection("phpINFO", self::varExport(self::_phpInfoArray())).'</ul>';
+                     return $body;
+              }
+
+              /**
+               * @return string
+               */
+              public static function php_INFO_mail() {
+                     return htmlspecialchars(self::php_INFO(), ENT_QUOTES);
+              }
+
+
 								/**
 									* информация SHOW CONTEXT
 									*
@@ -12,13 +28,13 @@
 									*/
 								public static function notify() {
 
-												$body[] = '<ul>'.self::_makeSection("SESSION", self::varExport(isset($_SESSION) ? $_SESSION : NULL));
-												$body[] = self::_makeSection("GET", self::varExport($_GET));
-												$body[] = self::_makeSection("POST", self::varExport($_POST));
-												$body[] = self::_makeSection("COOKIES", self::varExport($_COOKIE));
-												$body[] = self::_makeSection("SERVER", self::varExport($_SERVER)).'</ul>';
+                       $body[] = '<ul>'.self::_makeSection("GET", self::varExport($_GET));
+                       $body[] = self::_makeSection("POST", self::varExport($_POST));
+								 		   $body[] = self::_makeSection("SESSION", self::varExport(isset($_SESSION) ? $_SESSION : NULL));
+										   $body[] = self::_makeSection("SERVER", self::varExport($_SERVER));
+                       $body[] = self::_makeSection("COOKIES", self::varExport($_COOKIE)).'</ul>';
 
-												return join("<br>", $body);
+												return htmlspecialchars(join("<br>", $body), ENT_QUOTES);
 								}
 
 								/**
@@ -87,8 +103,32 @@
 																$return .= ' => '.self::varExport($value, $maxLevel, $level + 1).",<br>";
 												}
 
-												return $return
-																			.str_repeat($tab, $level)
-																			.(is_array($var) ? ')' : '))');
+												return $return.str_repeat($tab, $level).(is_array($var) ? ')' : '))');
 								}
+
+              /**
+               * Formats phpinfo() into an array
+               */
+              protected static function _phpInfoArray()
+              {
+                     ob_start();
+                     phpinfo();
+                     $info_arr = array();
+                     $info_lines = explode( "\n" , strip_tags( ob_get_clean() , "<tr><td><h2>" ) );
+                     $cat= 'General';
+                     $reg_ex = "~<tr><td[^>]+>([^<]*)</td><td[^>]+>([^<]*)</td><td[^>]+>([^<]*)</td></tr>~";
+                     foreach ( $info_lines as $line )
+                     {
+                            preg_match( "~<h2>(.*)</h2>~" , $line , $title) ? $cat = $title[ 1 ] : NULL;	// new cat?
+                            if ( preg_match( "~<tr><td[^>]+>([^<]*)</td><td[^>]+>([^<]*)</td></tr>~" , $line , $val ) )
+                            {
+                                   $info_arr[ $cat ][ $val[ 1 ] ] = $val[ 2 ];
+                            }
+                            else if ( preg_match( $reg_ex , $line , $val ) )
+                            {
+                                   $info_arr[ $cat ][ $val[1] ] = array( 'local' => $val[ 2 ] , 'master' => $val[ 3 ] );
+                            }
+                     }
+                     return $info_arr;
+              }
 				}
