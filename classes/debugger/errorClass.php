@@ -464,7 +464,7 @@
                             $koll      = 1;
                             $dateStart = date('d-m-Y H:i:s');
                             if (file_exists($this->sFile) and filesize($this->sFile) != 0) {
-                                   $sxml = simplexml_load_file($this->sFile);
+                                   $sxml = @simplexml_load_file($this->sFile);
                                    foreach ($sxml->ERROR as $error) {
                                           if ($error->PHP_MESSAGE == iconv("WINDOWS-1251", "UTF-8", $sErrStr)) {
                                                  $koll      = intval($error->KOLL) + 1;
@@ -541,7 +541,7 @@
 
                      // письма только для aleks.od.ua
                      //					if ($_SERVER['HTTP_HOST'] == stristr(mb_substr(get_domain(), 0, -1), "al")) {
-                     if (file_exists($this->sFile) or filesize($this->sFile) != 0) {
+                     if (file_exists($this->sFile) && filesize($this->sFile) != 0) {
                             $dom = new DOMDocument('1.0', 'utf-8');
                             $dom->load($this->sFile);
                             $dates    = $dom->getElementsByTagName('DATE_MAIL');
@@ -799,20 +799,21 @@
                                    $root = $this->XML_DOC->documentElement;
                                           //	записать если присутствует тег 'DATE'
                                           if ($this->XML_DOC->getElementsByTagName('DATE_NEW')->length > 0) {
-                                                    $this->sendMail();
-                                                 if ($this->printMail) {
-                                                        $dateMail = $this->XML_DOC->createElement('DATE_MAIL', date('d-m-Y H:i:s'));
-                                                        $node     = $this->XML_DOC->importNode($dateMail, true); //выбираем корневой узел
-                                                        $root->appendChild($node); //добавляем дочерний к корневому
-                                                        $this->printMail = false;
-                                                 }
-                                          $this->XML_DOC->save($this->sFile);
+                                              $this->XML_DOC->save($this->sFile);
                                           }
+                                   $this->sendMail();
+                                   if ($this->printMail) {
+                                          $dateMail = $this->XML_DOC->createElement('DATE_MAIL', date('d-m-Y H:i:s'));
+                                          $node     = $this->XML_DOC->importNode($dateMail, true); //выбираем корневой узел
+                                          $root->appendChild($node); //добавляем дочерний к корневому
+                                          $this->XML_DOC->save($this->sFile);
+                                          $this->printMail = false;
+                                   }
                                    return true;
                                    }
                             }
                             /** Конвертируем XML-файл в объект */
-                            $sxml    = simplexml_load_file($this->sFile);
+                            $sxml    = @simplexml_load_file($this->sFile);
                             $sxmlNew = simplexml_import_dom($this->XML_DOC);
                             foreach ($sxmlNew->xpath("//ERROR") as $errorNew) {
                                    /** $saveVar - переменная trigger записи новой ошибки */
@@ -827,6 +828,8 @@
                                                  $saveVar = true;
                                           }
                                    }
+                                   unset($errorFile);
+                                   unset($child);
                                    if ($saveVar == NULL) {
                                           /** записать если ошибка в файле не найдена */
                                           $idNew     = count($sxml->ERROR) + 1;
@@ -844,6 +847,8 @@
                                                         $errorSave->addChild($teg, $childData);
                                                  }
                                           }
+                                          unset($teg);
+                                          unset($errorNew);
                                           $this->sendMail();
                                           if ($this->printMail) {
                                                  $errorSave->addChild('DATE_MAIL', date('d-m-Y H:i:s'));
@@ -851,37 +856,47 @@
                                           }
                                    }
                             }
-                            $sxml->asXML($this->sFile);
-                            unset($sxml);
-                            unset($sxmlNew);
-                            if (filesize($this->sFile) > ($this->mailOptions['log_Max_Size'] * 1024)) {
-                                   //  включить вывод на email
-                                   $this->printMail = true;
-                                   // включить вывод лога на email
-                                   $this->logMail = true;
-                                   $styleErr      = file_get_contents(__DIR__.'/../../classes/debugger/css/default.dat');
-                                   $mail_mes      = $styleErr."<html><body><h1>Report of errors log</h1><br>".$this->showAll()."<br>";
-                                   $mail_mes .= ' <p>This letter was created and a log on server was cleared at '.date('Y-m-d').'.<br>
+                     $sxml->asXML($this->sFile);
+                     unset($saveVar);
+                     unset($sxml);
+                     unset($sxmlNew);
+                     $this->glearMail();
+              }
+
+
+              /**
+               *  проверка log файла на max размер, очистка и отправка
+               */
+              private function glearMail() {
+
+                     if (filesize($this->sFile) > ($this->mailOptions['log_Max_Size'] * 1024)) {
+                            //  включить вывод на email
+                            $this->printMail = true;
+                            // включить вывод лога на email
+                            $this->logMail = true;
+                            $styleErr      = file_get_contents(__DIR__.'/../../classes/debugger/css/default.dat');
+                            $mail_mes      = $styleErr."<html><body><h1>Report of errors log</h1><br>".$this->showAll()."<br>";
+                            $mail_mes .= ' <p>This letter was created and a log on server was cleared at '.date('Y-m-d').'.<br>
 																																								This message was sent automatically by robot, please don\'t reply!</p></body></html>';
-                                   $mail            = new Mail_sender;
-                                   $mail->from_Addr = $this->mailOptions['from_Addr'];
-                                   $mail->from_Name = $this->mailOptions['from_Name'];
-                                   $mail->to        = $this->mailOptions['to_Addr'];
-                                   $mail->subj      = 'Report of errors log';
-                                   $mail->body_type = 'text/html';
-                                   $mail->body      = $mail_mes;
-                                   $mail->priority  = 2;
-                                   $mail->prepare_letter();
-                                   $mail->send_letter();
-                                   $this->logMail   = false;
-                                   $this->printMail = false;
-                                   $dateMail        = $this->XML_DOC->createElement('DATE_MAIL', date('d-m-Y H:i:s'));
-                                   $node            = $this->XML_DOC->importNode($dateMail, true); //выбираем корневой узел
-                                   $root            = $this->XML_DOC->documentElement;
-                                   $root->appendChild($node); //добавляем дочерний к корневому
-                                   unlink($this->sFile);
-                                   unset($mail);
-                            }
+                            $mail            = new Mail_sender;
+                            $mail->from_Addr = $this->mailOptions['from_Addr'];
+                            $mail->from_Name = $this->mailOptions['from_Name'];
+                            $mail->to        = $this->mailOptions['to_Addr'];
+                            $mail->subj      = 'Report of errors log';
+                            $mail->body_type = 'text/html';
+                            $mail->body      = $mail_mes;
+                            $mail->priority  = 2;
+                            $mail->prepare_letter();
+                            $mail->send_letter();
+                            $this->logMail   = false;
+                            $this->printMail = false;
+                            $dateMail        = $this->XML_DOC->createElement('DATE_MAIL', date('d-m-Y H:i:s'));
+                            $node            = $this->XML_DOC->importNode($dateMail, true); //выбираем корневой узел
+                            $root            = $this->XML_DOC->documentElement;
+                            $root->appendChild($node); //добавляем дочерний к корневому
+                            unlink($this->sFile);
+                            unset($mail);
+
                      }
               }
 

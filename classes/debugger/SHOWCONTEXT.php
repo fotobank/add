@@ -5,12 +5,48 @@
         */
        class debugger_SHOWCONTEXT	{
 
+
+              /**
+               * @param $html
+               * Compresses the html before render
+               * string	$html	some html code
+               * @return mixed
+               */
+              protected static function _compressHtml( $html )
+              {
+                            $html = preg_replace( '!/\*[^*]*\*+([^/][^*]*\*+)*/!' , '' , $html ); // remove comments
+                            $html = str_replace( array ( "\r\n" , "\r" , "\n" , "\t" , '  ' , '    ' , '    ' ) , '' , $html ); // tabs,newlines,etc.
+                     return $html;
+              }
+
+              /**
+               * Formats phpinfo() function
+               */
+              protected static function _buildPhpInfo( )
+              {
+                     $php_array = static::_phpInfoArray( );
+                     $php_array[ 'version' ] = @phpversion( );
+                     $php_array[ 'os' ] = @php_uname( );
+                     $php_array[ 'extensions' ] = @get_loaded_extensions( );
+                     ksort( $php_array );
+                     return $php_array;
+              }
+
               /**
                * @return string
                */
               public static function php_INFO() {
-                     $body = '<ul>'.self::_makeSection("phpINFO", self::varExport(self::_phpInfoArray())).'</ul>';
+               //      $body = '<ul>'.self::_makeSection("phpINFO", self::varExport(self::_phpInfoArray())).'</ul>';
+                     $body[] = '<ul>';
+                     foreach (self::_buildPhpInfo() as $arr => $arrData){
+                         $body[] = self::_makeSection($arr, self::varExport($arrData));
+                     }
+                     $body[] = '</ul>';
+                     $body = join("<div></div>", $body);
+                     $body = '<ul>'.self::_makeSection("phpINFO", $body).'</ul>';
+
                      return $body;
+
               }
 
               /**
@@ -27,14 +63,14 @@
 									* @return string
 									*/
 								public static function notify() {
-
-                       $body[] = '<ul>'.self::_makeSection("GET", self::varExport($_GET));
+                       $body[] = '<ul>';
+                       $body[] = self::_makeSection("GET", self::varExport($_GET));
                        $body[] = self::_makeSection("POST", self::varExport($_POST));
 								 		   $body[] = self::_makeSection("SESSION", self::varExport(isset($_SESSION) ? $_SESSION : NULL));
 										   $body[] = self::_makeSection("SERVER", self::varExport($_SERVER));
-                       $body[] = self::_makeSection("COOKIES", self::varExport($_COOKIE)).'</ul>';
-
-												return htmlspecialchars(join("<br>", $body), ENT_QUOTES);
+                       $body[] = self::_makeSection("COOKIES", self::varExport($_COOKIE));
+                       $body[] = '</ul>';
+											 return self::_compressHtml(htmlspecialchars(join("<div></div>", $body), ENT_QUOTES));
 								}
 
 								/**
@@ -45,12 +81,13 @@
 									*/
 								private static function _makeSection($name, $body) {
 
-												$id = uniqid();
+												$id   = uniqid();
 												$body = rtrim($body);
 												if ($name) $body = preg_replace('/^/m', '    ', $body);
-												$body = preg_replace('/^([ \t\r]*\n)+/s', '', $body);
+								//			$body = preg_replace('/^([ \t\r]*\n)+/s', '', $body);
+                //      $body = self::_compressHtml($body);
 												$body = "<span class=\"contextValeur\" id=\"$id\" style=\"display: none;\">$body</span>";
-												$body    = iconv('windows-1251', 'utf-8', $body);
+												$body = iconv('windows-1251', 'utf-8', $body);
 												$name = "<span class=\"contextTitre\"
 								onclick=\"document.getElementById('$id').style.display=(document.getElementById('$id').style.display == 'block')?'none':'block';\"
 								>$name</span>:";
