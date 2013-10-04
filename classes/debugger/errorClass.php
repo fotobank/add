@@ -297,7 +297,9 @@
                             $this->aOptions['ERROUTPUT'] = true;
                             $this->buildLog($errType, $message, $sErrFile, $iErrLine, $aTempArr, $sVars);
                      }
-
+                     if ($this->aOptions['ERROUTPUT'] === true) {
+                     $this->saveToFile();
+                     }
                      return true;
               }
 
@@ -806,15 +808,15 @@
                                           $dateMail = $this->XML_DOC->createElement('DATE_MAIL', date('d-m-Y H:i:s'));
                                           $node     = $this->XML_DOC->importNode($dateMail, true); //выбираем корневой узел
                                           $root->appendChild($node); //добавляем дочерний к корневому
-                                          $this->XML_DOC->save($this->sFile);
+                                   //       $this->XML_DOC->save($this->sFile);
+                                          $this->_saveLOG($this->XML_DOC);
                                           $this->printMail = false;
                                    }
                                    return true;
                                    }
-                            }
                             /** Конвертируем XML-файл в объект */
                             $sxml    = @simplexml_load_file($this->sFile);
-                            $sxmlNew = simplexml_import_dom($this->XML_DOC);
+                            $sxmlNew = @simplexml_import_dom($this->XML_DOC);
                             foreach ($sxmlNew->xpath("//ERROR") as $errorNew) {
                                    /** $saveVar - переменная trigger записи новой ошибки */
                                    $saveVar = NULL;
@@ -826,10 +828,9 @@
                                                         }
                                                  }
                                                  $saveVar = true;
+                                                 $sxml->asXML($this->sFile);
                                           }
                                    }
-                                   unset($errorFile);
-                                   unset($child);
                                    if ($saveVar == NULL) {
                                           /** записать если ошибка в файле не найдена */
                                           $idNew     = count($sxml->ERROR) + 1;
@@ -847,20 +848,50 @@
                                                         $errorSave->addChild($teg, $childData);
                                                  }
                                           }
-                                          unset($teg);
-                                          unset($errorNew);
                                           $this->sendMail();
                                           if ($this->printMail) {
                                                  $errorSave->addChild('DATE_MAIL', date('d-m-Y H:i:s'));
                                                  $this->printMail = false;
                                           }
+                                          $this->_saveLOG($sxml);
                                    }
                             }
-                     $sxml->asXML($this->sFile);
+                     unset($errorFile);
+                     unset($child);
+                     unset($teg);
+                     unset($errorNew);
                      unset($saveVar);
                      unset($sxml);
                      unset($sxmlNew);
                      $this->glearMail();
+              }
+       }
+
+              /**
+               * запись и разделение лога
+               * @param        $xmlOb - xml объект
+               */
+              private function _saveLOG($xmlOb) {
+
+                     // запись - файл существует и доступен для записи.
+                     if (is_writable($this->sFile)) {
+                            if (!$xml = fopen($this->sFile, "w")) {
+                                   trigger_error("Не могу открыть файл ($this->sFile)", E_USER_WARNING);
+                                   exit;
+                            }
+                            flock($xml, LOCK_EX); //БЛОКИРОВКА ФАЙЛА
+                            $xmlLOG = $xmlOb->saveXML();
+                            $arrXML  = explode("><", $xmlLOG);
+                            $xmlLOG = join(">\n<", $arrXML);
+                            if (fwrite($xml, $xmlLOG) === false) {
+                                   trigger_error("Не могу произвести запись в файл ($this->sFile)", E_USER_WARNING);
+                                   exit;
+                            }
+                            flock($xml, LOCK_UN); //СНЯТИЕ БЛОКИРОВКИ
+                            fclose($xml);
+                     } else {
+                            echo "Файл $this->sFile недоступен для записи";
+                     }
               }
 
 
