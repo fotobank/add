@@ -837,8 +837,8 @@
                                            if ($this->printMail) {
                                                   $errorFile->getElementByTagName("DATE_MAIL")->innertext = date('d-m-Y H:i:s');
                                            }
-                                //     $sxml->save($this->sFile);
-                                     $this->_saveLOG($sxml->save());
+                                    $sxml->save($this->sFile);
+                                 //    $this->_saveLOG($sxml->save());
                                     }
 
                                  //   if ($saveVar == NULL) {
