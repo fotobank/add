@@ -810,7 +810,6 @@
                                           $this->printMail = false;
                                    }
                                    $this->_saveLOG($this->sxmlNew->saveXML());
-
                                    return true;
                             }
                             $sxml = file_get_html($this->sFile);
@@ -820,7 +819,7 @@
                                     $saveVar = NULL;
                                    dump_d(count($sxml->find("ERROR[id]")));
                             foreach ($sxml->find("ERROR[id]") as $errorFile) {
-dump_d($errorFile);
+                            dump_d($errorFile);
                             if ($errorFile->getElementByTagName("FILE")->innertext == $errorNew->getElementByTagName("FILE")->innertext and
                                   $errorFile->getElementByTagName("LINE")->innertext == $errorNew->getElementByTagName("LINE")->innertext) {
 
