@@ -813,17 +813,14 @@
 
                                    return true;
                             }
-
-
-
                             $sxml = file_get_html($this->sFile);
                             $sxmlNew = str_get_html($this->XML_DOC->saveXML());
                             foreach ($sxmlNew->find("ERROR[id]") as $errorNew) {
                                    /** $saveVar - переменная trigger записи новой ошибки */
                                     $saveVar = NULL;
-
+                                   dump_d(count($sxml->find("ERROR[id]")));
                             foreach ($sxml->find("ERROR[id]") as $errorFile) {
-
+dump_d($errorFile);
                             if ($errorFile->getElementByTagName("FILE")->innertext == $errorNew->getElementByTagName("FILE")->innertext and
                                   $errorFile->getElementByTagName("LINE")->innertext == $errorNew->getElementByTagName("LINE")->innertext) {
 
@@ -831,7 +828,7 @@
                                    $errorFile->getElementByTagName("DATE_MAIL")->outertext = $errorNew->getElementByTagName("DATE_MAIL")->outertext;
                                     }
                                            $saveVar = true;
-                                //         $this->sendMail();
+                                           $this->sendMail();
                                            if ($this->printMail) {
                                                   $errorFile->getElementByTagName("DATE_MAIL")->innertext = date('d-m-Y H:i:s');
                                            }
@@ -846,13 +843,15 @@
                                             $errorSave->outertext = $errorNew->outertext;
                                             $this->sendMail();
                                             if ($this->printMail) {
-                                                   $errorSave->addChild('DATE_MAIL', date('d-m-Y H:i:s'));
+                                                   $errorSave->appendChild("DATE_MAIL");
+                                                   $errorSave->getElementByTagName("DATE_MAIL")->innertext = date('d-m-Y H:i:s');
                                             } else {
-                                                   $errorSave->addChild('DATE_MAIL', iconv("WINDOWS-1251", "UTF-8", "Файл не отправлен"));
+                                                   $errorSave->appendChild("DATE_MAIL");
+                                                   $errorSave->getElementByTagName("DATE_MAIL")->innertext = iconv("WINDOWS-1251", "UTF-8", "Файл не отправлен");
                                             }
                                            $this->_saveLOG($sxml->save());
-                                     }
-                                  }
+                                    }
+                            }
 
 
 
@@ -902,11 +901,11 @@
                                                  $errorSave->addChild('DATE_MAIL', iconv("WINDOWS-1251", "UTF-8", "Файл не отправлен"));
                                           }
                                           $this->_saveLOG($sxml);
-                                   }
-                            }*/
+                                   }*/
+                            }
                             $this->printMail = false;
                             unset($errorFile);
-                            unset($child);
+                           /* unset($child);
                             unset($teg);
                             unset($errorNew);
                             unset($saveVar);
@@ -914,8 +913,8 @@
                                     $sxml->clear();
                                     unset($sxml);
                                     $sxmlNew->clear();
-                                    unset($sxmlNew);
-                             }
+                                    unset($sxmlNew);*/
+
                          }
                      }
 
