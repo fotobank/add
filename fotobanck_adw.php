@@ -1,6 +1,7 @@
 <?php
-       error_reporting(E_ALL);
+       error_reporting(E_ALL | E_STRICT);
        ini_set('display_errors', 1);
+  //     IMAGINE_CONSTANT;
        if (isset($_COOKIE['js']) && $_COOKIE['js'] == 1) {
               define ('JS', true);
               unset ($_COOKIE['js']);

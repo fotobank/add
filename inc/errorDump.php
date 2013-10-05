@@ -8,7 +8,8 @@
 					*/
 				/** -----------------------------------------------------------------------------------*/
 				// simplehtml - класс разбора xml
-				require_once(__DIR__.'/../classes/simplehtml/inc_func.php');
+			//	require_once(__DIR__.'/../classes/simplehtml/inc_func.php');
+       include_once(__DIR__.'/../classes/simplehtmldom_1_5/simple_html_dom.php');
 				/** -----------------------------------------------------------------------------------*/
 				$odebug           = debugger_errorClass::getInstance('RU');
 				$odebugCSS        = 'default'; // set the CSS
@@ -24,14 +25,14 @@
 				$odebug->from_Addr    = "webmaster@aleks.od.ua";
 				$odebug->from_Name    = $_SERVER['HTTP_HOST'];
 				$odebug->to_Addr      = "aleksjurii@gmail.com"; // robot@aleks.od.ua aleksjurii@gmail.com
-				$odebug->log_Max_Size = 250; //Max size of a log before it will sended and cleared (in kb)
+				$odebug->log_Max_Size = 200; //Max size of a log before it will sended and cleared (in kb)
 				// $odebug -> checkCode ('./classes/debugger/test.php'); // проверка кода
 /** -----------------------------------------------------------------------------------*/
 /**  Тесты для проверки Error_Processor */
 /** PHP set_error_handler TEST */
  IMAGINE_CONSTANT;
 /** PHP set_exception_handler TEST */
-  trigger_error ('Сообщение пользователя', E_USER_WARNING);
+//  trigger_error ('Сообщение пользователя', E_USER_WARNING);
 // throw new Exception( 'Imagine Exception' );
 /** PHP register_shutdown_function TEST ( IF YOU WANT TEST THIS, DELETE PREVIOUS LINE ) */
 //  _TEST_FATAL_ERROR_();

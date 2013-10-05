@@ -473,15 +473,30 @@
                             $koll      = 1;
                             $dateStart = date('d-m-Y H:i:s');
                             if (file_exists($this->sFile) and filesize($this->sFile) != 0) {
-                                   $sxml = @simplexml_load_file($this->sFile);
-                                   foreach ($sxml->ERROR as $error) {
-                                          if ($error->PHP_MESSAGE == iconv("WINDOWS-1251", "UTF-8", $sErrStr)) {
-                                                 $koll      = intval($error->KOLL) + 1;
-                                                 $dateStart = ((string)$error->DATE_START);
-                                                 break;
+
+                                   $html = file_get_html($this->sFile);
+                                   $errors = $html->find('ERROR[id]');
+
+                                   foreach ($errors as $error) {
+                                          if ($error->getElementByTagName("PHP_MESSAGE")->innertext == iconv("WINDOWS-1251", "UTF-8", $sErrStr)) {
+                                                 $koll      = $error->getElementByTagName("KOLL")->innertext + 1;
+                                                 $dateStart = $error->getElementByTagName(("DATE_START"))->innertext;
+                                   //       dump_d('1: '.$koll." ".$dateStart);
+                                          break;
                                           }
+                                   //       dump_d('2: '.iconv("WINDOWS-1251", "UTF-8", $sErrStr));
+                                   //       dump_d('3: '.$error);
                                    }
-                            }
+
+                                    /*$sxml = simplexml_load_file($this->sFile);
+                                    foreach ($sxml->ERROR as $error) {
+                                    if ($error->PHP_MESSAGE == iconv("WINDOWS-1251", "UTF-8", $sErrStr)) {
+                                    $koll      = intval($error->KOLL) + 1;
+                                    $dateStart = ((string)$error->DATE_START);
+                                    break;
+                                    }
+                             }*/
+                                    }
                             unset($sxml);
                             $oNewLog = $this->XML_DOC->createElement('ERROR');
                             $iNewId  = $this->XML_ROOT->getElementsByTagName('ERROR')->length + 1;
@@ -794,19 +809,78 @@
                                           }
                                           $this->printMail = false;
                                    }
-                                   $this->_saveLOG($this->sxmlNew);
+                                   $this->_saveLOG($this->sxmlNew->saveXML());
 
                                    return true;
                             }
-                            /** Конвертируем XML-файл в объект */
-                            $sxml = @simplexml_load_file($this->sFile);
-                            foreach ($this->sxmlNew->xpath("//ERROR") as $errorNew) {
+
+
+
+                            $sxml = file_get_html($this->sFile);
+                            $sxmlNew = str_get_html($this->XML_DOC->saveXML());
+                            foreach ($sxmlNew->find("ERROR[id]") as $errorNew) {
                                    /** $saveVar - переменная trigger записи новой ошибки */
-                                   $saveVar = NULL;
+                                    $saveVar = NULL;
+
+                             foreach ($sxml->find("ERROR[id]") as $errorFile) {
+
+                              if ($errorFile->getElementByTagName("FILE")->innertext == $errorNew->getElementByTagName("FILE")->innertext and
+                                  $errorFile->getElementByTagName("LINE")->innertext == $errorNew->getElementByTagName("LINE")->innertext) {
+                                           foreach ($errorFile->children as $child) {
+                      /* if ($child->tag == "date_new" || $child->tag == "memory" || $child->tag == "context" || $child->tag == "koll"
+                           || $child->tag == "suggestion" || $child->tag == "translation") {*/
+                                                  $sxml->$child->outertext = $errorNew->getElementByTagName($child->tag)->outertext."\n";
+                                //                  }
+                                           }
+                                           $saveVar = true;
+                                           $this->sendMail();
+                                           if ($this->printMail) {
+                                                  $errorFile->getElementByTagName("DATE_MAIL")->innertext = date('d-m-Y H:i:s');
+                                           }
+                                //     $sxml->save($this->sFile);
+                                     $this->_saveLOG($sxml->save());
+                                    }
+
+                                 //   if ($saveVar == NULL) {
+                                           /** записать если запись ошибки в файле не найдена */
+                                           /* $idNew     = count($sxml->find("ERROR[id]")) + 1;
+                                            $errorSave = $sxml->appendChild('ERROR');
+                                            $errorSave->setAttribute('ID', $idNew);
+                                            foreach ($errorNew->children as $child) {
+                                                   dump_d($child->tag);
+                                                   if ($child->tag == "source") {
+                                                          if (!$sourse = $errorSave->SOURCE) {
+                                                                 $sourse = $errorSave->addChild("SOURCE");
+                                                          }
+                                                          foreach ($child as $teg => $SOURCE_LINE) {
+                                                                 $sourse->addChild($teg, $SOURCE_LINE);
+                                                          }
+                                                   } else {
+                                                          $errorSave->appendChild($child);
+                                                   }
+                                            }
+                                            $this->sendMail();
+                                            if ($this->printMail) {
+                                                   $errorSave->addChild('DATE_MAIL', date('d-m-Y H:i:s'));
+                                            } else {
+                                                   $errorSave->addChild('DATE_MAIL', iconv("WINDOWS-1251", "UTF-8", "Файл не отправлен"));
+                                            }*/
+                                      //      $this->_saveLOG($sxml);
+                               //      }
+                              }
+
+
+
+
+                               /** Конвертируем XML-файл в объект */
+                           /* $sxml = simplexml_load_file($this->sFile);
+                            foreach ($this->sxmlNew->xpath("//ERROR") as $errorNew) {*/
+                                   /** $saveVar - переменная trigger записи новой ошибки */
+                                  /* $saveVar = NULL;
                                    foreach ($sxml->xpath("//ERROR") as $errorFile) {
                                           if ((string)$errorFile->FILE == (string)$errorNew->FILE and (int)$errorFile->LINE == (int)$errorNew->LINE) {
                                                  foreach ($errorFile as $teg => $child) {
-                                                        if ($teg != "SOURCE") {
+                                                        if ($teg != "SOURCE" && $teg != "DATE_MAIL") {
                                                                $errorFile->$teg = $errorNew->$teg;
                                                         }
                                                  }
@@ -814,16 +888,13 @@
                                                  $this->sendMail();
                                                  if ($this->printMail) {
                                                         $errorFile->DATE_MAIL = date('d-m-Y H:i:s');
-                                                 } else {
-                                                        $errorFile->DATE_MAIL = iconv("WINDOWS-1251", "UTF-8", "Файл не отправлен");
                                                  }
                                                  $sxml->asXML($this->sFile);
-
                                           }
                                    }
-                                   if ($saveVar == NULL) {
+                                   if ($saveVar == NULL) {*/
                                           /** записать если запись ошибки в файле не найдена */
-                                          $idNew     = count($sxml->ERROR) + 1;
+                                         /* $idNew     = count($sxml->ERROR) + 1;
                                           $errorSave = $sxml->addChild('ERROR');
                                           $errorSave->addAttribute('ID', $idNew);
                                           foreach ($errorNew as $teg => $childData) {
@@ -846,24 +917,29 @@
                                           }
                                           $this->_saveLOG($sxml);
                                    }
-                            }
+                            }*/
                             $this->printMail = false;
                             unset($errorFile);
                             unset($child);
                             unset($teg);
                             unset($errorNew);
                             unset($saveVar);
-                            unset($sxml);
                             $this->glearMail();
+                                    $sxml->clear();
+                                    unset($sxml);
+                                    $sxmlNew->clear();
+                                    unset($sxmlNew);
+                             }
+                         }
                      }
-              }
+
 
 
               /**
                * запись и разделение лога
-               * @param        $xmlOb - xml объект
+               * @param        $xmlLOG - xml объект
                */
-              private function _saveLOG($xmlOb) {
+              private function _saveLOG($xmlLOG) {
 
                      if (!$xml = fopen($this->sFile, "w")) {
                             trigger_error("Не могу открыть файл ($this->sFile)", E_USER_WARNING);
@@ -872,8 +948,8 @@
                      // запись - файл существует и доступен для записи.
                      if (is_writable($this->sFile)) {
                             flock($xml, LOCK_EX); //БЛОКИРОВКА ФАЙЛА
-                            $xmlLOG = $xmlOb->saveXML();
-                            $arrXML = explode("><", $xmlLOG);
+                     //     $xmlLOG = $xmlOb->saveXML();
+                            $arrXML = explode("> <", $xmlLOG);
                             $xmlLOG = join(">\n<", $arrXML);
                             if (fwrite($xml, $xmlLOG) === false) {
                                    trigger_error("Не могу произвести запись в файл ($this->sFile)", E_USER_WARNING);
