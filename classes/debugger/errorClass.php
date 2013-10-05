@@ -822,52 +822,38 @@
                                    /** $saveVar - переменная trigger записи новой ошибки */
                                     $saveVar = NULL;
 
-                             foreach ($sxml->find("ERROR[id]") as $errorFile) {
+                            foreach ($sxml->find("ERROR[id]") as $errorFile) {
 
-                              if ($errorFile->getElementByTagName("FILE")->innertext == $errorNew->getElementByTagName("FILE")->innertext and
+                            if ($errorFile->getElementByTagName("FILE")->innertext == $errorNew->getElementByTagName("FILE")->innertext and
                                   $errorFile->getElementByTagName("LINE")->innertext == $errorNew->getElementByTagName("LINE")->innertext) {
-                                           foreach ($errorFile->children as $child) {
-                      /* if ($child->tag == "date_new" || $child->tag == "memory" || $child->tag == "context" || $child->tag == "koll"
-                           || $child->tag == "suggestion" || $child->tag == "translation") {*/
-                                                  $sxml->$child->outertext = $errorNew->getElementByTagName($child->tag)->outertext."\n";
-                                //                  }
-                                           }
+
+                                   $errorFile->outertext = $errorNew->outertext;
+                                   $errorFile->getElementByTagName("DATE_MAIL")->outertext = $errorNew->getElementByTagName("DATE_MAIL")->outertext;
+                                    }
                                            $saveVar = true;
-                                           $this->sendMail();
+                                //         $this->sendMail();
                                            if ($this->printMail) {
                                                   $errorFile->getElementByTagName("DATE_MAIL")->innertext = date('d-m-Y H:i:s');
                                            }
-                                    $sxml->save($this->sFile);
-                                 //    $this->_saveLOG($sxml->save());
-                                    }
+                                            $this->_saveLOG($sxml->save());
 
-                                 //   if ($saveVar == NULL) {
+
+                                    if ($saveVar == NULL) {
                                            /** записать если запись ошибки в файле не найдена */
-                                           /* $idNew     = count($sxml->find("ERROR[id]")) + 1;
+                                            $idNew     = count($sxml->find("ERROR[id]")) + 1;
                                             $errorSave = $sxml->appendChild('ERROR');
                                             $errorSave->setAttribute('ID', $idNew);
-                                            foreach ($errorNew->children as $child) {
-                                                   dump_d($child->tag);
-                                                   if ($child->tag == "source") {
-                                                          if (!$sourse = $errorSave->SOURCE) {
-                                                                 $sourse = $errorSave->addChild("SOURCE");
-                                                          }
-                                                          foreach ($child as $teg => $SOURCE_LINE) {
-                                                                 $sourse->addChild($teg, $SOURCE_LINE);
-                                                          }
-                                                   } else {
-                                                          $errorSave->appendChild($child);
-                                                   }
-                                            }
+                                            $errorSave->outertext = $errorNew->outertext;
                                             $this->sendMail();
                                             if ($this->printMail) {
                                                    $errorSave->addChild('DATE_MAIL', date('d-m-Y H:i:s'));
                                             } else {
                                                    $errorSave->addChild('DATE_MAIL', iconv("WINDOWS-1251", "UTF-8", "Файл не отправлен"));
-                                            }*/
-                                      //      $this->_saveLOG($sxml);
-                               //      }
-                              }
+                                            }
+                                           $this->_saveLOG($sxml->save());
+                                     }
+                                  }
+
 
 
 
@@ -948,9 +934,9 @@
                      // запись - файл существует и доступен для записи.
                      if (is_writable($this->sFile)) {
                             flock($xml, LOCK_EX); //БЛОКИРОВКА ФАЙЛА
-                     //     $xmlLOG = $xmlOb->saveXML();
-                            $arrXML = explode("> <", $xmlLOG);
-                            $xmlLOG = join(">\n<", $arrXML);
+                            $xmlLOG = str_replace("> <","><", $xmlLOG);
+                            $xmlLOG = explode("><", $xmlLOG);
+                            $xmlLOG = join(">\n<", $xmlLOG);
                             if (fwrite($xml, $xmlLOG) === false) {
                                    trigger_error("Не могу произвести запись в файл ($this->sFile)", E_USER_WARNING);
                                    exit;
