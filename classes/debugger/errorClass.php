@@ -271,7 +271,7 @@
                      set_error_handler(array($this, 'myErrorHandler'));
                      set_exception_handler(array($this, 'myExceptionHandler'));
                      register_shutdown_function(array($this, 'captureShutdown'));
-                     $this->sxmlNew = simplexml_import_dom($this->XML_DOC);
+                     $this->sxmlNew = str_get_html($this->XML_DOC->saveXML());
               }
 
 
@@ -473,31 +473,17 @@
                             $koll      = 1;
                             $dateStart = date('d-m-Y H:i:s');
                             if (file_exists($this->sFile) and filesize($this->sFile) != 0) {
-
-                                   $html = file_get_html($this->sFile);
-                                   $errors = $html->find('ERROR[id]');
-
-                                   foreach ($errors as $error) {
+                                   $sxml = file_get_html($this->sFile);
+                                   foreach ($sxml->find('ERROR[id]') as $error) {
                                           if ($error->getElementByTagName("PHP_MESSAGE")->innertext == iconv("WINDOWS-1251", "UTF-8", $sErrStr)) {
                                                  $koll      = $error->getElementByTagName("KOLL")->innertext + 1;
                                                  $dateStart = $error->getElementByTagName(("DATE_START"))->innertext;
-                                   //       dump_d('1: '.$koll." ".$dateStart);
-                                          break;
+                                                 break;
                                           }
-                                   //       dump_d('2: '.iconv("WINDOWS-1251", "UTF-8", $sErrStr));
-                                   //       dump_d('3: '.$error);
                                    }
-
-                                    /*$sxml = simplexml_load_file($this->sFile);
-                                    foreach ($sxml->ERROR as $error) {
-                                    if ($error->PHP_MESSAGE == iconv("WINDOWS-1251", "UTF-8", $sErrStr)) {
-                                    $koll      = intval($error->KOLL) + 1;
-                                    $dateStart = ((string)$error->DATE_START);
-                                    break;
-                                    }
-                             }*/
-                                    }
-                            unset($sxml);
+                                   $sxml->clear();
+                                   unset($sxml);
+                            }
                             $oNewLog = $this->XML_DOC->createElement('ERROR');
                             $iNewId  = $this->XML_ROOT->getElementsByTagName('ERROR')->length + 1;
                             $oNewLog = $this->XML_ROOT->appendChild($oNewLog);
@@ -560,9 +546,9 @@
                      //					if ($_SERVER['HTTP_HOST'] == stristr(mb_substr(get_domain(), 0, -1), "al")) {
                      if (file_exists($this->sFile)) {
                             $dateTime = '';
-                            $sxml = @simplexml_load_file($this->sFile);
-                            foreach($sxml->xpath("//ERROR/DATE_MAIL") as $dates) {
-                                   if(strtotime((string)$dates) >= strtotime($dateTime)) {
+                            $sxml     = @simplexml_load_file($this->sFile);
+                            foreach ($sxml->xpath("//ERROR/DATE_MAIL") as $dates) {
+                                   if (strtotime((string)$dates) >= strtotime($dateTime)) {
                                           $dateTime = (string)$dates;
                                    }
                             }
@@ -588,9 +574,9 @@
                             unset($mail);
                      }
               }
-       //}
 
 
+              //}
               /**
                * public function showAll ()
                * show the whole current xml log
@@ -788,6 +774,15 @@
 
 
               /**
+               * добавить узел
+               * @param $parent
+               * @param $tag
+               * @param $data
+               */
+              /*private function addChild(&$parent, $tag, $data) {
+                     $parent->innertext = $parent->innertext."<".$tag.">".$data."</".$tag.">";
+              }*/
+              /**
                * public function saveToFile ()
                * save the current log to a given file
                *
@@ -797,125 +792,59 @@
 
                      /** не записывать если пришли со страницы '/error.php' */
                      if (true === $this->aOptions['LOGFILE'] && isset($_SERVER['PHP_SELF']) && $_SERVER['PHP_SELF'] != '/error.php') {
+                            $sxmlNew = str_get_html($this->XML_DOC->saveXML());
                             if (!file_exists($this->sFile) or filesize($this->sFile) == 0) {
                                    //	записать если присутствует тег 'DATE'
-                                   if ($this->sxmlNew->ERROR->count() > 0) {
-                                          $this->sxmlNew->asXML($this->sFile);
+                                   dump_r(count($sxmlNew->find("ERROR[id]")));
+
+
+                                   if (count($this->sxmlNew->find("ERROR[id]")) > 0) {
+                                          $this->sxmlNew->save($this->sFile);
                                    }
-                                   $this->sendMail();
+                                  /* $this->sendMail();
                                    if ($this->printMail) {
-                                          foreach ($this->sxmlNew->xpath("//ERROR") as $errorNew) {
-                                                 $errorNew->addChild('DATE_MAIL', date('d-m-Y H:i:s'));
+                                          foreach ($this->sxmlNew->find("ERROR[id]") as $errorNew) {
+                                                 $errorNew->createElement('DATE_MAIL', date('d-m-Y H:i:s'));
                                           }
                                           $this->printMail = false;
-                                   }
-                                   $this->_saveLOG($this->sxmlNew->saveXML());
+                                   }*/
+                            //       $this->_saveLOG($this->sxmlNew->save());
                                    return true;
                             }
-                            $sxml = file_get_html($this->sFile);
-                            $sxmlNew = str_get_html($this->XML_DOC->saveXML());
-                            foreach ($sxmlNew->find("ERROR[id]") as $errorNew) {
-                                   /** $saveVar - переменная trigger записи новой ошибки */
-                                    $saveVar = NULL;
-                                   dump_d(count($sxml->find("ERROR[id]")));
-                            foreach ($sxml->find("ERROR[id]") as $errorFile) {
-                            dump_d($errorFile);
-                            if ($errorFile->getElementByTagName("FILE")->innertext == $errorNew->getElementByTagName("FILE")->innertext and
-                                  $errorFile->getElementByTagName("LINE")->innertext == $errorNew->getElementByTagName("LINE")->innertext) {
 
-                                   $errorFile->outertext = $errorNew->outertext;
-                                   $errorFile->getElementByTagName("DATE_MAIL")->outertext = $errorNew->getElementByTagName("DATE_MAIL")->outertext;
-                                    }
-                                           $saveVar = true;
-                                           $this->sendMail();
-                                           if ($this->printMail) {
-                                                  $errorFile->getElementByTagName("DATE_MAIL")->innertext = date('d-m-Y H:i:s');
-                                           }
-                                            $this->_saveLOG($sxml->save());
-
-
-                                    if ($saveVar == NULL) {
-                                           /** записать если запись ошибки в файле не найдена */
-                                            $idNew     = count($sxml->find("ERROR[id]")) + 1;
-                                            $errorSave = $sxml->appendChild('ERROR');
-                                            $errorSave->setAttribute('ID', $idNew);
-                                            $errorSave->outertext = $errorNew->outertext;
-                                            $this->sendMail();
-                                            if ($this->printMail) {
-                                                   $errorSave->appendChild("DATE_MAIL");
-                                                   $errorSave->getElementByTagName("DATE_MAIL")->innertext = date('d-m-Y H:i:s');
-                                            } else {
-                                                   $errorSave->appendChild("DATE_MAIL");
-                                                   $errorSave->getElementByTagName("DATE_MAIL")->innertext = iconv("WINDOWS-1251", "UTF-8", "Файл не отправлен");
-                                            }
-                                           $this->_saveLOG($sxml->save());
-                                    }
-                            }
-
-
-
-
-
-                               /** Конвертируем XML-файл в объект */
-                           /* $sxml = simplexml_load_file($this->sFile);
-                            foreach ($this->sxmlNew->xpath("//ERROR") as $errorNew) {*/
-                                   /** $saveVar - переменная trigger записи новой ошибки */
-                                  /* $saveVar = NULL;
-                                   foreach ($sxml->xpath("//ERROR") as $errorFile) {
-                                          if ((string)$errorFile->FILE == (string)$errorNew->FILE and (int)$errorFile->LINE == (int)$errorNew->LINE) {
-                                                 foreach ($errorFile as $teg => $child) {
-                                                        if ($teg != "SOURCE" && $teg != "DATE_MAIL") {
-                                                               $errorFile->$teg = $errorNew->$teg;
-                                                        }
-                                                 }
-                                                 $saveVar = true;
-                                                 $this->sendMail();
-                                                 if ($this->printMail) {
-                                                        $errorFile->DATE_MAIL = date('d-m-Y H:i:s');
-                                                 }
-                                                 $sxml->asXML($this->sFile);
+                            $sxml    = file_get_html($this->sFile);
+                            foreach ( $this->sxmlNew->find("ERROR[id]") as $errorNew) {
+                                   $saveNew = true; // true - новая ошибка
+                                   //      $this->sendMail();
+                                   //      if ($this->printMail) {
+                                   //      $errorNew->addChild($errorNew, "DATE_MAIL", date('d-m-Y H:i:s'));
+                                   //   }
+                                   foreach ($sxml->find("ERROR[id]") as $errorFile) {
+                                          if ($errorFile->find("FILE", 0)->innertext === $errorNew->find("FILE", 0)->innertext
+                                              and $errorFile->find("LINE", 0)->innertext === $errorNew->find("LINE", 0)->innertext
+                                          ) {
+                                                 $errorFile->outertext = $errorNew->outertext;
+                                                 $saveNew              = false; // запись найдена и обновлена
+                                                 break;
                                           }
                                    }
-                                   if ($saveVar == NULL) {*/
-                                          /** записать если запись ошибки в файле не найдена */
-                                         /* $idNew     = count($sxml->ERROR) + 1;
-                                          $errorSave = $sxml->addChild('ERROR');
-                                          $errorSave->addAttribute('ID', $idNew);
-                                          foreach ($errorNew as $teg => $childData) {
-                                                 if ($teg == "SOURCE") {
-                                                        if (!$sourse = $errorSave->SOURCE) {
-                                                               $sourse = $errorSave->addChild("SOURCE");
-                                                        }
-                                                        foreach ($childData as $teg => $SOURCE_LINE) {
-                                                               $sourse->addChild($teg, $SOURCE_LINE);
-                                                        }
-                                                 } else {
-                                                        $errorSave->addChild($teg, $childData);
-                                                 }
-                                          }
-                                          $this->sendMail();
-                                          if ($this->printMail) {
-                                                 $errorSave->addChild('DATE_MAIL', date('d-m-Y H:i:s'));
-                                          } else {
-                                                 $errorSave->addChild('DATE_MAIL', iconv("WINDOWS-1251", "UTF-8", "Файл не отправлен"));
-                                          }
-                                          $this->_saveLOG($sxml);
-                                   }*/
+                                   if ($saveNew === true) { // если ошибка новая
+                                          $idNew                = count($sxml->find("ERROR[id]")) + 1;
+                                          $errorFile->innertext = $errorFile->innertext."<ERROR id='".$idNew."'></ERROR>";
+                                          $errorFile->setAttribute('id=', $idNew);
+                                          $errorFile->outertext = $errorFile->outertext.$errorNew->outertext;
+                                   }
                             }
+                            $this->_saveLOG($sxml->save());
                             $this->printMail = false;
                             unset($errorFile);
-                           /* unset($child);
-                            unset($teg);
                             unset($errorNew);
-                            unset($saveVar);
+                            unset($saveNew);
                             $this->glearMail();
-                                    $sxml->clear();
-                                    unset($sxml);
-                                    $sxmlNew->clear();
-                                    unset($sxmlNew);*/
-
-                         }
+                            $sxml->clear();
+                            unset($sxml);
                      }
+              }
 
 
 
@@ -932,7 +861,7 @@
                      // запись - файл существует и доступен для записи.
                      if (is_writable($this->sFile)) {
                             flock($xml, LOCK_EX); //БЛОКИРОВКА ФАЙЛА
-                            $xmlLOG = str_replace("> <","><", $xmlLOG);
+                            $xmlLOG = str_replace("> <", "><", $xmlLOG);
                             $xmlLOG = explode("><", $xmlLOG);
                             $xmlLOG = join(">\n<", $xmlLOG);
                             if (fwrite($xml, $xmlLOG) === false) {
@@ -959,7 +888,7 @@
                             $this->logMail = true;
                             $styleErr      = file_get_contents(__DIR__.'/../../classes/debugger/css/default.dat');
                             $mail_mes      = $styleErr."<html><body><h1>Report of errors log</h1><br>".$this->showAll()."<br>";
-                            $mail_mes     .= '<p>This letter was created and a log on server was cleared at '.date('Y-m-d').'.<br>
+                            $mail_mes .= '<p>This letter was created and a log on server was cleared at '.date('Y-m-d').'.<br>
 																					    This message was sent automatically by robot, please don\'t reply!</p></body></html>';
                             $mail            = new Mail_sender;
                             $mail->from_Addr = $this->mailOptions['from_Addr'];

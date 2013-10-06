@@ -6,9 +6,7 @@
 					* Time: 0:23
 					* To change this template use File | Settings | File Templates.
 					*/
-				/** -----------------------------------------------------------------------------------*/
-				// simplehtml - класс разбора xml
-			//	require_once(__DIR__.'/../classes/simplehtml/inc_func.php');
+
        include_once(__DIR__.'/../classes/simplehtmldom_1_5/simple_html_dom.php');
 				/** -----------------------------------------------------------------------------------*/
 				$odebug           = debugger_errorClass::getInstance('RU');
@@ -32,7 +30,7 @@
 /** PHP set_error_handler TEST */
  IMAGINE_CONSTANT;
 /** PHP set_exception_handler TEST */
-//  trigger_error ('Сообщение пользователя', E_USER_WARNING);
+ trigger_error ('Сообщение пользователя', E_USER_WARNING);
 // throw new Exception( 'Imagine Exception' );
 /** PHP register_shutdown_function TEST ( IF YOU WANT TEST THIS, DELETE PREVIOUS LINE ) */
 //  _TEST_FATAL_ERROR_();

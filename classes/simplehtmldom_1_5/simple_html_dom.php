@@ -85,7 +85,7 @@ function file_get_html($url, $use_include_path = false, $context=null, $offset =
 }
 
 // get html dom from string
-function str_get_html($str, $lowercase=true, $forceTagsClosed=true, $target_charset = DEFAULT_TARGET_CHARSET, $stripRN=true, $defaultBRText=DEFAULT_BR_TEXT, $defaultSpanText=DEFAULT_SPAN_TEXT)
+function str_get_html($str, $lowercase=false, $forceTagsClosed=true, $target_charset = DEFAULT_TARGET_CHARSET, $stripRN=true, $defaultBRText=DEFAULT_BR_TEXT, $defaultSpanText=DEFAULT_SPAN_TEXT)
 {
     $dom = new simple_html_dom(null, $lowercase, $forceTagsClosed, $target_charset, $stripRN, $defaultBRText, $defaultSpanText);
     if (empty($str) || strlen($str) > MAX_FILE_SIZE)
@@ -993,6 +993,15 @@ class simple_html_dom_node
     function hasChildNodes() {return $this->has_child();}
     function nodeName() {return $this->tag;}
     function appendChild($node) {$node->parent($this); return $node;}
+       /**
+        * добавить узел
+        * @param $parent
+        * @param $tag
+        * @param $data
+        */
+       public function addChild(&$parent, $tag, $data = "") {
+              $parent->innertext = $parent->innertext."<".$tag.">".$data."</".$tag.">";
+       }
 
 }
 
