@@ -23,7 +23,7 @@ function main_redir($addr = '', $close_conn = true, $code = 'HTTP/1.1 303 See Ot
 
   if ($close_conn)
 	 {
-          go\DB\Storage::getInstance()->get()->close();
+      go\DB\Storage::getInstance()->get()->close();
 	 }
   exit();
  }
@@ -974,11 +974,11 @@ return $data;
 	 * Преобразование объекта в массив
 	 * $array = objectToArray( $obj );
 	 *
-	 * @param    object  $object преобразуемый объект
-	 * @reeturn      array
+	 * @param   $object преобразуемый объект
+	 * @return   array
 	 *
 	 */
-	function objectToArray( $object )
+       function objectToArray( $object )
 	{
 		if( !is_object( $object ) && !is_array( $object ) )
 		{

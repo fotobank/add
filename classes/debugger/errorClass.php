@@ -271,7 +271,6 @@
                      set_error_handler(array($this, 'myErrorHandler'));
                      set_exception_handler(array($this, 'myExceptionHandler'));
                      register_shutdown_function(array($this, 'captureShutdown'));
-                     $this->sxmlNew = str_get_html($this->XML_DOC->saveXML());
               }
 
 
@@ -475,10 +474,11 @@
                             if (file_exists($this->sFile) and filesize($this->sFile) != 0) {
                                    $sxml = file_get_html($this->sFile);
                                    foreach ($sxml->find('ERROR[id]') as $error) {
-                                          if ($error->getElementByTagName("PHP_MESSAGE")->innertext == iconv("WINDOWS-1251", "UTF-8", $sErrStr)) {
-                                                 $koll      = $error->getElementByTagName("KOLL")->innertext + 1;
-                                                 $dateStart = $error->getElementByTagName(("DATE_START"))->innertext;
-                                                 break;
+                                            if (iconv("UTF-8", "WINDOWS-1251", ($error->find("PHP_MESSAGE",0)->innertext)) ==
+                                                iconv("WINDOWS-1251", "UTF-8", $sErrStr)) {
+                                                 $koll      = $error->find("KOLL",0)->innertext + 1;
+                                                 $dateStart = $error->find("DATE_START",0)->innertext;
+                                     break;
                                           }
                                    }
                                    $sxml->clear();
@@ -546,12 +546,15 @@
                      //					if ($_SERVER['HTTP_HOST'] == stristr(mb_substr(get_domain(), 0, -1), "al")) {
                      if (file_exists($this->sFile)) {
                             $dateTime = '';
-                            $sxml     = @simplexml_load_file($this->sFile);
-                            foreach ($sxml->xpath("//ERROR/DATE_MAIL") as $dates) {
-                                   if (strtotime((string)$dates) >= strtotime($dateTime)) {
-                                          $dateTime = (string)$dates;
+                            $sxml = file_get_html($this->sFile);
+                            foreach ($sxml->find('DATE_MAIL') as $key) {
+                                   $dates = $key->innertext;
+                                   if (strtotime($dates) >= strtotime($dateTime)) {
+                                          $dateTime = $dates;
                                    }
                             }
+                            $sxml ->clear();
+                            unset($sxml);
                             if (strtotime($dateTime) < strtotime("-".$this->mailOptions['mail_Period']." minutes") or $dateTime === '') {
                                    //  включить вывод на email
                                    $this->printMail = true;
@@ -570,13 +573,11 @@
                                    $mail->send_letter();
                                    unset($mail);
                             }
-                            unset($sxml);
-                            unset($mail);
                      }
               }
-
-
               //}
+
+
               /**
                * public function showAll ()
                * show the whole current xml log
@@ -793,32 +794,14 @@
                      /** не записывать если пришли со страницы '/error.php' */
                      if (true === $this->aOptions['LOGFILE'] && isset($_SERVER['PHP_SELF']) && $_SERVER['PHP_SELF'] != '/error.php') {
                             $sxmlNew = str_get_html($this->XML_DOC->saveXML());
-                            if (!file_exists($this->sFile) or filesize($this->sFile) == 0) {
-                                   //	записать если присутствует тег 'DATE'
-                                   dump_r(count($sxmlNew->find("ERROR[id]")));
-
-
-                                   if (count($this->sxmlNew->find("ERROR[id]")) > 0) {
-                                          $this->sxmlNew->save($this->sFile);
-                                   }
-                                  /* $this->sendMail();
-                                   if ($this->printMail) {
-                                          foreach ($this->sxmlNew->find("ERROR[id]") as $errorNew) {
-                                                 $errorNew->createElement('DATE_MAIL', date('d-m-Y H:i:s'));
-                                          }
-                                          $this->printMail = false;
-                                   }*/
-                            //       $this->_saveLOG($this->sxmlNew->save());
-                                   return true;
-                            }
-
+                            if($this->saveNewLog($sxmlNew)) {
                             $sxml    = file_get_html($this->sFile);
-                            foreach ( $this->sxmlNew->find("ERROR[id]") as $errorNew) {
+                            foreach ( $sxmlNew->find("ERROR[id]") as $errorNew) {
                                    $saveNew = true; // true - новая ошибка
-                                   //      $this->sendMail();
-                                   //      if ($this->printMail) {
-                                   //      $errorNew->addChild($errorNew, "DATE_MAIL", date('d-m-Y H:i:s'));
-                                   //   }
+                                         $this->sendMail();
+                                         if ($this->printMail) {
+                                         $errorNew->addChild($errorNew, "DATE_MAIL", date('d-m-Y H:i:s'));
+                                      }
                                    foreach ($sxml->find("ERROR[id]") as $errorFile) {
                                           if ($errorFile->find("FILE", 0)->innertext === $errorNew->find("FILE", 0)->innertext
                                               and $errorFile->find("LINE", 0)->innertext === $errorNew->find("LINE", 0)->innertext
@@ -840,10 +823,38 @@
                             unset($errorFile);
                             unset($errorNew);
                             unset($saveNew);
-                            $this->glearMail();
                             $sxml->clear();
                             unset($sxml);
+                            }
+                            $this->glearMail();
+                            $sxmlNew->clear();
+                            unset($sxmlNew);
+                  }
+              }
+
+
+              /**
+               * @param $sxmlNew
+               * запись нового лога
+               * @return mixed
+               */
+              private function saveNewLog($sxmlNew) {
+
+                     if (!file_exists($this->sFile) or filesize($this->sFile) == 0) {
+                            if (count($sxmlNew->find("ERROR[id]")) > 0) {
+                                   $this->_saveLOG($sxmlNew->save());
+                            }
+                            $this->sendMail();
+                            if ($this->printMail) {
+                                   foreach ($sxmlNew->find("ERROR[id]") as $errorNew) {
+                                          $errorNew->addChild($errorNew, "DATE_MAIL", date('d-m-Y H:i:s'));
+                                   }
+                                   $this->printMail = false;
+                            }
+                            $this->_saveLOG($sxmlNew->save());
+                            return false;
                      }
+                     return true;
               }
 
 
