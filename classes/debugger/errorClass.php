@@ -469,21 +469,7 @@
                             if ($iErrLine < 0) {
                                    $iErrLine = 0;
                             }
-                            $koll      = 1;
-                            $dateStart = date('d-m-Y H:i:s');
-                            if (file_exists($this->sFile) and filesize($this->sFile) != 0) {
-                                   $sxml = file_get_html($this->sFile);
-                                   foreach ($sxml->find('ERROR[id]') as $error) {
-                                            if (iconv("UTF-8", "WINDOWS-1251", ($error->find("PHP_MESSAGE",0)->innertext)) ==
-                                                iconv("WINDOWS-1251", "UTF-8", $sErrStr)) {
-                                                 $koll      = $error->find("KOLL",0)->innertext + 1;
-                                                 $dateStart = $error->find("DATE_START",0)->innertext;
-                                     break;
-                                          }
-                                   }
-                                   $sxml->clear();
-                                   unset($sxml);
-                            }
+                            $this->get_koll_dateStart($sErrStr, $koll, $dateStart);
                             $oNewLog = $this->XML_DOC->createElement('ERROR');
                             $iNewId  = $this->XML_ROOT->getElementsByTagName('ERROR')->length + 1;
                             $oNewLog = $this->XML_ROOT->appendChild($oNewLog);
@@ -507,11 +493,11 @@
                                    // $sLine = utf8_encode($sLine);
                                    if ($iLine === $iErrLine) {
                                           $aSourceElem[] = $this->XML_DOC->createElement('SOURCE_LINE_ERROR',
-                                                 $numLine.') '.trim(iconv("WINDOWS-1251", "UTF-8", ' /** ËÈÍÈß ÎØÈÁÊÈ => */ '.$sLine)));
+                                                 $numLine.') '.trim(iconv("WINDOWS-1251", "UTF-8", ' /** ËÈÍÈß ÎØÈÁÊÈ => */ '.htmlspecialchars($sLine))));
 
                                    } else {
-                                          $aSourceElem[] =
-                                                 $this->XML_DOC->createElement('SOURCE_LINE', $numLine.') '.trim(iconv("WINDOWS-1251", "UTF-8", $sLine)));
+                                          $aSourceElem[] = $this->XML_DOC->createElement('SOURCE_LINE', $numLine.') '
+                                                                          .trim(iconv("WINDOWS-1251", "UTF-8", htmlspecialchars($sLine))));
                                    }
                                    $numLine++;
                             }
@@ -535,6 +521,36 @@
                             }
                      }
               }
+
+
+              /**
+               * êîëè÷åñòâî è âðåìÿ ïåðâîé îøèáêè
+               * @param $sErrStr
+               * @param $koll
+               * @param $dateStart
+               */
+              private function get_koll_dateStart($sErrStr, &$koll, &$dateStart) {
+
+                     $koll      = 1;
+                     $dateStart = date('d-m-Y H:i:s');
+                     if (file_exists($this->sFile) and filesize($this->sFile) != 0) {
+                            $sxml = file_get_html($this->sFile);
+                            foreach ($sxml->find('ERROR[id]') as $error) {
+                                   if (is_object($error->find("PHP_MESSAGE", 0))) {
+                                          if (iconv("UTF-8", "WINDOWS-1251", ($error->find("PHP_MESSAGE", 0)->innertext)) ==
+                                              iconv("WINDOWS-1251", "UTF-8", $sErrStr)
+                                          ) {
+                                                 $koll      = $error->find("KOLL", 0)->innertext + 1;
+                                                 $dateStart = $error->find("DATE_START", 0)->innertext;
+                                                 break;
+                                          }
+                                   }
+                            }
+                            $sxml->clear();
+                            unset($sxml);
+                     }
+              }
+
 
 
               /**
@@ -629,15 +645,13 @@
                      $sTempHtml      = substr($sBaseHtml, $iStartPos, -($iLength - $iEndPos));
                      $sTempHtmlTotal = '';
                      $xpath          = new DOMXPath($this->XML_DOC);
-                     $sQuery         = '//ERROR';
-                     $oNodeLists     = $xpath->query($sQuery);
+                     $oNodeLists     = $xpath->query('//ERROR');
                      foreach ($oNodeLists as $oNodeList) {
                             $this->currentNode = $oNodeList;
                             $sTempHtmlTotal .= $this->printMeLog($sTempHtml);
                      }
                      $sHtml .= $sTempHtmlTotal;
-                     $sQuery     = '//ERROR/TYPE';
-                     $oNodeLists = $xpath->query($sQuery);
+                     $oNodeLists = $xpath->query('//ERROR/TYPE');
                      $sCountType = '';
                      $aTypes     = array();
                      if ($oNodeLists->length > 0) {
@@ -678,9 +692,11 @@
                                           $sValeur        = '';
                                           for ($j = 0; $j < $sourceNodeList->length; $j++) {
                                                  $sValeur .= str_replace(array('<?php', '?>', '<?'), '', $sourceNodeList->item($j)->nodeValue);
-                                                 $sValeur .= "\r\n";
+                                                 $sValeur .= "\n";
                                           }
-                                          $sValeur = highlight_string('<?php '."\r\n".$sValeur.'?>', true);
+                                          $sValeur = str_replace('       ',' ', $sValeur);
+                                          $sValeur = highlight_string('<?php '."\n".$sValeur.'?>', true);
+
                                    } elseif ($sName === 'CONTEXT') {
                                           $php_INFO    = debugger_SHOWCONTEXT::php_INFO();
                                           $content     = $nodeLists->item($n)->nodeValue;

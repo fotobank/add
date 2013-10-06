@@ -1,7 +1,12 @@
 <?php
        error_reporting(E_ALL | E_STRICT);
        ini_set('display_errors', 1);
-  //     IMAGINE_CONSTANT;
+       require_once (__DIR__.'/classes/autoload.php');
+       autoload::getInstance();
+       // обработка ошибок
+       require_once (__DIR__.'/inc/errorDump.php');
+       // вызов ошибки
+    //   ERROR_CONSTANT;
        if (isset($_COOKIE['js']) && $_COOKIE['js'] == 1) {
               define ('JS', true);
               unset ($_COOKIE['js']);

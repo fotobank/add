@@ -28,7 +28,7 @@
 /** -----------------------------------------------------------------------------------*/
 /**  Тесты для проверки Error_Processor */
 /** PHP set_error_handler TEST */
- IMAGINE_CONSTANT;
+// IMAGINE_CONSTANT;
 /** PHP set_exception_handler TEST */
 // trigger_error ('Сообщение пользователя', E_USER_WARNING);
 // throw new Exception( 'Imagine Exception' );
