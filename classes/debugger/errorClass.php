@@ -465,13 +465,12 @@
 
                      // не создавать если пришли со страницы '/error.php'
                      if (isset($_SERVER['PHP_SELF']) && $_SERVER['PHP_SELF'] != '/error.php') {
-                            $iErrLine--;
+                           /* $iErrLine--;
                             if ($iErrLine < 0) {
                                    $iErrLine = 0;
-                            }
-                            $this->get_koll_dateStart($sErrStr, $koll, $dateStart);
+                            }*/
+                            $this->get_koll_dateStart($sErrStr, $sErrFile, $iErrLine, $koll, $dateStart, $iNewId);
                             $oNewLog = $this->XML_DOC->createElement('ERROR');
-                            $iNewId  = $this->XML_ROOT->getElementsByTagName('ERROR')->length + 1;
                             $oNewLog = $this->XML_ROOT->appendChild($oNewLog);
                             $oNewLog->setAttribute('id', $iNewId);
                             $aElem[] = $this->XML_DOC->createElement('DATE_START', $dateStart);
@@ -481,14 +480,14 @@
                             // $sErrStr = utf8_encode($sErrStr);
                             $aElem[]     = $this->XML_DOC->createElement('PHP_MESSAGE', iconv("WINDOWS-1251", "UTF-8", $sErrStr));
                             $aElem[]     = $this->XML_DOC->createElement('FILE', $sErrFile);
-                            $aElem[]     = $this->XML_DOC->createElement('LINE', $iErrLine + 1);
+                            $aElem[]     = $this->XML_DOC->createElement('LINE', $iErrLine);
                             $aElem[]     = $this->XML_DOC->createElement('MEMORY', function_exists('memory_get_usage') ? @memory_get_usage() : 'n/a');
                             $aElem[]     = $this->XML_DOC->createElement('TRANSLATION', iconv("WINDOWS-1251", "UTF-8", $aTempArr['TRANSLATION']));
                             $aElem[]     = $this->XML_DOC->createElement('SUGGESTION', iconv("WINDOWS-1251", "UTF-8", $aTempArr['SUGGESTION']));
                             $aElem[]     = $this->XML_DOC->createElement('CONTEXT', $sVars);
                             $oSource     = $this->XML_DOC->createElement('SOURCE');
                             $aSourceElem = array();
-                            $numLine     = $iErrLine + 1 - $this->iNbLines;
+                            $numLine     = $iErrLine - $this->iNbLines;
                             foreach ($this->getLine($sErrFile, $iErrLine) as $iLine => $sLine) {
                                    // $sLine = utf8_encode($sLine);
                                    if ($iLine === $iErrLine) {
@@ -497,7 +496,7 @@
 
                                    } else {
                                           $aSourceElem[] = $this->XML_DOC->createElement('SOURCE_LINE', $numLine.') '
-                                                                          .trim(iconv("WINDOWS-1251", "UTF-8", htmlspecialchars($sLine))));
+                                                           .trim(iconv("WINDOWS-1251", "UTF-8", htmlspecialchars($sLine))));
                                    }
                                    $numLine++;
                             }
@@ -524,24 +523,32 @@
 
 
               /**
-               * количество и время первой ошибки
+               * количество ошибок для формирования ERROR id ,даты первой ошибки и подсчета кол-ва однотипных записей
+               *
                * @param $sErrStr
+               * @param $sErrFile
+               * @param $iErrLine
+               * @param $iNewId
                * @param $koll
                * @param $dateStart
                */
-              private function get_koll_dateStart($sErrStr, &$koll, &$dateStart) {
+              private function get_koll_dateStart($sErrStr, $sErrFile, $iErrLine, &$koll, &$dateStart, &$iNewId) {
 
                      $koll      = 1;
                      $dateStart = date('d-m-Y H:i:s');
+                     $iNewId    = $this->XML_ROOT->getElementsByTagName('ERROR')->length + 1;
                      if (file_exists($this->sFile) and filesize($this->sFile) != 0) {
                             $sxml = file_get_html($this->sFile);
                             foreach ($sxml->find('ERROR[id]') as $error) {
                                    if (is_object($error->find("PHP_MESSAGE", 0))) {
-                                          if (iconv("UTF-8", "WINDOWS-1251", ($error->find("PHP_MESSAGE", 0)->innertext)) ==
-                                              iconv("WINDOWS-1251", "UTF-8", $sErrStr)
+                                          if ($error->find("PHP_MESSAGE", 0)->innertext == iconv("WINDOWS-1251", "UTF-8", $sErrStr)
+                                              && $error->find("FILE", 0)->innertext == $sErrFile
+                                              && $error->find("LINE", 0)->innertext == ($iErrLine)
                                           ) {
                                                  $koll      = $error->find("KOLL", 0)->innertext + 1;
                                                  $dateStart = $error->find("DATE_START", 0)->innertext;
+                                                 $iNewId    = $error->id;
+                                                 //     dump_r($iNewId);
                                                  break;
                                           }
                                    }
@@ -550,7 +557,6 @@
                             unset($sxml);
                      }
               }
-
 
 
               /**
@@ -562,14 +568,14 @@
                      //					if ($_SERVER['HTTP_HOST'] == stristr(mb_substr(get_domain(), 0, -1), "al")) {
                      if (file_exists($this->sFile)) {
                             $dateTime = '';
-                            $sxml = file_get_html($this->sFile);
+                            $sxml     = file_get_html($this->sFile);
                             foreach ($sxml->find('DATE_MAIL') as $key) {
                                    $dates = $key->innertext;
                                    if (strtotime($dates) >= strtotime($dateTime)) {
                                           $dateTime = $dates;
                                    }
                             }
-                            $sxml ->clear();
+                            $sxml->clear();
                             unset($sxml);
                             if (strtotime($dateTime) < strtotime("-".$this->mailOptions['mail_Period']." minutes") or $dateTime === '') {
                                    //  включить вывод на email
@@ -591,9 +597,9 @@
                             }
                      }
               }
+
+
               //}
-
-
               /**
                * public function showAll ()
                * show the whole current xml log
@@ -694,7 +700,7 @@
                                                  $sValeur .= str_replace(array('<?php', '?>', '<?'), '', $sourceNodeList->item($j)->nodeValue);
                                                  $sValeur .= "\n";
                                           }
-                                          $sValeur = str_replace('       ',' ', $sValeur);
+                                          $sValeur = str_replace('       ', ' ', $sValeur);
                                           $sValeur = highlight_string('<?php '."\n".$sValeur.'?>', true);
 
                                    } elseif ($sName === 'CONTEXT') {
@@ -790,15 +796,7 @@
               }
 
 
-              /**
-               * добавить узел
-               * @param $parent
-               * @param $tag
-               * @param $data
-               */
-              /*private function addChild(&$parent, $tag, $data) {
-                     $parent->innertext = $parent->innertext."<".$tag.">".$data."</".$tag.">";
-              }*/
+
               /**
                * public function saveToFile ()
                * save the current log to a given file
@@ -810,48 +808,73 @@
                      /** не записывать если пришли со страницы '/error.php' */
                      if (true === $this->aOptions['LOGFILE'] && isset($_SERVER['PHP_SELF']) && $_SERVER['PHP_SELF'] != '/error.php') {
                             $sxmlNew = str_get_html($this->XML_DOC->saveXML());
-                            if($this->saveNewLog($sxmlNew)) {
-                            $sxml    = file_get_html($this->sFile);
-                            foreach ( $sxmlNew->find("ERROR[id]") as $errorNew) {
-                                   $saveNew = true; // true - новая ошибка
-                                         $this->sendMail();
-                                         if ($this->printMail) {
-                                         $errorNew->addChild($errorNew, "DATE_MAIL", date('d-m-Y H:i:s'));
-                                      }
-                                   foreach ($sxml->find("ERROR[id]") as $errorFile) {
-                                          if ($errorFile->find("FILE", 0)->innertext === $errorNew->find("FILE", 0)->innertext
-                                              and $errorFile->find("LINE", 0)->innertext === $errorNew->find("LINE", 0)->innertext
-                                          ) {
-                                                 $errorFile->outertext = $errorNew->outertext;
-                                                 $saveNew              = false; // запись найдена и обновлена
-                                                 break;
+                            // проверка существует ли лог файл
+                            if ($this->saveNewLog($sxmlNew)) {
+                                   $sxml = file_get_html($this->sFile);
+                                   foreach ($sxmlNew->find("ERROR[id]") as $errorNew) {
+                                          $saveNew = true; // true - новая ошибка
+                                          $this->sendMail();
+                                          if ($this->printMail) {
+                                                 $errorNew->addChild($errorNew, "DATE_MAIL", date('d-m-Y H:i:s'));
                                           }
+                                          foreach ($sxml->find("ERROR[id]") as $errorFile) {
+                                                 if ($errorFile->find("FILE", 0)->innertext === $errorNew->find("FILE", 0)->innertext
+                                                     and $errorFile->find("LINE", 0)->innertext === $errorNew->find("LINE", 0)->innertext
+                                                     and $errorFile->find("PHP_MESSAGE", 0)->innertext === $errorNew->find("PHP_MESSAGE", 0)->innertext
+                                                 ) {
+                                                        if (count($errorNew->find("DATE_MAIL", 0)) === 0) {
+                                                               $dateMail = $errorFile->find("DATE_MAIL", 0)->innertext;
+                                                               $errorNew->addChild($errorNew, "DATE_MAIL", $dateMail);
+                                                        }
+                                                        $errorFile->outertext = $errorNew->outertext;
+                                                        $saveNew              = false; // запись найдена и обновлена
+                                                        $this->_saveLOG($sxml->save());
+                                                        break;
+                                                 }
+                                          }
+                                          if ($saveNew === true) { // если ошибка новая
+                                                 $errorNew->id = $this->idTagErr();
+                                                 $errorNew->addChild($errorNew, "DATE_MAIL", date('d-m-Y H:i:s'));
+                                                 $root            = $sxml->find("ROOT", 0);
+                                                 $root->innertext = $root->innertext.$errorNew->outertext;
+                                                 $this->_saveLOG($sxml->save());
+                                          }
+
                                    }
-                                   if ($saveNew === true) { // если ошибка новая
-                                          $idNew                = count($sxml->find("ERROR[id]")) + 1;
-                                          $errorFile->innertext = $errorFile->innertext."<ERROR id='".$idNew."'></ERROR>";
-                                          $errorFile->setAttribute('id=', $idNew);
-                                          $errorFile->outertext = $errorFile->outertext.$errorNew->outertext;
-                                   }
-                            }
-                            $this->_saveLOG($sxml->save());
-                            $this->printMail = false;
-                            unset($errorFile);
-                            unset($errorNew);
-                            unset($saveNew);
-                            $sxml->clear();
-                            unset($sxml);
+                                   $this->printMail = false;
+                                   unset($errorFile);
+                                   unset($errorNew);
+                                   unset($saveNew);
+                                   $sxml->clear();
+                                   unset($sxml);
                             }
                             $this->glearMail();
                             $sxmlNew->clear();
                             unset($sxmlNew);
-                  }
+                     }
+              }
+
+
+              /**
+               * количество записей в файле log
+               *
+               * @return int id=$idNew новое значение id
+               */
+              private function idTagErr() {
+
+                     $idxml = file_get_html($this->sFile);
+                     $idNew = count($idxml->find("ERROR[id]")) + 1;
+                     $idxml->clear();
+                     unset($idxml);
+
+                     return $idNew;
               }
 
 
               /**
                * @param $sxmlNew
                * запись нового лога
+               *
                * @return mixed
                */
               private function saveNewLog($sxmlNew) {
@@ -868,8 +891,10 @@
                                    $this->printMail = false;
                             }
                             $this->_saveLOG($sxmlNew->save());
+
                             return false;
                      }
+
                      return true;
               }
 
