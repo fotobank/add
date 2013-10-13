@@ -14,13 +14,29 @@ function checkForm() {
 }
 
 // обновление информации обрезки ( обработчик событий onChange и onSelect)
-function updateInfo(e) {
+function updateInfo1(e) {
     $('#x1').val(e.x);
     $('#y1').val(e.y);
     $('#x2').val(e.x2);
     $('#y2').val(e.y2);
     $('#w').val(e.w);
     $('#h').val(e.h);
+}
+
+function updateInfo(c) {
+    if(parseInt(c.w) > 0) {
+        // Show image preview
+        var imageObj = $("#preview")[0];
+        var canvas = $("#thumb")[0];
+        var context = canvas.getContext("2d");
+        context.drawImage(imageObj, c.x*5, c.y*5, c.w*22, c.h*22, 0, 0, canvas.width*5, canvas.height*5);
+    }
+    $('#x1').val(c.x);
+    $('#y1').val(c.y);
+    $('#x2').val(c.x2);
+    $('#y2').val(c.y2);
+    $('#w').val(c.w);
+    $('#h').val(c.h);
 }
 
 // очистка информации обрезки ( обработчик событий onRelease)
@@ -37,15 +53,17 @@ function fileSelectHandler() {
     // скрыть все ошибки
     $('.error').hide();
 
-    // проверка изрбражения ( доступны jpg, и png)
+    // проверка изображения ( доступны jpg, и png)
     var rFilter = /^(image\/jpeg|image\/png)$/i;
     if (! rFilter.test(oFile.type)) {
         $('.error').html('Пожалуйста выберите разрешенный тип файла (допускаются jpg и png)').show();
         return;
     }
 
+//    $(".jcrop-holder").empty();
+
     // проверка размера файла
-    if (oFile.size > 15000 * 1024) {
+    if (oFile.size > 15000 * 1024) {  // > 15Mb
         $('.error').html('Вы выбрали слишком большой файл, пожалуйста выбетите файл меньшего размера').show();
         return;
     }

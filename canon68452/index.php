@@ -52,14 +52,6 @@
 
 
 
-	/*$time  = microtime();
-	$time  = explode(' ', $time);
-	$time  = $time[1] + $time[0];
-	$startTime = $time;
-	$startMem = intval(memory_get_usage() / 1024);*/ //Используемая память в начале
-
-
-
   define('_DEBUG_', 1);
 //	require_once (__DIR__.'/../classes/autoload.php');
 //	autoload::getInstance();
@@ -137,15 +129,15 @@
 	<link rel="shortcut icon" href="/img/ico_nmain.gif"/>
 	<link rel="stylesheet" href="/css/bootstrap.css" type="text/css"/>
 	<link href="/css/bootstrap-responsive.css" rel="stylesheet" type="text/css"/>
-	<!--<link rel="stylesheet" href="/css/main.css" type="text/css" />-->
 	<link rel="stylesheet" href="/css/dynamic-to-top.css" type="text/css"/>
 	<script type="text/javascript" src="/js/jquery.js"></script>
 	<script type="text/javascript" src="/js/bootstrap.min.js"></script>
 	<link href="/css/admin.css" rel="stylesheet" type="text/css"/>
    <link rel="stylesheet" href="/js/bootstrap-multiselect-master/css/bootstrap-multiselect.css" type="text/css">
    <link rel="stylesheet" href="/js/bootstrap-multiselect-master/css/prettify.css" type="text/css">
-   <link href="/inc/cropUploader/css/jquery.Jcrop.min.css" rel="stylesheet" type="text/css" />
-
+<!--   <link href="/inc/cropUploader/css/jquery.Jcrop.min.css" rel="stylesheet" type="text/css" />-->
+       <link href="/canon68452/jquery.fileapi/jcrop/jquery.Jcrop.min.css" rel="stylesheet" type="text/css" />
+       <link href="/canon68452/jquery.fileapi/statics/main.css" rel="stylesheet" type="text/css" />
 
 
 
@@ -157,8 +149,24 @@
    <script src="/js/main.js"></script>
    <script type="text/javascript" src="/js/bootstrap-multiselect-master/js/bootstrap-multiselect.js"></script>
    <script type="text/javascript" src="/js/bootstrap-multiselect-master/js/prettify.js"></script>
-   <script src="/inc/cropUploader/js/jquery.Jcrop.min.js"></script>
+<!--   <script src="/inc/cropUploader/js/jquery.Jcrop.min.js"></script>-->
+   <script src="/canon68452/jquery.fileapi/jcrop/jquery.Jcrop.min.js"></script>
    <script src="/inc/cropUploader/js/script.js"></script>
+
+
+
+       <script type="text/javascript">
+              window.FileAPI = {
+                     debug: true // debug mode
+                     , staticPath: '/canon68452/jquery.fileapi/FileAPI/' // path to *.swf
+              };
+       </script>
+       <script src="/canon68452/jquery.fileapi/FileAPI/FileAPI.min.js"></script>
+       <script src="/canon68452/jquery.fileapi/jquery.fileapi.js"></script>
+       <script src="/canon68452/jquery.fileapi/FileAPI/FileAPI.exif.js"></script>
+       <script src="/canon68452/jquery.fileapi/statics/jquery.modal.js"></script>
+
+
 
 
  <script type="text/javascript">

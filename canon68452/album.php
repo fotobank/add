@@ -412,8 +412,9 @@ if (isset($_POST['go_updown'])) {
 
 
 ?>
-
 <div style="float: left;">
+       <label>Включить фотобанк:</label>
+</div>
        <div class="slideThree">
               <input id="slideThree1"
                      type='checkbox'
@@ -423,9 +424,7 @@ if (isset($_POST['go_updown'])) {
                      echo 'checked="checked"';
               } ?> /> <label for="slideThree1"></label>
        </div>
-       Включить фотобанк
-</div>
-
+<div class="linBlue"></div>
 
 <!-- создать альбом-->
 
@@ -435,6 +434,7 @@ if (isset($_POST['go_updown'])) {
      data-replace="true"
      data-keyboard="false"
      data-backdrop="static"
+     data-width="490px"
      tabindex="-1"
      aria-hidden="false">
        <div class="modal-header">
@@ -445,15 +445,97 @@ if (isset($_POST['go_updown'])) {
               </button>
               <h3>Создать альбом:</h3>
        </div>
-       <div class="modal-body">
+      <div class="modal-body">
               <div class="row">
                      <div class="span5 offset0">
+
+<script>
+       var examples = [];
+</script>
+
+<div class="example">
+       <div class="example__left"style="padding: 20px 50px 0 0;">
+              <div id="userpic" class="userpic">
+                     <div class="js-preview userpic__preview"></div>
+                     <div class="btn btn-success js-fileapi-wrapper">
+                            <div class="js-browse">
+                                   <span class="btn-txt">Выбор</span>
+                                   <input type="file" name="filedata"/>
+                            </div>
+                            <div class="js-upload" style="display: none;">
+                                   <div class="progress progress-success"><div class="js-progress bar"></div></div>
+                                   <span class="btn-txt">Загрузка</span>
+                            </div>
+                     </div>
+              </div>
+       </div>
+
+       <div class="example__right">
+              <h2><span>Новый альбом</span></h2>
+       </div>
+
+       <script>
+                     $('#userpic').fileapi({
+                            url: '/canon68452/index.php',
+                            accept: 'image/*',
+                            imageSize: { minWidth: 200, minHeight: 200 },
+                            elements: {
+                                   active: { show: '.js-upload', hide: '.js-browse' },
+                                   preview: {
+                                          el: '.js-preview',
+                                          width: 200,
+                                          height: 200
+                                   },
+                                   progress: '.js-progress'
+                            },
+                            onSelect: function (evt, ui){
+                                   var file = ui.files[0];
+
+                                   if( file ){
+                                          $('#popup').modal({
+                                                 closeOnEsc: false,
+                                                 closeOnOverlayClick: false,
+                                                 onOpen: function (overlay){
+                                                        $(overlay).on('click', '.js-upload', function (){
+                                                               $.modal().close();
+                                                               $('#userpic').fileapi('upload');
+                                                        });
+
+                                                        $('.js-img', overlay).cropper({
+                                                               file: file,
+                                                               bgColor: '#fff',
+                                                               maxSize: [$(window).width()-100, $(window).height()-100],
+                                                               minSize: [200, 200],
+                                                               selection: '90%',
+                                                               aspectRatio: 1,
+                                                               onSelect: function (coords){
+                                                                      $('#userpic').fileapi('crop', file, coords);
+                                                               }
+                                                        });
+                                                 }
+                                          }).open();
+                                   }
+                            }
+                     });
+
+       </script>
+</div>
+
+
+
+<div id="popup" class="popup" style="display: none;">
+       <div class="popup__body"><div class="js-img"></div></div>
+       <div style="margin: 0 0 5px; text-align: center;">
+              <div class="js-upload btn btn_browse btn_browse_small">Кадрировать</div>
+       </div>
+</div>
+
+
+<div style="float: left">
                             <form action="index.php"
                                   method="post"
                                   enctype="multipart/form-data">
-                                   <table border="0">
-                                          <tr>
-                                                 <td>
+
                                                         <div class="input-prepend">
                                                                <label class="add-on"
                                                                       for="name">Название альбома</label>
@@ -509,17 +591,7 @@ if (isset($_POST['go_updown'])) {
                                                                   style="width: 300px; height: 100px;"
                                                                   name="descr"></textarea>
 
-                                                 </td>
-                                          </tr>
-                                          <tr>
-                                                 <!--<td>
-                                                   <div class="controls">
-                                                     <div class="input-append">
-                                                       <input id="appendedInputButton" class="span3" type="file" name="preview" style="width: 303px;"/>
-                                                     </div>
-                                                   </div>
-                                                 </td>-->
-                                                 <td>
+
 
                                                         <input type="hidden"
                                                                id="x1"
@@ -534,7 +606,7 @@ if (isset($_POST['go_updown'])) {
                                                                id="y2"
                                                                name="y2"/>
 
-                                                        <div class="input-prepend">
+                                                        <div style="margin-top: 5px;">
                                                                <label class="add-on"
                                                                       for="image_file">Превью</label>
                                                                <input type="file"
@@ -547,6 +619,8 @@ if (isset($_POST['go_updown'])) {
                                                                <h3>Выбор региона обрезки:</h3>
                                                                <img id="preview"
                                                                     style="width: 460px;"/>
+
+                                                               <canvas id="thumb" style="width:150px;height:150px;"></canvas>
 
                                                                <div class="info">
                                                                       <div class="input-prepend">
@@ -593,14 +667,9 @@ if (isset($_POST['go_updown'])) {
                                                                                     name="h"
                                                                                     style="width: 203px; height: 25px;">
                                                                       </div>
-
                                                                </div>
                                                         </div>
-                                                 </td>
-                                          </tr>
 
-                                          <tr>
-                                                 <td align="center">
                                                         <div class="linBlue"></div>
                                                         <input class="btn  btn-success"
                                                                type="hidden"
@@ -609,10 +678,10 @@ if (isset($_POST['go_updown'])) {
                                                         <input class="btn  btn-success"
                                                                type="submit"
                                                                value="Добавить"/>
-                                                 </td>
-                                          </tr>
-                                   </table>
+                                   <hr>
+
                             </form>
+</div>
                      </div>
               </div>
        </div>
@@ -632,7 +701,7 @@ if (isset($_POST['go_updown'])) {
 </div>
 
 <div class="row">
-       <div class="span5 offset2">
+       <div class="span5 offset1">
               <p>1. Водяной знак для фотобанка и IP надпись формируется на сервере в момент <b>просмотра.</b></p>
 
               <p>2. Чекбос "резкость" добавляет шарпинг <b>при закачке</b> с FTP.</p>
