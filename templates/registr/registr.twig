@@ -110,6 +110,7 @@
 						           maxlength="20"
 						           value="{{ rPass }}"
 						           data-placement="right"
+						           onkeyup="runPassword(this.value, 'mypassword');"
 						           id="td_pass1">
 					    </td>
 					    <td ><span id="valid_form_pass1" class="label label-important"
@@ -125,11 +126,29 @@
 						           maxlength="20"
 						           value="{{ rPass2 }}"
 						           data-placement="right"
+						           onkeyup="runPassword(this.value, 'mypassword');"
 						           id="td_pass2">
 					    </td>
 					    <td ><span id="valid_form_pass2" class="label label-important"
 					               style="margin-left: 10px;" ></span ></td >
 				    </tr>
+
+				    <tr>
+				    <td>Безопасность пароля:</td>
+					<td><div id="mypassword_text"><b></b></div>
+					</td>
+					<td>
+					<div style="width: 100px;"><div id="mypassword_bar"
+					                                style="
+					                                font-size: 1px;
+					                                height: 20px;
+					                                width: 0;
+					                                /*border: 1px solid white;*/
+					                                margin-left: 8px;
+					                                "></div></div>
+					</td>
+				    </tr>
+
 				    <tr>
 					    <td>Ваше имя:*</td>
 					    <td>
@@ -273,7 +292,7 @@
 	    </div>
 
 	    <script type="text/javascript" src="/js/valdator_kontakty.js"></script>
-
+	    <script type="text/javascript" src="/js/passValid.js"></script>
     {% endblock c_colonka %}
 
 

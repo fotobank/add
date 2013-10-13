@@ -12,7 +12,7 @@ define("DISPLAY_RECORDS_RANGE",1);
  */
 
 if (!function_exists('http_build_query')) {
-    function http_build_query($formdata, $numeric_prefix = null)
+    function http_build_query($formdata, $numeric_prefix = NULL)
     {
         // If $formdata is an object, convert it to an array
         if (is_object($formdata)) {
@@ -27,7 +27,7 @@ if (!function_exists('http_build_query')) {
 
         // If the array is empty, return null
         if (empty($formdata)) {
-            return null;
+            return NULL;
         }
 
         // Argument seperator
@@ -36,7 +36,7 @@ if (!function_exists('http_build_query')) {
         // Start building the query
         $tmp = array ();
         foreach ($formdata as $key => $val) {
-            if (is_integer($key) && $numeric_prefix != null) {
+            if (is_integer($key) && $numeric_prefix != NULL) {
                 $key = $numeric_prefix . $key;
             }
 
@@ -82,7 +82,7 @@ class Pager2
   var $recordsCount = NULL;
   var $pageSize     = NULL;
   var $pagesCount   = NULL;
-  var $pageVarName  = "start";
+  var $pageVarName  = "start"; // название страницы в GET запросе
   var $currentPage  = 0;
   
   //array with pages list
@@ -124,12 +124,17 @@ class Pager2
   {
     $this->pageIdentMethod = $method;
   }
-  
-  function setPageVarName($varName)
-  {
-    $this->pageVarName = $varName;
-    if (isset($_REQUEST[$varName])) $this->setCurrentPage($_REQUEST[$varName]);
-  }
+
+
+       /**
+        * название страницы в GET запросе
+        * @param $varName
+        */
+       function setPageVarName($varName)
+         {
+           $this->pageVarName = $varName;
+           if (isset($_REQUEST[$varName])) $this->setCurrentPage($_REQUEST[$varName]);
+         }
   
   function setCurrentPage($page = 0)
   {
@@ -179,7 +184,8 @@ class Pager2
     
     return basename($_SERVER["PHP_SELF"])."?".http_build_query($tmp);
   }
-  
+
+
   function _getStartPage()
   {
     $_startPage = $this->currentPage - round($this->delta/2);
@@ -195,8 +201,8 @@ class Pager2
   }
   
   function addPageToList($num, 
-                         $is_prev = false, 
-                         $is_next = false, 
+                         $is_prev = false,
+                         $is_next = false,
                          $is_dots = false)
   {
     $this->pagesList[] = array(

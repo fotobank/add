@@ -78,7 +78,7 @@
               }
        }
        /** ----------------------------------------------------------------------------------*/
-       $user_balans         = ($session->has('userid')) ? go\DB\query('select balans from users where id = ?f', array($session->get('userid')), 'el'):NULL;
+       $user_balans         = ($session->has('userid')) ? go\DB\query('select `balans` from `users` where `id` = ?f', array($session->get('userid')), 'el'):NULL;
        $_SESSION['userVer'] = ($session->has('userVer')) ? $session->get('userVer') : genpass(10, 2);
        $_SESSION['accVer']  = ($session->has('accVer')) ? $session->get('accVer') : genpass(10, 2);
        // $razdel для фиксации главного меню

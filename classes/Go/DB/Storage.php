@@ -61,8 +61,10 @@ final class Storage
      * @param array $data [optional]
      * @param string $fetch [optional]
      * @param string $prefix [optional]
+     *
+     * @return mixed
      */
-    public static function query($pattern, $data = null, $fetch = null, $prefix = null) {
+       public static function query($pattern, $data = NULL, $fetch = NULL, $prefix = NULL) {
         return self::getInstance()->__invoke($pattern, $data, $fetch, $prefix);
     }
     
@@ -77,7 +79,7 @@ final class Storage
      * @param array $mparams [optional]
      *        параметры для заполнения (не указаны - пустое хранилище)
      */
-    public function __construct($mparams = null) {
+    public function __construct($mparams = NULL) {
         if ($mparams) {
             $this->fill($mparams);
         }
@@ -131,8 +133,11 @@ final class Storage
      *        объект базы
      * @param string $name
      *        имя в хранилище
-     */
-    public function set(DB $db, $name = '') {
+        *
+        * @return bool
+        * @throws Exceptions\StorageEngaged
+        */
+       public function set(DB $db, $name = '') {
         if (isset($this->dbs[$name])) {
             throw new Exceptions\StorageEngaged($name);
         }
@@ -150,8 +155,11 @@ final class Storage
      *
      * @param array $mparams
      *        параметры баз данных
-     */
-    public function fill(array $mparams) {
+        *
+        * @return bool
+        * @throws Exceptions\StorageAssoc
+        */
+       public function fill(array $mparams) {
         $assocs = array();
         foreach ($mparams as $name => $params) {
             if (is_array($params)) {
@@ -194,7 +202,7 @@ final class Storage
      * @param string $prefix [optional]
      * @return mixed
      */
-    public function __invoke($pattern, $data = null, $fetch = null, $prefix = null) {
+    public function __invoke($pattern, $data = NULL, $fetch = NULL, $prefix = NULL) {
         if (!isset($this->dbs[''])) {
             throw new Exceptions\StorageDBCentral('');
         }
@@ -224,8 +232,10 @@ final class Storage
      *
      * @param string $name
      * @param \go\DB\DB $value
-     */
-    public function __set($name, $value) {
+     *
+        * @return bool
+        */
+       public function __set($name, $value) {
         return $this->set($value, $name);
     }
 

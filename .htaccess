@@ -2,6 +2,9 @@ php_flag magic_quotes_gpc Off
 php_flag magic_quotes_runtime Off
 php_flag magic_quotes_sybase Off
 
+# включить логирование перерасхода скриптами памяти
+#php_value auto_append_file "O:/domains/add.pr/test/mem_log_past.php"
+
  <IfModule mod_rewrite.c>
    RewriteEngine on
    RewriteRule    ^(fotobanck)$ fotobanck_adw.php?unchenge_cat [L]

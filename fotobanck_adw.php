@@ -14,8 +14,7 @@
        setcookie('js', '', time() - 1, '/');
        define ('BASEPATH', realpath(__DIR__).'/', true);
        require_once  (BASEPATH.'inc/head.php');
-       $dataDB               = go\DB\query('select txt from content where id = ?i', array(1), 'el');
-       $renderData['dataDB'] = $dataDB;
+       $renderData['dataDB'] = go\DB\query('select txt from content where id = ?i', array(1), 'el');
        $loadTwig('.twig', $renderData);
        require_once  (BASEPATH.'inc/ip-ban.php');
        set_time_limit(0);
@@ -70,12 +69,13 @@
                                    <label for="inputError"
                                           class="ttext_red"
                                           style="float: left; margin-right: 10px;">Пароль: </label> <input id="inputError"
-                                                                                                           type="text"
-                                                                                                           name="album_pass"
-                                                                                                           value=""
-                                                                                                           maxlength="20"/> <input class="btn-small btn-primary"
-                                                                                                                                   type="submit"
-                                                                                                                                   value="ввод"/>
+                                                                               type="text"
+                                                                               name="album_pass"
+                                                                               value=""
+                                                                               maxlength="20"/>
+                                   <input class="btn-small btn-primary"
+                                               type="submit"
+                                               value="ввод"/>
                             </form>
                      </div>
                      <div class="modal-footer">
@@ -174,10 +174,12 @@
                                                         }, 1000);
                                                  });
                                           </script>
-                                          <br> <br> <a href="/kontakty.php"><span class="ttext_blue">Восстановление пароля</span></a> <a style="float:right"
-                                                                                                                                         class="btn btn-danger"
-                                                                                                                                         data-dismiss="fotobanck_adw.php"
-                                                                                                                                         href="/fotobanck_adw.php?back_to_albums">Закрыть</a>
+                                          <br> <br> <a href="/kontakty.php">
+                                          <span class="ttext_blue">Восстановление пароля</span></a>
+                                          <a style="float:right"
+                                                   class="btn btn-danger"
+                                                   data-dismiss="fotobanck_adw.php"
+                                                   href="/fotobanck_adw.php?back_to_albums">Закрыть</a>
                                    </div>
                             </div>
                      </div>
@@ -396,15 +398,12 @@
                             <div class="page">
                                    <a class="next"
                                       href="/fotobanck_adw.php?back_to_albums">« назад</a> <a class="next"
-                                                                                              href="/fotobanck_adw.php">« попробовать
-                                                                                                                        еще раз</a>
+                                                                                              href="/fotobanck_adw.php">« попробовать еще раз</a>
                             </div>
                             <img style="margin: 20px 0 0 40px;"
                                  src="/img/Stop Photo Camera.png"
                                  width="348"
                                  height="350"/>
-                            <!--						<h3><span style="color: #ffa500">Доступ к альбому заблокирован паролем.  -->
-                            <?// //check();?><!--</span></h3>-->
                             <?
                             if ($ostPop == -10) // проверка и вывод времени бана
                             {
@@ -658,10 +657,10 @@
               }
        }
 
-       //	начало страницы
+       /** начало страницы */
        if ($session->has('current_album')) {
        $current_album = $session->get('current_album');
-       $album_data = go\DB\query('select * from albums where id = ?i', array($current_album), 'row');
+       $album_data = go\DB\query('select * from `albums` where `id` = ?i', array($current_album), 'row');
        $may_view = false;
        if ($album_data) {
               $may_view = true;
@@ -699,22 +698,17 @@
               $session->del('current_album');
        }
 
-       // @todo Отключить проверку пароля
-       // $may_view = true;
+       /** Отключить проверку пароля */
+//     $may_view = true;
 
        // <!-- Ввод и блокировка пароля -->
 
-       parol($may_view);
 
        $razdel = go\DB\query('select nm from `categories` where id = ?i', array($session->get('current_cat')), 'el');
-
-       //	dump_r($razdel);
-
+       parol($may_view);
        // <!-- Проверка пароля на блокировку -->
-
        verifyParol($may_view);
 
-       //	dump_r($may_view);
        /**
         *  Аккордеон
         */
@@ -825,7 +819,7 @@
 
        <?
 
-       // выдавать контент c JS
+       // выдавать контент только c включенным JS в браузере
        if (JS) {
               $event = go\DB\query('select `event` from `albums` where `id` =?i', array($current_album), 'el');
               //		отключение показа фотографий в альбоме
@@ -843,9 +837,9 @@
                      $pager->setFirstPagesCnt(3);
                      $pager->setLastPagesCnt(3);
                      $pager->setPageVarName("current_page");
-                     $pager->enableCacheRemover = true;
+                     $pager->enableCacheRemover = false;
                      echo $pager->renderTop();
-                     //	$pager->printDebug();
+                     // $pager->printDebug();
                      ?>
 
                      <!-- Вывод фото в альбом -->
@@ -886,6 +880,10 @@
               }
        } else {
               ?>
+              <br><br>
+                     <hfooter style="font-size: 20px; font-weight: 400; font-style: inherit; color: #df0000; text-shadow: 1px 1px 0 #d1a2a2;"
+                            >В Вашем браузере не работает JavaScript!
+                     </hfooter>
               <NOSCRIPT>
                      <br><br>
                      <hfooter style="font-size: 20px; font-weight: 400; font-style: inherit; color: #df0000; text-shadow: 1px 1px 0 #d1a2a2;"
@@ -897,23 +895,22 @@
        }
 
        //else:  include (__DIR__.'/error_.php');
-}  else {
+} else {
        ?>
-
-<br><br>
-       <hfooter style="margin-left: 35px; font-size: 20px; font-weight: 400; font-style: inherit; color: #df0000; text-shadow: 1px 1px 0 #d1a2a2;"
-              >Альбом заблокирован паролем.
+       <div class="center" style="margin-top: 30px;">
+       <hfooter style="font-size: 20px; font-weight: 400; font-style: inherit; color: #df0000; text-shadow: 1px 1px 0 #d1a2a2;"
+              >Альбом заблокирован паролем
        </hfooter>
-
+       </div>
+       <div class="center" style="margin-top: 30px;">
        <NOSCRIPT>
-              <br><br>
-              <hfooter style="margin-left: 90px; font-size: 20px; font-weight: 400; font-style: inherit; color: #df0000; text-shadow: 1px 1px 0 #d1a2a2;"
+              <hfooter style="font-size: 20px; font-weight: 400; font-style: inherit; color: #df0000; text-shadow: 1px 1px 0 #d1a2a2;"
                      >При отключенной JavaScript функционал сайта заблокирован! ( <a href="http://www.enable-javascript.com/ru/">Как включить JavaScript?</a>)
               </hfooter>
        </NOSCRIPT>
-
-<?
-}
+       </div>
+       <?
+       }
 
        /** Вывод альбомов в разделах */
 } else {

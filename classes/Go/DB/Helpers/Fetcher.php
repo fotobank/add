@@ -256,7 +256,8 @@ class Fetcher implements \go\DB\Result
      */
     public function row($param = null) {
         $this->requiredCursor(__FUNCTION__);
-        return $this->implementation->fetchAssoc($this->connection, $this->cursor) ?: null;
+           $ret = $this->implementation->fetchAssoc($this->connection, $this->cursor);
+        return $ret ? $ret : null;
     }
 
     /**
@@ -268,7 +269,8 @@ class Fetcher implements \go\DB\Result
      */
     public function numeric($param = null) {
         $this->requiredCursor(__FUNCTION__);
-        return $this->implementation->fetchRow($this->connection, $this->cursor) ?: null;
+           $ret = $this->implementation->fetchRow($this->connection, $this->cursor);
+        return $ret ? $ret : null;
     }
 
     /**
@@ -280,7 +282,8 @@ class Fetcher implements \go\DB\Result
      */
     public function object($param = null) {
         $this->requiredCursor(__FUNCTION__);
-        return $this->implementation->fetchObject($this->connection, $this->cursor) ?: null;
+           $ret = $this->implementation->fetchObject($this->connection, $this->cursor);
+        return $ret ? $ret : null;
     }
 
     /**

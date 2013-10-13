@@ -79,7 +79,7 @@ final class sqlite extends Base
      * @return int
      */
     public function getInsertId($connection, $cursor = null) {
-        return $connection->lastInsertRowID();;
+        return $connection->lastInsertRowID();
     }
 
     /**

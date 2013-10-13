@@ -31,20 +31,18 @@ class Templater
         $this->implementation = $connector->getImplementation();
         $this->connection     = $connector->getConnection();
         $this->pattern        = $pattern;
-        $this->data           = $data ?: array();
+        $this->data           = $data ? $data : array();
         $this->prefix         = $prefix;
     }
 
     /**
      * Шаблонизация запроса
-     *
-     * @throws go\DB\Exceptions\Templater
-     *         ошибки при шаблонизации
-     *
-     * @return string
-     *         итоговые запрос
-     */
-    public function parse() {
+     * ошибки при шаблонизации
+     * итоговые запрос
+        * @return mixed|string
+        * @throws \go\DB\Exceptions\DataMuch
+        */
+       public function parse() {
         if (!\is_null($this->query)) {
             return $this->query;
         }
@@ -79,16 +77,19 @@ class Templater
 
     /**
      * Callback обработки запроса
-     *
-     * @throws \go\DB\Exceptions\Templaters
-     *         ошибка при разборе
+     * ошибка при разборе
      *
      * @param array $matches
      *        параметры очередного плейсхолдера
      * @return string
      *         на что его заменить
-     */
-    private function _placeholder($matches) {
+     *
+        * @throws \go\DB\Exceptions\UnknownPlaceholder
+        * @throws \go\DB\Exceptions\DataNamed
+        * @throws \go\DB\Exceptions\MixedPlaceholder
+        * @throws \go\DB\Exceptions\DataNotEnough
+        */
+       private function _placeholder($matches) {
         $placeholder = isset($matches[1]) ? $matches[1] : '';
         if (isset($matches[3])) {
             $name = $matches[3];
@@ -97,7 +98,7 @@ class Templater
                 throw new \go\DB\Exceptions\UnknownPlaceholder($matches[0]);
             }
         } else {
-            $name = null;
+            $name = NULL;
             if ($placeholder == '?') { // ?? - вставка вопросительного знака
                 return '?';
             }

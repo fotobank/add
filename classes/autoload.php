@@ -6,7 +6,7 @@
  * Time: 13:52
  * To change this template use File | Settings | File Templates.
  */
-
+   //    require_once (__DIR__.'/../classes/go/DB/autoload.php');
 	// автозагрузка классов
 
 class autoload {
@@ -49,12 +49,10 @@ class autoload {
 			$className = ltrim($className, '\\');
 			$fileName  = '';
 			$namespace = '';
+
 			if (strpos($className, 'Twig') === 0) {
 				return false;
 			}
-						if (strpos($className, 'go\DB') === 0) {
-										return false;
-						}
 
 			if ($lastNsPos = strrpos($className, '\\')) {
 				$namespace = substr($className, 0, $lastNsPos);

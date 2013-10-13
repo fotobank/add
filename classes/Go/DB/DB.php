@@ -31,12 +31,16 @@ abstract class DB
      *
      * @param array $params
      *        параметры подключения к базе
-     * @param string $adapter [optional]
+     * @param null $adapter [optional]
      *        адаптер базы (если не указан в $params)
      * @return \go\DB\DB
      *         объект для доступа к базе
-     */
-    final public static function create(array $params, $adapter = null) {
+     *
+        * @return mixed
+        * @throws Exceptions\UnknownAdapter
+        *
+        */
+       final public static function create(array $params, $adapter = NULL) {
         $adapter = isset($params['_adapter']) ? $params['_adapter'] : $adapter;
         $adapter = \strtolower($adapter);
         $classname = __NAMESPACE__.'\\Adapters\\'.$adapter;
@@ -92,7 +96,7 @@ abstract class DB
      * @return \go\DB\Result
      *         результат в заданном формате
      */
-    final public function query($pattern, $data = null, $fetch = null, $prefix = null) {
+    final public function query($pattern, $data = NULL, $fetch = NULL, $prefix = NULL) {
         $query = $this->makeQuery($pattern, $data, $prefix);
         return $this->plainQuery($query, $fetch);
     }
@@ -112,7 +116,7 @@ abstract class DB
      * @return \go\DB\Result
      *         результат в заданном формате
      */
-    final public function plainQuery($query, $fetch = null) {
+    final public function plainQuery($query, $fetch = NULL) {
         $this->forcedConnect();
         $implementation = $this->connector->getImplementation();
         $connection     = $this->connector->getConnection();
@@ -124,7 +128,7 @@ abstract class DB
             $errorCode  = $implementation->getErrorCode($connection);
             throw new Exceptions\Query($query, $errorInfo, $errorCode);
         }
-        $this->debugLog($query, $duration, null);
+        $this->debugLog($query, $duration, NULL);
         $fetcher = $this->createFetcher($cursor);
         if (is_null($fetch)) {
             return $fetcher;
@@ -151,7 +155,7 @@ abstract class DB
      * @param string $prefix [optional]
      * @return \go\DB\Result
      */
-    final public function __invoke($pattern, $data = null, $fetch = null, $prefix = null) {
+    final public function __invoke($pattern, $data = NULL, $fetch = NULL, $prefix = NULL) {
         return $this->query($pattern, $data, $fetch, $prefix);
     }
 
@@ -266,7 +270,7 @@ abstract class DB
      * Отключить отправку отладочной информации
      */
     final public function disableDebug() {
-        $this->debugCallback = null;
+        $this->debugCallback = NULL;
         return true;
     }
 
@@ -298,7 +302,7 @@ abstract class DB
      * @param string $prefix
      * @return string
      */
-    public function makeQuery($pattern, $data, $prefix = null) {
+    public function makeQuery($pattern, $data, $prefix = NULL) {
         $this->forcedConnect();
         if (is_null($prefix)) {
             $prefix = $this->prefix;
@@ -333,7 +337,7 @@ abstract class DB
     public final function __destruct() {
         $this->connector->close();
         $this->connector->removeLink();
-        $this->connector = null;
+        $this->connector = NULL;
     }
 
     /**
@@ -485,7 +489,7 @@ abstract class DB
  * @return \go\DB\DB
  *         объект для доступа к базе
  */
-function create(array $params, $adapter = null) {
+function create(array $params, $adapter = NULL) {
     return DB::create($params, $adapter);
 }
 
@@ -505,7 +509,9 @@ function create(array $params, $adapter = null) {
  * @param array $data [optional]
  * @param string $fetch [optional]
  * @param string $prefix [optional]
+ *
+ * @return mixed
  */
-function query($pattern, $data = null, $fetch = null, $prefix = null) {
+function query($pattern, $data = NULL, $fetch = NULL, $prefix = NULL) {
     return Storage::getInstance()->query($pattern, $data, $fetch, $prefix);
 }

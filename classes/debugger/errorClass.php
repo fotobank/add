@@ -258,9 +258,11 @@
                      $this->XML_ERRORS->load(__DIR__.'/xml/'.$this->sLang.'/errors.xml');
                      $this->XML_TYPES = new DOMDocument('1.0', 'utf-8');
                      $this->XML_TYPES->load(__DIR__.'/xml/'.$this->sLang.'/types.xml');
+
                      $this->XML_DOC  = new DOMDocument ('1.0', 'utf-8');
                      $root           = $this->XML_DOC->createElement("ROOT");
                      $this->XML_ROOT = $this->XML_DOC->appendChild($root);
+
                      if (!is_dir($_SERVER['DOCUMENT_ROOT'].'/logs')) {
                             mkdir($_SERVER['DOCUMENT_ROOT'].'/logs', 0744);
                      }
@@ -282,16 +284,18 @@
               public function captureShutdown() {
 
                      $error = error_get_last();
-                     ;
                      if ($error) {
                             $message  = '';
                             $sErrFile = '';
                             $iErrLine = '';
                             foreach ($error as $key => $value) {
-                                   if ($key == 'file') $sErrFile = $value;
-                                   if ($key == 'line') $iErrLine = $value;
-                                   if ($key == 'message') $message = $value;
-                                   if ($key == 'type') $message = $value;
+                                   switch ($key) {
+                                          case 'file': $sErrFile = $value; break;
+                                          case 'line': $iErrLine = $value; break;
+                                          case 'message': $message = $value; break;
+                                          case 'type': $message = $value; break;
+                                   };
+
                             }
                             $sVars    = debugger_SHOWCONTEXT::notify();
                             $aTempArr = array('TRANSLATION' => 'Остановка скрипта из-за фатальной ошибки', 'SUGGESTION' => 'Проверьте скрипт на ошибки');
@@ -301,14 +305,77 @@
                             // включить вывод всех ошибок при Fatal Error
                             $this->aOptions['ERROUTPUT'] = true;
                             $this->buildLog($errType, $message, $sErrFile, $iErrLine, $aTempArr, $sVars);
-                     }
-                     if ($this->aOptions['ERROUTPUT'] === true) {
-                            $this->saveToFile();
-                     }
 
+                            if ($this->aOptions['ERROUTPUT'] === true)  $this->saveToFile();
+                     }
+                     if (true === $this->aOptions['REALTIME']) {
+                        $cpuLoad = $this->getServerCPULoad();
+                     ?> <div class="center"><div class="centered" style="margin: -70px -600px; position: absolute; z-index: 10;">
+                        <span class="label label-success"><?= "RAM: ".$this->chpu_Bytes(memory_get_usage()) ?> </span>
+                        <? if($cpuLoad) echo "<span class='label label-success'>CPU: ".($cpuLoad*100)."% </span>"; ?>
+                        </div></div>
+                     <?
+                     }
                      return true;
               }
 
+
+
+              /**
+               * memory usage
+               * @param $size
+               *
+               * @return string
+               */
+              function chpu_Bytes($size) {
+                     $filesize = array(" байт", " Киллобайт", " Мегабайт", " Гигабайт", " Террабайт", " Петабайт", " ЭксаБайт", " Зеттабайт", " Йоттабайт");
+                     return $size ? round($size / pow(1024, ($i = floor(log($size, 1024)))), 3) . $filesize[$i] : '0 байт';
+              }
+
+              function getServerCPULoad() {
+
+                     //проверяем возможность чтения виртуальной директории
+                     if (is_readable('/proc/stat')){
+
+                            //делаем первый замер
+                            $file_first = file("/proc/stat");
+
+                            //определяем значения состояний (описаны выше)
+                            $tmp_first = explode(" ",$file_first[0]);
+
+                            $cpu_user_first = $tmp_first[2];
+                            $cpu_nice_first = $tmp_first[3];
+                            $cpu_sys_first = $tmp_first[4];
+                            $cpu_idle_first = $tmp_first[5];
+                            $cpu_io_first = $tmp_first[6];
+
+                            sleep(2);//промежуток до второго замера
+
+                            //делаем второй замер
+                            $file_second = file("/proc/stat");
+                            $tmp_second = explode(" ",$file_second[0]);
+
+                            $cpu_user_second= $tmp_second[2];
+                            $cpu_nice_second= $tmp_second[3];
+                            $cpu_sys_second = $tmp_second[4];
+                            $cpu_idle_second= $tmp_second[5];
+                            $cpu_io_second = $tmp_second[6];
+
+                            //определяем разницу использованного процессорного времени
+                            $diff_used = ($cpu_user_second-$cpu_user_first)+($cpu_nice_second-$cpu_nice_first)+($cpu_sys_second-$cpu_sys_first)+($cpu_io_second-$cpu_io_first);
+
+                            //определяем разницу общего процессорного времени
+                            $diff_total = ($cpu_user_second-$cpu_user_first)+(
+
+                                   $cpu_nice_second-$cpu_nice_first)+($cpu_sys_second-$cpu_sys_first)+($cpu_io_second-$cpu_io_first)+($cpu_idle_second-$cpu_idle_first);
+
+                         //   определение загрузки cpu
+                            $cpu = round($diff_used/$diff_total, 2);
+
+                            return $cpu;
+                            }
+                                return null;
+                                          }
 
               /**
                * public function checkCode ()
@@ -361,22 +428,18 @@
                */
               private function checkErrorMessage($sMsg) {
 
-                     $iLength     = strlen($sMsg);
                      $xpath       = new DOMXPath($this->XML_ERRORS);
-                     $sQueryLabel = '//error/label';
-                     $oLabelLists = $xpath->query($sQueryLabel);
+                     $oLabelLists = $xpath->query('//error/label');
                      $aMsg        = explode(' ', $sMsg);
                      foreach ($oLabelLists as $oLabel) {
                             $aLabel = explode(' ', $oLabel->nodeValue);
                             $aDiff  = array_diff($aLabel, $aMsg);
                             if (empty ($aDiff)) {
-                                   $aTempArr['TRANSLATION'] = iconv('utf-8', 'windows-1251', $oLabel->nextSibling->nextSibling->nodeValue);
-                                   $aTempArr['SUGGESTION']  = iconv('utf-8', 'windows-1251', $oLabel->nextSibling->nextSibling->nextSibling->nextSibling->nodeValue);
-
+                                  $aTempArr['TRANSLATION'] = iconv('utf-8', 'windows-1251', $oLabel->nextSibling->nextSibling->nodeValue);
+                                  $aTempArr['SUGGESTION']  = iconv('utf-8', 'windows-1251', $oLabel->nextSibling->nextSibling->nextSibling->nextSibling->nodeValue);
                                    return $aTempArr;
                             }
                      }
-
                      return false;
               }
 
@@ -388,16 +451,17 @@
                * @Param (int) cErrno : the PHP constant error type code
                * @Return (string) nodeValue : the translated error type
                */
+
               private function checkTypeTrans($cErrno) {
 
                      $xpath       = new DOMXPath($this->XML_TYPES);
-                     $sQueryLevel = '//type/level';
-                     $oLevelList  = $xpath->query($sQueryLevel);
+                     $oLevelList  = $xpath->query('//type/level');
                      foreach ($oLevelList as $oLevel) {
                             if (constant($oLevel->nodeValue) === $cErrno) {
                                    return $oLevel->nextSibling->nextSibling->nodeValue;
                             }
                      }
+                     return false;
               }
 
 
@@ -465,10 +529,7 @@
 
                      // не создавать если пришли со страницы '/error.php'
                      if (isset($_SERVER['PHP_SELF']) && $_SERVER['PHP_SELF'] != '/error.php') {
-                           /* $iErrLine--;
-                            if ($iErrLine < 0) {
-                                   $iErrLine = 0;
-                            }*/
+
                             $this->get_koll_dateStart($sErrStr, $sErrFile, $iErrLine, $koll, $dateStart, $iNewId);
                             $oNewLog = $this->XML_DOC->createElement('ERROR');
                             $oNewLog = $this->XML_ROOT->appendChild($oNewLog);
@@ -481,7 +542,8 @@
                             $aElem[]     = $this->XML_DOC->createElement('PHP_MESSAGE', iconv("WINDOWS-1251", "UTF-8", $sErrStr));
                             $aElem[]     = $this->XML_DOC->createElement('FILE', $sErrFile);
                             $aElem[]     = $this->XML_DOC->createElement('LINE', $iErrLine);
-                            $aElem[]     = $this->XML_DOC->createElement('MEMORY', function_exists('memory_get_usage') ? @memory_get_usage() : 'n/a');
+                            $iMem = function_exists('memory_get_usage') ? iconv("WINDOWS-1251", "UTF-8", $this->chpu_Bytes(@memory_get_usage())) : 'n/a';
+                            $aElem[]     = $this->XML_DOC->createElement('MEMORY', $iMem);
                             $aElem[]     = $this->XML_DOC->createElement('TRANSLATION', iconv("WINDOWS-1251", "UTF-8", $aTempArr['TRANSLATION']));
                             $aElem[]     = $this->XML_DOC->createElement('SUGGESTION', iconv("WINDOWS-1251", "UTF-8", $aTempArr['SUGGESTION']));
                             $aElem[]     = $this->XML_DOC->createElement('CONTEXT', $sVars);
@@ -548,7 +610,6 @@
                                                  $koll      = $error->find("KOLL", 0)->innertext + 1;
                                                  $dateStart = $error->find("DATE_START", 0)->innertext;
                                                  $iNewId    = $error->id;
-                                                 //     dump_r($iNewId);
                                                  break;
                                           }
                                    }
@@ -700,7 +761,7 @@
                                                  $sValeur .= str_replace(array('<?php', '?>', '<?'), '', $sourceNodeList->item($j)->nodeValue);
                                                  $sValeur .= "\n";
                                           }
-                                          $sValeur = str_replace('       ', ' ', $sValeur);
+                                          $sValeur = preg_replace("/  +/", " ", $sValeur);
                                           $sValeur = highlight_string('<?php '."\n".$sValeur.'?>', true);
 
                                    } elseif ($sName === 'CONTEXT') {
@@ -746,7 +807,7 @@
                                    $sValeur = $nodeList->item($i)->nodeValue;
                             }
                             $sValeur = iconv("UTF-8", "windows-1251", $sValeur);
-                            $sValeur = str_replace("&nbsp;&nbsp;&nbsp;", "", $sValeur);
+                            $sValeur = preg_replace("/  +/", " ", $sValeur);
                             $sHtml   = str_replace($this->aIndex[$i][1], $sValeur, $sHtml);
                      }
 
@@ -866,7 +927,6 @@
                      $idNew = count($idxml->find("ERROR[id]")) + 1;
                      $idxml->clear();
                      unset($idxml);
-
                      return $idNew;
               }
 

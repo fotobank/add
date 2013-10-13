@@ -22,16 +22,12 @@ if(isset($_POST['newNews']))
 			 </script>";
   }
 
-
 ?>
 <script type="text/javascript" src="/inc/wp/ajaxPostNews.js"></script>
 <?
 
 define('RECORDS_PER_PAGE', 20);
-
-require_once  ( __DIR__ . '/../canon68452/praide-analyser-cp-1251.php');
 require_once  ( __DIR__ . '/../inc/wp/comments.php');
-
 
 
 	function printPubl($newsId,$pg)
@@ -126,10 +122,19 @@ require_once  ( __DIR__ . '/../inc/wp/comments.php');
 				  // загрузка картинки
 				  if (isset($_POST['filedim'])) {
 					 require_once  ( __DIR__ . '/../inc/cropUploader/thumbUploader.php');
-					 $sImage = new ImageUploader();
-					 $dir = './../reklama/thumb/'; // папка для загрузки
-					 $sImage->upload($dir, 140, true);
-					 $imgNews = $dir.'imgNews-'.trim($_POST['newsId']).'.jpg';
+
+                 $ext         = strtolower(substr($_FILES['image_file']['name'], 1 + strrpos($_FILES['image_file']['name'], ".")));
+                 $dir = './../reklama/thumb/'; // папка для загрузки
+                 $dataUpl = array(
+                        "newThumbName" => 'imgNews_'.trim($_POST['newsId']).'.'.$ext, // имя конечного файла
+                        "upload_dir" => $dir, // папка для загрузки
+                        "width_load" => 230, // ширина превью картинки при выборе
+                        "maxThumbSize" => 140, // ширина конечной картинки
+                 );
+
+					 $sImage = new ImageUploader($dataUpl);
+					 $sImage->upload();
+           $imgNews = $dir.'imgNews_'.trim($_POST['newsId']).'.'.$ext;
 					 go\DB\query('UPDATE `news` SET `img` = ?  WHERE `id` = ?i', array($imgNews, $_POST['newsId']));
 				  }
 				  ?>
@@ -220,7 +225,21 @@ require_once  ( __DIR__ . '/../inc/wp/comments.php');
 		</td>
 		<td></td>
 	 </tr>
-
+<tr>
+       <td colspan="3">
+              <?
+              /**
+              * Проверка на уникальность
+              */
+              if (isset($_POST['unik']))
+              {
+              // текст на проверку
+              $text = $_POST['head'].$_POST['body'];
+              require_once  (__DIR__.'/../canon68452/praide-analyser.php');
+              }
+              ?>
+       </td>
+</tr>
 	 </tbody>
   </table>
   </div>
@@ -316,51 +335,9 @@ if(isset($_GET['newsId']))  $_SESSION['newsId'] = $_GET['newsId'];
 	<div style="clear:both"> </div>
 	<?
 
-	/**
-	 * Проверка на уникальность
-	 */
-	if (isset($_POST['unik']))
-	  {
-		   $text = $_POST['head'].$_POST['body'];
-			$log = array();
-			$log['query'] = $text;
-			$queries = (get_magic_quotes_gpc())?stripslashes($text):$text;
-			$queries = preg_replace("/[?!\(\)'\",]/", "", $queries);
-			$queries = preg_replace("/[- ]{2}/", " ", $queries);
-			$queries = preg_replace("/ +/", " ", $queries);
-			$queries = str_replace(".", "\n", $queries);
-			$queries = explode("\n", trim($queries));    // Разбиваем на предложения
-			?>
-		 <h1>Проверка уникальности текста в интернете.</h1>
-			<h2>Яндекс</h2>
-			<table border="1">
-			  <tr><td>Страниц</td><td>Запрос</td></tr>
-			  <?php
-			  foreach ($queries as $q) {
-				 if (strlen($q) > 30) {
-					$q   = preg_replace("/(([\S]+?[\s]+){3,9}[\S]+)[\s\S]*/", "$1", $q);
-					$top = top_10("\"".trim($q)."\"");
-					$log["yandex"][] = array($top[0][1], $q);
-					?><tr><td><span title="<?php echo implode("\r\n", $top[1]); ?>"><?php echo $top[0][1]; ?></span></td><td>
-					  <a href="http://www.yandex.ru/yandsearch?text=<?php echo urlencode("\"$q\""); ?>" target="_blank"><?php echo $q; ?></a></td></tr><?php
-				 }
-			  }
-			  ?></table>
-			<h2>Google</h2>
-			<table border="1">
-			<tr><td>Сайтов</td><td>Запрос</td></tr>
-			<?php
-			foreach ($queries as $q) {
-			  if (strlen($q) > 30) {
-				 $q   = preg_replace("/(([\S]+?[\s]+){3,9}[\S]+)[\s\S]*/", "$1", $q);
-				 $top = @top_10_g("\"".trim($q)."\"");
-				 $log["google"][] = array(@$top[0][1], $q);
-				 ?><tr><td><?php echo (is_int(@$top[0][1]))? $top[0][1] : "N/A"; ?></td><td><a href="http://www.google.com/search?hl=ru&q=<?php echo urlencode("\"$q\""); ?>"
-					 target="_blank"><?php echo $q; ?></a></td></tr><?php
-			  }
-			}
-			?></table><?php
-	  }
+
+
+
 	?>
 	<div style="clear:both"> </div>
 	      <?
