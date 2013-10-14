@@ -28,7 +28,7 @@ require_once (__DIR__.'/inc_album.php');
 </div>
 
 <?
-require_once(__DIR__.'/jquery.fileapi/inc_fileapi.php');
+//require_once(__DIR__.'/jquery.fileapi/inc_fileapi.php');
 require_once(__DIR__.'/inc_modal_new_album.php');
 require_once(__DIR__.'/inc_album_warning.php');
 

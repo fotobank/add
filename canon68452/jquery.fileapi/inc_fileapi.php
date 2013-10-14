@@ -28,9 +28,10 @@
 
        <script type="text/javascript">
                     $('#userpic').fileapi({
-                            url: '/canon68452/index.php',
+                            url: '...',
                             accept: 'image/*',
                             imageSize: { minWidth: 200, minHeight: 200 },
+                            dataType: false,
                             elements: {
        active: { show: '.js-upload', hide: '.js-browse' },
        preview: {
@@ -41,89 +42,80 @@
        progress: '.js-progress'
                             },
                             onSelect: function (evt, ui){
-       var file = ui.files[0];
-                                   if( file ){
-                                          $('#popup').modal({
-                                                 closeOnEsc: false,
+       var imageFile = ui.files[0];
+                                   if( imageFile ){
+                                          $('#popup').modall({
                                                  closeOnOverlayClick: false,
                                                  onOpen: function (overlay){
                                                  $(overlay).on('click', '.js-upload', function (){
-                                                        $.modal().close();
+                                                        $.modall().close();
                                                         $('#userpic').fileapi('upload');
                                                  });
 
                                                  $('.js-img', overlay).cropper({
-                                                               file: file,
+                                                               file: imageFile,
                                                                bgColor: '#fff',
                                                                maxSize: [$(window).width()-100, $(window).height()-100],
-                                                               minSize: [200, 200],
+                                                               minSize: [32, 32],
                                                                selection: '90%',
                                                                aspectRatio: 1,
                                                                onSelect: function (coords){
-                                                        $('#userpic').fileapi('crop', file, coords);
+                                                        $('#userpic').fileapi('crop', imageFile, coords);
                                                  }
                                                         });
                                                  }
                                           }).open();
                                    }
 
-                                  /* $('#popup').modal('show', function (overlay) {
+                                  /* if( imageFile ){
+                                   $('#popup').modal('show', function (overlay) {
+
 
                                           $(overlay).on('click', '.js-upload', function (){
-                                                 $.modal().close();
+                                                 $.modal('hide');
                                                  $('#userpic').fileapi('upload');
                                           });
 
                                           $('.js-img', overlay).cropper({
-                                                 file: file,
+                                                 file: imageFile,
                                                  bgColor: '#fff',
                                                  maxSize: [$(window).width()-100, $(window).height()-100],
                                                  minSize: [200, 200],
                                                  selection: '90%',
                                                  aspectRatio: 1,
                                                  onSelect: function (coords){
-                                                        $('#userpic').fileapi('crop', file, coords);
+                                                        $('#userpic').fileapi('crop', imageFile, coords);
                                                  }
                                           });
-                                   });*/
-
-
-
+                                   });
+                                  }*/
                             }
                      });
        </script>
 </div>
 
-<button  href="#popup" class="btn btn_browse btn_browse_small" data-toggle="modal">Создать альбом</button>
+<!--<button  href="#popup" class="btn btn_browse btn_browse_small" data-toggle="modal">Создать альбом</button>-->
 
 
-<div id="popup"
-     style="display: none;"
+<!--<div id="popup"
      class="modal hide fade in animated fadeInDown popup"
+     style="display: none;"
      tabindex="-1"
      data-replace="true"
      data-width="490px">
-       <div class="modal-header">
-              <button type="button"
-                      class="close"
-                      data-dismiss="modal"
-                      aria-hidden="true">x
-              </button>
-              <h3>Создать альбом:</h3>
-       </div>
        <div class="modal-body">
               <div class="popup__body"><div class="js-img"></div></div>
               <div style="margin: 0 0 5px; text-align: center;">
                      <div class="js-upload btn btn_browse btn_browse_small">Кадрировать</div>
               </div>
        </div>
-</div>
+</div>-->
 
 
 
-<!--<div id="popup" class="popup" style="display: none;">
+<div id="popup" class="popup" style="display: none;">
        <div class="popup__body"><div class="js-img"></div></div>
        <div style="margin: 0 0 5px; text-align: center;">
               <div class="js-upload btn btn_browse btn_browse_small">Кадрировать</div>
        </div>
-</div>-->
+</div>

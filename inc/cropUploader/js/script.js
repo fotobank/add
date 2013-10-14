@@ -14,7 +14,7 @@ function checkForm() {
 }
 
 // обновление информации обрезки ( обработчик событий onChange и onSelect)
-function updateInfo1(e) {
+function updateInfo(e) {
     $('#x1').val(e.x);
     $('#y1').val(e.y);
     $('#x2').val(e.x2);
@@ -23,13 +23,15 @@ function updateInfo1(e) {
     $('#h').val(e.h);
 }
 
-function updateInfo(c) {
+// для обрезки с превьюшкой
+//  <canvas id="thumb" class="userpic" style="width:150px;height:150px;"></canvas>
+function updateInfo2(c) {
     if(parseInt(c.w) > 0) {
         // Show image preview
         var imageObj = $("#preview")[0];
         var canvas = $("#thumb")[0];
         var context = canvas.getContext("2d");
-        context.drawImage(imageObj, c.x*5, c.y*5, c.w*22, c.h*22, 0, 0, canvas.width*5, canvas.height*5);
+        context.drawImage(imageObj, c.x, c.y, c.w, c.h, 0, 0, canvas.width, canvas.height);
     }
     $('#x1').val(c.x);
     $('#y1').val(c.y);

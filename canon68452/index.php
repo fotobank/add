@@ -157,14 +157,14 @@
 
        <script type="text/javascript">
               window.FileAPI = {
-                     debug: false // debug mode
+                     debug: true // debug mode
                      , staticPath: '/canon68452/jquery.fileapi/FileAPI/' // path to *.swf
               };
        </script>
        <script src="/canon68452/jquery.fileapi/FileAPI/FileAPI.min.js"></script>
        <script src="/canon68452/jquery.fileapi/jquery.fileapi.js"></script>
        <script src="/canon68452/jquery.fileapi/FileAPI/FileAPI.exif.js"></script>
-<!--       <script src="/canon68452/jquery.fileapi/statics/jquery.modal.js"></script>-->
+       <script src="/canon68452/jquery.fileapi/statics/jquery.modal.js"></script>
 
 
 
@@ -229,7 +229,7 @@ tinyMCE.init({
   spellchecker_languages : "+Russian=ru,Ukrainian=uk,English=en",
   spellchecker_rpc_url : "http://speller.yandex.net/services/tinyspell",
   spellchecker_word_separator_chars : '\\s!"#$%&()*+,./:;<=>?@[\]^_{|}\xa7\xa9\xab\xae\xb1\xb6\xb7\xb8\xbb\xbc\xbd\xbe\u00bf\xd7\xf7\xa4\u201d\u201c',
-		
+
 		// Example word content CSS (should be your site CSS) this one removes paragraph margins
 		content_css : "/css/main.css",
 
@@ -241,7 +241,7 @@ tinyMCE.init({
 
         // Skin options
         skin : "o2k7",
-        skin_variant : "silver"        
+        skin_variant : "silver"
 
 });
 </script>

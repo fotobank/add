@@ -103,7 +103,7 @@ require_once  ( __DIR__ . '/../inc/wp/comments.php');
 			 Картинка заголовка статьи
 			 <ul class="thumbnails" style="margin-bottom: 0;">
 				<li class="span2">
-				  <div class="thumbnail">
+				  <div class="thumbnail userpic" style="width: 140px; height: 140px;">
 					 <img src="<?=$data['img']?>?t=<?=time()?>" style="width: auto; height: auto;">
 					 <div class="caption">
 					 </div>
@@ -138,7 +138,7 @@ require_once  ( __DIR__ . '/../inc/wp/comments.php');
 					 go\DB\query('UPDATE `news` SET `img` = ?  WHERE `id` = ?i', array($imgNews, $_POST['newsId']));
 				  }
 				  ?>
-				  <div class="info">
+				  <div class="info" style="display: none;">
 					 <div class="input-prepend">
 						<label class="add-on" for="filesize">Размер файла</label>
 						<input class="span1" type="text" id="filesize" name="filesize" style="width: 80px; height: 25px;">
@@ -329,7 +329,7 @@ if(isset($_GET['newsId']))  $_SESSION['newsId'] = $_GET['newsId'];
 				  {
 					 printPubl(trim($_GET['newsId']),$pg);
 				  } else {
-				  printPubl($newsId,$pg);
+				   printPubl($newsId,$pg);
 				}
 	?>
 	<div style="clear:both"> </div>

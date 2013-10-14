@@ -12,10 +12,7 @@
      class="modal hide fade in animated fadeInDown"
      tabindex="-1"
      data-replace="true"
-     data-keyboard="false"
-     data-backdrop="static"
      data-width="490px"
-     tabindex="-1"
      aria-hidden="false">
        <div class="modal-header">
               <button type="button"
@@ -91,7 +88,7 @@
 
 
 
-                                          <input type="hidden"
+                                         <!-- <input type="hidden"
                                                  id="x1"
                                                  name="x1"/>
                                           <input type="hidden"
@@ -102,25 +99,34 @@
                                                  name="x2"/>
                                           <input type="hidden"
                                                  id="y2"
-                                                 name="y2"/>
+                                                 name="y2"/>-->
 
-                                          <div style="margin-top: 5px;">
+
+
+                                         <!-- <div style="margin-top: 5px;">
                                                  <label class="add-on"
                                                         for="image_file">Превью</label>
                                                  <input type="file"
                                                         id="image_file"
                                                         name="image_file"
-                                                        onchange="fileSelectHandler()"/>
-                                          </div>
+                                                        onchange="fileSelectHandler(); $('.step2').modal('show');"/>
+                                          </div>-->
                                           <div class="error"></div>
-                                          <div class="step2">
-                                                 <h3>Выбор региона обрезки:</h3>
-                                                 <img id="preview"
-                                                      style="width: 460px;"/>
-
-                                                 <canvas id="thumb" style="width:150px;height:150px;"></canvas>
-
-                                                 <div class="info">
+                                          <div class="step2 modal hide fade in animated fadeInDown"
+                                               tabindex="-1"
+                                               aria-hidden="false"
+                                               data-width="490">
+                                                 <div class="modal-header">
+                                                        <button type="button"
+                                                                class="close"
+                                                                data-dismiss="modal"
+                                                                aria-hidden="true">x
+                                                        </button>
+                                                        <h3>Выбор региона обрезки:</h3>
+                                                 </div>
+                                                 <div class="modal-body">
+                                                 <img id="preview" style="width: 460px;"/>
+                                                 <div class="info" style="display: none;">
                                                         <div class="input-prepend">
                                                                <label class="add-on"
                                                                       for="filesize">Размер файла</label>
@@ -165,6 +171,16 @@
                                                                       name="h"
                                                                       style="width: 203px; height: 25px;">
                                                         </div>
+                                                 </div>
+                                                 </div>
+                                                 <div class="modal-footer">
+                                                        <input class="btn  btn-success"
+                                                               type="submit"
+                                                               value="Добавить"/>
+                                                        <button type="button"
+                                                                data-dismiss="modal"
+                                                                class="btn">Close
+                                                        </button>
                                                  </div>
                                           </div>
 
