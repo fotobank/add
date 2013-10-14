@@ -221,7 +221,9 @@ if (isset($_SESSION['current_cat'])) {
                                                                <img style="width: auto; height: auto;"
                                                                     src="/images/<?= $ln['img'] ?>"
                                                                     alt="-"/>
-
+                                                               <?
+                                                               require_once(__DIR__.'/jquery.fileapi/inc_fileapi.php');
+                                                               ?>
                                                                <div class="caption">
                                                                       <h3><?= $ln['nm'] ?></h3>
 

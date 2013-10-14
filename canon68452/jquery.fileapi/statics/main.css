@@ -642,11 +642,13 @@ body {
 
 .popup {
 	margin: 25px;
-	float: left;
+	/*float: left;*/
 	display: inline-block;
 	box-shadow: 0 0 5px #000;
 	background-color: #fff;
 }
+
+
 	.popup__body {
 		margin: 10px 10px 5px;
 	}

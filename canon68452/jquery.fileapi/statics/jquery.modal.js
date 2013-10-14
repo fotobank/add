@@ -88,7 +88,7 @@
 				}
 
 				el.on('resize', function (){
-					el.css('marginLeft', ($(window).width() - el.outerWidth())/2);
+					el.css('marginLeft', ($(window).width() - el.outerWidth())/3);
 				}).triggerHandler('resize');
 			},
 			close: function() {

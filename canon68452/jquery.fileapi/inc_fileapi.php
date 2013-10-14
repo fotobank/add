@@ -140,7 +140,7 @@
 
 
 <div id="popup"
-     class="popup center"
+     class="popup"
      style="display: none;">
        <div class="popup__body">
               <div class="js-img"></div>

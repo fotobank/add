@@ -101,33 +101,31 @@
                                    array($id_album, '1', 'default', 'default'));
 
                             /** загрузка картинки ---------------------------------------------------------------------------------------- */
-                                   $newThumbName = 'id'.$id_album.'.'.$ext;
-                                   $data         = array(
-                                          "_FILESname"   => 'filedata', // имя загружаемого файла в массиве $_FILES
-                                          "newThumbName" => $newThumbName, // имя конечного файла
-                                          "upload_dir"   => './../images/', // папка для загрузки
-                                          "maxThumbSize" => 200, // ширина конечной картинки
-                                   );
-                                   if ($sImage = new uploadImgThumb($data)) {
-                                          $sImage->upload();
-                                          go\DB\query('update albums set id_category = ?i, img = ?, order_field = ?i, descr = ?, foto_folder = ? where id = ?i',
-                                          array($id_category, $newThumbName, $id_album, $descr, $foto_folder, $id_album));
-                                          mkdir('../'.$foto_folder.$id_album, 0777, true) or die($php_errormsg);
-                                          $_SESSION['current_album'] = $id_album;
-                                          $_SESSION['current_cat']   = $id_category;
-                                   } else {
-                                          go\DB\query('delete from albums where id ?i', array($id_album));
-                                          die('Не могу загрузить файл');
-                                   }
+                            $sImage = new uploadImgThumb();
+                            $newThumbName = 'id'.$id_album.'.'.$ext;
+                            $array         = array(
+                            "_FILESname"   => 'filedata', // имя загружаемого файла в массиве $_FILES
+                            "newThumbName" => $newThumbName, // имя конечного файла
+                            "upload_dir"   => './../images/', // папка для загрузки
+                            "maxThumbSize" => 200, // ширина конечной картинки
+                            );
+                            if($sImage->set($array)){
+                                   go\DB\query('update albums set id_category = ?i, img = ?, order_field = ?i, descr = ?, foto_folder = ? where id = ?i',
+                                   array($id_category, $newThumbName, $id_album, $descr, $foto_folder, $id_album));
+                                   mkdir('../'.$foto_folder.$id_album, 0777, true) or die($php_errormsg);
+                                   $_SESSION['current_album'] = $id_album;
+                                   $_SESSION['current_cat']   = $id_category;
+                            } else {
+                                   go\DB\query('delete from albums where id ?i', array($id_album));
+                                   die('Не могу загрузить файл');
+                            }
                             /** загрузка картинки ---------------------------------------------------------------------------------------- */
 
                      } else {
-                            //	  unlink($file_load);
-                            die('Размер файла превышает 15 мегабайт');
+                            dump_r('Размер файла превышает 15 мегабайт');
                      }
               } else {
-                     //   unlink($file_load);
-                     die('Битый файл!');
+                     dump_r('Битый файл!');
               }
        }
 

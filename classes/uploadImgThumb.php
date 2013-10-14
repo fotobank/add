@@ -10,37 +10,53 @@
 
 class uploadImgThumb {
 
+       // инициализаци€ переменных
        private $uploaded = false;
-       public $name;
-       public $type;
-       public $size;
-       public $tmp;
-       public $error;
-       public $thumbImage;
-       public $message;
-       public $newFullName;
-       public $newThumbName; // им€ конечного файла
-       public $upload_dir; // папка дл€ загрузки
-       public $maxThumbSize; // ширина конечной картинки
-       public $report = true; // вывод ошибок
-       public $mkdir = false; // создать папку (при отсутствии)
-       public $quality = 80; // качество картинки
-       public $maxFileSize = 15000000; // max вес картинки
-       public $minImageSize = 10; // min вес картинки
-       private  $_FILESname; // им€ загружаемого файла в массиве $_FILES
+       private $name;
+       private $type;
+       private $size;
+       private $tmp;
+       private $error;
+       private $thumbImage;
+       private $message;
+
+
+       private $newThumbName = true; // им€ конечного файла
+       private $upload_dir = true; // папка дл€ загрузки
+       private $maxThumbSize = true; // max ширина конечной картинки
+       private $report = true; // вывод ошибок
+       private $mkdir = true; // создать папку (при отсутствии)
+       private $quality = 80; // качество картинки
+       private $maxFileSize = 15000000; // max вес картинки
+       private $minImageSize = 10; // min вес картинки
+       private $_FILESname = true; // им€ загружаемого файла в массиве $_FILES
+
+
+
+
+
        /**
-        * Function to initialize variables
+        * @param $array
         *
-        * @param $data
+        * @return bool
         */
-       public function __construct($data) {
+       public function set($array) {
 
               global $_FILES;
-              $this->_FILESname = $data["_FILESname"];
+
+              foreach($array as $var => $data) {
+                     if(isset($this->$var)) {
+                     $this->$var = $data;
+                     }
+              }
+              if(!isset($this->_FILESname)) {
+                     dump_r($this->_FILESname);
+                     dump_r("Ќе задано им€ дл€ файла '\$_FILES' в переменной '_FILESname'");
+                     return false;
+              }
               $this->error = ($_FILES[$this->_FILESname]['error'] != 0) ? $_FILES[$this->_FILESname]['error'] : NULL;
               if ($this->error != 0) {
                      $this->message = $this->error;
-                     $this->message;
                      $this->result_report();
                      return false;
               } else {
@@ -48,10 +64,7 @@ class uploadImgThumb {
                      $this->type = $_FILES[$this->_FILESname]['type'];
                      $this->size = $_FILES[$this->_FILESname]['size'];
                      $this->tmp  = $_FILES[$this->_FILESname]['tmp_name'];
-                     $this->newThumbName = $data["newThumbName"];
-                     $this->upload_dir   = $data["upload_dir"];
-                     $this->maxThumbSize = $data["maxThumbSize"];
-
+                     $this->upload();
                      return true;
               }
        }
@@ -128,22 +141,6 @@ class uploadImgThumb {
 
 
        /**
-        * @return bool
-        */
-       public function greateImg() {
-
-              if ($this->type == 'image/gif') {
-                     $this->thumbImage = imagecreatefromgif($this->tmp);
-              } else if ($this->type == 'image/jpeg') {
-                     $this->thumbImage = imagecreatefromjpeg($this->tmp);
-              } else {
-                     $this->thumbImage = imagecreatefrompng($this->tmp);
-              }
-              $this->uploaded = true;
-              return true;
-       }
-
-       /**
         * Function to resieze image
         *
         * @return bool
@@ -211,7 +208,6 @@ class uploadImgThumb {
               $this->uploaded = true;
               $this->upload_dir();
               $this->validate();
- //             $this->greateImg();
               $this->resize();
               if ($this->type == 'image/gif') {
                      if (!imagegif($this->thumbImage, $this->upload_dir.$this->newThumbName)) $this->uploaded = false;
