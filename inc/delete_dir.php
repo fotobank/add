@@ -27,9 +27,11 @@ function deleteDir($dir)
          {
          $id = $_POST['confirm_id'];
          go\DB\query('delete from photos  where id_album = ?i', array($id));
-	      go\DB\query('delete from accordions where id_album = ?i', array($id));
+	       go\DB\query('delete from accordions where id_album = ?i', array($id));
          $album_foto = go\DB\query('select img from albums where id = ?i', array($id), 'el');
-         unlink("../images/$album_foto");
+         if(file_exists("../images/$album_foto")) {
+         @unlink("../images/$album_foto");
+         }
 	      go\DB\query('delete from albums where id = ?i', array($id));
          }
 

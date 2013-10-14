@@ -1032,3 +1032,8 @@ Helvetica, sans-serif;color:#888;border:1px solid #c8c6c4;vertical-align:top;bor
     background-color: #eaeaea;
     text-decoration: underline;
 }
+
+#descr {
+    width: 350px;
+    height: 150px;
+}

@@ -12,7 +12,7 @@
      class="modal hide fade in animated fadeInDown"
      tabindex="-1"
      data-replace="true"
-     data-width="490px"
+     data-width="400px"
      aria-hidden="false">
        <div class="modal-header">
               <button type="button"
@@ -20,20 +20,20 @@
                       data-dismiss="modal"
                       aria-hidden="true">x
               </button>
-              <h3>Создать альбом:</h3>
+              <h3>Новый альбом:</h3>
        </div>
        <div class="modal-body">
-              <div class="row">
-                     <div class="span5 offset0">
-
-                            <div style="float: left">
                                    <form action="index.php"
                                          method="post"
                                          enctype="multipart/form-data">
 
+                                          <?
+                                          require_once(__DIR__.'/jquery.fileapi/inc_fileapi.php');
+                                          ?>
+                                          <div class="clear"></div>
                                           <div class="input-prepend">
                                                  <label class="add-on"
-                                                        for="name">Название альбома</label>
+                                                        for="name">Название</label>
                                                  <input class="span1"
                                                         type="text"
                                                         id="name"
@@ -71,7 +71,7 @@
                                           </div>
                                           <div class="input-prepend">
                                                  <label class="add-on"
-                                                        for="foto_folder">Папка фотобанка</label>
+                                                        for="foto_folder">Папка в фотобанке</label>
                                                  <input class="span1"
                                                         type="text"
                                                         id="foto_folder"
@@ -83,7 +83,6 @@
                                           <label class="add-on"
                                                  for="descr">Описание</label>
                                           <textarea id="descr"
-                                                    style="width: 300px; height: 100px;"
                                                     name="descr"></textarea>
 
 
@@ -111,7 +110,7 @@
                                                         name="image_file"
                                                         onchange="fileSelectHandler(); $('.step2').modal('show');"/>
                                           </div>-->
-                                          <div class="error"></div>
+                                          <!--<div class="error"></div>
                                           <div class="step2 modal hide fade in animated fadeInDown"
                                                tabindex="-1"
                                                aria-hidden="false"
@@ -182,9 +181,9 @@
                                                                 class="btn">Close
                                                         </button>
                                                  </div>
-                                          </div>
+                                          </div>-->
 
-                                          <div class="linBlue"></div>
+                                          <div class="modal-footer">
                                           <input class="btn  btn-success"
                                                  type="hidden"
                                                  name="go_add"
@@ -192,19 +191,18 @@
                                           <input class="btn  btn-success"
                                                  type="submit"
                                                  value="Добавить"/>
-                                          <hr>
 
+                                                 <button type="button"
+                                                         data-dismiss="modal"
+                                                         class="btn">Close
+                                                 </button>
+                                          </div>
                                    </form>
-                            </div>
-                     </div>
-              </div>
+
+
+
        </div>
-       <div class="modal-footer">
-              <button type="button"
-                      data-dismiss="modal"
-                      class="btn">Close
-              </button>
-       </div>
+
 </div>
 
 <div class="offset1"

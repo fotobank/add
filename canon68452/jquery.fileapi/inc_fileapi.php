@@ -7,8 +7,8 @@
  * To change this template use File | Settings | File Templates.
  */
 ?>
-       <div class="example">
-       <div class="example__left"style="padding: 20px 50px 0 0;">
+ <div class="example">
+       <div class="example__left">
               <div id="userpic" class="userpic">
                      <div class="js-preview userpic__preview"></div>
                      <div class="btn btn-success js-fileapi-wrapper">
@@ -113,7 +113,7 @@
 
 
 
-<div id="popup" class="popup" style="display: none;">
+<div id="popup" class="popup center" style="display: none;">
        <div class="popup__body"><div class="js-img"></div></div>
        <div style="margin: 0 0 5px; text-align: center;">
               <div class="js-upload btn btn_browse btn_browse_small">Кадрировать</div>

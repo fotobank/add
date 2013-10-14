@@ -141,12 +141,16 @@ body {
 
 
 .example {
-	margin: 25px;
+    clear: both;
+    position: relative;
+    text-align: center;
 }
 	.example__left {
 		float: left;
 		width: 290px;
 		text-align: center;
+        margin-bottom: 20px;
+        margin-left: 40px;
 	}
 
 	.example__right {
@@ -166,7 +170,6 @@ body {
 		overflow: hidden;
 	}
 		.example h2 span {
-			float: left;
 			display: block;
 		}
 

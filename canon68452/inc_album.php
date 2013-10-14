@@ -81,13 +81,13 @@
 
        // добавить альбом
        if (isset($_POST['go_add'])) {
-              if (isset($_FILES['image_file']) && $_FILES['image_file']['size'] != 0) {
-                     if ($_FILES['image_file']['size'] < 1024 * 15 * 1024) {
-                            $ext         = strtolower(substr($_FILES['image_file']['name'], 1 + strrpos($_FILES['image_file']['name'], ".")));
-                            $nm          = trim($_POST['nm']);
-                            $descr       = trim($_POST['descr']);
-                            $foto_folder = trim($_POST['foto_folder']);
-                            $id_category = trim($_POST['id_category']);
+              if (isset($_FILES['filedata']) && $_FILES['filedata']['size'] != 0) {
+                     if ($_FILES['filedata']['size'] < 1024 * 15 * 1024) {
+                            $ext         = strtolower(substr($_FILES['filedata']['name'], 1 + strrpos($_FILES['filedata']['name'], ".")));
+                            $nm          = trim($_POST['nm']); // название альбома
+                            $descr       = trim($_POST['descr']); // описание
+                            $foto_folder = trim($_POST['foto_folder']); // размещение в фотобанке
+                            $id_category = intval($_POST['id_category']); // категория
                             if (empty($nm)) {
                                    $nm = 'Без имени';
                             }
@@ -100,8 +100,7 @@
                             go\DB\query('insert into `accordions` (id_album,collapse_numer,collapse_nm,accordion_nm) VALUES (?scalar,?i,?string,?string)',
                                    array($id_album, '1', 'default', 'default'));
                             // загрузка картинки
-                            if (isset($_POST['filedim'])) {
-                                   require_once  (__DIR__.'/../inc/cropUploader/thumbUploader.php');
+
                                    $newThumbName = 'id'.$id_album.'.'.$ext;
                                    $data         = array(
                                           "newThumbName" => $newThumbName, // имя конечного файла
@@ -109,10 +108,10 @@
                                           "width_load"   => 460, // ширина превью картинки при выборе
                                           "maxThumbSize" => 160, // ширина конечной картинки
                                    );
-                                   if ($sImage = new ImageUploader($data)) {
+                                   if ($sImage = new uploadImgThumb($data)) {
                                           $sImage->upload();
                                           go\DB\query('update albums set id_category = ?i, img = ?, order_field = ?i, descr = ?, foto_folder = ? where id = ?i',
-                                                 array($id_category, $newThumbName, $id_album, $descr, $foto_folder, $id_album));
+                                          array($id_category, $newThumbName, $id_album, $descr, $foto_folder, $id_album));
                                           mkdir('../'.$foto_folder.$id_album, 0777, true) or die($php_errormsg);
                                           $_SESSION['current_album'] = $id_album;
                                           $_SESSION['current_cat']   = $id_category;
@@ -120,7 +119,7 @@
                                           go\DB\query('delete from albums where id ?i', array($id_album));
                                           die('Не могу загрузить файл');
                                    }
-                            }
+
                      } else {
                             //	  unlink($file_load);
                             die('Размер файла превышает 15 мегабайт');
