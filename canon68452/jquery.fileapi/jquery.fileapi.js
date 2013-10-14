@@ -24,8 +24,6 @@
 		}
 	;
 
-
-
 	var Plugin = function (el, options){
 		this.$el = el = $(el).on('change.fileapi', _bind(this, this._onSelect));
 		this.el  = el[0];

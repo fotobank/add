@@ -99,14 +99,14 @@
                             }
                             go\DB\query('insert into `accordions` (id_album,collapse_numer,collapse_nm,accordion_nm) VALUES (?scalar,?i,?string,?string)',
                                    array($id_album, '1', 'default', 'default'));
-                            // загрузка картинки
 
+                            /** загрузка картинки ---------------------------------------------------------------------------------------- */
                                    $newThumbName = 'id'.$id_album.'.'.$ext;
                                    $data         = array(
+                                          "_FILESname"   => 'filedata', // имя загружаемого файла в массиве $_FILES
                                           "newThumbName" => $newThumbName, // имя конечного файла
                                           "upload_dir"   => './../images/', // папка для загрузки
-                                          "width_load"   => 460, // ширина превью картинки при выборе
-                                          "maxThumbSize" => 160, // ширина конечной картинки
+                                          "maxThumbSize" => 200, // ширина конечной картинки
                                    );
                                    if ($sImage = new uploadImgThumb($data)) {
                                           $sImage->upload();
@@ -119,6 +119,7 @@
                                           go\DB\query('delete from albums where id ?i', array($id_album));
                                           die('Не могу загрузить файл');
                                    }
+                            /** загрузка картинки ---------------------------------------------------------------------------------------- */
 
                      } else {
                             //	  unlink($file_load);

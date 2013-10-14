@@ -21,13 +21,13 @@ class uploadImgThumb {
        public $newFullName;
        public $newThumbName; // имя конечного файла
        public $upload_dir; // папка для загрузки
-       public $width_load; // ширина превью картинки при выборе
        public $maxThumbSize; // ширина конечной картинки
        public $report = true; // вывод ошибок
        public $mkdir = false; // создать папку (при отсутствии)
        public $quality = 80; // качество картинки
        public $maxFileSize = 15000000; // max вес картинки
        public $minImageSize = 10; // min вес картинки
+       private  $_FILESname; // имя загружаемого файла в массиве $_FILES
        /**
         * Function to initialize variables
         *
@@ -36,20 +36,20 @@ class uploadImgThumb {
        public function __construct($data) {
 
               global $_FILES;
-              $this->error = ($_FILES['filedata']['error'] != 0) ? $_FILES['filedata']['error'] : NULL;
+              $this->_FILESname = $data["_FILESname"];
+              $this->error = ($_FILES[$this->_FILESname]['error'] != 0) ? $_FILES[$this->_FILESname]['error'] : NULL;
               if ($this->error != 0) {
                      $this->message = $this->error;
                      $this->message;
                      $this->result_report();
                      return false;
               } else {
-                     $this->name = $_FILES['filedata']['name'];
-                     $this->type = $_FILES['filedata']['type'];
-                     $this->size = $_FILES['filedata']['size'];
-                     $this->tmp  = $_FILES['filedata']['tmp_name'];
+                     $this->name = $_FILES[$this->_FILESname]['name'];
+                     $this->type = $_FILES[$this->_FILESname]['type'];
+                     $this->size = $_FILES[$this->_FILESname]['size'];
+                     $this->tmp  = $_FILES[$this->_FILESname]['tmp_name'];
                      $this->newThumbName = $data["newThumbName"];
                      $this->upload_dir   = $data["upload_dir"];
-                     $this->width_load   = $data["width_load"];
                      $this->maxThumbSize = $data["maxThumbSize"];
 
                      return true;
@@ -150,10 +150,8 @@ class uploadImgThumb {
         */
        public function resize() {
 
-              list($oryginalWidth, $oryginalHeight) = getimagesize($this->tmp);
-              $mn             = $oryginalWidth / $this->width_load;
-              $oryginalWidth  = (int)$_POST['w'] * $mn;
-              $oryginalHeight = (int)$_POST['h'] * $mn;
+              $oryginalWidth  = (int)$_POST['w'];
+              $oryginalHeight = (int)$_POST['h'];
               if ($oryginalWidth > $oryginalHeight) {
                      $thumbWidth  = $this->maxThumbSize;
                      $thumbHeight = intval($this->maxThumbSize * ($oryginalHeight / $oryginalWidth));
@@ -172,7 +170,7 @@ class uploadImgThumb {
               } else {
                      $sourceImage = imagecreatefrompng($this->tmp);
               }
-              if (imagecopyresampled($this->thumbImage, $sourceImage, 0, 0, (int)$_POST['x1'] * $mn, (int)$_POST['y1'] * $mn,
+              if (imagecopyresampled($this->thumbImage, $sourceImage, 0, 0, (int)$_POST['x1'], (int)$_POST['y1'],
                      $thumbWidth, $thumbHeight, $oryginalWidth, $oryginalHeight)
               ) {
                      $this->uploaded = true;
@@ -213,6 +211,7 @@ class uploadImgThumb {
               $this->uploaded = true;
               $this->upload_dir();
               $this->validate();
+ //             $this->greateImg();
               $this->resize();
               if ($this->type == 'image/gif') {
                      if (!imagegif($this->thumbImage, $this->upload_dir.$this->newThumbName)) $this->uploaded = false;
