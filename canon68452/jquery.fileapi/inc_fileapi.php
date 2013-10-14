@@ -42,7 +42,6 @@
                             },
                             onSelect: function (evt, ui){
        var file = ui.files[0];
-
                                    if( file ){
                                           $('#popup').modal({
                                                  closeOnEsc: false,
@@ -67,16 +66,64 @@
                                                  }
                                           }).open();
                                    }
+
+                                  /* $('#popup').modal('show', function (overlay) {
+
+                                          $(overlay).on('click', '.js-upload', function (){
+                                                 $.modal().close();
+                                                 $('#userpic').fileapi('upload');
+                                          });
+
+                                          $('.js-img', overlay).cropper({
+                                                 file: file,
+                                                 bgColor: '#fff',
+                                                 maxSize: [$(window).width()-100, $(window).height()-100],
+                                                 minSize: [200, 200],
+                                                 selection: '90%',
+                                                 aspectRatio: 1,
+                                                 onSelect: function (coords){
+                                                        $('#userpic').fileapi('crop', file, coords);
+                                                 }
+                                          });
+                                   });*/
+
+
+
                             }
                      });
        </script>
 </div>
 
+<button  href="#popup" class="btn btn_browse btn_browse_small" data-toggle="modal">Создать альбом</button>
 
 
-<div id="popup" class="popup" style="display: none;">
+<div id="popup"
+     style="display: none;"
+     class="modal hide fade in animated fadeInDown popup"
+     tabindex="-1"
+     data-replace="true"
+     data-width="490px">
+       <div class="modal-header">
+              <button type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-hidden="true">x
+              </button>
+              <h3>Создать альбом:</h3>
+       </div>
+       <div class="modal-body">
+              <div class="popup__body"><div class="js-img"></div></div>
+              <div style="margin: 0 0 5px; text-align: center;">
+                     <div class="js-upload btn btn_browse btn_browse_small">Кадрировать</div>
+              </div>
+       </div>
+</div>
+
+
+
+<!--<div id="popup" class="popup" style="display: none;">
        <div class="popup__body"><div class="js-img"></div></div>
        <div style="margin: 0 0 5px; text-align: center;">
               <div class="js-upload btn btn_browse btn_browse_small">Кадрировать</div>
        </div>
-</div>
+</div>-->

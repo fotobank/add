@@ -157,14 +157,14 @@
 
        <script type="text/javascript">
               window.FileAPI = {
-                     debug: true // debug mode
+                     debug: false // debug mode
                      , staticPath: '/canon68452/jquery.fileapi/FileAPI/' // path to *.swf
               };
        </script>
        <script src="/canon68452/jquery.fileapi/FileAPI/FileAPI.min.js"></script>
        <script src="/canon68452/jquery.fileapi/jquery.fileapi.js"></script>
        <script src="/canon68452/jquery.fileapi/FileAPI/FileAPI.exif.js"></script>
-       <script src="/canon68452/jquery.fileapi/statics/jquery.modal.js"></script>
+<!--       <script src="/canon68452/jquery.fileapi/statics/jquery.modal.js"></script>-->
 
 
 
