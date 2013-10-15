@@ -56,55 +56,42 @@
                             },
                             progress: '.js-progress'
                      },
-                     onSelect: function (evt, ui) {
-                            var imageFile = ui.files[0];
+                     onSelect: function (evt, ui){
+                            var file = ui.files[0];
+                            if( file ){
+                                   $('#popup').modall({
+                                          closeOnEsc: true,
+                                          closeOnOverlayClick: false,
+                                          onOpen: function (overlay){
+                                                 $(overlay).on('click', '.js-upload', function (){
+                                                        $.modall().close();
+                                                        $('#userpic').fileapi('upload');
+                                                 });
 
-                             if( imageFile ){
-                             var img =  $('#popup');
-
-                             img.modal('show',{
-
-                             onOpen: function (overlay){
-                             $(overlay).on('click', '.js-upload', function (){
-                             img.modal('hide');
-                             $('#userpic').fileapi('upload');
-                             });
-
-                             $('.js-img', overlay).cropper({
-                             file: imageFile,
-                             bgColor: '#fff',
-                         //  maxSize: [$(window).width()-100, $(window).height()-100],
-                             minSize: [200, 200],
-                             maxSize: [540, 540],
-                             selection: '90%',
-                             aspectRatio: 1,
-                             onSelect: function (coords){
-                             $('#userpic').fileapi('crop', imageFile, coords);
-                             }
-                             });
-                             }
-                             });
-      //                       img.modal('show');
-                        }
+                                                 $('.js-img', overlay).cropper({
+                                                        file: file,
+                                                        bgColor: '#fff',
+                                                        maxSize: [540, 540],
+                                                        minSize: [32, 32],
+                                                        selection: '90%',
+                                                        aspectRatio: 1,
+                                                        onChange: updateInfoData,
+                                                        onSelect: function (coords){
+                                                               $('#userpic').fileapi('crop', file, coords);
+                                                        }
+                                                 });
+                                          }
+                                   }).open();
+                            }
                      }
-              });
+              })
        </script>
 </div>
-
-<!--<button  href="#popup" class="btn btn_browse btn_browse_small" data-toggle="modal">Создать альбом</button>-->
-
-
-<div id="popup" class="modal" data-width="auto">
-       <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-              <h3>Выбор области:</h3>
+<div class="modal" id="popup" style="display: none; top: 10%; z-index: 10000;">
+       <div class="popup__body">
+              <div class="js-img"></div>
        </div>
-       <div class="modal-body">
-              <div class="popup__body"><div class="js-img"></div></div>
-       </div>
-       <div class="modal-footer">
-              <div style="margin: 0 0 5px; text-align: center;">
-                     <div data-dismiss="modal" class="js-upload btn btn_browse btn_browse_small">Кадрировать</div>
-              </div>
+       <div style="margin: 0 0 5px; text-align: center; clear: both;">
+              <div class="js-upload btn btn_browse btn_browse_small">Кадрировать</div>
        </div>
 </div>

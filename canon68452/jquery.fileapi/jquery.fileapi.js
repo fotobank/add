@@ -103,6 +103,7 @@
 				}
 			},
 
+
 			onDrop: noop,
 			onDropHover: noop,
 
