@@ -138,7 +138,7 @@
 <!--   <link href="/inc/cropUploader/css/jquery.Jcrop.min.css" rel="stylesheet" type="text/css" />-->
        <link href="/canon68452/jquery.fileapi/jcrop/jquery.Jcrop.min.css" rel="stylesheet" type="text/css" />
 
-       <link rel="stylesheet" type="text/css" href="/canon68452/jquery.fileapi/statics/the-modal.css" media="all" />
+       <link rel="stylesheet" type="text/css" href="/canon68452/jquery.fileapi/css/fileapi.css" media="all" />
 
 
 
@@ -165,10 +165,6 @@
        <script src="/canon68452/jquery.fileapi/FileAPI/FileAPI.min.js"></script>
        <script src="/canon68452/jquery.fileapi/jquery.fileapi.js"></script>
        <script src="/canon68452/jquery.fileapi/FileAPI/FileAPI.exif.js"></script>
-<!--       <script src="/canon68452/jquery.fileapi/statics/jquery.modal.js"></script>-->
-<!--       <script type="text/javascript" src="/canon68452/jquery.fileapi/statics/jquery.the-modal.js"></script>-->
-
-
 
 
  <script type="text/javascript">

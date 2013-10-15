@@ -15,23 +15,13 @@
                      <div class="btn btn-success js-fileapi-wrapper">
                             <div class="js-browse">
                                    <span class="btn-txt">Выбор</span>
-                                   <input type="file"
-                                          name="filedata"/>
-                                   <input type="hidden"
-                                          id="x1"
-                                          name="x1"/>
-                                   <input type="hidden"
-                                          id="y1"
-                                          name="y1"/>
-                                   <input type="hidden"
-                                          id="h"
-                                          name="h"/>
-                                   <input type="hidden"
-                                          id="w"
-                                          name="w"/>
+                                   <input type="file" name="filedata"/>
+                                   <input type="hidden" id="x1" name="x1"/>
+                                   <input type="hidden" id="y1" name="y1"/>
+                                   <input type="hidden" id="h"  name="h"/>
+                                   <input type="hidden" id="w"  name="w"/>
                             </div>
-                            <div class="js-upload"
-                                 style="display: none;">
+                            <div class="js-upload" style="display: none;">
                                    <div class="progress progress-success">
                                           <div class="js-progress bar"></div>
                                    </div>
@@ -70,26 +60,31 @@
                             var imageFile = ui.files[0];
 
                              if( imageFile ){
-
                              var img =  $('#popup');
-                             img.on('click', '.js-upload', function (){
+
+                             img.modal('show',{
+
+                             onOpen: function (overlay){
+                             $(overlay).on('click', '.js-upload', function (){
                              img.modal('hide');
                              $('#userpic').fileapi('upload');
                              });
 
-                             $('.modal-body', img).cropper({
+                             $('.js-img', overlay).cropper({
                              file: imageFile,
                              bgColor: '#fff',
-//                             maxSize: [$(window).width()-100, $(window).height()-100],
+                         //  maxSize: [$(window).width()-100, $(window).height()-100],
                              minSize: [200, 200],
-                                    maxSize: [540, 540],
+                             maxSize: [540, 540],
                              selection: '90%',
                              aspectRatio: 1,
                              onSelect: function (coords){
                              $('#userpic').fileapi('crop', imageFile, coords);
                              }
                              });
-                             img.modal('show');
+                             }
+                             });
+      //                       img.modal('show');
                         }
                      }
               });
@@ -102,9 +97,11 @@
 <div id="popup" class="modal" data-width="auto">
        <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-              <h2>Выбор области:</h2>
+              <h3>Выбор области:</h3>
        </div>
-       <div class="modal-body"></div>
+       <div class="modal-body">
+              <div class="popup__body"><div class="js-img"></div></div>
+       </div>
        <div class="modal-footer">
               <div style="margin: 0 0 5px; text-align: center;">
                      <div data-dismiss="modal" class="js-upload btn btn_browse btn_browse_small">Кадрировать</div>
