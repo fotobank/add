@@ -68,54 +68,29 @@
                      },
                      onSelect: function (evt, ui) {
                             var imageFile = ui.files[0];
-                            if (imageFile) {
-                                   $('#popup').modall({
-                                          closeOnOverlayClick: false,
-                                          onOpen: function (overlay) {
-                                                 $(overlay).on('click', '.js-upload', function () {
-                                                        $.modall().close();
-                                                        $('#userpic').fileapi('upload');
-                                                 });
 
-                                                 $('.js-img', overlay).cropper({
-                                                        file: imageFile,
-                                                        bgColor: '#fff',
-                                                        maxSize: [$(window).width() - 100, $(window).height() - 100],
-                                                        minSize: [32, 32],
-                                                        selection: '90%',
-                                                        aspectRatio: 1,
-                                                        onChange: updateInfoData,
-                                                        onRelease: clearInfo,
-                                                        onSelect: function (coords) {
-                                                               $('#userpic').fileapi('crop', imageFile, coords);
-                                                        }
-                                                 });
-                                          }
-                                   }).open();
-                            }
+                             if( imageFile ){
 
-                            /* if( imageFile ){
-                             $('#popup').modal('show', function (overlay) {
-
-
-                             $(overlay).on('click', '.js-upload', function (){
-                             $.modal('hide');
+                             var img =  $('#popup');
+                             img.on('click', '.js-upload', function (){
+                             img.modal('hide');
                              $('#userpic').fileapi('upload');
                              });
 
-                             $('.js-img', overlay).cropper({
+                             $('.modal-body', img).cropper({
                              file: imageFile,
                              bgColor: '#fff',
-                             maxSize: [$(window).width()-100, $(window).height()-100],
+//                             maxSize: [$(window).width()-100, $(window).height()-100],
                              minSize: [200, 200],
+                                    maxSize: [540, 540],
                              selection: '90%',
                              aspectRatio: 1,
                              onSelect: function (coords){
                              $('#userpic').fileapi('crop', imageFile, coords);
                              }
                              });
-                             });
-                             }*/
+                             img.modal('show');
+                        }
                      }
               });
        </script>
@@ -124,28 +99,15 @@
 <!--<button  href="#popup" class="btn btn_browse btn_browse_small" data-toggle="modal">Создать альбом</button>-->
 
 
-<!--<div id="popup"
-     class="modal hide fade in animated fadeInDown popup"
-     style="display: none;"
-     tabindex="-1"
-     data-replace="true"
-     data-width="490px">
-       <div class="modal-body">
-              <div class="popup__body"><div class="js-img"></div></div>
+<div id="popup" class="modal" data-width="auto">
+       <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+              <h2>Выбор области:</h2>
+       </div>
+       <div class="modal-body"></div>
+       <div class="modal-footer">
               <div style="margin: 0 0 5px; text-align: center;">
-                     <div class="js-upload btn btn_browse btn_browse_small">Кадрировать</div>
+                     <div data-dismiss="modal" class="js-upload btn btn_browse btn_browse_small">Кадрировать</div>
               </div>
-       </div>
-</div>-->
-
-
-<div id="popup"
-     class="popup"
-     style="display: none;">
-       <div class="popup__body">
-              <div class="js-img"></div>
-       </div>
-       <div style="margin: 0 0 5px; text-align: center;">
-              <div class="js-upload btn btn_browse btn_browse_small">Кадрировать</div>
        </div>
 </div>

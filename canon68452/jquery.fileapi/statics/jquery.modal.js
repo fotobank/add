@@ -86,11 +86,14 @@
 				if(localOptions.onOpen) {
 					localOptions.onOpen(overlay, localOptions);
 				}
-
+                $(window).resize(function(){
 				el.on('resize', function (){
-					el.css('marginLeft', ($(window).width() - el.outerWidth())/3);
+					el.css('marginLeft', ($(window).width() - el.outerWidth())/2);
 				}).triggerHandler('resize');
-			},
+                });
+                $(window).resize();
+
+            },
 			close: function() {
 				var el = els.get(0);
 

@@ -137,7 +137,8 @@
    <link rel="stylesheet" href="/js/bootstrap-multiselect-master/css/prettify.css" type="text/css">
 <!--   <link href="/inc/cropUploader/css/jquery.Jcrop.min.css" rel="stylesheet" type="text/css" />-->
        <link href="/canon68452/jquery.fileapi/jcrop/jquery.Jcrop.min.css" rel="stylesheet" type="text/css" />
-       <link href="/canon68452/jquery.fileapi/statics/main.css" rel="stylesheet" type="text/css" />
+
+       <link rel="stylesheet" type="text/css" href="/canon68452/jquery.fileapi/statics/the-modal.css" media="all" />
 
 
 
@@ -157,14 +158,15 @@
 
        <script type="text/javascript">
               window.FileAPI = {
-                     debug: true // debug mode
+                     debug: false // debug mode
                      , staticPath: '/canon68452/jquery.fileapi/FileAPI/' // path to *.swf
               };
        </script>
        <script src="/canon68452/jquery.fileapi/FileAPI/FileAPI.min.js"></script>
        <script src="/canon68452/jquery.fileapi/jquery.fileapi.js"></script>
        <script src="/canon68452/jquery.fileapi/FileAPI/FileAPI.exif.js"></script>
-       <script src="/canon68452/jquery.fileapi/statics/jquery.modal.js"></script>
+<!--       <script src="/canon68452/jquery.fileapi/statics/jquery.modal.js"></script>-->
+<!--       <script type="text/javascript" src="/canon68452/jquery.fileapi/statics/jquery.the-modal.js"></script>-->
 
 
 
