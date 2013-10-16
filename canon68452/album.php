@@ -218,6 +218,7 @@ if (isset($_SESSION['current_cat'])) {
                                           <ul class="thumbnails">
                                                  <li class="span2">
                                                         <div class="thumbnail">
+
                                                                <img style="width: auto; height: auto;"
                                                                     src="/images/<?= $ln['img'] ?>"
                                                                     alt="-"/>

@@ -60,7 +60,6 @@
                             var file = ui.files[0];
                             if( file ){
                                    $('#popup').modall({
-                                          closeOnEsc: true,
                                           closeOnOverlayClick: false,
                                           onOpen: function (overlay){
                                                  $(overlay).on('click', '.js-upload', function (){
@@ -71,7 +70,7 @@
                                                  $('.js-img', overlay).cropper({
                                                         file: file,
                                                         bgColor: '#fff',
-                                                        maxSize: [540, 540],
+                                                        maxSize: [540, 760],
                                                         minSize: [32, 32],
                                                         selection: '90%',
                                                         aspectRatio: 1,
@@ -84,8 +83,10 @@
                                    }).open();
                             }
                      }
-              })
+              });
+
        </script>
+
 </div>
 <div class="modal" id="popup" style="display: none; top: 10%; z-index: 10000;">
        <div class="popup__body">
