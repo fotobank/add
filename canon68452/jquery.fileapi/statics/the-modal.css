@@ -2,61 +2,13 @@ body {
 	font-family: "Helvetica Neue",serif;
 }
 
-.example {
-    clear: both;
-    position: relative;
+.new_album {
+    float: left;
+    width: 290px;
     text-align: center;
+    margin-bottom: 20px;
+    margin-left: 40px;
 }
-	.example__left {
-		float: left;
-		width: 290px;
-		text-align: center;
-        margin-bottom: 20px;
-        margin-left: 40px;
-	}
-
-	.example__right {
-		margin-left: 320px;
-	}
-
-	.example__code {
-		padding: 1px 20px 0 20px;
-		overflow: auto;
-		max-height: 400px;
-		border-right: 4px solid #DDE0DA;
-		border-bottom: 4px solid #DDE0DA;
-		background-color: #fff;
-	}
-
-	.example h2 {
-		overflow: hidden;
-	}
-		.example h2 span {
-			display: block;
-		}
-
-	.example__tabs {
-		display: block;
-		font-size: 14px;
-		vertical-align: top;
-	}
-		.example__tabs a {
-			color: #36c;
-			cursor: pointer;
-			margin: 0 5px 2px;
-			border-bottom: 1px dotted #36c;
-		}
-			.example__tabs a.active {
-				color: #333;
-				cursor: default;
-				margin: 0;
-				padding: 0 5px 2px;
-				border-bottom: 0;
-				background-color: rgba(0,0,0,.1);
-				*background-color: #eee;
-			}
-
-
 
 .userpic .btn {
 	cursor: pointer;
@@ -172,6 +124,7 @@ body {
 	position: relative;
 	background: url('http://expomap.ru/images/users/no-userpic-big.gif') no-repeat;
 	background-size: cover;
+    text-align: center;
 }
 	.webcam .btn,
 	.userpic .btn {
@@ -232,15 +185,6 @@ body {
 	}
 
 
-.b-thumb {
-	float: left;
-	margin: 3px;
-	padding: 5px;
-	overflow: hidden;
-	position: relative;
-	box-shadow: 0 0 2px rgba(0,0,0,.4);
-	background-color: #fff;
-}
 	.b-thumb__del {
 		top: -6px;
 		right: -1px;
@@ -281,44 +225,6 @@ body {
 			height: 100%;
 			background: url('http://www.rubaxa.org/screenshot/b27ae1b0bcdcd13a6728774ed505.png') 50% 50% no-repeat;
 		}
-
-	.b-thumb__name {
-		width: 80px;
-		overflow: hidden;
-		font-size: 12px;
-	}
-
-	.b-thumb__progress {
-		top: 75px;
-		left: 10px;
-		right: 10px;
-		position: absolute;
-	}
-
-.themodal-overlay {
-	position: fixed;
-	bottom: 0;
-	left: 0;
-	top: 0;
-	right: 0;
-	z-index: 100000;
-	overflow: auto;
-	background-color: rgba(0, 0, 0, 0.5);
-}
-
-
-.userpic .btn {
-	cursor: pointer;
-	*zoom: 1;
-	*display: inline;
-	display: inline-block;
-	position: relative;
-	overflow: hidden;
-	font-size: 20px;
-	font-family: Arial,serif;
-	border-radius: 4px;
-	vertical-align: middle;
-}
 
 .btn_browse {
 		border: 1px solid rgba(0,0,0,.2);
@@ -380,21 +286,6 @@ body {
     background-color: orange;
 }
 
-.userpic {
-	width: 200px;
-	height: 200px;
-	border: 2px solid rgba(0,0,0,.3);
-	display: inline-block;
-	position: relative;
-}
-	.userpic .btn {
-		margin-top: 150px;
-	}
-
-	.userpic__preview {
-		position: absolute;
-	}
-
 
 .b-upload {
 	white-space: nowrap;
@@ -439,27 +330,7 @@ body {
 	box-shadow: 0 0 2px rgba(0,0,0,.4);
 	background-color: #fff;
 }
-	.b-thumb__rotate {
-		top: 40%;
-		left: 50%;
-		width: 32px;
-		height: 32px;
-		cursor: pointer;
-		margin: -16px 0 0 -16px;
-		position: absolute;
-		background: url('http://cdn1.iconfinder.com/data/icons/duesseldorf/32/refresh.png');
-	}
 
-	.b-thumb__preview {
-		width: 80px;
-		height: 80px;
-		-moz-transition: -moz-transform .2s ease-in;
-	}
-		.b-thumb__preview__pic {
-			width: 100%;
-			height: 100%;
-			xbackground: url('http://www.rubaxa.org/screenshot/b27ae1b0bcdcd13a6728774ed505.png') 50% 50% no-repeat;
-		}
 
 	.b-thumb__name {
 		width: 80px;

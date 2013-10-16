@@ -23,9 +23,9 @@ require_once (__DIR__.'/inc_album.php');
 
 <!-- создать альбом-->
 
-<div class="example__right">
-       <h2><span>Новый альбом</span></h2>
-</div>
+
+<h3><span>Новый альбом:</span></h3>
+
 
 <?
 //require_once(__DIR__.'/jquery.fileapi/inc_fileapi.php');
@@ -219,15 +219,22 @@ if (isset($_SESSION['current_cat'])) {
                                                  <li class="span2">
                                                         <div class="thumbnail">
 
-                                                               <img style="width: auto; height: auto;"
-                                                                    src="/images/<?= $ln['img'] ?>"
-                                                                    alt="-"/>
+                                                               <!--<img style="width: auto; height: auto;"
+                                                                    src="/images/<?/*= $ln['img'] */?>"
+                                                                    alt="-"/>-->
                                                                <?
-                                                               require_once(__DIR__.'/jquery.fileapi/inc_fileapi.php');
-                                                               ?>
-                                                               <div class="caption">
-                                                                      <h3><?= $ln['nm'] ?></h3>
+                                                               $imgPrev = new fileapi_selectImg();
+                                                               $dataImg = array(
+                                                                      "defaultThumb" => "/images/".$ln['img'],
+                                                                      "widthThumb" => "148px",
+                                                                      "heightThumb" => "148px"
+                                                               );
+                                                               $imgPrev->select($dataImg);
 
+                                                               ?>
+                                                               <div class="caption" style="margin-top: 40px;">
+                                                                      <div class="thumbnail">
+                                                                      <h3><?= $ln['nm'] ?></h3>
                                                                       <form action="index.php"
                                                                             method="post">
                                                                              <label for="appendedInputButton"></label>
@@ -244,7 +251,8 @@ if (isset($_SESSION['current_cat'])) {
                                                                                     type="submit"
                                                                                     value="переименовать"/>
                                                                       </form>
-
+                                                                      </div>
+                                                                      <div class="thumbnail">
                                                                       Папка альбома:
                                                                       "..<?=$ln['foto_folder']?><?=$ln['id']?>"
                                                                       <form action="index.php"
@@ -261,6 +269,8 @@ if (isset($_SESSION['current_cat'])) {
                                                                                     type="submit"
                                                                                     value="удалить альбом"/>
                                                                       </form>
+                                                                      </div>
+                                                                      <div class="thumbnail">
                                                                       Папка превьюшек:
                                                                       "..<?=$ln['foto_folder']?><?=$ln['id']?>/thumb"
                                                                       <form action="index.php"
@@ -277,6 +287,8 @@ if (isset($_SESSION['current_cat'])) {
                                                                                     type="submit"
                                                                                     value="удалить превьюшки"/>
                                                                       </form>
+                                                                      </div>
+                                                                             <div class="thumbnail">
                                                                       <form action="index.php"
                                                                             method="post">
                                                                              <div class="btn-toolbar">
@@ -297,6 +309,7 @@ if (isset($_SESSION['current_cat'])) {
                                                                                     </div>
                                                                              </div>
                                                                       </form>
+                                                                             </div>
                                                                </div>
                                                         </div>
                                                  </li>
@@ -319,7 +332,7 @@ if (isset($_SESSION['current_cat'])) {
                                                  <input class="btn-small btn-primary"
                                                         type="submit"
                                                         value="сохранить"
-                                                        style="margin-left: 20px;">
+                                                        style="margin: 5px 20px;">
                                           </form>
                                    </td>
                                    <td>

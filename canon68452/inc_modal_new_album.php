@@ -13,6 +13,7 @@
      tabindex="-1"
      data-replace="true"
      data-width="400px"
+     data-backdrop="static"
      aria-hidden="false">
        <div class="modal-header">
               <button type="button"
@@ -27,9 +28,13 @@
                                          method="post"
                                          enctype="multipart/form-data">
 
+                                                 <div class="new_album">
+                                                        <div class="thumbnail">
                                           <?
-                                          require_once(__DIR__.'/jquery.fileapi/inc_fileapi.php');
+//                                          require_once(__DIR__.'/jquery.fileapi/inc_fileapi.php');
                                           ?>
+                                                        </div>
+                                                 </div>
                                           <div class="clear"></div>
                                           <div class="input-prepend">
                                                  <label class="add-on"
@@ -84,104 +89,6 @@
                                                  for="descr">Описание</label>
                                           <textarea id="descr"
                                                     name="descr"></textarea>
-
-
-
-                                         <!-- <input type="hidden"
-                                                 id="x1"
-                                                 name="x1"/>
-                                          <input type="hidden"
-                                                 id="y1"
-                                                 name="y1"/>
-                                          <input type="hidden"
-                                                 id="x2"
-                                                 name="x2"/>
-                                          <input type="hidden"
-                                                 id="y2"
-                                                 name="y2"/>-->
-
-
-
-                                         <!-- <div style="margin-top: 5px;">
-                                                 <label class="add-on"
-                                                        for="image_file">Превью</label>
-                                                 <input type="file"
-                                                        id="image_file"
-                                                        name="image_file"
-                                                        onchange="fileSelectHandler(); $('.step2').modal('show');"/>
-                                          </div>-->
-                                          <!--<div class="error"></div>
-                                          <div class="step2 modal hide fade in animated fadeInDown"
-                                               tabindex="-1"
-                                               aria-hidden="false"
-                                               data-width="490">
-                                                 <div class="modal-header">
-                                                        <button type="button"
-                                                                class="close"
-                                                                data-dismiss="modal"
-                                                                aria-hidden="true">x
-                                                        </button>
-                                                        <h3>Выбор региона обрезки:</h3>
-                                                 </div>
-                                                 <div class="modal-body">
-                                                 <img id="preview" style="width: 460px;"/>
-                                                 <div class="info" style="display: none;">
-                                                        <div class="input-prepend">
-                                                               <label class="add-on"
-                                                                      for="filesize">Размер файла</label>
-                                                               <input class="span1"
-                                                                      type="text"
-                                                                      id="filesize"
-                                                                      name="filesize"
-                                                                      style="width: 203px; height: 25px;">
-                                                        </div>
-                                                        <div class="input-prepend">
-                                                               <label class="add-on"
-                                                                      for="filetype">Тип</label>
-                                                               <input class="span1"
-                                                                      type="text"
-                                                                      id="filetype"
-                                                                      name="filetype"
-                                                                      style="width: 203px; height: 25px;">
-                                                        </div>
-                                                        <div class="input-prepend">
-                                                               <label class="add-on"
-                                                                      for="filedim">Размер изображения</label>
-                                                               <input class="span1"
-                                                                      type="text"
-                                                                      id="filedim"
-                                                                      name="filedim"
-                                                                      style="width: 203px; height: 25px;">
-                                                        </div>
-                                                        <div class="input-prepend">
-                                                               <label class="add-on"
-                                                                      for="w">W</label><input class="span1"
-                                                                                              type="text"
-                                                                                              id="w"
-                                                                                              name="w"
-                                                                                              style="width: 203px; height: 25px;">
-                                                        </div>
-                                                        <div class="input-prepend">
-                                                               <label class="add-on"
-                                                                      for="h">H</label>
-                                                               <input class="span1"
-                                                                      type="text"
-                                                                      id="h"
-                                                                      name="h"
-                                                                      style="width: 203px; height: 25px;">
-                                                        </div>
-                                                 </div>
-                                                 </div>
-                                                 <div class="modal-footer">
-                                                        <input class="btn  btn-success"
-                                                               type="submit"
-                                                               value="Добавить"/>
-                                                        <button type="button"
-                                                                data-dismiss="modal"
-                                                                class="btn">Close
-                                                        </button>
-                                                 </div>
-                                          </div>-->
 
                                           <div class="modal-footer">
                                           <input class="btn  btn-success"

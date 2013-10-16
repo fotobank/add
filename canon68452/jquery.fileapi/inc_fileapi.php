@@ -7,19 +7,21 @@
  * To change this template use File | Settings | File Templates.
  */
 ?>
-<div class="example">
-       <div class="example__left">
               <div id="userpic"
-                   class="userpic">
-                     <div class="js-preview userpic__preview"></div>
+                   class="thumbnail userpic">
+                     <div class="js-preview userpic__preview">
+                            <img style="width: auto; height: auto;"
+                                 src="/images/<?= $ln['img'] ?>"
+                                 alt="-"/>
+                     </div>
                      <div class="btn btn-success js-fileapi-wrapper">
                             <div class="js-browse">
-                                   <span class="btn-txt">Выбор</span>
                                    <input type="file" name="filedata"/>
                                    <input type="hidden" id="x1" name="x1"/>
                                    <input type="hidden" id="y1" name="y1"/>
                                    <input type="hidden" id="h"  name="h"/>
                                    <input type="hidden" id="w"  name="w"/>
+                                   <span class="btn-txt">Выбор</span>
                             </div>
                             <div class="js-upload" style="display: none;">
                                    <div class="progress progress-success">
@@ -29,18 +31,8 @@
                             </div>
                      </div>
               </div>
-       </div>
-
 
        <script type="text/javascript">
-
-              // обновление информации обрезки ( обработчик событий onChange и onSelect)
-              function updateInfoData(e) {
-                     $('#x1').val(e.x);
-                     $('#y1').val(e.y);
-                     $('#w').val(e.w);
-                     $('#h').val(e.h);
-              }
 
               $('#userpic').fileapi({
                      url: '/canon68452/index.php',
@@ -51,8 +43,8 @@
                             active: { show: '.js-upload', hide: '.js-browse' },
                             preview: {
                                    el: '.js-preview',
-                                   width: 200,
-                                   height: 200
+                                   width: 150,
+                                   height: 150
                             },
                             progress: '.js-progress'
                      },
@@ -74,7 +66,13 @@
                                                         minSize: [32, 32],
                                                         selection: '90%',
                                                         aspectRatio: 1,
-                                                        onChange: updateInfoData,
+                                                        bgFade: true, // использовать эффект исчезновения
+                                                        onChange: function (e) {   // обновление информации обрезки
+                                                               $('#x1').val(e.x);
+                                                               $('#y1').val(e.y);
+                                                               $('#w').val(e.w);
+                                                               $('#h').val(e.h);
+                                                        },
                                                         onSelect: function (coords){
                                                                $('#userpic').fileapi('crop', file, coords);
                                                         }
@@ -87,7 +85,6 @@
 
        </script>
 
-</div>
 <div class="modal" id="popup" style="display: none; top: 10%; z-index: 10000;">
        <div class="popup__body">
               <div class="js-img"></div>
