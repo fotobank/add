@@ -5,7 +5,7 @@
  * Date: 16.10.13
  * Time: 23:39
  * To change this template use File | Settings | File Templates.
- * скрипт заманы картинки в превью альбома
+ * скрипт замены картинки в превью альбома (админка)
  */
  
        include (__DIR__.'/../../inc/config.php');

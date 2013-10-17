@@ -5,7 +5,7 @@
  * Date: 16.10.13
  * Time: 10:45
  * To change this template use File | Settings | File Templates.
- * модальное окно для кадрировки и отсылка файла по POST
+ * модальное окно для кадрировки и отправки файла по POST
  */
 
 class fileapi_modalResizeImg {
