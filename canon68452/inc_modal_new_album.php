@@ -5,6 +5,7 @@
  * Date: 14.10.13
  * Time: 1:28
  * To change this template use File | Settings | File Templates.
+ * модальное окно для создания нового альбома
  */
 
 ?>
@@ -30,9 +31,15 @@
 
                                                  <div class="new_album">
                                                         <div class="thumbnail">
-                                          <?
-//                                          require_once(__DIR__.'/jquery.fileapi/inc_fileapi.php');
-                                          ?>
+                                                               <?
+                                                               $imgAlbum->url = "/classes/fileapi/addThumbAlbum.php"; // скрипт обработки изображения на сервере
+                                                               $dataImg = array(
+                                                                      "defaultThumb" => "/img/not_foto.png", // картинка по умолчанию
+                                                                      "widthThumb" => 200, // размер окна превью
+                                                                      "heightThumb" => 200
+                                                               );
+                                                               $imgAlbum->prevResize($dataImg);
+                                                               ?>
                                                         </div>
                                                  </div>
                                           <div class="clear"></div>

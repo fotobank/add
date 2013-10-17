@@ -2,12 +2,13 @@
 /**
  * Created by JetBrains PhpStorm.
  * User: Jurii
- * Date: 16.10.13
- * Time: 23:39
+ * Date: 17.10.13
+ * Time: 21:49
  * To change this template use File | Settings | File Templates.
- * скрипт заманы картинки в превью альбома
+ * скрипт добавления картинки в превью альбома
  */
- 
+
+
        include (__DIR__.'/../../inc/config.php');
        include (__DIR__.'/../../inc/func.php');
 
@@ -23,22 +24,21 @@
        if (isset($_POST['_filedata'])) {
               if (isset($_FILES['filedata']) && $_FILES['filedata']['size'] != 0) {
                             $ext         = strtolower(substr($_FILES['filedata']['name'], 1 + strrpos($_FILES['filedata']['name'], ".")));
-                            $id_album    = trim($_SESSION['current_album']); // название альбома
 
                             /** загрузка картинки ---------------------------------------------------------------------------------------- */
-                            $sImage = new fileapi_resizeUploadedImg();
+                            $aImage = new fileapi_resizeUploadedImg();
                             $array  = array (
                                    "_FILESname"   => 'filedata', // имя загружаемого файла в массиве $_FILES
-                                   "newThumbName" => 'id'.$id_album.'.'.$ext, // имя конечного файла
-                                   "upload_dir"   => './../../images/', // папка для загрузки
+                                   "newThumbName" => 'tmp.'.$ext, // имя конечного файла
+                                   "upload_dir"   => './../../tmp/tmp_img/', // папка для загрузки
                                    "maxThumbSize" => 200, // ширина конечной картинки
                             );
-                            if(!$sImage->set($array)){
+                            if(!$aImage->set($array)){
                                    dump_r('Не могу загрузить файл');
                             }
                             /** загрузка картинки ---------------------------------------------------------------------------------------- */
               } else {
                      dump_r('Битый файл!');
               }
-              unset($sImage);
+              unset($aImage);
        }

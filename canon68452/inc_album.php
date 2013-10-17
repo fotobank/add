@@ -78,59 +78,35 @@
               }
        }
 
-
        // добавить альбом
        if (isset($_POST['go_add'])) {
-              if (isset($_FILES['filedata']) && $_FILES['filedata']['size'] != 0) {
-                     if ($_FILES['filedata']['size'] < 1024 * 15 * 1024) {
-                            $ext         = strtolower(substr($_FILES['filedata']['name'], 1 + strrpos($_FILES['filedata']['name'], ".")));
-                            $nm          = trim($_POST['nm']); // название альбома
-                            $descr       = trim($_POST['descr']); // описание
-                            $foto_folder = trim($_POST['foto_folder']); // размещение в фотобанке
-                            $id_category = intval($_POST['id_category']); // категория
-                            if (empty($nm)) {
-                                   $nm = 'Без имени';
-                            }
-                            try {
-                                   $id_album = go\DB\query('insert into `albums` (nm) VALUES (?string)', array($nm), 'id');
-                            }
-                            catch (go\DB\Exceptions\Exception $e) {
-                                   die('Ошибка при работе с базой данных');
-                            }
-                            go\DB\query('insert into `accordions` (id_album,collapse_numer,collapse_nm,accordion_nm) VALUES (?scalar,?i,?string,?string)',
-                                   array($id_album, '1', 'default', 'default'));
 
-                            /** загрузка картинки ---------------------------------------------------------------------------------------- */
-                            $sImage = new fileapi_uploadImg();
-                            $newThumbName = 'id'.$id_album.'.'.$ext;
-                            $array         = array(
-                            "_FILESname"   => 'filedata', // имя загружаемого файла в массиве $_FILES
-                            "newThumbName" => $newThumbName, // имя конечного файла
-                            "upload_dir"   => './../images/', // папка для загрузки
-                            "maxThumbSize" => 200, // ширина конечной картинки
-                            );
-                            if($sImage->set($array)){
-                                   go\DB\query('update albums set id_category = ?i, img = ?, order_field = ?i, descr = ?, foto_folder = ? where id = ?i',
-                                   array($id_category, $newThumbName, $id_album, $descr, $foto_folder, $id_album));
-                                   mkdir('../'.$foto_folder.$id_album, 0777, true) or die($php_errormsg);
-                                   $_SESSION['current_album'] = $id_album;
-                                   $_SESSION['current_cat']   = $id_category;
-                            } else {
-                                   go\DB\query('delete from albums where id ?i', array($id_album));
-                                   die('Не могу загрузить файл');
-                            }
-                            /** загрузка картинки ---------------------------------------------------------------------------------------- */
-
-                     } else {
-                            dump_r('Размер файла превышает 15 мегабайт');
-                     }
-              } else {
-                     dump_r('Битый файл!');
+              $ext         = strtolower(substr($_FILES['filedata']['name'], 1 + strrpos($_FILES['filedata']['name'], ".")));
+              $nm          = trim($_POST['nm']); // название альбома
+              $descr       = trim($_POST['descr']); // описание
+              $foto_folder = trim($_POST['foto_folder']); // размещение в фотобанке
+              $id_category = intval($_POST['id_category']); // категория
+              if (empty($nm)) {
+                     $nm = 'Без имени';
+              }
+              try {
+                     $id_album = go\DB\query('insert into `albums` (nm) VALUES (?string)', array($nm), 'id');
+                     $newThumbName = 'id'.$id_album.'.'.$ext;
+                     go\DB\query('insert into `accordions` (id_album,collapse_numer,collapse_nm,accordion_nm) VALUES (?scalar,?i,?string,?string)',
+                            array($id_album, '1', 'default', 'default'));
+                     go\DB\query('update albums set id_category = ?i, img = ?, order_field = ?i, descr = ?, foto_folder = ? where id = ?i',
+                            array($id_category, $newThumbName, $id_album, $descr, $foto_folder, $id_album));
+                     $source = './../tmp/tmp_img/tmp.'.$ext;
+                     copy($source, './../images/'.$newThumbName);
+                     unlink($source);
+                     mkdir('./../'.$foto_folder.$id_album, 0777, true) or die($php_errormsg);
+                     $_SESSION['current_album'] = $id_album;
+                     $_SESSION['current_cat']   = $id_category;
+              }
+              catch (go\DB\Exceptions\Exception $e) {
+                     die('Ошибка при работе с базой данных');
               }
        }
-
-
-
        /*
        Todo    - go_edit_name
         */

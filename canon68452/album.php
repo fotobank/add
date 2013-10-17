@@ -4,6 +4,7 @@ if (!isset($_SESSION['admin_logged'])) {
 }
 require_once (__DIR__.'/../inc/i_resize.php');
 require_once (__DIR__.'/inc_album.php');
+$imgAlbum = new fileapi_modalResizeImg();
 
 
 ?>
@@ -213,23 +214,15 @@ if (isset($_SESSION['current_cat'])) {
                                           <ul style="margin: 0;">
                                                  <li style="width: 222px;">
                                                         <div class="thumbnail">
-                                                               <form action="index.php"
-                                                                     method="post"
-                                                                     enctype="multipart/form-data">
                                                                <?
-                                                               $ini = array(
-                                                                      "url" => "/classes/fileapi/replaceThumb.php"
-                                                               );
-                                                               $imgPrev = new fileapi_selectImg($ini);
+                                                               $imgAlbum->url = "/classes/fileapi/replaceThumb.php";
                                                                $dataImg = array(
-                                                                      "defaultThumb" => "/images/".$ln['img'],
-                                                                      "widthThumb" => 200,
+                                                                      "defaultThumb" => "/images/".$ln['img'], // картинка по умолчанию
+                                                                      "widthThumb" => 200, // размер окна превью
                                                                       "heightThumb" => 200
                                                                );
-                                                               $imgPrev->replaceImg($dataImg);
-
+                                                               $imgAlbum->prevResize($dataImg);
                                                                ?>
-                                                               </form>
                                                                <div class="caption" style="margin-top: 10px;">
 
 
