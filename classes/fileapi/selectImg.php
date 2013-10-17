@@ -9,10 +9,27 @@
 
 class fileapi_selectImg {
 
+       private $pre = 0;                // префикс файлов
+       private $aspectRatio = 1;        // соотношение сторон
+       private $selection = '90%';      // область выделения при старте
+       private $url = true;                    // скрипт обработки загруженного файла
+       private $maxSize = '[540, 760]'; // размер окна кадрировки
+       private $minSize = '[32, 32]';   // min размер выбранной области
+       private $bgColor = '#fff';
 
-       public function __construct() {
 
+       /**
+        * @param $ini
+        */
+       public function __construct($ini) {
 
+              foreach($ini as $var => $data) {
+                     if(isset($this->$var)) {
+                            $this->$var = $data;
+                     }
+              }
+
+              // модальное окно кадрировки
        echo '<div class="modal" id="popup" style="display: none; top: 10%; z-index: 10000;">
                 <div class="popup__body">
                      <div class="js-img"></div>
@@ -21,31 +38,41 @@ class fileapi_selectImg {
                      <div class="js-upload btn btn_browse btn_browse_small">Кадрировать</div>
                 </div>
               </div>';
+       }
+
+       /**
+        * @param $var
+        * @param $data
+        */
+       public function __set($var, $data) {
+              if(isset($this->$var)) {
+                     $this->$var =  $data;
+              }
 
        }
 
+       public function replaceImg($dataImg) {
 
-
-    public function select($dataImg) {
+       $this->pre++;
 
        if(isset($dataImg['defaultThumb'])) {
-         $defaultThumb = "<img style='width: ".$dataImg['widthThumb']."; height: ".$dataImg['heightThumb'].";'
+         $defaultThumb = "<img style='width: ".$dataImg['widthThumb']."px; height: ".$dataImg['heightThumb']."px;'
                     src='".$dataImg['defaultThumb']."'
                     alt='-'/>";
        } else $defaultThumb = NULL;
 
 ?>
-<div id="userpic" class="thumbnail userpic" style="width: <?= $dataImg['widthThumb'] ?>; height: <?= $dataImg['heightThumb'] ?>;">
+<div id="userpic" class="thumbnail userpic" style="width: <?= $dataImg['widthThumb'] ?>px; height: <?= $dataImg['heightThumb'] ?>px;">
        <div class="js-preview userpic__preview">
               <?= $defaultThumb ?>
        </div>
        <div class="btn btn-success js-fileapi-wrapper">
               <div class="js-browse">
                      <input type="file" name="filedata"/>
-                     <input type="hidden" id="x1" name="x1"/>
-                     <input type="hidden" id="y1" name="y1"/>
-                     <input type="hidden" id="h"  name="h"/>
-                     <input type="hidden" id="w"  name="w"/>
+                     <input type="hidden" id="x<?= $this->pre ?>" name="x"/>
+                     <input type="hidden" id="y<?= $this->pre ?>" name="y"/>
+                     <input type="hidden" id="h<?= $this->pre ?>" name="h"/>
+                     <input type="hidden" id="w<?= $this->pre ?>" name="w"/>
                      <span class="btn-txt">Выбор</span>
               </div>
               <div class="js-upload" style="display: none;">
@@ -60,16 +87,16 @@ class fileapi_selectImg {
 
 <script type="text/javascript">
        $('#userpic').fileapi({
-              url: '/canon68452/index.php',
+              url: '<?= $this->url ?>',
               accept: 'image/*',
-              imageSize: { minWidth: 200, minHeight: 200 },
+              imageSize: { minWidth: 100, minHeight: 100 },
               dataType: false,
               elements: {
                      active: { show: '.js-upload', hide: '.js-browse' },
                      preview: {
                             el: '.js-preview',
-                            width: 150,
-                            height: 150
+                            width: '<?= $dataImg['widthThumb'] ?>',
+                            height: '<?= $dataImg['heightThumb'] ?>'
                      },
                      progress: '.js-progress'
               },
@@ -85,17 +112,17 @@ class fileapi_selectImg {
                                           });
                                           $('.js-img', overlay).cropper({
                                                  file: file,
-                                                 bgColor: '#fff',
-                                                 maxSize: [540, 760],
-                                                 minSize: [32, 32],
-                                                 selection: '90%',
-                                                 aspectRatio: 1,
+                                                 bgColor: '<?= $this->bgColor ?>',
+                                                 maxSize: <?= $this->maxSize ?>,
+                                                 minSize: <?= $this->minSize ?>,
+                                                 selection: '<?= $this->selection ?>',
+                                                 aspectRatio: '<?= $this->aspectRatio ?>',
                                                  bgFade: true, // использовать эффект исчезновения
                                                  onChange: function (e) {   // обновление информации обрезки
-                                                        $('#x1').val(e.x);
-                                                        $('#y1').val(e.y);
-                                                        $('#w').val(e.w);
-                                                        $('#h').val(e.h);
+                                                        $('<?="#x".$this->pre?>').val(e.x);
+                                                        $('<?="#y".$this->pre?>').val(e.y);
+                                                        $('<?="#w".$this->pre?>').val(e.w);
+                                                        $('<?="#h".$this->pre?>').val(e.h);
                                                  },
                                                  onSelect: function (coords){
                                                         $('#userpic').fileapi('crop', file, coords);

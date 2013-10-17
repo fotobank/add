@@ -31,7 +31,7 @@
                                                  <div class="new_album">
                                                         <div class="thumbnail">
                                           <?
-//                                          require_once(__DIR__.'/jquery.fileapi/inc_fileapi.php');
+                                          require_once(__DIR__.'/jquery.fileapi/inc_fileapi.php');
                                           ?>
                                                         </div>
                                                  </div>
@@ -112,8 +112,7 @@
 
 </div>
 
-<div class="offset1"
-     style="float:left">
+<div style="float:left; margin-right: 50px; margin-top: 3px;">
        <button class="btn btn-primary btn-large"
                href="#long"
                data-toggle="modal">Создать альбом

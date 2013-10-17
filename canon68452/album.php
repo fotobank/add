@@ -21,17 +21,10 @@ require_once (__DIR__.'/inc_album.php');
        </div>
 <div class="linBlue"></div>
 
-<!-- создать альбом-->
 
-
-<h3><span>Новый альбом:</span></h3>
-
+<!--<h3><span>Новый альбом:</span></h3>-->
 
 <?
-//require_once(__DIR__.'/jquery.fileapi/inc_fileapi.php');
-require_once(__DIR__.'/inc_modal_new_album.php');
-require_once(__DIR__.'/inc_album_warning.php');
-
 
 if (isset($_POST['go_delete'])) {
        $id           = $_POST['go_delete'];
@@ -103,13 +96,17 @@ if ($rs_cat) {
        }
 
        ?>
-       <hr/>
-       <div><h3>Редактор альбомов:</h3>
+
+              <div class="bheader" style="width: 1160px;"><h2>Редактор альбомов:</h2></div>
+
+
+       <?
+       require_once(__DIR__.'/inc_modal_new_album.php');
+       ?>
+
+       <div><strong>Выбрать категорию:</strong> <strong style="margin-left: 330px;">Выбрать альбом:</strong>
        </div>
-       <div><strong>Выбрать категорию:</strong> <strong style="margin-left: 300px;">Выбрать альбом:</strong>
-       </div>
-       <div class="controls"
-            style="float:left;">
+       <div class="controls" style="float:left;">
               <div class="input-append">
                      <form id="myForm1"
                            action="index.php"
@@ -215,26 +212,27 @@ if (isset($_SESSION['current_cat'])) {
                                    </thead>
                                    <tr>
                                    <td align="left">
-                                          <ul class="thumbnails">
-                                                 <li class="span2">
+                                          <ul style="margin: 0;">
+                                                 <li style="width: 222px;">
                                                         <div class="thumbnail">
-
-                                                               <!--<img style="width: auto; height: auto;"
-                                                                    src="/images/<?/*= $ln['img'] */?>"
-                                                                    alt="-"/>-->
                                                                <?
-                                                               $imgPrev = new fileapi_selectImg();
+                                                               $ini = array(
+                                                                      "url" => "/classes/fileapi/replaceThumb.php"
+                                                               );
+                                                               $imgPrev = new fileapi_selectImg($ini);
                                                                $dataImg = array(
                                                                       "defaultThumb" => "/images/".$ln['img'],
-                                                                      "widthThumb" => "148px",
-                                                                      "heightThumb" => "148px"
+                                                                      "widthThumb" => 200,
+                                                                      "heightThumb" => 200
                                                                );
-                                                               $imgPrev->select($dataImg);
+                                                        //       $imgPrev->replaceImg($dataImg);
 
                                                                ?>
-                                                               <div class="caption" style="margin-top: 40px;">
-                                                                      <div class="thumbnail">
+                                                               <div class="caption" style="margin-top: 10px;">
+
+
                                                                       <h3><?= $ln['nm'] ?></h3>
+
                                                                       <form action="index.php"
                                                                             method="post">
                                                                              <label for="appendedInputButton"></label>
@@ -242,7 +240,7 @@ if (isset($_SESSION['current_cat'])) {
                                                                                     type="text"
                                                                                     name="nm"
                                                                                     value="<?= $ln['nm'] ?>"
-                                                                                    style="height: 22px; width: 140px; margin-bottom: 5px;  border-radius: 4px 4px 4px 4px;"/>
+                                                                                    style="height: 22px; width: 194px; margin-bottom: 5px;  border-radius: 4px 4px 4px 4px;"/>
                                                                              <input class="btn btn-primary"
                                                                                     type="hidden"
                                                                                     name="go_edit_name"
@@ -251,8 +249,8 @@ if (isset($_SESSION['current_cat'])) {
                                                                                     type="submit"
                                                                                     value="переименовать"/>
                                                                       </form>
-                                                                      </div>
-                                                                      <div class="thumbnail">
+                                                                      <div class="linBlue"></div>
+
                                                                       Папка альбома:
                                                                       "..<?=$ln['foto_folder']?><?=$ln['id']?>"
                                                                       <form action="index.php"
@@ -269,8 +267,8 @@ if (isset($_SESSION['current_cat'])) {
                                                                                     type="submit"
                                                                                     value="удалить альбом"/>
                                                                       </form>
-                                                                      </div>
-                                                                      <div class="thumbnail">
+                                                                      <div class="linBlue"></div>
+
                                                                       Папка превьюшек:
                                                                       "..<?=$ln['foto_folder']?><?=$ln['id']?>/thumb"
                                                                       <form action="index.php"
@@ -287,8 +285,8 @@ if (isset($_SESSION['current_cat'])) {
                                                                                     type="submit"
                                                                                     value="удалить превьюшки"/>
                                                                       </form>
-                                                                      </div>
-                                                                             <div class="thumbnail">
+                                                                      <div class="linBlue"></div>
+
                                                                       <form action="index.php"
                                                                             method="post">
                                                                              <div class="btn-toolbar">
@@ -309,7 +307,7 @@ if (isset($_SESSION['current_cat'])) {
                                                                                     </div>
                                                                              </div>
                                                                       </form>
-                                                                             </div>
+
                                                                </div>
                                                         </div>
                                                  </li>
@@ -339,6 +337,7 @@ if (isset($_SESSION['current_cat'])) {
                                           <table border="0">
                                                  <tr>
                                                         <td>
+                                                        <div class="thumbnail">
                                                                <form action="index.php"
                                                                      method="post"
                                                                      style="margin: 5px;">
@@ -572,6 +571,7 @@ if (isset($_SESSION['current_cat'])) {
                                                                              <tr>
                                                                                     <td colspan="2"
                                                                                         align="center">
+                                                                                           <div class="linBlue"></div>
                                                                                            <input class="btn btn-primary"
                                                                                                   type="hidden"
                                                                                                   name="go_edit_nastr"
@@ -583,10 +583,12 @@ if (isset($_SESSION['current_cat'])) {
                                                                              </tr>
                                                                       </table>
                                                                </form>
+                                                           </div>
                                                         </td>
                                                  </tr>
                                                  <tr>
                                                         <td align="center">
+                                                               <div class="linBlue"></div>
                                                                <form action="index.php"
                                                                      name="go_ftp_upload"
                                                                      method="post"
@@ -605,6 +607,7 @@ if (isset($_SESSION['current_cat'])) {
                                                                              type="submit"
                                                                              value="Добавить с FTP"/><br/>
                                                                </form>
+                                                               <div class="linBlue"></div>
                                                         </td>
                                                         <td>
                                                                <iframe id="hiddenframe"
@@ -936,5 +939,7 @@ if (isset($_SESSION['collapse_numer']) && isset($_SESSION['alb_num'])) {
               }
        }
 }
+require_once(__DIR__.'/inc_album_warning.php');
+
 ?>
 <div style="clear: both; display: block; height: 100px;"></div>

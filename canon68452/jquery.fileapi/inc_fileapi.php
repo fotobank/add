@@ -9,11 +9,7 @@
 ?>
               <div id="userpic"
                    class="thumbnail userpic">
-                     <div class="js-preview userpic__preview">
-                            <img style="width: auto; height: auto;"
-                                 src="/images/<?= $ln['img'] ?>"
-                                 alt="-"/>
-                     </div>
+                     <div class="js-preview userpic__preview"></div>
                      <div class="btn btn-success js-fileapi-wrapper">
                             <div class="js-browse">
                                    <input type="file" name="filedata"/>
@@ -43,8 +39,8 @@
                             active: { show: '.js-upload', hide: '.js-browse' },
                             preview: {
                                    el: '.js-preview',
-                                   width: 150,
-                                   height: 150
+                                   width: 200,
+                                   height: 200
                             },
                             progress: '.js-progress'
                      },

@@ -101,7 +101,7 @@
                                    array($id_album, '1', 'default', 'default'));
 
                             /** загрузка картинки ---------------------------------------------------------------------------------------- */
-                            $sImage = new uploadImgThumb();
+                            $sImage = new fileapi_uploadImg();
                             $newThumbName = 'id'.$id_album.'.'.$ext;
                             $array         = array(
                             "_FILESname"   => 'filedata', // имя загружаемого файла в массиве $_FILES
