@@ -15,9 +15,7 @@
        ini_set('display_errors', 1);
 
 
-       function errLogin(){
-              echo '<div style="position: absolute;width: 260px; left: 50%; top:5%; margin-left: -130px;"><div class="block red">Не правильный логин или пароль!</div></div>';
-       }
+       if (isset($_SESSION['admin_logged'])) {
 
 
        if (isset($_POST['_filedata'])) {
@@ -41,4 +39,7 @@
                      dump_r('Битый файл!');
               }
               unset($sImage);
+           }
+       } else {
+              echo '<div style="position: absolute;width: 260px; left: 50%; top:5%; margin-left: -130px;"><div class="block red">Не правильный логин или пароль!</div></div>';
        }

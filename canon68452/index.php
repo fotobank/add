@@ -21,7 +21,7 @@
 			if ($_POST['op'] == 'out')
 				{
 					unset($_SESSION['admin_logged']);
-				   destroySession();
+				  destroySession();
 					main_redir();
 				}
 			else
@@ -29,17 +29,17 @@
 
 					if (htmlspecialchars($_POST['login']) == login() && md5(htmlspecialchars($_POST['pass'])) == pass())
 						{
-							$_SESSION['admin_logged'] = true;
+							 $_SESSION['admin_logged'] = true;
 						   setcookie('admnews',md5(htmlspecialchars($_POST['login']).'///'.md5(htmlspecialchars($_POST['pass'])),time()+86400));
 						   setcookie('admnewswar','');
-							main_redir();
+							 main_redir();
 						} else {
 					  if(isset($_COOKIE['admnewswar']) && intval($_COOKIE['admnewswar'])>0){
-						 setcookie('admnewswar',$_COOKIE['admnewswar']+1,time()+3600);
-						 errLogin();
+						   setcookie('admnewswar',$_COOKIE['admnewswar']+1,time()+3600);
+						   errLogin();
 					  } else{
-						 setcookie('admnewswar',1,time()+3600);
-						 errLogin();
+						   setcookie('admnewswar',1,time()+3600);
+						   errLogin();
 
 //					  echo '<div class="title2">Не правельный логин или пароль</div><div class="content2"><a href="?">Авторизация</a></div>';
 //						   exit;
@@ -57,7 +57,6 @@
 
 	// обработка ошибок
 	$error_processor = Error_Processor::getInstance();
-
 	$Debug_HackerConsole_Main = Debug_HackerConsole_Main::getInstance(true);
 
 //   new Debug_HackerConsole_Main(true);

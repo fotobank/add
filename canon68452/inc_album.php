@@ -19,9 +19,7 @@
                      sendFtp();
               });
        </script>
-
 <?
-
        // Функция, подсчитывающая количество файлов $dir
        function get_ftp_size($ftp_handle, $dir, $global_size = 0) {
 
@@ -37,8 +35,6 @@
 
               return $global_size;
        }
-
-
 
        function hardFlush($proc, $id, $remote_file) {
 

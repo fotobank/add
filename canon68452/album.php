@@ -6,6 +6,7 @@ require_once (__DIR__.'/../inc/i_resize.php');
 require_once (__DIR__.'/inc_album.php');
 $imgAlbum = new fileapi_modalResizeImg();
 
+$fotobank_on  = go\DB\query('select `param_value` from `adminka` where `param_name` = ?string', array('fotobank_on'), 'el');
 
 ?>
 <div style="float: left;">
@@ -14,9 +15,10 @@ $imgAlbum = new fileapi_modalResizeImg();
        <div class="slideThree">
               <input id="slideThree1"
                      type='checkbox'
-                     NAME='watermark'
+                     NAME='fotobank_on'
                      VALUE='yes'
-                     <?if (isset($ln['watermark'])) {
+                     onclick="ajaxPostQ('/canon68452/index.php', '', { fotobank_on: $('#slideThree1').attr('checked') })"
+                     <?if ($fotobank_on == 'on') {
                      echo 'checked="checked"';
               } ?> /> <label for="slideThree1"></label>
        </div>
@@ -24,6 +26,12 @@ $imgAlbum = new fileapi_modalResizeImg();
 
 
 <?
+
+if (isset($_POST['fotobank_on'])) {
+$fotobank_on  = trim($_POST['fotobank_on']);
+dump_r($fotobank_on);
+}
+
 
 if (isset($_POST['go_delete'])) {
        $id           = $_POST['go_delete'];
@@ -100,7 +108,7 @@ if ($rs_cat) {
 
 
        <?
-       require_once(__DIR__.'/inc_modal_new_album.php');
+       include_once(__DIR__.'/inc_modal_new_album.php');
        ?>
 
        <div><strong>Выбрать категорию:</strong> <strong style="margin-left: 330px;">Выбрать альбом:</strong>
