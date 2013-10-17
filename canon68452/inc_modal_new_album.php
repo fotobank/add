@@ -31,7 +31,7 @@
                                                  <div class="new_album">
                                                         <div class="thumbnail">
                                           <?
-                                          require_once(__DIR__.'/jquery.fileapi/inc_fileapi.php');
+//                                          require_once(__DIR__.'/jquery.fileapi/inc_fileapi.php');
                                           ?>
                                                         </div>
                                                  </div>

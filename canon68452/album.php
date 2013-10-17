@@ -22,8 +22,6 @@ require_once (__DIR__.'/inc_album.php');
 <div class="linBlue"></div>
 
 
-<!--<h3><span>Новый альбом:</span></h3>-->
-
 <?
 
 if (isset($_POST['go_delete'])) {
@@ -215,6 +213,9 @@ if (isset($_SESSION['current_cat'])) {
                                           <ul style="margin: 0;">
                                                  <li style="width: 222px;">
                                                         <div class="thumbnail">
+                                                               <form action="index.php"
+                                                                     method="post"
+                                                                     enctype="multipart/form-data">
                                                                <?
                                                                $ini = array(
                                                                       "url" => "/classes/fileapi/replaceThumb.php"
@@ -225,14 +226,14 @@ if (isset($_SESSION['current_cat'])) {
                                                                       "widthThumb" => 200,
                                                                       "heightThumb" => 200
                                                                );
-                                                        //       $imgPrev->replaceImg($dataImg);
+                                                               $imgPrev->replaceImg($dataImg);
 
                                                                ?>
+                                                               </form>
                                                                <div class="caption" style="margin-top: 10px;">
 
 
                                                                       <h3><?= $ln['nm'] ?></h3>
-
                                                                       <form action="index.php"
                                                                             method="post">
                                                                              <label for="appendedInputButton"></label>

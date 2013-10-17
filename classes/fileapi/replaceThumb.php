@@ -17,11 +17,12 @@
               echo '<div style="position: absolute;width: 260px; left: 50%; top:5%; margin-left: -130px;"><div class="block red">Не правильный логин или пароль!</div></div>';
        }
 
+
        if (isset($_POST['_filedata'])) {
               if (isset($_FILES['filedata']) && $_FILES['filedata']['size'] != 0) {
                      if ($_FILES['filedata']['size'] < 1024 * 15 * 1024) {
                             $ext         = strtolower(substr($_FILES['filedata']['name'], 1 + strrpos($_FILES['filedata']['name'], ".")));
-                            $id_album          = trim($_SESSION['current_album']); // название альбома
+                            $id_album    = trim($_SESSION['current_album']); // название альбома
 
                             /** загрузка картинки ---------------------------------------------------------------------------------------- */
                             $sImage = new fileapi_uploadImg();
