@@ -81,7 +81,7 @@ if ($id > 0)
 	                                <?
 	                                $id_album = isset($_SESSION['current_album']) ? $_SESSION['current_album'] : null;
 	                                $vote_price = floatval(go\DB\query('select vote_price from albums where id = ?i', array($id_album), 'el'));
-											  $user_balans = go\DB\query('select balans from users where id = ?i',array($_SESSION['userid']),'el');
+											            $user_balans = go\DB\query('select balans from users where id = ?i',array($_SESSION['userid']),'el');
 	                                ?>
                           <input type="button" value="Голосовать" style="cursor: pointer;" onClick="goVote('<?=$user_balans?>','<?=$vote_price?>','<?=$photo_data['id']?>');"/><br/>
                                     Голосов: (<?=$photo_data['votes']?>)

@@ -161,16 +161,22 @@
                                           </h2>
                                           <script type='text/javascript'>
                                                  $(function () {
-                                                        var t = setInterval(function () {
-                                                               function f(x) {
+                                                        setInterval(function () {
+                                                               function iTime(x) {
                                                                       return (x / 100).toFixed(2).substr(2)
                                                                }
-
-                                                               var o = document.getElementById('timer'), w = 60, y = o.innerHTML.split(':'),
-                                                                      v = y [0] * w + (y [1] - 1), s = v % w, m = (v - s) / w;
-                                                               if (s < 0)
-                                                                      var v = o.getAttribute('long').split(':'), m = v [0], s = v [1];
-                                                               o.innerHTML = [f(m), f(s)].join(':');
+                                                               var o = document.getElementById('timer'),
+                                                                      w = 60,
+                                                                      y = o.innerHTML.split(':'),
+                                                                      v = y [0] * w + (y [1] - 1),
+                                                                      s = v % w,
+                                                                      m = (v - s) / w;
+                                                               if (s < 0) {
+                                                                       v = o.getAttribute('long').split(':');
+                                                                       m = v [0];
+                                                                       s = v [1];
+                                                               }
+                                                               o.innerHTML = [iTime(m), iTime(s)].join(':');
                                                         }, 1000);
                                                  });
                                           </script>
@@ -220,18 +226,14 @@
                                    if (intval($sz[0]) > intval($sz[1])) {
                                           $preW = "155px;";
                                           $preH = "170px;";
-                                          $ImgWidth  = intval($sz[1]);
-                                          $ImgHeight = intval($sz[0]);
                                    } else {
                                           $preW = "170px;";
                                           $preH = "155px;";
-                                          $ImgWidth  = intval($sz[0]);
-                                          $ImgHeight = intval($sz[1]);
                                    }
                                    ?>
                                    <div class="podlogka">
                                           <figure class="ramka"
-                                                  onClick="preview(<?= $ln['id'] ?>, <?= $ImgWidth ?>, <?= $ImgHeight ?>);">
+                                                  onClick="preview(<?= $ln['id'] ?>;">
                                                  <img class="lazy"
                                                       data-original="/thumb.php?num=<?= substr(trim($ln['img']), 2, -4) ?>"
                                                       id="<?= substr(trim($ln['img']), 2, -4) ?>"
@@ -303,13 +305,27 @@
               $current_page = isset($_GET['current_page']) ? intval($_GET['current_page']) : 0;
               $widthSait    = 1200; // px
               $margP        = 50; // предпологаемый правый маргин px
+
+
+              $fotoFolder = fotoFolder();
+              $psw = "Protected_Site_Sec"; // секретная строка
+              $iv_len = 16; // сложность шифра
+              $md5_encrypt = new md5_encrypt($psw, $iv_len);
+
               if ($may_view) {
                      $start = $current_page * PHOTOS_ON_PAGE;
                      $rs    = go\DB\query(
-                            'select SQL_CALC_FOUND_ROWS p.* from photos p where id_album = ?i
-                             order by img ASC, id ASC limit ?i,'.PHOTOS_ON_PAGE,
+                            'select SQL_CALC_FOUND_ROWS  p.id_album,
+                             p.nm,
+                             p.img,
+                             a.watermark,
+                             a.ip_marker
+                             FROM photos p, albums a
+                             WHERE p.id_album = ?i
+                             AND p.id_album = a.id
+                             ORDER by p.img ASC, p.id ASC limit ?i,'.PHOTOS_ON_PAGE,
                             array($session->get('current_album'), $start), 'assoc');
-                     $record_count                                             = go\DB\query('select FOUND_ROWS() as cnt', NULL, 'el'); // количество записей
+                     $record_count = go\DB\query('select FOUND_ROWS() as cnt', NULL, 'el'); // количество записей
                      $_SESSION['record_count'][$session->get('current_album')] = $record_count;
                      if ($rs) {
                             ?>
@@ -324,24 +340,27 @@
                             $koll = $data['koll'];
                             $kollFoto = 1;
                             foreach ($rs as $key => $ln) {
-                                   $source = ($_SERVER['DOCUMENT_ROOT'].fotoFolder().$ln['id_album'].'/'.$ln['img']);
+                                   $encrypted = $md5_encrypt->ret($fotoFolder.']['.$ln['id_album'].']['.$ln['img'].']['.$ln['watermark'].']['.$ln['ip_marker']);
+                                   $source = ($_SERVER['DOCUMENT_ROOT'].$fotoFolder.$ln['id_album'].'/'.$ln['img']);
                                    $sz     = @getimagesize($source);
                                    /* ширина превьюшек px */
                                    if (intval($sz[0]) > intval($sz[1])) {
-                                          $sz_string = 'width="'.$width.'px"';
                                           $preW = 'width="'.$width.'px"';
                                           $preH = 'height="'.($width / 1.327).'px"';
                                    } else {
-                                          $sz_string = 'height="'.($width * 1.066).'px"';
                                           $preW = 'height="'.($width * 1.066).'px"';
                                           $preH = 'width="'.($width / 1.247).'px"';
                                    }
                                    if ((($kollFoto == $koll))) {
+                                          /**
+                                           * старая ссылка
+                                           * href="/dir.php?num=<?= substr(($ln['img']), 2, -4) ?>"
+                                           */
                                           ?>
                                           <a class="modern"
                                              style="position: absolute; float: right;"
-                                             href="/dir.php?num=<?= substr(($ln['img']), 2, -4) ?>"
-                                             title="Фото № <?= $ln['nm'] ?>"> <img id="<?= substr(trim($ln['img']), 2, -4) ?>"
+                                             href="/loader.php?<?=$encrypted?>"
+                                             title="Фото № <?= $ln['nm'] ?>"> <img id="<?= substr(trim($ln['img']), 2, -4); ?>"
                                                                                    class="lazy" <?=$preW?> <?=$preH?>
                                                                                    src=""
                                                                                    data-original="/thumb.php?num=<?= substr(trim($ln['img']), 2, -4) ?>"
@@ -464,22 +483,17 @@
                                    $sz                = @getimagesize($source);
                                    $id_foto[$pos_num] = ($ln['id']);
                                    /**
-                                    * @todo  размер топ 5
+                                    * размер топ 5
                                     */
                                    if (intval($sz[0]) > intval($sz[1])) {
                                           $sz_string = 'width="165px"';
-                                          $ImgWidth  = intval($sz[1]);
-                                          $ImgHeight = intval($sz[0]);
                                    } else {
                                           $sz_string = 'height="195px"';
-                                          $ImgWidth  = intval($sz[0]);
-                                          $ImgHeight = intval($sz[1]);
                                    }
                                    ?>
                                    <div id="foto_top">
-                                          <!--  <div  class="span2 offset0" >-->
                                           <figure class="ramka"
-                                                  onClick="previewTop(<?= $ln['id'].','.$ImgWidth.','.$ImgHeight ?>);">
+                                                  onClick="previewTop(<?= $ln['id'] ?>);">
 
                                                  <span class="top_pos"
                                                        style="opacity: 0;"><?=$pos_num?></span> <img class="lazy"
@@ -490,7 +504,7 @@
                                                                                                      alt="<?= $ln['nm'] ?>"
                                                                                                      title="Нажмите для просмотра" <?=$sz_string?> />
                                                  <figcaption><span style="font-size: x-small; font-family: Times, serif; ">№ <?=$ln['nm']?>
-                                                                                                                           Голосов:<span class="badge badge-warning">
+                                                                                                     Голосов:<span class="badge badge-warning">
 																									<span id="s<?= substr(trim($ln['img']), 2, -4) ?>"
                                                         style="font-size: x-small; font-family: 'Open Sans', sans-serif; "><?=$ln['votes']?></span>
                 								 </span><div id="d<?= substr(trim($ln['img']), 2, -4) ?>"
@@ -542,9 +556,7 @@
                      if ($rs) {
                             $pos_num = 1;
                             foreach ($rs as $ln) {
-                                   $source            =
-                                          $_SERVER['DOCUMENT_ROOT'].fotoFolder().$ln['id_album'].'/'
-                                          .$ln['img'];
+                                   $source            = $_SERVER['DOCUMENT_ROOT'].fotoFolder().$ln['id_album'].'/'.$ln['img'];
                                    $sz                = @getimagesize($source);
                                    $id_foto[$pos_num] = ($ln['id']);
                                    /**
@@ -564,28 +576,19 @@
                                              data-original-title="Фото № <?= $ln['nm'] ?>">
                                                  <figure class="ramka">
                                                         <span class="top_pos"
-                                                              style="opacity: 0;"><?=$pos_num?></span> <img class="lazy"
-                                                                                                            data-original="thumb.php?num=<?= substr(trim($ln['img']),
-                                                                                                                   2, -4) ?>"
-                                                                                                            id="<?= substr(trim($ln['img']), 2, -4) ?>"
-                                                                                                            src=""
-                                                                                                            alt="<?= $ln['nm'] ?>"
-                                                                                                            title="<?= $pos_num ?> место в рейтинге голосования" <?=$sz_string?>
-                                                                                                            data-placement="top"/>
-                                                        <figcaption><span style="font-size: x-small; font-family: Times, serif; ">№ <?=$ln['nm']?>
-                                                                                                                                  Голосов:<span
-                                                                             class="badge badge-warning"> <span id="s<?= substr(trim($ln['img']),
-                                                                                    2,
-                                                                                    -4) ?>"
-                                                                                                                style="font-size: x-small; font-family: 'Open Sans', sans-serif; "><?=$ln['votes']?></span>
-                 </span><div id="d<?= substr(trim($ln['img']),
-                                                                             2,
-                                                                             -4) ?>"
-                             style="width: 146px;">
-                                                                             Рейтинг: <?echo str_repeat('<img src="/img/reyt.png"/>', floor(
-                                                                                    $ln['votes']
-                                                                                    / 5));?>
-                                                                      </div></span>
+                                                              style="opacity: 0;"><?=$pos_num?></span>
+                                                        <img class="lazy"
+                                                           data-original="thumb.php?num=<?= substr(trim($ln['img']), 2, -4) ?>"
+                                                           id="<?= substr(trim($ln['img']), 2, -4) ?>"
+                                                           src="" alt="<?= $ln['nm'] ?>"
+                                                           title="<?= $pos_num ?> место в рейтинге голосования" <?=$sz_string?>
+                                                           data-placement="top"/>
+                                                        <figcaption><span style="font-size: x-small; font-family: Times, serif; ">№ <?=$ln['nm']?>Голосов:<span class="badge badge-warning">
+                                                            <span id="s<?= substr(trim($ln['img']), 2, -4) ?>"
+                                                                  style="font-size: x-small; font-family: 'Open Sans', sans-serif; "><?=$ln['votes']?></span>
+                                   </span><div id="d<?= substr(trim($ln['img']), 2, -4) ?>"
+                                                 style="width: 146px;">Рейтинг: <?echo str_repeat('<img src="/img/reyt.png"/>', floor($ln['votes']/ 5));?>
+                                   </div></span>
                                                         </figcaption>
                                                  </figure>
                                           </a>
@@ -743,20 +746,15 @@
                                    }
                                    echo "
                   								<div class='accordion-group'>
-																										<div class='accordion-heading'>
-																										<a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion2' href='#collapse"
-                                        .$key."'>
-                  		".$collapse_nm."
-                 			 </a>
-																										</div>
-																										<div id='collapse".$key."' class='accordion-body collapse ".$in."'>
-																										<div class='accordion-inner'>
-																										<p class='bukvica'><span style='font-size:11.0pt;'>
-                 							 ".$collapse."
-                  							</span></p>
-																								</div>
-																										</div>
-																												</div>	";
+																	<div class='accordion-heading'>
+																	<a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion2' href='#collapse".$key."'>".$collapse_nm."</a>
+                                      </div>
+                                      <div id='collapse".$key."' class='accordion-body collapse ".$in."'>
+                                      <div class='accordion-inner'>
+                                      <p class='bukvica'><span style='font-size:11.0pt;'>".$collapse."</span></p>
+                                  </div>
+                                      </div>
+                                          </div>	";
 
                             }
                             $nameButton = ($acc[$current_album][$key]['accordion_nm'] == 'default') ?
@@ -807,8 +805,7 @@
             class="span3">
               <div class="alb_logo">
                      <div id="fb_alb_fotoP">
-                            <img src="album_id.php?num=<?= substr(($album_data['img']),
-                                   2, -4) ?>"
+                            <img src="album_id.php?num=<?= substr(($album_data['img']), 2, -4) ?>"
                                  width="130px"
                                  height="124px"
                                  alt="-"/>
@@ -832,14 +829,14 @@
                                    array($current_album), 'assoc');
                             $session->set('record_count/'.$current_album, go\DB\query('select FOUND_ROWS() as cnt', NULL, 'el')); // количество записей
                      }
-                     $pager = new Pager2($session->get("record_count/$current_album"), PHOTOS_ON_PAGE, new pagerHtmlRenderer());
-                     $pager->setDelta(3);
-                     $pager->setFirstPagesCnt(3);
-                     $pager->setLastPagesCnt(3);
-                     $pager->setPageVarName("current_page");
+                     $pager = new Pager2($session->get("record_count/".intval($current_album)), PHOTOS_ON_PAGE, new pagerHtmlRenderer());
+                     $pager->delta = 3;
+                     $pager->firstPagesCnt = 3;
+                     $pager->lastPagesCnt = 3;
+                     $pager->setPageVarName("pg");
                      $pager->enableCacheRemover = false;
-                     echo $pager->renderTop();
-                     // $pager->printDebug();
+                     $pager->renderTop();
+                    // $pager->printDebug();
                      ?>
 
                      <!-- Вывод фото в альбом -->
@@ -864,13 +861,7 @@
                          style="clear: both; margin-bottom: -20px; margin-top: 0"/>
 
                      <?
-                     $pager = new Pager2($session->get('record_count/'.$current_album), PHOTOS_ON_PAGE, new pagerHtmlRenderer());
-                     $pager->setDelta(3);
-                     $pager->setFirstPagesCnt(3);
-                     $pager->setLastPagesCnt(3);
-                     $pager->setPageVarName("current_page");
-                     $pager->enableCacheRemover = true;
-                     echo $pager->render();
+                     $pager->render();
                      //		$pager->printDebug();
               } else {
                      /**  подписка на альбом (когда альбом появится в категории)*/

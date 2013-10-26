@@ -1,3 +1,4 @@
 <?php
-// Silence is golden.
+include(__DIR__.'/func.php');
+main_redir('../index.php');
 ?>

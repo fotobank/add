@@ -549,6 +549,10 @@
                             $aElem[]     = $this->XML_DOC->createElement('CONTEXT', $sVars);
                             $oSource     = $this->XML_DOC->createElement('SOURCE');
                             $aSourceElem = array();
+                            $iErrLine--;
+                            if ($iErrLine < 0) {
+                                   $iErrLine = 0;
+                            }
                             $numLine     = $iErrLine - $this->iNbLines;
                             foreach ($this->getLine($sErrFile, $iErrLine) as $iLine => $sLine) {
                                    // $sLine = utf8_encode($sLine);

@@ -12,9 +12,8 @@
   } 
 
        // Изменение размеров изображения 
-function imageresize($outfile,$infile,$neww,$newh,$quality,$warermark=0,$ip_marker=0,$sharping=0)
+function imageresize($outfile, $infile, $neww, $newh, $quality, $warermark=0, $ip_marker=0, $sharping=0)
   	     {
-//	var_dump ('Sharping - '.$sharping.';  Warermark - '.$warermark.';  Ip_marker - '.$ip_marker);		 		 
             $ext = strtolower(substr($infile, strrpos($infile, '.') + 1));  	    
             switch($ext)
          {
@@ -41,7 +40,6 @@ function imageresize($outfile,$infile,$neww,$newh,$quality,$warermark=0,$ip_mark
 	            $min = $h_i;
 				$otn = $w_i/$h_i;
              } else {
-	           // $y_o = ($h_i - $w_i) / 2;
 	            $min = $w_i;
 				$x_o = 0;
 				$otn = $h_i/$w_i;
@@ -65,17 +63,15 @@ function imageresize($outfile,$infile,$neww,$newh,$quality,$warermark=0,$ip_mark
 		     }			  
                }			        
 			$img_o = imagecreatetruecolor($w_n, $h_n);	
-			imagecopyresampled($img_o,$im,0,0,$x_o,0,$w_n,$h_n,$w_o,$h_o);
+			imagecopyresampled($img_o, $im, 0, 0, $x_o, 0, $w_n, $h_n, $w_o, $h_o);
 
 	if ($ip_marker == 1)
 		  {			
-         $iTextColor = imagecolorallocate($img_o, 250, 250, 250); // Определяем цвет текста
+      $iTextColor = imagecolorallocate($img_o, 250, 250, 250); // Определяем цвет текста
 			$sIP = Get_IP(); // Определяем IP посетителя
-				  // $infile = iconv('utf-8', 'cp1251', $infile);
 			$zap = basename ($infile);
 			$rs = go\DB\query('SELECT nm FROM photos WHERE img = ?string',array($zap), 'el');
 			$text = win2uni("Ваш IP-adress: {$sIP}, фотография # {$rs}");
-      //  imagestring($img_o, 3, $w_n/2-240, $h_n*0.05, $text, $iTextColor); // Рисуем текст
 			
 			define('WIDTH', $w_n);
             define('HEIGHT', $h_n);
@@ -98,8 +94,7 @@ function imageresize($outfile,$infile,$neww,$newh,$quality,$warermark=0,$ip_mark
             $img_o,      // как всегда, идентификатор ресурса
             FONT_SIZE,   // размер шрифта
             0,           // угол наклона шрифта
-            $X, $Y,      // координаты (x,y), соответствующие левому нижнему
-                         // углу первого символа
+            $X, $Y,      // координаты (x,y), соответствующие левому нижнему углу первого символа
             $iTextColor, // цвет шрифта
             FONT_NAME,   // имя ttf-файла
             $text
@@ -118,23 +113,20 @@ function imageresize($outfile,$infile,$neww,$newh,$quality,$warermark=0,$ip_mark
 
 	if ($sharping == 1)
 		  {
-	        $sharpenMatrix = array(
-	                    array(0, -1, 0),
-	                    array(-1, 15, -1),
-	                    array(0, -1, 0)
+	    $sharpenMatrix = array(
+	                     array(0, -1, 0),
+	                     array(-1, 15, -1),
+	                     array(0, -1, 0)
                                       );
-            $divisor = array_sum(array_map('array_sum', $sharpenMatrix));			
-            $offset = 0;
+      $divisor = array_sum(array_map('array_sum', $sharpenMatrix));
+      $offset = 0;
 			imageconvolution($img_o, $sharpenMatrix, $divisor, $offset);
 		  }
 
+			imagejpeg($img_o,$outfile,$quality);
+      imagedestroy($im);
+      imagedestroy($img_o);
 
-				imagejpeg($img_o,$outfile,$quality);
-		//		$input_file  = $outfile;
-		//		$output_file = $outfile;
-		//		jpeg_cleaner($input_file, $output_file);
-            imagedestroy($im);
-            imagedestroy($img_o);			
 			return 'true';			
            }
 			else

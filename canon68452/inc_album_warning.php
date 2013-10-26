@@ -7,7 +7,7 @@
  * To change this template use File | Settings | File Templates.
  */
 ?>
-<fieldset style="width:240px; float:none; font-size:14px; padding: 10px;">
+<fieldset style="width:300px; float:none; font-size:14px; padding: 10px;">
        <legend style="font-weight:bold; width: auto;">Info:</legend>
        <ul style="margin-left: 20px;">
           <li><p>¬од€ной знак дл€ фотобанка и IP надпись формируетс€ на сервере в момент <b>просмотра.</b></p></li>

@@ -22,7 +22,8 @@
 				$odebug->mail_Period  = 5; // Minimal period for sending an error message (in minutes)
 				$odebug->from_Addr    = "webmaster@aleks.od.ua";
 				$odebug->from_Name    = $_SERVER['HTTP_HOST'];
-				$odebug->to_Addr      = "robot@aleks.od.ua"; // robot@aleks.od.ua aleksjurii@gmail.com
+			  $odebug->to_Addr      = "robot@aleks.od.ua";
+//        $odebug->to_Addr      = "aleksjurii@gmail.com";
 				$odebug->log_Max_Size = 200; //Max size of a log before it will sended and cleared (in kb)
 				// $odebug -> checkCode ('./classes/debugger/test.php'); // проверка кода
 /** -----------------------------------------------------------------------------------*/

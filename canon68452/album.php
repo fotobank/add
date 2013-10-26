@@ -207,7 +207,6 @@ if (isset($_SESSION['current_cat'])) {
                                    <thead>
                                    <tr>
                                           <th style="text-align: center;">настройка альбома</th>
-<!--                                          <th style="text-align: center;">текст под картинкой альбома</th>-->
                                           <th style="text-align: center;">настройка фотографий и FTP</th>
                                           <th style="text-align: center;">Аккордеон</th>
                                    </tr>
@@ -312,10 +311,10 @@ if (isset($_SESSION['current_cat'])) {
 
                                    </td>
                                    <td>
+                                   <div class="thumbnail" style="margin: 0 10px; padding-bottom: 10px;">
                                           <table border="0">
                                                  <tr>
                                                         <td>
-                                                        <div class="thumbnail">
                                                                <form action="index.php"
                                                                      method="post"
                                                                      style="margin: 5px;">
@@ -556,21 +555,23 @@ if (isset($_SESSION['current_cat'])) {
                                                                                                   value="<?= $ln['id'] ?>"/>
                                                                                            <input class="btn-small btn-primary"
                                                                                                   type="submit"
+                                                                                                  style="margin-left: 10px;"
                                                                                                   value="сохранить"/>
                                                                                     </td>
                                                                              </tr>
                                                                       </table>
                                                                </form>
-                                                           </div>
+
                                                         </td>
                                                  </tr>
                                                  <tr>
                                                         <td align="center">
-                                                               <div class="linBlue"></div>
+                                                               <div class="linBlue" style="float: right;"></div>
+                                                               <div class="clear"></div>
                                                                <form action="index.php"
                                                                      name="go_ftp_upload"
                                                                      method="post"
-                                                                     style="margin-bottom: 0;"
+                                                                     style="float: right; margin-right: 10px;"
                                                                      target="hiddenframe"
                                                                      onsubmit="document.getElementById('<?= $ln['id'] ?>').innerHTML='Подождите, идёт загрузка...'; return true;">
                                                                       <input class="btn btn-success"
@@ -585,7 +586,6 @@ if (isset($_SESSION['current_cat'])) {
                                                                              type="submit"
                                                                              value="Добавить с FTP"/><br/>
                                                                </form>
-                                                               <div class="linBlue"></div>
                                                         </td>
                                                         <td>
                                                                <iframe id="hiddenframe"
@@ -594,12 +594,13 @@ if (isset($_SESSION['current_cat'])) {
                                                         </td>
                                                  </tr>
                                           </table>
+                                          </div>
                                           <form action="index.php"
                                                 method="post"
                                                  style="float: left;">
                                                  <label>
                                                         <textarea name="descr"
-                                                                  style="margin: 20px 10px 0; width: 300px; height: 200px; padding-bottom: 0;"
+                                                                  style="margin: 20px 10px 0; width: 258px; height: 240px; padding-bottom: 0;"
                                                                   name="descr">
                                                                <?=$ln['descr']?>
                                                         </textarea> </label><br/>

@@ -55,11 +55,11 @@
                                   $rPhone))
                             ) {
                               if ($rCity
-                                  != 'Для отправки заказанных фотографий фотографий ( можно ввести потом )'
+                                  != 'Для отправки заказанных фотографий ( можно ввести потом )'
                                   || preg_match("/[?a-zA-Zа-яА-Я0-9_-]{2,30}$/", $rCity)
                               ) {
                                 $rCity = ($rCity
-                                          == 'Для отправки заказанных фотографий фотографий ( можно ввести потом )') ?
+                                          == 'Для отправки заказанных фотографий ( можно ввести потом )') ?
                                   '' : $rCity;
                                 if ($rSkype == 'Не обязательно') {
                                   $rSkype = '';
@@ -71,7 +71,7 @@
                                   try {
                                     // Получаем Id, под которым юзер добавился в базу
                                     $id = $db('INSERT INTO users (login, pass, email, us_name, timestamp, ip, phone, skype, city, us_surname)
-																																																										VALUES (?string,?string,?string,?string,?i,?string,?string,?string,?string,?string)',
+                                                 VALUES (?string,?string,?string,?string,?i,?string,?string,?string,?string,?string)',
                                       array(
                                            $rLogin, $mdPassword,
                                            $rEmail,
@@ -87,18 +87,13 @@
                                     die("<div align='center' class='err_f_reg'>Ошибка при работе с базой данных!</div>");
                                   }
                                   // Составляем "keystring" для активации
-                                  $key  = md5(substr($rEmail, 0, 2).$id
-                                              .substr($rLogin, 0, 2));
+                                  $key  = md5(substr($rEmail, 0, 2).$id.substr($rLogin, 0, 2));
                                   $date = date("d.m.Y", $time);
                                   // Компонуем письмо
-                                  $title   =
-                                    'Потвеждение регистрации на сайте Creative line studio';
-                                  $headers =
-                                    "Content-type: text/plain; charset=windows-1251\r\n";
+                                  $title = 'Потвеждение регистрации на сайте Creative line studio';
+                                  $headers = "Content-type: text/plain; charset=windows-1251\r\n";
                                   $headers .= "From: Администрация Creative line studio <webmaster@aleks.od.ua> \r\n";
-                                  $subject = '=?koi8-r?B?'
-                                             .base64_encode(convert_cyr_string($title,
-                                      "w", "k")).'?=';
+                                  $subject = '=?koi8-r?B?'.base64_encode(convert_cyr_string($title, "w", "k")).'?=';
                                   $letter  = <<< LTR
 													  Здравствуйте, $rName_us.
 													  Вы успешно зарегистрировались на Creative line studio.

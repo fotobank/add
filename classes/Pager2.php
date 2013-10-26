@@ -111,7 +111,7 @@ class Pager2
   //renderer class
   var $renderer = NULL;
   
-  function Pager2($records_count, $page_size, $renderer = NULL)
+  public function __construct($records_count, $page_size, $renderer = NULL)
   {
     $this->recordsCount = $records_count;
     $this->pageSize     = $page_size;
@@ -119,12 +119,10 @@ class Pager2
     
     $this->calculatePagesCount();
   }
-  
-  function setPageIdentMethod($method)
-  {
-    $this->pageIdentMethod = $method;
-  }
 
+  public function __set($property, $data)  {
+         $this->$property = $data;
+  }
 
        /**
         * название страницы в GET запросе
@@ -141,24 +139,13 @@ class Pager2
     $page = (int)$page;
     if ($this->pageIdentMethod == METHOD_RECORD_COUNT) $page = ceil($page/$this->pageSize);
     if ($page < 0) $page = 0;
-    if ($page > $this->pagesCount) $page = $this->pagesCount;
+         if ($page > $this->pagesCount){
+                $page = $this->pagesCount;
+                if ($this->pageIdentMethod != METHOD_RECORD_COUNT) echo "<script>window.document.location.href='error.php'</script>";
+         }
     $this->currentPage = $page;
   }
-  
-  function setDelta($delta)
-  {
-    $this->delta = $delta;
-  }
-  
-  function setFirstPagesCnt($cnt) 
-  {
-    $this->firstPagesCnt = $cnt;
-  }
-  
-  function setLastPagesCnt($cnt)
-  {
-    $this->lastPagesCnt = $cnt;
-  }
+
   
   function calculatePagesCount()
   {
@@ -287,19 +274,21 @@ class Pager2
     echo "getSqlLimit   : " . $this->getSqlLimit();
     echo "</pre>";
   }
-  
+
   function render()
   {
     if (is_null($this->renderer)) return NULL;
     $this->renderer->setPager($this);
-    return $this->renderer->render();
+    echo $this->renderer->render();
+    unset ($this->pagesList);
   }
 
   function renderTop()
   {
 	 if (is_null($this->renderer)) return NULL;
 	 $this->renderer->setPager($this);
-	 return $this->renderer->renderTop();
+	 echo $this->renderer->renderTop();
+   unset ($this->pagesList);
   }
 }
 
@@ -309,9 +298,9 @@ class Pager2
 	 var $pager = NULL;
 
 	 //page naming method -- page number or record range
-	 var $pageNamingMethod = DISPLAY_PAGE_NUMBERS;
+	 var $pageNamingMethod;
 
-	 function pagerHtmlRenderer($pageNamingMethod = DISPLAY_PAGE_NUMBERS)
+	 function __construct($pageNamingMethod = DISPLAY_PAGE_NUMBERS)
 	 {
 		$this->pageNamingMethod = $pageNamingMethod;
 	 }
@@ -344,9 +333,9 @@ class Pager2
 		$list = $this->pager->getPagesList();
 		$result = "<h4 style='float: left;'><a id='home'>Страница № ".($this->pager->currentPage + 1)."</a></h4>";
 		$result .= "<div class='pagination' align='center' style='position: relative; margin-right: 100px;'>";
-?>
-<!--		<div class='pagination' align='center' style="float: left; position: absolute;">  -->
-<?
+
+//    $result .= "<div class='pagination' align='center'>";
+
 		foreach ($list as $page)
 		  {
 			 if ($page["is_dots"] == true) $name = "...";

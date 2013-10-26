@@ -1,19 +1,18 @@
 <?php
-			define ( 'BASEPATH' , realpath ( __DIR__ ) . '/' , TRUE );
+define ( 'BASEPATH' , realpath ( __DIR__ ) . '/' , TRUE );
 include (BASEPATH.'/inc/config.php');
 include (BASEPATH.'/inc/func.php');
 require (BASEPATH.'/inc/i_resize.php');
 
 if (isset($_GET['num'])) {
 
- $file = (string) $_GET['num'];
-	$file = 'id'.$file.'.jpg';
+	$file = 'id'.trim($_GET['num']).'.jpg';
 	$rs = go\DB\query('SELECT a.*, p.id_album FROM albums a, photos p WHERE p.img = ? && p.id_album = a.id LIMIT 1',array($file),'row');
 	$foto_folder = $rs['foto_folder'];
 	$watermark = $rs['watermark'];
 	$ip_marker = $rs['ip_marker'];
 	$sharping = $rs['sharping'];
- $quality = $rs['quality'];
+  $quality = $rs['quality'];
 	$dirname = $foto_folder.$rs['id'].'/';
 	$file_in = substr(($dirname),1) . $file;
 	
