@@ -14,7 +14,7 @@ if (isset($_GET['num'])) {
 	$sharping = $rs['sharping'];
   $quality = $rs['quality'];
 	$dirname = $foto_folder.$rs['id'].'/';
-	$file_in = substr(($dirname),1) . $file;
+	$file_in = substr(($dirname), 1) . $file;
 	
 
 

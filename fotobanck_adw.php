@@ -11,19 +11,25 @@
               define ('JS', true);
               unset ($_COOKIE['js']);
        } else define ('JS', false);
+
+       require_once(dirname(__FILE__).'/inc/config.php');
+       $_SESSION['JS'] = $_SERVER['REQUEST_URI'];
+       if(!JS)  main_redir('/redirect.php');
        setcookie('js', '', time() - 1, '/');
+
        define ('BASEPATH', realpath(__DIR__).'/', true);
        require_once  (BASEPATH.'inc/head.php');
        $renderData['dataDB'] = go\DB\query('select txt from content where id = ?i', array(1), 'el');
        $loadTwig('.twig', $renderData);
        require_once  (BASEPATH.'inc/ip-ban.php');
        set_time_limit(0);
+
        // include  (dirname(__FILE__).'/inc/lib/dtimediff/diftimer_class.php'); // подсчет времени между двумя событиями
        // $isiPad = (bool) strpos($_SERVER['HTTP_USER_AGENT'],'iPad');
        //Количество фоток на странице
        define('PHOTOS_ON_PAGE', 70);
-       if (isset($_GET['album_id'])) {
-              $current_album = $session->set('current_album', intval($_GET['album_id']));
+       if (isset($_GET['id'])) {
+              $current_album = $session->set('current_album', intval($_GET['id']));
               $album_data    = go\DB\query('select * from albums where id = ?i', array($current_album), 'row');
               $session->set("album_name/$current_album", "$album_data[nm]");
               if ($album_data['pass'] != '' && $session->has("popitka/$current_album") == false) {
@@ -299,10 +305,9 @@
         * @param $current_page
         * @param $width
         */
-       function fotoPageModern($may_view, &$current_page, $width = 170) {
+       function fotoPageModern($may_view, $current_page, $width = 170) {
 
               $session      = check_Session::getInstance();
-              $current_page = isset($_GET['current_page']) ? intval($_GET['current_page']) : 0;
               $widthSait    = 1200; // px
               $margP        = 50; // предпологаемый правый маргин px
 
@@ -340,16 +345,17 @@
                             $koll = $data['koll'];
                             $kollFoto = 1;
                             foreach ($rs as $key => $ln) {
-                                   $encrypted = $md5_encrypt->ret($fotoFolder.']['.$ln['id_album'].']['.$ln['img'].']['.$ln['watermark'].']['.$ln['ip_marker']);
+                                   $encrypted = $md5_encrypt->ret($fotoFolder.']['.$ln['id_album'].']['.(string)$ln['watermark'].']['.(string)$ln['ip_marker']);
+                                   $encrypted = $encrypted."||".substr(($ln['img']), 2, -4);
                                    $source = ($_SERVER['DOCUMENT_ROOT'].$fotoFolder.$ln['id_album'].'/'.$ln['img']);
                                    $sz     = @getimagesize($source);
                                    /* ширина превьюшек px */
                                    if (intval($sz[0]) > intval($sz[1])) {
                                           $preW = 'width="'.$width.'px"';
-                                          $preH = 'height="'.($width / 1.327).'px"';
+                                          $preH = 'height="'.ceil($width / 1.327).'px"';
                                    } else {
-                                          $preW = 'height="'.($width * 1.066).'px"';
-                                          $preH = 'width="'.($width / 1.247).'px"';
+                                          $preW = 'height="'.ceil($width * 1.066).'px"';
+                                          $preH = 'width="'.ceil($width / 1.247).'px"';
                                    }
                                    if ((($kollFoto == $koll))) {
                                           /**
@@ -360,11 +366,11 @@
                                           <a class="modern"
                                              style="position: absolute; float: right;"
                                              href="/loader.php?<?=$encrypted?>"
-                                             title="Фото № <?= $ln['nm'] ?>"> <img id="<?= substr(trim($ln['img']), 2, -4); ?>"
+                                             title="Фото № <?= intval($ln['nm']) ?>"> <img id="<?= substr(trim($ln['img']), 2, -4); ?>"
                                                                                    class="lazy" <?=$preW?> <?=$preH?>
                                                                                    src=""
                                                                                    data-original="/thumb.php?num=<?= substr(trim($ln['img']), 2, -4) ?>"
-                                                                                   alt="№ <?= $ln['nm'] ?>"/>№ <?=$ln['nm']?>
+                                                                                   alt="№ <?= intval($ln['nm']) ?>"/>№ <?= intval($ln['nm']) ?>
                                           </a>
                                           </div>
                                           <?
@@ -381,13 +387,13 @@
                                           ?>
                                           <a class="modern"
                                              style="position: relative; float: left; margin-right: <?= $margin; ?>px;"
-                                             href="/dir.php?num=<?= substr(($ln['img']), 2, -4) ?>"
-                                             title="Фото № <?= $ln['nm'] ?>"> <img
+                                             href="/loader.php?<?=$encrypted?>"
+                                             title="Фото № <?= intval($ln['nm']) ?>"> <img
                                                         id="<?= substr(trim($ln['img']), 2, -4) ?>"
                                                         class="lazy" <?=$preW?> <?=$preH?>
                                                         src=""
                                                         data-original="/thumb.php?num=<?= substr(trim($ln['img']), 2, -4) ?>"
-                                                        alt="№ <?= $ln['nm'] ?>"/>№ <?=$ln['nm']?>
+                                                        alt="№ <?= intval($ln['nm']) ?>"/>№ <?= intval($ln['nm']) ?>
                                           </a>
                                    <?
                                    }
@@ -650,11 +656,11 @@
                             if ($ostPop != 5) {
                                    $msg = ($ost.' '.($ostPop + 1).' '.$pop);
                                    echo "<script type='text/javascript'>
-                        var infdok = document.getElementById('err-modal');
-                        var SummDok = '$msg';
-                        infdok.innerHTML = SummDok;
-												dhtmlx.message({ type:'warning', text:'$msg'});
-                        </script>";
+                                             var infdok = document.getElementById('err-modal');
+                                             var summDok = '$msg';
+                                             infdok.innerHTML = summDok;
+                                             dhtmlx.message({ type:'warning', text:'$msg'});
+                                             </script>";
                             }
                      }
               }
@@ -829,20 +835,22 @@
                                    array($current_album), 'assoc');
                             $session->set('record_count/'.$current_album, go\DB\query('select FOUND_ROWS() as cnt', NULL, 'el')); // количество записей
                      }
+                     $page = "pg"; // название GET страницы
                      $pager = new Pager2($session->get("record_count/".intval($current_album)), PHOTOS_ON_PAGE, new pagerHtmlRenderer());
                      $pager->delta = 3;
                      $pager->firstPagesCnt = 3;
                      $pager->lastPagesCnt = 3;
-                     $pager->setPageVarName("pg");
+                     $pager->setPageVarName($page);
                      $pager->enableCacheRemover = false;
                      $pager->renderTop();
-                    // $pager->printDebug();
+                     // $pager->printDebug();
                      ?>
 
                      <!-- Вывод фото в альбом -->
                      <div id="modern">
                             <?
                             $width = 170; // ширина горизонтальной превью в px
+                            $current_page = isset($_GET[$page]) ? intval($_GET[$page]) : 0;
                             fotoPageModern($may_view, $current_page, $width);
                             ?>
                      </div>
@@ -862,7 +870,7 @@
 
                      <?
                      $pager->render();
-                     //		$pager->printDebug();
+                     // $pager->printDebug();
               } else {
                      /**  подписка на альбом (когда альбом появится в категории)*/
                      $rs['current_album'] = $current_album;
@@ -875,6 +883,11 @@
                      <hfooter style="font-size: 20px; font-weight: 400; font-style: inherit; color: #df0000; text-shadow: 1px 1px 0 #d1a2a2;"
                             >В Вашем браузере не работает JavaScript!
                      </hfooter>
+              <script type='text/javascript'>
+                     $(function(){
+                       window.document.location.href = '<?= $_SERVER['REQUEST_URI'] ?>';
+                     }
+              </script>
               <NOSCRIPT>
                      <br><br>
                      <hfooter style="font-size: 20px; font-weight: 400; font-style: inherit; color: #df0000; text-shadow: 1px 1px 0 #d1a2a2;"
@@ -911,16 +924,14 @@
               $current_cat = -1;
        }
        if ($current_cat > 0) {
-              /** Вывести поле nm из бд в шапку */
-              $rs['razdel'] = go\DB\query('select nm from categories where id = ?i', array($session->get("current_cat")), 'el');
-              $rs['albums'] = go\DB\query('select * from albums where id_category = ?i order by order_field asc', array($current_cat), 'assoc');
-              /** Вывод текстовой информации на страницы разделов */
-              $rs['txt'] = go\DB\query('select txt from categories where id = ?i', array($current_cat), 'el');
+              /** $rs['albums'][0]['txt'] - Вывод текстовой информации на страницы разделов */
+              $rs['albums'] = go\DB\query('select c.nm as razdel, c.txt, a.* from categories as c, albums as a where c.id = ?i and a.id_category = ?i
+                                           order by a.order_field asc', array($current_cat, $current_cat), 'assoc');
               /**  Печать альбомов*/
               $loadTwig('_razdel.twig', $rs);
        } else {
               /**  кнопки разделов (категорий) */
-              $buttons['buttons'] = go\DB\query('select * from `categories` order by `id_num` asc', NULL, 'assoc:id');
+              $buttons['buttons'] = go\DB\query('select * from categories order by `id_num` asc', NULL, 'assoc:id');
               $loadTwig('_kategorii.twig', $buttons);
 
        }

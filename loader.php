@@ -29,6 +29,9 @@
        :::::::::::::::::::::::::::::::::::::::::::::::::
        */
        require_once(__DIR__.'/inc/config.php');
+       $_SESSION['JS'] = $_SERVER['REQUEST_URI'];
+       if(!JS)  main_redir('/redirect.php');
+       setcookie('js', '', time() - 1, '/');
        $ini = go::has('md5_loader') ? NULL : array(
               "pws"          => "Protected_Site_Sec", // секретная строка
         //    "text_string"  => "ТЕСТ", // текст водяного знака
