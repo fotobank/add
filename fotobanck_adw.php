@@ -311,12 +311,6 @@
               $widthSait    = 1200; // px
               $margP        = 50; // предпологаемый правый маргин px
 
-
-              $fotoFolder = fotoFolder();
-              $psw = "Protected_Site_Sec"; // секретная строка
-              $iv_len = 16; // сложность шифра
-              $md5_encrypt = new md5_encrypt($psw, $iv_len);
-
               if ($may_view) {
                      $start = $current_page * PHOTOS_ON_PAGE;
                      $rs    = go\DB\query(
@@ -344,9 +338,20 @@
                             $margin = $data['margin'];
                             $koll = $data['koll'];
                             $kollFoto = 1;
+
+                            $fotoFolder = fotoFolder();
+                            $psw = "Protected_Site_Sec"; // секретная строка
+                            $iv_len = 16; // сложность шифра
+                            $md5_encrypt = new md5_encrypt($psw, $iv_len);
+
                             foreach ($rs as $key => $ln) {
+
                                    $encrypted = $md5_encrypt->ret($fotoFolder.']['.$ln['id_album'].']['.(string)$ln['watermark'].']['.(string)$ln['ip_marker']);
                                    $encrypted = $encrypted."||".substr(($ln['img']), 2, -4);
+
+
+
+
                                    $source = ($_SERVER['DOCUMENT_ROOT'].$fotoFolder.$ln['id_album'].'/'.$ln['img']);
                                    $sz     = @getimagesize($source);
                                    /* ширина превьюшек px */
@@ -362,15 +367,31 @@
                                            * старая ссылка
                                            * href="/dir.php?num=<?= substr(($ln['img']), 2, -4) ?>"
                                            */
-                                          ?>
+                                     //     src="security/protector.gif"
+                              echo  '<span class="modern"
+                                           style="display:block;
+                                                  position: absolute; float: right;
+                                                  background:url(loader.php?' . $encrypted . ')
+                                                  title="Фото № .intval($ln["nm"]).";">
+	                                                <img
+	                                                 id=". substr(trim($ln["img"]), 2, -4); ."
+	                                                 class="lazy"' .$preW." ".$preH.'
+	                                                 src=""
+	                                                 data-original="/thumb.php?num='. substr(trim($ln["img"]), 2, -4) .'"
+                                                   alt="№ '. intval($ln["nm"]) .'"/>№ '. intval($ln["nm"]) .'
+	                                                 alt="" width=' .$sz[0]. ' height=' . $sz[1] .'>
+	                                   </span>';
+?>
+
                                           <a class="modern"
                                              style="position: absolute; float: right;"
                                              href="/loader.php?<?=$encrypted?>"
-                                             title="Фото № <?= intval($ln['nm']) ?>"> <img id="<?= substr(trim($ln['img']), 2, -4); ?>"
-                                                                                   class="lazy" <?=$preW?> <?=$preH?>
-                                                                                   src=""
-                                                                                   data-original="/thumb.php?num=<?= substr(trim($ln['img']), 2, -4) ?>"
-                                                                                   alt="№ <?= intval($ln['nm']) ?>"/>№ <?= intval($ln['nm']) ?>
+                                             title="Фото № <?= intval($ln['nm']) ?>">
+                                                  <img id="<?= substr(trim($ln['img']), 2, -4); ?>"
+                                                       class="lazy" <?=$preW?> <?=$preH?>
+                                                       src=""
+                                                       data-original="/thumb.php?num=<?= substr(trim($ln['img']), 2, -4) ?>"
+                                                       alt="№ <?= intval($ln['nm']) ?>"/>№ <?= intval($ln['nm']) ?>
                                           </a>
                                           </div>
                                           <?
