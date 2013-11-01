@@ -1,18 +1,12 @@
 <?php
+       header('Content-type: text/html; charset=windows-1251');
 include (__DIR__.'/inc/config.php');
 include (__DIR__.'/inc/func.php');
 require (__DIR__.'/inc/i_resize.php');
 
 
-           $ini =  array(
-                  "pws"          => "Protected_Site_Sec", // секретная строка
-                  "iv_len"       => 24, // сложность шифра
-           );
-           go::call('md5_loader', $ini);
-           $idImg = go::call('md5_loader')->thumb(array( "query" => key($_GET)));
-       $test = key($_GET);
 
-// if (isset($_GET['num'])) {
+ if (isset($_GET['num'])) {
 
   $file = (string) $_GET['num'];
 	$file = 'id'.$file.'.jpg';
@@ -36,7 +30,6 @@ require (__DIR__.'/inc/i_resize.php');
 		 if (is_file($file_out)) {
 			  header("Content-type: image/jpg");
 			  readfile('.'.$dirname.'thumb/'. $file);
-	  }
+	   }
    }
-
-// }
+ }

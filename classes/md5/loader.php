@@ -47,7 +47,7 @@ class md5_loader {
        public $text_string = ""; // текст водяного знака
        public $font; // применяемый шрифт
        public $font_size = 16; // размер шрифта водяного знака
-       public $iv_len = 16; // сложность шифра
+       public $iv_len = 24; // сложность шифра
        public $rgbtext = "FFFFFF"; // цвет текста
        public $rgbtsdw = "000000"; // цвет тени
        public $text_padding    = 10; // смещение от края
@@ -107,14 +107,6 @@ class md5_loader {
               return $this->idImg;
        }
 
-       public function thumb($imgData) {
-              foreach ($imgData as $var => $data) {
-                     $this->$var = $data;
-              }
-              $decrypted =  explode("][", $this->md5_decrypt());
-              $this->thumb = $decrypted['1'];
-              return $this->thumb;
-       }
 
        /*
        :::::::::::::::::::::::::::::::::::::::::::::::
