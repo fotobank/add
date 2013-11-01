@@ -61,7 +61,27 @@ function ajaxPostQ(url, idName,  data) {
     });
 }
 
+// проверка JS фотобанке
+function onJS(url) {
+    $.ajax({
+        type: "POST",
+        header: ('Content-Type: application/json; charset=utf-8;'),
+        url: url,
+        data: {js: 1},
 
+        error:function(XHR) {
+            $(this).outDebug(" Ошибка: "+XHR.status+ "  " + XHR.statusText,url,"onJS");
+        },
+        statusCode: {
+            404: function() {
+                $(this).outDebug("Страница не найдена",url,"ajaxPostQ");
+            }
+        },
+        success: function (html) {
+            //        alert (html);
+        }
+    });
+}
 
 // перезагрузка капчи
 function reload (cfg, SID) {

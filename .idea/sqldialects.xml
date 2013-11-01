@@ -10,6 +10,7 @@
     <file url="file://$PROJECT_DIR$/basket.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/ceny.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/chmod.php" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/classes/md5/loader.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/dir.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/download.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/editNews.php" dialect="GenericSQL" />

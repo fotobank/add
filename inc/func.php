@@ -1,4 +1,6 @@
 <?php
+       define('ROOT', __DIR__);
+       define('LIST_ROOT', ROOT . '/list');
 	require_once (__DIR__.'/../classes/autoload.php');
 	autoload::getInstance();
 
@@ -990,3 +992,166 @@ return $data;
 		}
 		return array_map( 'objectToArray', $object );
 	}
+
+
+
+       /**
+        * функция для обратимого шифрования
+        *
+        * Использование:
+        * $txt = "Hello XOR encode!";
+        * $txt = base64_encode(strcode($txt, 'mypassword'));
+        * echo $txt;
+        * result - ZOHdWKf+cf7vAwpJNfSJ8s8=
+        * $txt = "ZOHdWKf+cf7vAwpJNfSJ8s8=";
+        * $txt = strcode(base64_decode($txt), 'mypassword');
+        * echo $txt;
+        * result - Hello XOR encode!
+        *
+        * @param $str
+        *
+        * @return int
+        */
+       function strcode($str)
+       {
+              $salt = "Dn8*#2n!9j";
+              $len = strlen($str);
+              $gamma = '';
+              $n = $len>100 ? 8 : 2;
+              while( strlen($gamma)<$len )
+              {
+                     $gamma .= substr(pack('H*', sha1($this->pws.$gamma.$salt)), 0, $n);
+              }
+              return $str^$gamma;
+       }
+
+
+       /**
+        * Обратимое шифрование методом "Двойного квадрата" (Reversible crypting of "Double square" method)
+        * @param  String $input   Строка с исходным текстом
+        * @param  bool   $decrypt Флаг для дешифрования
+        * @return String          Строка с результатом Шифрования|Дешифрования
+        * @author runcore
+        */
+       function dsCrypt($input,$decrypt=false) {
+              $o = $s1 = $s2 = array(); // Arrays for: Output, Square1, Square2
+              // формируем базовый массив с набором символов
+              $basea = array('?','(','@',';','$','#',"]","&",'*'); // base symbol set
+              $basea = array_merge($basea, range('a','z'), range('A','Z'), range( 0,9) );
+              $basea = array_merge($basea, array('!',')','_','+','|','%','/','[','.',' ') );
+              $dimension=9; // of squares
+              for($i= 0;$i<$dimension;$i++) { // create Squares
+                     for($j= 0;$j<$dimension;$j++) {
+                            $s1[$i][$j] = $basea[$i*$dimension+$j];
+                            $s2[$i][$j] = str_rot13($basea[($dimension*$dimension-1) - ($i*$dimension+$j)]);
+                     }
+              }
+              unset($basea);
+              $m = floor(strlen($input)/2)*2; // !strlen%2
+              $symbl = $m==strlen($input) ? '':$input[strlen($input)-1]; // last symbol (unpaired)
+              $al = array();
+              // crypt/uncrypt pairs of symbols
+              for ($ii= 0; $ii<$m; $ii+=2) {
+                     $symb1 = $symbn1 = strval($input[$ii]);
+                     $symb2 = $symbn2 = strval($input[$ii+1]);
+                     $a1 = $a2 = array();
+                     for($i= 0;$i<$dimension;$i++) { // search symbols in Squares
+                            for($j= 0;$j<$dimension;$j++) {
+                                   if ($decrypt) {
+                                          if ($symb1===strval($s2[$i][$j]) ) $a1=array($i,$j);
+                                          if ($symb2===strval($s1[$i][$j]) ) $a2=array($i,$j);
+                                          if (!empty($symbl) && $symbl===strval($s2[$i][$j])) $al=array($i,$j);
+                                   }
+                                   else {
+                                          if ($symb1===strval($s1[$i][$j]) ) $a1=array($i,$j);
+                                          if ($symb2===strval($s2[$i][$j]) ) $a2=array($i,$j);
+                                          if (!empty($symbl) && $symbl===strval($s1[$i][$j])) $al=array($i,$j);
+                                   }
+                            }
+                     }
+                     if (sizeof($a1) && sizeof($a2)) {
+                            $symbn1 = $decrypt ? $s1[$a1[ 0]][$a2[1]] : $s2[$a1[ 0]][$a2[1]];
+                            $symbn2 = $decrypt ? $s2[$a2[ 0]][$a1[1]] : $s1[$a2[ 0]][$a1[1]];
+                     }
+                     $o[] = $symbn1.$symbn2;
+              }
+              if (!empty($symbl) && sizeof($al)) // last symbol
+                     $o[] = $decrypt ? $s1[$al[1]][$al[ 0]] : $s2[$al[1]][$al[ 0]];
+              return implode('',$o);
+       }
+
+       // Получить расширение файла
+       function file_get_ext($file) {
+              $file = trim($file);
+              $file = explode('.', $file);
+              $file = end($file);
+              return strtolower($file);
+       }
+       // Получить имя файла, без расширения
+       function file_get_name($file) {
+              $file = trim($file);
+              $file = explode('/', $file);
+              $file = end($file);
+              list($file) = explode('.', $file);
+              return $file;
+       }
+
+       // POST
+       function file_post_contents($url, $array) {
+              $postdata = http_build_query($array);
+              $opts = array('http' =>
+                                   array(
+                                          'method'  => 'POST',
+                                          'header'  => 'Content-type: application/x-www-form-urlencoded',
+                                          'content' => $postdata
+                                   )
+              );
+              $context  = stream_context_create($opts);
+              return file_get_contents($url, false, $context);
+       }
+/** ------------------------------------------------------------------------------------------------------------------------------ */
+       // Получить страницу через curl
+       function curl($url) {
+              $options = array(
+                     CURLOPT_RETURNTRANSFER => true, // возвращаем результаты вместо вывода
+                     CURLOPT_HEADER => false, // don't return headers
+                     CURLOPT_FOLLOWLOCATION => true, // follow redirects
+                     CURLOPT_ENCODING => "", // handle all encodings
+                     CURLOPT_USERAGENT => $_SERVER['HTTP_USER_AGENT'], // who am i
+                     CURLOPT_AUTOREFERER => true, // set referer on redirect
+                     CURLOPT_CONNECTTIMEOUT => 120, // timeout on connect
+                     CURLOPT_TIMEOUT => 120, // timeout on response
+                     CURLOPT_MAXREDIRS => 10, // stop after 10 redirects
+                     CURLOPT_NOBODY => 0  // 1 - нам не нужно содержание страницы
+              );
+
+              $ch = curl_init($url);
+              curl_setopt_array($ch, $options);
+              $content = curl_exec($ch);
+              $err = curl_errno($ch);
+              $errmsg = curl_error($ch);
+              $header = curl_getinfo($ch);
+              curl_close($ch);
+
+              if($err) trigger_error($errmsg, E_USER_WARNING);
+              else return $content;
+       }
+
+/** ----------------------------------------------------------------------------------------------------------------------- */
+
+       // Случайное число
+       function rand_from_string() {
+              $int = md5(microtime(true));
+              $int = preg_replace('/[^0-9]/', '', $int);
+              $int = substr($int, 0, strlen(mt_getrandmax() . '') - 1);
+              return intval($int);
+       }
+
+       // Разбить по строкам
+       function nsplit($value) {
+              $value = str_replace(chr(13), chr(10), $value);
+              $value = explode(chr(10), $value);
+              $value = array_map('trim', $value);
+              $value = array_filter($value);
+              return array_values($value);
+       }

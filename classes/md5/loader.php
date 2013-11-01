@@ -43,7 +43,7 @@ class md5_loader {
 
        public $referer = false;
        public $query = false;
-       public $pws; // соль для шифрования
+       public $pws; // пароль для шифрования
        public $text_string = ""; // текст водяного знака
        public $font; // применяемый шрифт
        public $font_size = 16; // размер шрифта водяного знака
@@ -57,10 +57,11 @@ class md5_loader {
        public $syp = 2; // тень смещение по y
        public $vz = "img/vz.png"; // картинка водяного знака
        public $vzm = "img/vzm.png"; // multi картинка водяного знака
-       public $process = "jump=>security/protected.php"; // или картинка "jump=>security/protected.gif" - сообщение об ошибке
+       public $process = "jump=>security/protected.php"; // или картинка "show=>security/protected.gif" - сообщение об ошибке
        public $protectedImg = 'img/eror404.gif'; //защитная картинка выводится в модальном окне при нарушении в строке запроса GET
        private $str_img; // строка - путь к фото
        private $image; // объект изображения
+       private $idImg; // id фото
        private $imgWidth; // ширина фото
        private $imgHeight; // высота фото
        private $watermark = true; // включить водяной знак;
@@ -71,25 +72,31 @@ class md5_loader {
        protected static $_instance;
 
 
-
        /**
         * фильтрация входных данных
         */
        private function setField() {
 
-              $split = explode("||", $this->query);
-              $this->query = $split[0];
               $decrypted =  explode("][", $this->md5_decrypt());
-              $dir = substr($decrypted[0].$decrypted[1], 1);
-              $img = "id".end($split).".jpg";
-              if(!filter_var($dir."/".$img, FILTER_SANITIZE_URL)) {
+              $this->idImg = substr(trim(end($decrypted)), 2, -4);
+              $img = substr($decrypted[0].$decrypted[1], 1)."/".end($decrypted);
+              if(!filter_var($img, FILTER_SANITIZE_URL)) {
                   $this->str_img = "The provided url is invalid";
               } else {
-                  $this->str_img = trim(addslashes(htmlspecialchars(strip_tags($dir."/".$img))));
+                  $this->str_img = trim(addslashes(htmlspecialchars(strip_tags($img))));
                   $this->watermark = is_null($decrypted[2])?true:($decrypted[2] == "1")?true:false;
                   $this->ip_marker = is_null($decrypted[3])?true:($decrypted[3] == "1")?true:false;
               }
          }
+
+
+       /**
+        * возврат id фото
+        * @return mixed
+        */
+       public function idImg() {
+              return $this->idImg;
+       }
 
        /*
        :::::::::::::::::::::::::::::::::::::::::::::::
@@ -107,49 +114,40 @@ class md5_loader {
               }
        }
 
+
+       /**
+        * @param $imgData
+        *
+        * @return bool
+        */
        public function img($imgData) {
 
               foreach ($imgData as $var => $data) {
                      $this->$var = $data;
               }
-
               $this->set_http_header();
               if ($this->referer) {
-
                      $this->setField();
-
                      if (!is_file( $this->str_img)) {
                      $this->file_show($this->protectedImg);
                             return false;
                      }
-                     if($this->watermark || $this->ip_marker) {
-                     $this->ext = $this->ext($this->str_img);
-                     $imgInfo = getimagesize ($this->str_img);
-                     $this->imgWidth  = $imgInfo[0];
-                     $this->imgHeight = $imgInfo[1];
-                     $this->image = $this->create_image($this->str_img, $this->ext);
-                     if ($this->watermark)
-                     {
-                            $this->img_watermark();
-                            $this->img_multi_watermark();
-                     }
-                     if ($this->ip_marker) {
-
-                           $this->txt_watermark();
-                     }
-                           $this->img_show();
-                     } else {
-                           $this->file_show($this->str_img);
-                     }
-              } else {
-                     // защита
-                     $processor = explode("=>", $this->process);
-                     if ($processor[0] == "show") {
-                            $this->file_show($processor[1]);
-                     } else if ($processor[0] == "jump") {
-                            header("Location: ".$processor[1]);
-                     }
-              }
+                     if ($this->watermark || $this->ip_marker) {
+                            $this->ext = $this->ext($this->str_img);
+                            $imgInfo = getimagesize ($this->str_img);
+                            $this->imgWidth  = $imgInfo[0];
+                            $this->imgHeight = $imgInfo[1];
+                            $this->image = $this->create_image($this->str_img, $this->ext);
+                            if ($this->watermark)
+                            {
+                                   $this->img_watermark();
+                                   $this->img_multi_watermark();
+                            }
+                            if ($this->ip_marker) $this->txt_watermark();
+                                  $this->img_show();
+                     } else $this->file_show($this->str_img);
+              } else  $this->bad();
+              return true;
        }
 
 
@@ -172,7 +170,6 @@ class md5_loader {
 
 
        function file_show($img) {
-
               header("Content-type: image/".$this->ext($img));
               readfile($img);
        }
@@ -279,7 +276,10 @@ class md5_loader {
        }
 
 
-      private  function img_show() {
+       /**
+        *
+        */
+       private  function img_show() {
 
               header("Content-type: image/".$this->ext);
               switch ($this->ext) {
@@ -299,6 +299,9 @@ class md5_loader {
        }
 
 
+       /**
+        *
+        */
        public function __destruct() {
               if(is_resource($this->image)) {
                      imagedestroy($this->image);
@@ -326,13 +329,9 @@ class md5_loader {
        }
 
 
-       /*
-       :::::::::::::::::::::::::::::::::::::::::::::::
-       ::                                           ::
-       ::                MD5 decrypt                ::
-       ::                                           ::
-       :::::::::::::::::::::::::::::::::::::::::::::::
-       */
+       /**
+        * @return mixed
+        */
        function md5_decrypt() {
 
               $this->query   = base64_decode($this->query);
@@ -424,6 +423,20 @@ class md5_loader {
                      $color_text,
                      $this->font,
                      $this->text_string);
+       }
+
+
+       /**
+        *  защита
+        */
+       public function bad() {
+
+              $processor = explode("=>", $this->process);
+              if ($processor[0] == "show") {
+                     $this->file_show($processor[1]);
+              } elseif ($processor[0] == "jump") {
+                     header("Location: ".$processor[1]);
+              }
        }
 
 }

@@ -6,16 +6,20 @@
        // обработка ошибок
        require_once (__DIR__.'/inc/errorDump.php');
        // вызов ошибки
-    //   ERROR_CONSTANT;
+       // ERROR_CONSTANT;
        if (isset($_COOKIE['js']) && $_COOKIE['js'] == 1) {
               define ('JS', true);
+              // удаляем куки JS из сервера
               unset ($_COOKIE['js']);
        } else define ('JS', false);
 
-       require_once(dirname(__FILE__).'/inc/config.php');
-       $_SESSION['JS'] = $_SERVER['REQUEST_URI'];
+       require_once(__DIR__.'/inc/config.php');
+       $session->set("JS", JS);
+       $session->set("JS_REQUEST_URI" , $_SERVER['REQUEST_URI']);
        if(!JS)  main_redir('/redirect.php');
+       // удаляем куки JS из браузера
        setcookie('js', '', time() - 1, '/');
+
 
        define ('BASEPATH', realpath(__DIR__).'/', true);
        require_once  (BASEPATH.'inc/head.php');
@@ -239,7 +243,7 @@
                                    ?>
                                    <div class="podlogka">
                                           <figure class="ramka"
-                                                  onClick="preview(<?= $ln['id'] ?>;">
+                                                  onClick="preview(<?= $ln['id'] ?>);">
                                                  <img class="lazy"
                                                       data-original="/thumb.php?num=<?= substr(trim($ln['img']), 2, -4) ?>"
                                                       id="<?= substr(trim($ln['img']), 2, -4) ?>"
@@ -340,18 +344,12 @@
                             $kollFoto = 1;
 
                             $fotoFolder = fotoFolder();
-                            $psw = "Protected_Site_Sec"; // секретная строка
-                            $iv_len = 16; // сложность шифра
+                            $psw = "Protected_Site_Sec"; // пароль
+                            $iv_len = 24; // сложность шифра
                             $md5_encrypt = new md5_encrypt($psw, $iv_len);
 
                             foreach ($rs as $key => $ln) {
-
-                                   $encrypted = $md5_encrypt->ret($fotoFolder.']['.$ln['id_album'].']['.(string)$ln['watermark'].']['.(string)$ln['ip_marker']);
-                                   $encrypted = $encrypted."||".substr(($ln['img']), 2, -4);
-
-
-
-
+                                   $encrypted = $md5_encrypt->ret($fotoFolder.']['.$ln['id_album'].']['.(string)$ln['watermark'].']['.(string)$ln['ip_marker'].']['.$ln['img']);
                                    $source = ($_SERVER['DOCUMENT_ROOT'].$fotoFolder.$ln['id_album'].'/'.$ln['img']);
                                    $sz     = @getimagesize($source);
                                    /* ширина превьюшек px */
@@ -362,27 +360,9 @@
                                           $preW = 'height="'.ceil($width * 1.066).'px"';
                                           $preH = 'width="'.ceil($width / 1.247).'px"';
                                    }
-                                   if ((($kollFoto == $koll))) {
-                                          /**
-                                           * старая ссылка
-                                           * href="/dir.php?num=<?= substr(($ln['img']), 2, -4) ?>"
-                                           */
-                                     //     src="security/protector.gif"
-                              echo  '<span class="modern"
-                                           style="display:block;
-                                                  position: absolute; float: right;
-                                                  background:url(loader.php?' . $encrypted . ')
-                                                  title="Фото № .intval($ln["nm"]).";">
-	                                                <img
-	                                                 id=". substr(trim($ln["img"]), 2, -4); ."
-	                                                 class="lazy"' .$preW." ".$preH.'
-	                                                 src=""
-	                                                 data-original="/thumb.php?num='. substr(trim($ln["img"]), 2, -4) .'"
-                                                   alt="№ '. intval($ln["nm"]) .'"/>№ '. intval($ln["nm"]) .'
-	                                                 alt="" width=' .$sz[0]. ' height=' . $sz[1] .'>
-	                                   </span>';
-?>
+                                   if ($kollFoto == $koll) {
 
+                                          ?>
                                           <a class="modern"
                                              style="position: absolute; float: right;"
                                              href="/loader.php?<?=$encrypted?>"
@@ -797,8 +777,13 @@
        }
        ?>
        </div>
-       <script language=JavaScript
-               type="text/javascript">
+       <script language=JavaScript type="text/javascript">
+              $(function () {
+                     $('.modern').click(function () {
+                            onJS('/js_test.php');
+                            return false;
+                     });
+              });
               $(function () {
                      $('.profile_bitton , .profile_bitton2').click(function () {
                             $('.profile').slideToggle();
