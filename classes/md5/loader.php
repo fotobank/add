@@ -80,6 +80,7 @@ class md5_loader {
 
               $decrypted =  explode("][", $this->md5_decrypt());
               $this->idImg = substr(trim(end($decrypted)), 2, -4);
+              // передать через сессию
               check_Session::getInstance()->set('idImg', $this->idImg);
               $img = substr($decrypted[0].$decrypted[1], 1)."/".end($decrypted);
               if(!filter_var($img, FILTER_SANITIZE_URL)) {
@@ -313,7 +314,6 @@ class md5_loader {
               if(is_resource($this->image)) {
                      imagedestroy($this->image);
               }
-              check_Session::getInstance()->del('idImg');
        }
 
 
