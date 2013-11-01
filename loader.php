@@ -31,7 +31,7 @@
        require_once(__DIR__.'/inc/config.php');
        require_once(__DIR__.'/inc/func.php');
 
-              $ini = go::has('md5_loader') ? NULL : array(
+       $ini = go::has('md5_loader') ? NULL : array(
               "pws"          => "Protected_Site_Sec", // секретная строка
         //    "text_string"  => "ТЕСТ", // текст водяного знака
               "vz"           => "img/vz.png", // картинка водяного знака

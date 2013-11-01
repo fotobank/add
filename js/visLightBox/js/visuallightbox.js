@@ -471,9 +471,9 @@
 
                     $.ajax({
                         type: "POST",
-                        header: ('Content-Type: application/json; charset=utf-8;'),
+                        header: ('Content-Type: application/json; charset=windows-1251;'),
                         url: '/inc/ajaxModern.php',
-                        data: "fotoId="+fotoId,
+                        data: {fotoId: fotoId},
 
                         error:function(XHR) {
                             $(this).outDebug(" Ошибка: "+XHR.status+ "  " + XHR.statusText,"/js/visLightBox/js/visuallightbox.js","goParam");
@@ -566,9 +566,9 @@
                 });
 
 var arr = e[Y].link;
-var fotoId = arr.split(/[php?]/);
+var fotoId = arr.split(/[\?]/);
 goParam(fotoId['1']);
-//alert(fotoId['1']);
+// alert(fotoId['1']);
 
 
                 aD(false)

@@ -65,6 +65,7 @@ class md5_loader {
        private $imgWidth; // ширина фото
        private $imgHeight; // высота фото
        private $watermark = true; // включить водяной знак;
+       private $multi_watermark = true; // включить multi водяной знак;
        private $ip_marker = true; // включить надпись ip;
        private $txp = 0; // x - координата расположения текста водяного знака
        private $typ = 0; // y - координата расположения текста водяного знака
@@ -79,6 +80,7 @@ class md5_loader {
 
               $decrypted =  explode("][", $this->md5_decrypt());
               $this->idImg = substr(trim(end($decrypted)), 2, -4);
+              check_Session::getInstance()->set('idImg', $this->idImg);
               $img = substr($decrypted[0].$decrypted[1], 1)."/".end($decrypted);
               if(!filter_var($img, FILTER_SANITIZE_URL)) {
                   $this->str_img = "The provided url is invalid";
@@ -91,10 +93,15 @@ class md5_loader {
 
 
        /**
-        * возврат id фото
+        * @param $imgData
+        *
         * @return mixed
         */
-       public function idImg() {
+       public function idImg($imgData) {
+              foreach ($imgData as $var => $data) {
+                     $this->$var = $data;
+              }
+              $this->setField();
               return $this->idImg;
        }
 
@@ -141,6 +148,9 @@ class md5_loader {
                             if ($this->watermark)
                             {
                                    $this->img_watermark();
+                            }
+                            if ($this->multi_watermark)
+                            {
                                    $this->img_multi_watermark();
                             }
                             if ($this->ip_marker) $this->txt_watermark();
@@ -235,10 +245,8 @@ class md5_loader {
               $this->text_string = "Ваш IP-adress: {$sIP}, фотография # ".(int)$rs;
               $this->win2uni();
               }
-
               $this->query_coordinate();
               $this->print_string();
-
        }
 
        private function img_watermark() {
@@ -272,7 +280,6 @@ class md5_loader {
                      $x = 10;
                      $y += $aWmImgInfo[1] + $dob_y ;
               }
-
        }
 
 
@@ -306,6 +313,7 @@ class md5_loader {
               if(is_resource($this->image)) {
                      imagedestroy($this->image);
               }
+              check_Session::getInstance()->del('idImg');
        }
 
 
