@@ -350,6 +350,7 @@
 
                             foreach ($rs as $key => $ln) {
                                    $encrypted = $md5_encrypt->ret($fotoFolder.']['.$ln['id_album'].']['.(string)$ln['watermark'].']['.(string)$ln['ip_marker'].']['.$ln['img']);
+                                   $enc_thumb = $md5_encrypt->ret('thumb]['.$ln['img']);
                                    $source = ($_SERVER['DOCUMENT_ROOT'].$fotoFolder.$ln['id_album'].'/'.$ln['img']);
                                    $sz     = @getimagesize($source);
                                    /* ширина превьюшек px */
@@ -370,7 +371,7 @@
                                                   <img id="<?= substr(trim($ln['img']), 2, -4); ?>"
                                                        class="lazy" <?=$preW?> <?=$preH?>
                                                        src=""
-                                                       data-original="/thumb.php?num=<?= substr(trim($ln['img']), 2, -4) ?>"
+                                                       data-original="/thumb.php?<?= $enc_thumb ?>"
                                                        alt="№ <?= intval($ln['nm']) ?>"/>№ <?= intval($ln['nm']) ?>
                                           </a>
                                           </div>
@@ -393,7 +394,7 @@
                                                         id="<?= substr(trim($ln['img']), 2, -4) ?>"
                                                         class="lazy" <?=$preW?> <?=$preH?>
                                                         src=""
-                                                        data-original="/thumb.php?num=<?= substr(trim($ln['img']), 2, -4) ?>"
+                                                        data-original="/thumb.php?<?= $enc_thumb ?>"
                                                         alt="№ <?= intval($ln['nm']) ?>"/>№ <?= intval($ln['nm']) ?>
                                           </a>
                                    <?

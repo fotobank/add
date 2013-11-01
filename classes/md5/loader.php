@@ -62,6 +62,7 @@ class md5_loader {
        private $str_img; // строка - путь к фото
        private $image; // объект изображения
        private $idImg; // id фото
+       private $thumb; // миниатюра
        private $imgWidth; // ширина фото
        private $imgHeight; // высота фото
        private $watermark = true; // включить водяной знак;
@@ -104,6 +105,15 @@ class md5_loader {
               }
               $this->setField();
               return $this->idImg;
+       }
+
+       public function thumb($imgData) {
+              foreach ($imgData as $var => $data) {
+                     $this->$var = $data;
+              }
+              $decrypted =  explode("][", $this->md5_decrypt());
+              $this->thumb = $decrypted['1'];
+              return $this->thumb;
        }
 
        /*

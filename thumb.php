@@ -4,11 +4,19 @@ include (__DIR__.'/inc/func.php');
 require (__DIR__.'/inc/i_resize.php');
 
 
-if (isset($_GET['num'])) {
+           $ini =  array(
+                  "pws"          => "Protected_Site_Sec", // секретная строка
+                  "iv_len"       => 24, // сложность шифра
+           );
+           go::call('md5_loader', $ini);
+           $idImg = go::call('md5_loader')->thumb(array( "query" => key($_GET)));
+       $test = key($_GET);
+
+// if (isset($_GET['num'])) {
 
   $file = (string) $_GET['num'];
 	$file = 'id'.$file.'.jpg';
-	$rs = go\DB\query('SELECT a.*, p.id_album FROM albums a, photos p WHERE p.img = ? && p.id_album = a.id LIMIT 1',array($file),'row');
+	$rs = go\DB\query('SELECT a.*, p.id_album FROM albums as a, photos as p WHERE p.img = ? && p.id_album = a.id LIMIT 1',array($file),'row');
 	$foto_folder = $rs['foto_folder'];
 	$dirname = $foto_folder.$rs['id'].'/';
 	$file_in = substr(($dirname),1) . $file;
@@ -31,5 +39,4 @@ if (isset($_GET['num'])) {
 	  }
    }
 
-  exit();
-}
+// }
