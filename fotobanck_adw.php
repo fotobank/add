@@ -21,7 +21,7 @@
        require_once  (BASEPATH.'inc/head.php');
        /*$renderData['dataDB'] = go\DB\query('select txt from content where id = ?i', array(1), 'el');
        $loadTwig('.twig', $renderData);*/
-       require_once  (BASEPATH.'inc/ip-ban.php');
+      // require_once  (BASEPATH.'inc/ip-ban.php');
        set_time_limit(0);
 
        // include  (dirname(__FILE__).'/inc/lib/dtimediff/diftimer_class.php'); // подсчет времени между двумя событиями
@@ -38,9 +38,9 @@
 
        $banck = new fotoBanck();
 
-       $current_album = $session->get('current_album');
-       if ($current_album != NULL && $session->has("popitka/{$current_album}") == true) {
-              $ostPop = $session->get("popitka/{$current_album}");
+       $current_album = $banck->current_album;
+       if ($banck->current_album != NULL && isset($banck->popitka[$banck->current_album])) {
+              $ostPop = $banck->popitka[$banck->current_album];
               if ($ostPop <= 0 || $ostPop == 5) {
                      $ret = json_decode(check(), true);
                      $renderData['ret'] = $ret;
@@ -62,13 +62,13 @@
        }
 
        $renderData['dataDB'] = go\DB\query('select txt from content where id = ?i', array(1), 'el');
-       $renderData['album_name'] = $session->get("album_name/$current_album");
+       $renderData['album_name'] = isset($banck->album_name[$banck->current_album])?:NULL;
        $loadTwig('.twig', $renderData);
 
 
 
        /** начало страницы */
-       if ($session->has('current_album')) {
+       if ($banck->current_album) {
 
 
        /** Отключить проверку пароля */
@@ -84,7 +84,7 @@
        /**
         *  Аккордеон
         */
-       if ($may_view) {
+       if ($banck->may_view) {
 
               $banck->akkordeon();
 
@@ -112,15 +112,15 @@
                  href="/fotobanck_adw.php?back_to_albums">« назад</a> <a class="next"
                                                                          href="/fotobanck_adw.php?unchenge_cat">« выбор категорий </a>
               <a class="next"
-                 href="/fotobanck_adw.php?back_to_albums">« раздел "<?=$razdel?>"</a> <a class="next">« альбом "<?=$album_data['nm']?>
-                                                                                                      "</a>
+                 href="/fotobanck_adw.php?back_to_albums">« раздел "<?=$banck->razdel?>"</a>
+              <a class="next">« альбом"<?=$banck->album_name[$banck->current_album]?>"</a>
        </div>
 
        <!-- Название альбома  -->
        <div class="cont-list"
             style="margin: 40px 10px 30px 0;">
               <div class="drop-shadow lifted">
-                     <h2><span style="color: #00146e;">Фотографии альбома "<?=$album_data['nm']?>"</span>
+                     <h2><span style="color: #00146e;">Фотографии альбома "<?=$banck->album_name[$banck->current_album]?>"</span>
                      </h2>
               </div>
        </div>
@@ -131,31 +131,31 @@
             class="span3">
               <div class="alb_logo">
                      <div id="fb_alb_fotoP">
-                            <img src="album_id.php?num=<?= substr(($album_data['img']), 2, -4) ?>"
+                            <img src="album_id.php?num=<?= substr(($banck->album_img), 2, -4) ?>"
                                  width="130px"
                                  height="124px"
                                  alt="-"/>
                      </div>
               </div>
-              <?=$album_data['descr']?>
+              <?=$banck->descr?>
        </div>
 
        <?
 
        // выдавать контент только c включенным JS в браузере
        if (JS) {
-              $event = go\DB\query('select `event` from `albums` where `id` =?i', array($current_album), 'el');
+              $event = go\DB\query('select `event` from `albums` where `id` =?i', array($banck->current_album), 'el');
               //		отключение показа фотографий в альбоме
               if ($event == 'on') {
                      //		<!-- вывод топ 5  -->
-                     $banck->top5Modern($may_view, $rs, $ln, $source, $sz, $sz_string);
+                     $banck->top5Modern();
 
-                     if (!$session->has('record_count/'.$current_album)) {
-                            $rs = go\DB\query('select SQL_CALC_FOUND_ROWS p.* from photos p where id_album = ?i', array($current_album), 'assoc');
-                            $session->set('record_count/'.$current_album, go\DB\query('select FOUND_ROWS() as cnt', NULL, 'el')); // количество записей
+                     if (!$banck->record_count[$banck->current_album]) {
+                            $rs = go\DB\query('select SQL_CALC_FOUND_ROWS p.* from photos p where id_album = ?i', array($banck->current_album), 'assoc');
+                            $session->set('record_count/'.$banck->current_album, go\DB\query('select FOUND_ROWS() as cnt', NULL, 'el')); // количество записей
                      }
                      $page = "pg"; // название GET страницы
-                     $pager = new Pager2($session->get("record_count/".intval($current_album)), PHOTOS_ON_PAGE, new pagerHtmlRenderer());
+                     $pager = new Pager2($session->get("record_count/".intval($banck->current_album)), PHOTOS_ON_PAGE, new pagerHtmlRenderer());
                      $pager->delta = 3;
                      $pager->firstPagesCnt = 3;
                      $pager->lastPagesCnt = 3;
@@ -190,8 +190,8 @@
                      // $pager->printDebug();
               } else {
                      /**  подписка на альбом (когда альбом появится в категории)*/
-                     $rs['current_album'] = $current_album;
-                     $loadTwig('_podpiska.twig', $rs);
+                     $renderData['current_album'] = $banck->current_album;
+                     $loadTwig('_podpiska.twig', $renderData);
 
               }
        } else {
@@ -234,8 +234,8 @@
 
        /** Вывод альбомов в разделах */
 } else {
-       if ($session->has("current_cat")) {
-              $current_cat = intval($session->get("current_cat"));
+       if ($banck->current_cat) {
+              $current_cat = $banck->current_cat;
        } else {
               $current_cat = -1;
        }
@@ -247,8 +247,8 @@
               $loadTwig('_razdel.twig', $rs);
        } else {
               /**  кнопки разделов (категорий) */
-              $buttons['buttons'] = go\DB\query('select * from categories order by `id_num` asc', NULL, 'assoc:id');
-              $loadTwig('_kategorii.twig', $buttons);
+              $renderData['buttons'] = go\DB\query('select * from categories order by `id_num` asc', NULL, 'assoc:id');
+              $loadTwig('_kategorii.twig', $renderData);
 
        }
 

@@ -9,14 +9,16 @@
 class fotoBanck {
 
 
-       private $current_album;
-       private $current_cat;
-       private $popitka = array();
-       private $album_name = array();
+       public  $current_album;
+       public  $current_cat;
+       public  $popitka = array();
+       public  $album_name = array();
        private $album_pass = array();
-       private $record_count = array();
+       public  $record_count = array();
        private $current_page;
-       private $razdel;
+       public  $razdel;
+       public  $album_img;
+       public  $descr;
 
        private $session;
        private $ipLog = '/logs/ipLogFile.log';
@@ -24,7 +26,7 @@ class fotoBanck {
        private $us_name;
        private $ip;
        private $fotoFolder;
-       private $may_view;
+       public  $may_view;
        private $width = 170; // ширина горизонтальной превью в px
        private $page = "pg"; // название GET страницы
 
@@ -40,6 +42,10 @@ class fotoBanck {
 
 
 
+       public function __get($var) {
+
+              return isset($this->$var)?$this->$var:NULL;
+       }
 
        public function __construct() {
 
@@ -47,13 +53,15 @@ class fotoBanck {
               $this->us_name = $this->session->get('us_name');
               $this->ip = Get_IP();
               $this->fotoFolder = fotoFolder();
-              $this->razdel = go\DB\query('select nm from categories where id = ?i', array($this->current_cat), 'el');
               $this->current_page = isset($_GET[$this->page]) ? intval($_GET[$this->page]) : 0;
 
               if (isset($_GET['id'])) {
                      $this->current_album = intval($_GET['id']);
                      $album_data    = go\DB\query('select * from albums where id = ?i', array($this->current_album), 'row');
+                     $this->album_img = $album_data['img'];
+                     $this->descr = $album_data['descr'];
                      $this->album_name[$this->current_album] = $album_data['nm'];
+                     $this->razdel = go\DB\query('select nm from categories where id = ?i', array($this->current_cat), 'el');
                      if ($album_data['pass'] != '' && !$this->popitka[$this->current_album]) {
                             $this->popitka[$this->current_album] = 5;
                      }
@@ -469,9 +477,7 @@ class fotoBanck {
         */
        function verifyParol() {
 
-              $current_album = $this->current_album;
-              $ostPop        = $this->popitka[$this->current_album];
-              if (!$this->may_view && $current_album != NULL) {
+              if (!$this->may_view && $this->current_album != NULL) {
                      ?>
                      <div class="row">
                             <div class="page">
@@ -484,7 +490,7 @@ class fotoBanck {
                                  width="348"
                                  height="350"/>
                             <?
-                                   if ($ostPop == -10) // проверка и вывод времени бана
+                                   if ($this->popitka[$this->current_album] == -10) // проверка и вывод времени бана
                                    {
                                           echo "<script type='text/javascript'>
                                              $(document).ready(function(){
@@ -534,9 +540,7 @@ class fotoBanck {
                      if ($rs) {
                             $pos_num = 1;
                             foreach ($rs as $ln) {
-                                   $source            =
-                                          $_SERVER['DOCUMENT_ROOT'].$this->fotoFolder.$ln['id_album'].'/'
-                                          .$ln['img'];
+                                   $source            = $_SERVER['DOCUMENT_ROOT'].$this->fotoFolder.$ln['id_album'].'/'.$ln['img'];
                                    $sz                = @getimagesize($source);
                                    $id_foto[$pos_num] = ($ln['id']);
                                    /**
@@ -582,13 +586,9 @@ class fotoBanck {
 
 
        /**
-        * @param $rs
-        * @param $ln
-        * @param $source
-        * @param $sz
-        * @param $sz_string
+        *
         */
-       function top5Modern(&$rs, &$ln, &$source, &$sz, &$sz_string) {
+       function top5Modern() {
 
               if ($this->may_view) {
                      ?>
@@ -618,39 +618,38 @@ class fotoBanck {
                                    } else {
                                           $sz_string = 'height="195px"';
                                    }
-                                   ?>
-                                   <div id="foto_top">
-                                          <a class="modern"
-                                             href="/dir.php?num=<?= substr(($ln['img']), 2, -4) ?>"
-                                             title="Фото № <?= $ln['nm'] ?>"
-                                             data-placement="bottom"
-                                             data-original-title="Фото № <?= $ln['nm'] ?>">
-                                                 <figure class="ramka">
-                                                        <span class="top_pos"
-                                                              style="opacity: 0;"><?=$pos_num?></span>
-                                                        <img class="lazy"
-                                                             data-original="thumb.php?num=<?= substr(trim($ln['img']), 2, -4) ?>"
-                                                             id="<?= substr(trim($ln['img']), 2, -4) ?>"
-                                                             src="" alt="<?= $ln['nm'] ?>"
-                                                             title="<?= $pos_num ?> место в рейтинге голосования" <?=$sz_string?>
-                                                             data-placement="top"/>
-                                                        <figcaption><span style="font-size: x-small; font-family: Times, serif; ">№ <?=$ln['nm']?>Голосов:<span class="badge badge-warning">
-                                                            <span id="s<?= substr(trim($ln['img']), 2, -4) ?>"
-                                                                  style="font-size: x-small; font-family: 'Open Sans', sans-serif; "><?=$ln['votes']?></span>
+                            ?>
+                            <div id="foto_top">
+                                   <a class="modern"
+                                      href="/dir.php?num=<?= substr(($ln['img']), 2, -4) ?>"
+                                      title="Фото № <?= $ln['nm'] ?>"
+                                      data-placement="bottom"
+                                      data-original-title="Фото № <?= $ln['nm'] ?>">
+                                   <figure class="ramka">
+                                       <span class="top_pos" style="opacity: 0;"><?=$pos_num?></span>
+                                          <img class="lazy"
+                                               data-original="thumb.php?num=<?= substr(trim($ln['img']), 2, -4) ?>"
+                                               id="<?= substr(trim($ln['img']), 2, -4) ?>"
+                                               src="" alt="<?= $ln['nm'] ?>"
+                                               title="<?= $pos_num ?> место в рейтинге голосования" <?=$sz_string?>
+                                               data-placement="top"/>
+                                   <figcaption><span style="font-size: x-small; font-family: Times, serif; ">№ <?=$ln['nm']?>Голосов:<span class="badge badge-warning">
+                                       <span id="s<?= substr(trim($ln['img']), 2, -4) ?>"
+                                             style="font-size: x-small; font-family: 'Open Sans', sans-serif; "><?=$ln['votes']?></span>
                                    </span><div id="d<?= substr(trim($ln['img']), 2, -4) ?>"
-                                               style="width: 146px;">Рейтинг: <?echo str_repeat('<img src="/img/reyt.png"/>', floor($ln['votes']/ 5));?>
-                                                                      </div></span>
-                                                        </figcaption>
-                                                 </figure>
-                                          </a>
-                                   </div>
-                                   <?
-                                   $pos_num++;
+                                             style="width: 146px;">Рейтинг: <?echo str_repeat('<img src="/img/reyt.png"/>', floor($ln['votes']/ 5));?>
+                                                 </div></span>
+                                   </figcaption>
+                            </figure>
+                                   </a>
+                            </div>
+                            <?
+                                $pos_num++;
                             }
                      }
-                     ?>
-                     <div style="clear: both"></div>
-              <?
+                            ?>
+                            <div style="clear: both"></div>
+                            <?
               }
        }
 
@@ -659,9 +658,8 @@ class fotoBanck {
         *
         */
        function parol() {
-              $session       = check_Session::getInstance();
-              $current_album = $this->current_album;
-              if (!$this->may_view && $current_album != NULL) {
+
+              if (!$this->may_view && $this->current_album != NULL) {
                      $ostPop = $this->popitka[$this->current_album];
                      if ($ostPop > 0 && $ostPop <= 5) {
                             echo "<script type='text/javascript'>
@@ -685,10 +683,10 @@ class fotoBanck {
                             $this->record(); //бан по Ip
                      } elseif ($ostPop > 0) {
                             $ost        = '';
-                            $album_pass = $session->get("album_pass/$current_album");
+                            $album_pass = $this->album_pass[$this->current_album];
                             if ($album_pass != false) {
-                                   $ostPop = $session->set("popitka/$current_album",
-                                          $this->popitka[$this->current_album] - 1);
+                                   $this->popitka[$this->current_album] = $this->popitka[$this->current_album] - 1;
+                                   $ostPop = $this->popitka[$this->current_album];
                             }
                             if ($ostPop == 4) {
                                    $ost = 'У Вас осталось ';
