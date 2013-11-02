@@ -323,7 +323,7 @@
                              p.img,
                              a.watermark,
                              a.ip_marker
-                             FROM photos p, albums a
+                             FROM photos as p, albums as a
                              WHERE p.id_album = ?i
                              AND p.id_album = a.id
                              ORDER by p.img ASC, p.id ASC limit ?i,'.PHOTOS_ON_PAGE,
