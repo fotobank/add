@@ -22,6 +22,118 @@
 			<!--Голова конец-->
 
 
+			<!-- ввод пароля -->
+			<div class="modal-scrolable"
+			     style="z-index: 150;">
+				<div id="static"
+				     class="modal hide fade in animated fadeInDown"
+				     data-keyboard="false"
+				     data-backdrop="static"
+				     tabindex="-1"
+				     aria-hidden="false">
+					<div class="modal-header">
+						<h3 style="color: #444444">Ввод пароля:</h3>
+					</div>
+					<div class="modal-body">
+
+						<div style="ttext_white">
+							На данный альбом установлен пароль. Если у Вас нет пароля для входа или он утерян , пожалуйста свяжитесь с администратором сайта
+							через email в разделе <a href="/kontakty.php"><span class="ttext_blue">"Контакты"</span>.</a>
+						</div>
+						<br/>
+
+						<form action="/fotobanck_adw.php"
+						      method="post">
+							<label for="inputError"
+							       class="ttext_red"
+							       style="float: left; margin-right: 10px;">Пароль: </label> <input id="inputError"
+							                                                                        type="text"
+							                                                                        name="album_pass"
+							                                                                        value=""
+							                                                                        maxlength="20"/>
+							<input class="btn-small btn-primary" type="submit" value="ввод"/>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<p id="err-modal" style="float: left;"></p>
+						<button type="button" data-dismiss="modal" class="btn"
+						        onClick="window.document.location.href='/fotobanck_adw.php?back_to_albums'">
+							Я не знаю
+						</button>
+					</div>
+				</div>
+			</div>
+
+
+			<!-- ошибка -->
+			<div id="error_inf"
+			     class="modal hide fade"
+			     tabindex="-1"
+			     data-replace="true">
+				<div class="modal-header">
+					<button type="button"
+					        class="close"
+					        data-dismiss="modal"
+					        aria-hidden="true">x
+					</button>
+					<h3 style="color:red">Неправильный пароль.</h3>
+				</div>
+				<div class="modal-body">
+					<div>
+						<a href="/kontakty.php"><span class="ttext_blue">Забыли пароль?</span></a>
+					</div>
+				</div>
+			</div>
+
+{% if ret is defined %}
+			<div id="zapret"
+			     class="modal hide fade"
+			     tabindex="-1"
+			     data-replace="true"
+			     style=" margin-top: -180px;">
+				<div class="err_msg">
+					<div class="modal-header">
+						<h3 style="color:#fd0001">Доступ к альбому "{{ album_name }}" заблокирован!</h3>
+					</div>
+					<div class="modal-body">
+						<div style="color:black">Вы использовали 5 попыток ввода пароля.В целях защиты, Ваш IP заблокирован на 30 минут.
+						</div>
+						<br>
+						<h2>Осталось <span id='timer' long='{{ ret.min }}:{{ ret.sec }}'>{{ ret.min }}:{{ ret.sec }}</span> минут{{ okonc }}
+						</h2>
+						<script type='text/javascript'>
+							$(function () {
+								setInterval(function () {
+									function iTime(x) {
+										return (x / 100).toFixed(2).substr(2)
+									}
+									var o = document.getElementById('timer'),
+											w = 60,
+											y = o.innerHTML.split(':'),
+											v = y [0] * w + (y [1] - 1),
+											s = v % w,
+											m = (v - s) / w;
+									if (s < 0) {
+										v = o.getAttribute('long').split(':');
+										m = v [0];
+										s = v [1];
+									}
+									o.innerHTML = [iTime(m), iTime(s)].join(':');
+								}, 1000);
+							});
+						</script>
+						<br> <br> <a href="/kontakty.php">
+							<span class="ttext_blue">Восстановление пароля</span></a>
+						<a style="float:right"
+						   class="btn btn-danger"
+						   data-dismiss="fotobanck_adw.php"
+						   href="/fotobanck_adw.php?back_to_albums">Закрыть</a>
+					</div>
+				</div>
+			</div>
+{% endif %}
+
+
 				{#вывод ошибок#}
 				{% if odebug.showRealtime() == true and odebug.isError > 0 %}
 					{% block showDebug %}

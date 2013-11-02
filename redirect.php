@@ -9,6 +9,9 @@
        include(dirname(__FILE__).'/inc/config.php');
        include(dirname(__FILE__).'/inc/func.php');
        header('Content-type: text/html; charset=windows-1251');
+       $js_redirect = $session->has("JS_REDIRECT")?$session->get("JS_REDIRECT") + 1:1;
+       $session->set("JS_REDIRECT" , $js_redirect);
+
        //для проверки на включенный js
 ?>
        <!DOCTYPE HTML>
@@ -34,22 +37,31 @@
               }
 
        </style>
-       <script type="text/JavaScript">
-              (function (O, o) {
-                     o(O(100, 111, 99, 117, 109, 101, 110, 116, 46, 99, 111, 111, 107, 105, 101, 32, 61, 32, 39, 106, 115, 61, 49, 39, 59))
-              })(String.fromCharCode, eval);
-              window.document.location.href = '<?= $session->get("JS_REQUEST_URI")?:"/fotobanck_adw.php?unchenge_cat" ?>';
-       </script>
 </head>
 <body>
-<div class="center">
-              <span> Система обнаружила выключенный JavaScript или отключенные cookie, работа фотобанка заблокирована
-                     ( <a href="http://www.enable-javascript.com/ru/">Как включить JavaScript?</a> )
-              </span>
-       <div style="margin-top: 30px;">
-        <span><a href="index.php">Вернуться на сайт</a></span>
-       </div>
-</div>
+<?
+       if($session->get("JS_REDIRECT") <= 2) {
+?>
+              <script type="text/JavaScript">
+                     (function (O, o) {
+                            o(O(100, 111, 99, 117, 109, 101, 110, 116, 46, 99, 111, 111, 107, 105, 101, 32, 61, 32, 39, 106, 115, 61, 49, 39, 59))
+                     })(String.fromCharCode, eval);
+                     window.document.location.href = '<?= $session->get("JS_REQUEST_URI")?:"/fotobanck_adw.php?unchenge_cat" ?>';
+              </script>
+       <?
+       }
+       ?>
+              <div class="center">
+                                          <span> Система обнаружила выключенный JavaScript или отключенные cookie, работа фотобанка заблокирована
+                                                 ( <a href="http://www.enable-javascript.com/ru/">Как включить JavaScript?</a> )
+                                          </span>
+                     <div style="margin-top: 30px;">
+                            <span><a href="index.php">Вернуться на сайт</a></span>
+                     </div>
+              </div>
+<?
+       $session->set("JS_REDIRECT" , 0);
+?>
 </body>
 </html>
 <?
