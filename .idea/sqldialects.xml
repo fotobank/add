@@ -10,6 +10,7 @@
     <file url="file://$PROJECT_DIR$/basket.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/ceny.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/chmod.php" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/classes/fotoBanck.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/classes/md5/loader.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/dir.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/download.php" dialect="GenericSQL" />
@@ -54,7 +55,6 @@
     <file url="file://$PROJECT_DIR$/inc/title.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/inc/zip.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/index.php" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/ipLogFile.txt" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/kontakty.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/loader.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/map.php" dialect="GenericSQL" />
