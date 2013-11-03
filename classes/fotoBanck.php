@@ -9,24 +9,26 @@
 class fotoBanck {
 
 
-       public  $current_album;
-       public  $current_cat;
-       public  $popitka = array();
-       public  $album_name = array();
+       private  $current_album;
+       private  $current_cat;
+       private  $popitka = array();
+       private  $album_name = array();
        private $album_pass = array();
-       public  $record_count = array();
+       private  $record_count = array();
        private $current_page;
-       public  $razdel;
-       public  $album_img;
-       public  $descr;
+       private  $razdel;
+       private  $album_img;
+       private  $descr;
+       private  $event;  // отключение показа фотографий в альбоме
+       private $album_data = array();
 
        private $session;
        private $ipLog = '/logs/ipLogFile.log';
        private $timeout='30';
        private $us_name;
-       public  $ip;
+       private  $ip;
        private $fotoFolder;
-       public  $may_view;
+       private  $may_view;
        private $width = 170; // ширина горизонтальной превью в px
        private $page = "pg"; // название GET страницы
 
@@ -42,9 +44,18 @@ class fotoBanck {
 
 
 
-       public function __get($var) {
+       public function get($var) {
 
               return isset($this->$var)?$this->$var:NULL;
+       }
+
+       public function get_arr($arr, $var) {
+
+              if (array_key_exists($this->get($var), $this->$arr)) {
+
+                     return $this->{$arr}[$this->get($var)];
+              }
+              return NULL;
        }
 
        public function __construct() {
@@ -59,12 +70,15 @@ class fotoBanck {
 
               if (isset($_GET['id'])) {
                      $this->current_album = intval($_GET['id']);
-                     $album_data    = go\DB\query('select * from albums where id = ?i', array($this->current_album), 'row');
-                     $this->album_img = $album_data['img'];
-                     $this->descr = $album_data['descr'];
-                     $this->album_name[$this->current_album] = $album_data['nm'];
+                     $this->album_data    = go\DB\query('select * from albums where id = ?i', array($this->current_album), 'row');
+                     $this->event = $this->album_data['event'];
+                     $this->album_img = $this->album_data['img'];
+                     $this->descr = $this->album_data['descr'];
+                     $this->album_name[$this->current_album] = $this->album_data['nm'];
                      $this->razdel = go\DB\query('select nm from categories where id = ?i', array($this->current_cat), 'el');
-                     if ($album_data['pass'] != '' && !$this->popitka[$this->current_album]) {
+
+
+                     if ($this->album_data['pass'] != '' && !$this->popitka[$this->current_album]) {
                             $this->popitka[$this->current_album] = 5;
                      }
               }
@@ -123,17 +137,16 @@ class fotoBanck {
 
        private function may_view() {
 
-              $album_data = go\DB\query('select * from albums where id = ?i', array($this->current_album), 'row');
               $this->may_view = false;
-              if ($album_data) {
+              if ($this->album_data) {
                      $this->may_view = true;
-                     if ($album_data['pass'] != '') {
+                     if ($this->album_data['pass'] != '') {
                             ?>
-                            <div style="display: none;"><? check(); ?></div><?
+                            <div style="display: none;"><? $this->check(); ?></div><?
                             if (isset($_POST['album_pass'])) {
-                                   $this->album_pass[$album_data['id']] = GetFormValue($_POST['album_pass']);
-                                   $albPass = $this->album_pass[$album_data['id']];
-                                   if ($albPass != $album_data['pass'] && $albPass != '') {
+                                   $this->album_pass[$this->album_data['id']] = GetFormValue($_POST['album_pass']);
+                                   $albPass = $this->album_pass[$this->album_data['id']];
+                                   if ($albPass != $this->album_data['pass'] && $albPass != '') {
                                           echo "
 																							<script type='text/javascript'>
 																							// dhtmlx.message({ type:'error', text:'Пароль неправильный,<br> будьте внимательны!'});
@@ -152,7 +165,7 @@ class fotoBanck {
                                    }
 
                             }
-                            $this->may_view = ($this->album_pass[$album_data['id']] == $album_data['pass']); // переменная пароля
+                            $this->may_view = ($this->album_pass[$this->album_data['id']] == $this->album_data['pass']); // переменная пароля
                      } else {
                             $this->session->del("popitka/$this->current_album");
                             unset($this->popitka[$this->current_album]);
@@ -215,7 +228,7 @@ class fotoBanck {
                             $subdata = explode("][", $record);
 
                             // показ остаточного времени
-                            if (Get_IP() == $subdata[0] && $now < ($subdata[1] + 60 * $this->timeout) && $this->current_album == $subdata[2])
+                            if ($this->ip == $subdata[0] && $now < ($subdata[1] + 60 * $this->timeout) && $this->current_album == $subdata[2])
                             {
                                    $begin = ((($subdata[1] + 60 * $this->timeout) - $now) / 60);
                                    $min = intval($begin);
@@ -227,7 +240,7 @@ class fotoBanck {
                             }
 
                             // время бана закончилось
-                            if (Get_IP() == $subdata[0] && $now > ($subdata[1] + 60 * $this->timeout) && $this->current_album == $subdata[2]
+                            if ($this->ip == $subdata[0] && $now > ($subdata[1] + 60 * $this->timeout) && $this->current_album == $subdata[2]
                                 && $this->popitka[$this->current_album] <= 0 && $this->popitka[$this->current_album] > 5 )
 
                             {
@@ -260,9 +273,8 @@ class fotoBanck {
         */
        public function akkordeon() {
 
-              $event = go\DB\query('select `event` from `albums` where `id` =?i', array($this->current_album), 'el');
               //		отключение аккордеона если фотографии не показываются
-              if ($event == 'on' && JS) {
+              if ($this->event == 'on' && JS) {
                      $acc[1] = go\DB\query('SELECT * FROM accordions WHERE id_album = ?i ', array('1'), 'assoc:collapse_numer');
                      $acc[$this->current_album] = go\DB\query('SELECT * FROM accordions WHERE id_album = ?i ', array($this->current_album), 'assoc:collapse_numer');
                      if ($acc[$this->current_album]) {

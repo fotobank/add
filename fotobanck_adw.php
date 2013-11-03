@@ -43,15 +43,15 @@
               $renderData['ret'] = $rv['ret'];
               $renderData['okonc'] = $rv['okonc'];
        }
-       $renderData['ip'] = $banck->ip;
+       $renderData['ip'] = $banck->get('ip');
        $renderData['dataDB'] = go\DB\query('select txt from content where id = ?i', array(1), 'el');
-       $renderData['album_name'] = isset($banck->album_name[$banck->current_album])?:NULL;
+       $renderData['album_name'] = $banck->get_arr('album_name', 'current_album')?:NULL;
        $loadTwig('.twig', $renderData);
 
 
 
        /** начало страницы */
-       if ($banck->current_album) {
+       if ($banck->get('current_album')) {
 
 
        /** Отключить проверку пароля */
@@ -67,7 +67,7 @@
        /**
         *  Аккордеон
         */
-       if ($banck->may_view) {
+       if ($banck->get('may_view')) {
 
               $banck->akkordeon();
 
@@ -95,15 +95,15 @@
                  href="/fotobanck_adw.php?back_to_albums">« назад</a> <a class="next"
                                                                          href="/fotobanck_adw.php?unchenge_cat">« выбор категорий </a>
               <a class="next"
-                 href="/fotobanck_adw.php?back_to_albums">« раздел "<?=$banck->razdel?>"</a>
-              <a class="next">« альбом"<?=$banck->album_name[$banck->current_album]?>"</a>
+                 href="/fotobanck_adw.php?back_to_albums">« раздел "<?=$banck->get('razdel')?>"</a>
+              <a class="next">« альбом"<?=$banck->get_arr('album_name', 'current_album')?>"</a>
        </div>
 
        <!-- Название альбома  -->
        <div class="cont-list"
             style="margin: 40px 10px 30px 0;">
               <div class="drop-shadow lifted">
-                     <h2><span style="color: #00146e;">Фотографии альбома "<?=$banck->album_name[$banck->current_album]?>"</span>
+                     <h2><span style="color: #00146e;">Фотографии альбома "<?=$banck->get_arr('album_name', 'current_album')?>"</span>
                      </h2>
               </div>
        </div>
@@ -114,31 +114,30 @@
             class="span3">
               <div class="alb_logo">
                      <div id="fb_alb_fotoP">
-                            <img src="album_id.php?num=<?= substr(($banck->album_img), 2, -4) ?>"
+                            <img src="album_id.php?num=<?= substr(($banck->get('album_img')), 2, -4) ?>"
                                  width="130px"
                                  height="124px"
                                  alt="-"/>
                      </div>
               </div>
-              <?=$banck->descr?>
+              <?=$banck->get('descr')?>
        </div>
 
        <?
 
        // выдавать контент только c включенным JS в браузере
        if (JS) {
-              $event = go\DB\query('select `event` from `albums` where `id` =?i', array($banck->current_album), 'el');
-              //		отключение показа фотографий в альбоме
+
               if ($event == 'on') {
                      //		<!-- вывод топ 5  -->
                      $banck->top5Modern();
 
-                     if (!$banck->record_count[$banck->current_album]) {
-                            $rs = go\DB\query('select SQL_CALC_FOUND_ROWS p.* from photos p where id_album = ?i', array($banck->current_album), 'assoc');
-                            $session->set('record_count/'.$banck->current_album, go\DB\query('select FOUND_ROWS() as cnt', NULL, 'el')); // количество записей
+                     if (!$banck->get_arr('record_count', 'current_album')) {
+                            $rs = go\DB\query('select SQL_CALC_FOUND_ROWS p.* from photos p where id_album = ?i', array($banck->get('current_album')), 'assoc');
+                            $session->set('record_count/'.$banck->get('current_album'), go\DB\query('select FOUND_ROWS() as cnt', NULL, 'el')); // количество записей
                      }
                      $page = "pg"; // название GET страницы
-                     $pager = new Pager2($session->get("record_count/".intval($banck->current_album)), PHOTOS_ON_PAGE, new pagerHtmlRenderer());
+                     $pager = new Pager2($session->get("record_count/".intval($banck->get('current_album'))), PHOTOS_ON_PAGE, new pagerHtmlRenderer());
                      $pager->delta = 3;
                      $pager->firstPagesCnt = 3;
                      $pager->lastPagesCnt = 3;
@@ -173,7 +172,7 @@
                      // $pager->printDebug();
               } else {
                      /**  подписка на альбом (когда альбом появится в категории)*/
-                     $renderData['current_album'] = $banck->current_album;
+                     $renderData['current_album'] = $banck->get('current_album');
                      $loadTwig('_podpiska.twig', $renderData);
 
               }
@@ -217,8 +216,8 @@
 
        /** Вывод альбомов в разделах */
 } else {
-       if ($banck->current_cat) {
-              $current_cat = $banck->current_cat;
+       if ($banck->get('current_cat')) {
+              $current_cat = $banck->get('current_cat');
        } else {
               $current_cat = -1;
        }
