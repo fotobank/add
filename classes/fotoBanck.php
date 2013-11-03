@@ -24,7 +24,7 @@ class fotoBanck {
        private $ipLog = '/logs/ipLogFile.log';
        private $timeout='30';
        private $us_name;
-       private $ip;
+       public  $ip;
        private $fotoFolder;
        public  $may_view;
        private $width = 170; // ширина горизонтальной превью в px
@@ -51,9 +51,11 @@ class fotoBanck {
 
               $this->session = check_Session::getInstance();
               $this->us_name = $this->session->get('us_name');
+              $this->current_cat = $this->session->get('current_cat');
               $this->ip = Get_IP();
               $this->fotoFolder = fotoFolder();
               $this->current_page = isset($_GET[$this->page]) ? intval($_GET[$this->page]) : 0;
+
 
               if (isset($_GET['id'])) {
                      $this->current_album = intval($_GET['id']);
@@ -67,15 +69,15 @@ class fotoBanck {
                      }
               }
               if (isset($_GET['back_to_albums'])) {
-                     $this->session->del('current_album');
+                     unset($this->current_album);
               }
               if (isset($_GET['chenge_cat'])) {
-                     $this->session->del('current_album');
+                     unset($this->current_album);
                      $this->current_cat = intval($_GET['chenge_cat']);
               }
               if (isset($_GET['unchenge_cat'])) {
-                     $this->session->del('current_album');
-                     $this->session->del('current_cat');
+                     unset($this->current_album);
+                     unset($this->current_cat);
               }
 
               $this->may_view();
@@ -94,6 +96,29 @@ class fotoBanck {
               $this->session->set('current_page', $this->current_page);
               $this->session->set('razdel', $this->razdel);
               $this->session->set('record_count', $this->record_count);
+       }
+
+       public function check_block() {
+              if ($this->current_album && isset($this->popitka[$this->current_album])) {
+                     $ostPop = $this->popitka[$this->current_album];
+                     if ($ostPop <= 0 || $ostPop == 5) {
+                            $ret = json_decode($this->check(), true);
+                            if ($ret['min'] == 1 || $ret['min'] == 21) {
+                                   $okonc = 'а';
+                            } elseif ($ret['min'] == 2 || $ret['min'] == 3
+                                      || $ret['min'] == 4
+                                      || $ret['min'] == 22
+                                      || $ret['min'] == 23
+                                      || $ret['min'] == 24
+                            ) {
+                                   $okonc = 'ы';
+                            } else {
+                                   $okonc = '';
+                            }
+                            return json_encode(array('okonc' => $okonc,'ret' => $ret));
+                     }
+              }
+              return NULL;
        }
 
        private function may_view() {
@@ -130,9 +155,11 @@ class fotoBanck {
                             $this->may_view = ($this->album_pass[$album_data['id']] == $album_data['pass']); // переменная пароля
                      } else {
                             $this->session->del("popitka/$this->current_album");
+                            unset($this->popitka[$this->current_album]);
                      }
               } else {
                      $this->session->del('current_album');
+                     unset($this->current_album);
               }
        }
 

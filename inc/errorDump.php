@@ -14,12 +14,12 @@
 				$odebugCSSLOG     = 'default_log';
 				$odebug->HTML     = 'default'; // set the HTML template
 				$odebug->HTMLLOG  = 'default_log';
-				$odebug->ERROR    = true; // хандлер переключить на odebugger_class
-				$odebug->LOGFILE  = true;
+				$odebug->ERROR    = false; // хандлер переключить на odebugger_class
+				$odebug->LOGFILE  = false;
 				$odebug->REALTIME = true; // true - выводить ошибки на экран*/
 				$odebug->log_File = "_error_log.xml"; // имя log файла
 				// error mail options
-				$odebug->mail_Period  = 5; // Minimal period for sending an error message (in minutes)
+				$odebug->mail_Period  = 555; // Minimal period for sending an error message (in minutes)
 				$odebug->from_Addr    = "webmaster@aleks.od.ua";
 				$odebug->from_Name    = $_SERVER['HTTP_HOST'];
 			  $odebug->to_Addr      = "robot@aleks.od.ua";

@@ -38,29 +38,12 @@
 
        $banck = new fotoBanck();
 
-       $current_album = $banck->current_album;
-       if ($banck->current_album != NULL && isset($banck->popitka[$banck->current_album])) {
-              $ostPop = $banck->popitka[$banck->current_album];
-              if ($ostPop <= 0 || $ostPop == 5) {
-                     $ret = json_decode(check(), true);
-                     $renderData['ret'] = $ret;
-                     $renderData['ip'] = Get_IP();
-                     if ($ret['min'] == 1 || $ret['min'] == 21) {
-                            $okonc = 'à';
-                     } elseif ($ret['min'] == 2 || $ret['min'] == 3
-                               || $ret['min'] == 4
-                               || $ret['min'] == 22
-                               || $ret['min'] == 23
-                               || $ret['min'] == 24
-                     ) {
-                            $okonc = 'û';
-                     } else {
-                            $okonc = '';
-                     }
-                     $renderData['okonc'] = $okonc;
-              }
+       $rv = json_decode($banck->check_block(), true);
+       if($rv) {
+              $renderData['ret'] = $rv['ret'];
+              $renderData['okonc'] = $rv['okonc'];
        }
-
+       $renderData['ip'] = $banck->ip;
        $renderData['dataDB'] = go\DB\query('select txt from content where id = ?i', array(1), 'el');
        $renderData['album_name'] = isset($banck->album_name[$banck->current_album])?:NULL;
        $loadTwig('.twig', $renderData);
