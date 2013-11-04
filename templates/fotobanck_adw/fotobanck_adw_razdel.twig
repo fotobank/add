@@ -1,7 +1,8 @@
 {#/** разделы */#}
 <div class="cont-list" style="margin: 20px 10px 30px 0;" >
 	<div class="drop-shadow lifted" >
-		<h2 ><span style="color: #00146e;" >Раздел фотобанка - "{{ albums.0.razdel }}"</span >
+		<h2 ><span style="color: #00146e;" >Раздел фотобанка - "{{ categories.0.razdel }}"</span >
+			{#{{ dump_r(categories) }}#}
 		</h2 >
 	</div >
 </div >
@@ -11,7 +12,7 @@
 
 <div class="page" >
 	<a class="next" href="/fotobanck_adw.php?unchenge_cat" >« назад</a > <a class="next"
-			href="/fotobanck_adw.php?unchenge_cat" >« выбор категорий </a > <a class="next" >« раздел "{{ albums.0.razdel }}"</a >
+			href="/fotobanck_adw.php?unchenge_cat" >« выбор категорий </a > <a class="next" >« раздел "{{ categories.0.razdel }}"</a >
 </div >
 <div style="clear: both" ></div >
 
@@ -23,8 +24,8 @@
 	{% set h = 0 %}
 
 	{% for album in albums %}
-		{% if album.on_off != 'off' %}
-			{#{{ dump_t(album) }}#}
+		{% if album.on_off != 'off' and album.id is not null %}
+			{#{{ dump_r(album) }}#}
 				{% set top  = h * 1 + 20 %}
 				{% set left = i * 250 %}
 
@@ -33,10 +34,10 @@
 						<div class="div_fb3" style="top:{{ top }}px; left:{{ left }}px;" >
 							<a href="/fotobanck_adw.php?id={{- album.id -}}" >
 								{#тест#}
-					{#{{ dump_t(album.img|substr(2, -4)) }}#}
+					{#{{ dump_r(album.img|substr(2, -4)) }}#}
 								<img src="/album_id.php?num={{- album.img|slice( 2, -4) -}}" id="album_{{- album.id -}}_2"
-								alt="раздел {{ album.razdel }} альбом {{ album.nm }}"
-								title="раздел {{ album.razdel }} альбом {{ album.nm }}" class="img3" />
+								alt="раздел {{ categories.0.razdel }} альбом {{ album.nm }}"
+								title="раздел {{ categories.0.razdel }} альбом {{ album.nm }}" class="img3" />
 							</a >
 							<br >
 							<span class="prev_name" >{{- album.nm -}}</span >

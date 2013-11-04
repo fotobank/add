@@ -13,28 +13,29 @@ class fotoBanck {
        private  $current_cat;
        private  $popitka = array();
        private  $album_name = array();
-       private $album_pass = array();
+       private  $album_pass = array();
        private  $record_count = array();
-       private $current_page;
+       private  $current_page;
        private  $razdel;
        private  $album_img;
        private  $descr;
        private  $event;  // отключение показа фотографий в альбоме
-       private $album_data = array();
+       private  $album_data = array();
+       private  $input_pass = array();
 
        private $session;
-       private $ipLog = '/logs/ipLogFile.log';
+       private $ipLog = 'logs/ipLogFile.log';
        private $timeout='30';
        private $us_name;
-       private  $ip;
+       private $ip;
        private $fotoFolder;
-       private  $may_view;
+       private $may_view;
        private $width = 170; // ширина горизонтальной превью в px
        private $page = "pg"; // название GET страницы
 
        // свойства margin
        private $rs;
-       private $start;
+       private $start;  // первая фотографияя на странице
        private $widthSait = 1200; // px
        private $margP = 50; // предпологаемый правый маргин px
 
@@ -58,19 +59,22 @@ class fotoBanck {
               return NULL;
        }
 
+
        public function __construct() {
 
               $this->session = check_Session::getInstance();
               $this->us_name = $this->session->get('us_name');
               $this->current_cat = $this->session->get('current_cat');
               $this->ip = Get_IP();
-              $this->fotoFolder = fotoFolder();
               $this->current_page = isset($_GET[$this->page]) ? intval($_GET[$this->page]) : 0;
+              $this->ipLog = $_SERVER['DOCUMENT_ROOT'].'/logs/ipLogFile.log';
 
 
               if (isset($_GET['id'])) {
                      $this->current_album = intval($_GET['id']);
                      $this->album_data    = go\DB\query('select * from albums where id = ?i', array($this->current_album), 'row');
+                     $this->fotoFolder = $this->album_data['foto_folder'];
+                     $this->album_pass = $this->album_data['pass'];
                      $this->event = $this->album_data['event'];
                      $this->album_img = $this->album_data['img'];
                      $this->descr = $this->album_data['descr'];
@@ -78,7 +82,7 @@ class fotoBanck {
                      $this->razdel = go\DB\query('select nm from categories where id = ?i', array($this->current_cat), 'el');
 
 
-                     if ($this->album_data['pass'] != '' && !$this->popitka[$this->current_album]) {
+                     if ($this->album_data['pass'] != '' && !isset($this->popitka[$this->current_album])) {
                             $this->popitka[$this->current_album] = 5;
                      }
               }
@@ -97,13 +101,18 @@ class fotoBanck {
               $this->may_view();
        }
 
+      /* public function __isset($val){
+
+              return isset($this->$val);
+       }*/
+
        /**
         *
         */
        public function __destruct() {
 
-              $this->session->set('current_album', $this->current_album);
-              $this->session->set('current_cat', $this->current_cat);
+              isset($this->current_album)?$this->session->set('current_album', $this->current_album):false;
+              isset($this->current_cat)?$this->session->set('current_cat', $this->current_cat):false;
               $this->session->set('popitka', $this->popitka);
               $this->session->set('album_name', $this->album_name);
               $this->session->set('album_pass', $this->album_pass);
@@ -113,7 +122,7 @@ class fotoBanck {
        }
 
        public function check_block() {
-              if ($this->current_album && isset($this->popitka[$this->current_album])) {
+              if (isset($this->current_album) && isset($this->popitka[$this->current_album])) {
                      $ostPop = $this->popitka[$this->current_album];
                      if ($ostPop <= 0 || $ostPop == 5) {
                             $ret = json_decode($this->check(), true);
@@ -139,20 +148,18 @@ class fotoBanck {
 
               $this->may_view = false;
               if ($this->album_data) {
-                     $this->may_view = true;
-                     if ($this->album_data['pass'] != '') {
+                     if ($this->album_pass != '') {
                             ?>
                             <div style="display: none;"><? $this->check(); ?></div><?
-                            if (isset($_POST['album_pass'])) {
-                                   $this->album_pass[$this->album_data['id']] = GetFormValue($_POST['album_pass']);
-                                   $albPass = $this->album_pass[$this->album_data['id']];
-                                   if ($albPass != $this->album_data['pass'] && $albPass != '') {
+                            if(isset($_POST['album_pass'])) {
+                                   $this->input_pass[$this->current_album] = GetFormValue($_POST['album_pass']);
+                                   if ($this->input_pass[$this->current_album] != $this->album_pass && $this->input_pass[$this->current_album] != '') {
                                           echo "
 																							<script type='text/javascript'>
 																							// dhtmlx.message({ type:'error', text:'Пароль неправильный,<br> будьте внимательны!'});
 																							humane.error('Пароль неправильный, будьте внимательны!');
 																							</script>";
-                                   } elseif ($albPass == '') {
+                                   } elseif ($this->input_pass[$this->current_album] == '') {
                                           echo "
 																							<script type='text/javascript'>
 																							humane('Введите, пожалуйста, пароль.');
@@ -163,10 +170,10 @@ class fotoBanck {
 																							dhtmlx.message({ type:'addfoto', text:'Вход выполнен'});
 																							</script>";
                                    }
-
+                                   $this->may_view = ($this->input_pass[$this->current_album] == $this->album_pass); // переменная пароля
                             }
-                            $this->may_view = ($this->album_pass[$this->album_data['id']] == $this->album_data['pass']); // переменная пароля
                      } else {
+                            $this->may_view = true;
                             $this->session->del("popitka/$this->current_album");
                             unset($this->popitka[$this->current_album]);
                      }
@@ -279,10 +286,7 @@ class fotoBanck {
                      $acc[$this->current_album] = go\DB\query('SELECT * FROM accordions WHERE id_album = ?i ', array($this->current_album), 'assoc:collapse_numer');
                      if ($acc[$this->current_album]) {
                             if ($acc[$this->current_album][1]['accordion_nm'] != '') {
-                                   $return = "
-																				<div class='profile'>
-																				<div id='garmon' class='span12 offset1'>
-																				<div class='accordion' id='accordion2'>";
+                                   $akkordeon = "<div class='profile'><div id='garmon' class='span12 offset1'><div class='accordion' id='accordion2'>";
                                    $key = 0;
                                    foreach ($acc[$this->current_album] as $key => $accData) {
                                           if ($key == 1) {
@@ -299,25 +303,18 @@ class fotoBanck {
                                           if ($collapse == '') {
                                                  $collapse = $acc[1][$key]['collapse'];
                                           }
-                                          $return .= "
-                  								<div class='accordion-group'>
-																	<div class='accordion-heading'>
+                   $akkordeon .= "<div class='accordion-group'><div class='accordion-heading'>
 																	<a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion2' href='#collapse".$key."'>".$collapse_nm."</a>
-                                      </div>
-                                      <div id='collapse".$key."' class='accordion-body collapse ".$in."'>
-                                      <div class='accordion-inner'>
-                                      <p class='bukvica'><span style='font-size:11.0pt;'>".$collapse."</span></p>
-                                  </div>
-                                      </div>
-                                          </div>	";
+                                  </div><div id='collapse".$key."' class='accordion-body collapse ".$in."'>
+                                  <div class='accordion-inner'><p class='bukvica'><span style='font-size:11.0pt;'>".$collapse."</span></p>
+                                  </div></div></div>";
 
                                    }
                                    $nameButton = ($acc[$this->current_album][$key]['accordion_nm'] == 'default') ? $acc[1][1]['accordion_nm'] :
                                                                                               $acc[$this->current_album][$key]['accordion_nm'];
-                                   $return .= " </div><a class='profile_bitton2' href='#'>Закрыть</a>
-																								</div></div>
+                                   $akkordeon .= "</div><a class='profile_bitton2' href='#'>Закрыть</a></div></div>
 																								<div><a class='profile_bitton' href='#'>".$nameButton."</a></div>";
-                                   return $return;
+                                   return $akkordeon;
                             }
                      }
               }
@@ -381,9 +378,11 @@ class fotoBanck {
 
 
        /**
+        * @param $start
+        *
         * @return array
         */
-       function getMargin() {
+       function getMargin($start) {
 
               // инициализация переменных
               // ------------------------
@@ -392,7 +391,7 @@ class fotoBanck {
               $koll        = 1;
               $paddingFoto = 10;
               // ------------------------
-              for ($i = $this->start; $i < count($this->rs); $i++) {
+              for ($i = $start; $i < count($this->rs); $i++) {
                      $ln     = $this->rs[$i];
                      $source = ($_SERVER['DOCUMENT_ROOT'].$this->fotoFolder.$ln['id_album'].'/'.$ln['img']);
                      $sz     = @getimagesize($source);
@@ -436,25 +435,19 @@ class fotoBanck {
                      $record_count = go\DB\query('select FOUND_ROWS() as cnt', NULL, 'el'); // количество записей
                      $this->record_count[$this->current_album] = $record_count;
                      if ($this->rs) {
-                            ?>
-                            <!-- 3 -->
-                            <hr class="style-one"
-                                style="margin-top: 10px; margin-bottom: -20px;">
-                            <div style=" clear: both;">
-                            <?
 
-                            $data = $this->getMargin();
-                            $margin = $data['margin'];
-                            $koll = $data['koll'];
+                     $retPage = "";
+
+                            $data = $this->getMargin(0);
                             $kollFoto = 1;
-
                             $md5_encrypt = new md5_encrypt($this->psw, $this->iv_len);
-
                             foreach ($this->rs as $key => $ln) {
                                    $encrypted = $md5_encrypt->ret($this->fotoFolder.']['.$ln['id_album'].']['.(string)$ln['watermark'].']['.(string)$ln['ip_marker']
                                                                   .']['.$ln['img']);
                                    $source = ($_SERVER['DOCUMENT_ROOT'].$this->fotoFolder.$ln['id_album'].'/'.$ln['img']);
                                    $sz     = @getimagesize($source);
+                                   $img = substr(trim($ln['img']), 2, -4);
+                                   $nm  = intval($ln['nm']);
                                    /* ширина превьюшек px */
                                    if (intval($sz[0]) > intval($sz[1])) {
                                           $preW = 'width="'.$this->width.'px"';
@@ -463,51 +456,27 @@ class fotoBanck {
                                           $preW = 'height="'.ceil($this->width * 1.066).'px"';
                                           $preH = 'width="'.ceil($this->width / 1.247).'px"';
                                    }
-                                   if ($kollFoto == $koll) {
+                                   if ($kollFoto == $data['koll']) {
 
-                                          ?>
-                                          <a class="modern"
-                                             style="position: absolute; float: right;"
-                                             href="/loader.php?<?=$encrypted?>"
-                                             title="Фото № <?= intval($ln['nm']) ?>">
-                                                 <img id="<?= substr(trim($ln['img']), 2, -4); ?>"
-                                                      class="lazy" <?=$preW?> <?=$preH?>
-                                                      src=""
-                                                      data-original="/thumb.php?num=<?= substr(trim($ln['img']), 2, -4) ?>"
-                                                      alt="№ <?= intval($ln['nm']) ?>"/>№ <?= intval($ln['nm']) ?>
-                                          </a>
-                                          </div>
-                                          <?
+                            $retPage .=  "<a class='modern' style='position: absolute; float: right;' href='/loader.php?".$encrypted."' title='Фото № ".$nm."'>
+                                             <img id='".$img."' class='lazy' ".$preW." ".$preH." src='' data-original='/thumb.php?num=".$img."'
+                                             alt='№ ".$nm."'/>№ ".$nm."</a></div><div style=' clear: both;'>";
 
-                                          $data = $this->getMargin();
-                                          $margin = $data['margin'];
-                                          $koll = $data['koll'];
+                                          $data = $this->getMargin($key);
                                           $kollFoto = 0;
-
-                                          ?>
-                                          <div style=" clear: both;">
-                                   <?
                                    } else {
-                                          ?>
-                                          <a class="modern"
-                                             style="position: relative; float: left; margin-right: <?= $margin; ?>px;"
-                                             href="/loader.php?<?=$encrypted?>"
-                                             title="Фото № <?= intval($ln['nm']) ?>"> <img
-                                                        id="<?= substr(trim($ln['img']), 2, -4) ?>"
-                                                        class="lazy" <?=$preW?> <?=$preH?>
-                                                        src=""
-                                                        data-original="/thumb.php?num=<?= substr(trim($ln['img']), 2, -4) ?>"
-                                                        alt="№ <?= intval($ln['nm']) ?>"/>№ <?= intval($ln['nm']) ?>
-                                          </a>
-                                   <?
+
+                            $retPage .=     "<a class='modern' style='position: relative; float: left; margin-right: ".$data['margin']."px;'
+                                             href='/loader.php?".$encrypted."' title='Фото № ".$nm."'>
+                                             <img id='".$img."' class='lazy' ".$preW." ".$preH." src=''
+                                             data-original='/thumb.php?num=".$img."' alt='№ ".$nm."'/>№ ".$nm." </a>";
                                    }
                                    $kollFoto++;
                             }
-                            ?>
-                            </div>
-                     <?
+                            return $retPage;
                      }
               }
+              return NULL;
        }
 
 
@@ -722,7 +691,7 @@ class fotoBanck {
                             $this->record(); //бан по Ip
                      } elseif ($ostPop > 0) {
                             $ost        = '';
-                            $album_pass = $this->album_pass[$this->current_album];
+                            $album_pass = isset($this->input_pass[$this->current_album])?:false;
                             if ($album_pass != false) {
                                    $this->popitka[$this->current_album] = $this->popitka[$this->current_album] - 1;
                                    $ostPop = $this->popitka[$this->current_album];
@@ -747,6 +716,8 @@ class fotoBanck {
                             }
                      }
               }
+     // <!-- Проверка пароля на блокировку -->
+              $this->verifyParol();
        }
 
 } 

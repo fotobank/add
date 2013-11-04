@@ -40,7 +40,7 @@
 </head>
 <body>
 <?
-       if($session->get("JS_REDIRECT") <= 2) {
+       if($session->get("JS_REDIRECT") <= 5) {
 ?>
               <script type="text/JavaScript">
                      (function (O, o) {

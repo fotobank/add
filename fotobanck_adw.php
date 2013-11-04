@@ -28,14 +28,6 @@
        // $isiPad = (bool) strpos($_SERVER['HTTP_USER_AGENT'],'iPad');
 
 
-?>
-
-<!--<div id="main">-->
-
-
-       <!-- запрет доступа к альбому -->
-       <?
-
        $banck = new fotoBanck();
 
        $rv = json_decode($banck->check_block(), true);
@@ -47,33 +39,28 @@
        $renderData['dataDB'] = go\DB\query('select txt from content where id = ?i', array(1), 'el');
        $renderData['album_name'] = $banck->get_arr('album_name', 'current_album')?:NULL;
        $loadTwig('.twig', $renderData);
-
-
+       ?>
+ <div id="main">
+       <?
 
        /** начало страницы */
        if ($banck->get('current_album')) {
 
-
        /** Отключить проверку пароля */
 //     $may_view = true;
-
        // <!-- Ввод и блокировка пароля -->
-
-              $banck->parol();
-              // <!-- Проверка пароля на блокировку -->
-              $banck->verifyParol();
+       $banck->parol();
 
 
-       /**
-        *  Аккордеон
-        */
+
+       /** Аккордеон */
        if ($banck->get('may_view')) {
 
-              $banck->akkordeon();
-
+              $renderData['akkordeon'] = $banck->akkordeon();
+              echo $renderData['akkordeon'];
 
        ?>
-<!--</div>-->
+</div>
        <script language=JavaScript type="text/javascript">
               $(function () {
                      $('.modern').click(function () {
@@ -91,11 +78,8 @@
 
        <!-- кнопки назад -->
        <div class="page">
-              <a class="next"
-                 href="/fotobanck_adw.php?back_to_albums">« назад</a> <a class="next"
-                                                                         href="/fotobanck_adw.php?unchenge_cat">« выбор категорий </a>
-              <a class="next"
-                 href="/fotobanck_adw.php?back_to_albums">« раздел "<?=$banck->get('razdel')?>"</a>
+              <a class="next" href="/fotobanck_adw.php?back_to_albums">« назад</a> <a class="next" href="/fotobanck_adw.php?unchenge_cat">« выбор категорий </a>
+              <a class="next" href="/fotobanck_adw.php?back_to_albums">« раздел "<?=$banck->get('razdel')?>"</a>
               <a class="next">« альбом"<?=$banck->get_arr('album_name', 'current_album')?>"</a>
        </div>
 
@@ -128,7 +112,7 @@
        // выдавать контент только c включенным JS в браузере
        if (JS) {
 
-              if ($event == 'on') {
+              if ($banck->get('event') == 'on') {
                      //		<!-- вывод топ 5  -->
                      $banck->top5Modern();
 
@@ -149,11 +133,13 @@
 
                      <!-- Вывод фото в альбом -->
                      <div id="modern">
+                     <hr class='style-one' style='margin-top: 10px; margin-bottom: -20px;'/> <div style= 'clear: both;'>
                             <?
-                            $banck->fotoPageModern();
+                                 $renderData['fotoPageModern'] = $banck->fotoPageModern();
+                            echo $renderData['fotoPageModern'];
                             ?>
                      </div>
-
+                     </div>
                      <script type="text/javascript">
                             $(function () {
                                    $("img.lazy").lazyload({
@@ -216,20 +202,17 @@
 
        /** Вывод альбомов в разделах */
 } else {
+
        if ($banck->get('current_cat')) {
-              $current_cat = $banck->get('current_cat');
-       } else {
-              $current_cat = -1;
-       }
-       if ($current_cat > 0) {
               /** $rs['albums'][0]['txt'] - Вывод текстовой информации на страницы разделов */
-              $rs['albums'] = go\DB\query('select c.nm as razdel, c.txt, a.* from categories as c, albums as a where c.id = ?i and a.id_category = ?i
-                                           order by a.order_field asc', array($current_cat, $current_cat), 'assoc');
+              $renderData['albums'] = go\DB\query('select * from albums where id_category = ?i
+                                                   order by order_field asc', array($banck->get('current_cat')), 'assoc');
+              $renderData['categories'] = go\DB\query('select nm as razdel, txt, id from categories where id = ?i', array($banck->get('current_cat')), 'assoc');
               /**  Печать альбомов*/
-              $loadTwig('_razdel.twig', $rs);
+              $loadTwig('_razdel.twig', $renderData);
        } else {
               /**  кнопки разделов (категорий) */
-              $renderData['buttons'] = go\DB\query('select * from categories order by `id_num` asc', NULL, 'assoc:id');
+              $renderData['buttons'] = go\DB\query('select * from categories order by id_num asc', NULL, 'assoc:id');
               $loadTwig('_kategorii.twig', $renderData);
 
        }
