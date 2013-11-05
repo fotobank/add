@@ -23,7 +23,7 @@
 						}
 						// Display the list in HTML
 						$url    = htmlspecialchars($url, ENT_QUOTES);
-						$output = "<h2>Топ ключевые слова для <a href='$url'>$url</a></h2><ul>";
+						$output = "<h2>Топ ключевые слова для <a href='".$url."'>$url</a></h2><ul>";
 						foreach ($keywords as $keyword) {
 								$output .= "<li>".$keyword[0]."</li>";
 						}
@@ -36,3 +36,5 @@
 				//	DisplayTopKeywords();
 		}
 //<!-- End Piwik Tracking Code -->
+       $dir = $_SERVER['DOCUMENT_ROOT'];
+       clearDirRec($dir.'/tmp/');  //папка, которую чистим

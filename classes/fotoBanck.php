@@ -50,6 +50,15 @@ class fotoBanck {
               return isset($this->$var)?$this->$var:NULL;
        }
 
+       public function set($var, $val) {
+
+             if (isset($this->$var)) {
+                    $this->$var = $val;
+                    return true;
+             }
+              return false;
+       }
+
        public function get_arr($arr, $var) {
 
               if (array_key_exists($this->get($var), $this->$arr)) {

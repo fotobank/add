@@ -310,27 +310,20 @@
                      }
                      if (true === $this->aOptions['REALTIME']) {
                         $cpuLoad = $this->getServerCPULoad();
-                     ?> <div class="center"><div class="centered" style="margin: -70px -600px; position: absolute; z-index: 10;">
-                        <span class="label label-success"><?= "RAM: ".$this->chpu_Bytes(memory_get_usage()) ?> </span>
-                        <? if($cpuLoad) echo "<span class='label label-success'>CPU: ".($cpuLoad*100)."% </span>"; ?>
+                     ?>
+                        <div class="center"><div class="centered" style="margin: -70px -600px; position: absolute; z-index: 10;">
+                        <span class="label label-success"><?= "RAM: ".chpu_Bytes(memory_get_usage()) ?> </span>
+                        <? if($cpuLoad) echo "<span class='label label-success'>CPU: ".($cpuLoad*100)."% </span>";
+                               $dir = $_SERVER['DOCUMENT_ROOT'];
+                               $sizeDir = getFilesSize($dir);
+                               $sizeDir = chpu_Bytes($sizeDir); ?>
+                        <span class="label label-success"><?= "SIZE: ".$sizeDir ?> </span>
                         </div></div>
                      <?
                      }
                      return true;
               }
 
-
-
-              /**
-               * memory usage
-               * @param $size
-               *
-               * @return string
-               */
-              function chpu_Bytes($size) {
-                     $filesize = array(" байт", " Киллобайт", " Мегабайт", " Гигабайт", " Террабайт", " Петабайт", " ЭксаБайт", " Зеттабайт", " Йоттабайт");
-                     return $size ? round($size / pow(1024, ($i = floor(log($size, 1024)))), 3) . $filesize[$i] : '0 байт';
-              }
 
               function getServerCPULoad() {
 

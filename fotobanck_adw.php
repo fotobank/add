@@ -6,7 +6,7 @@
        require_once (__DIR__.'/inc/errorDump.php');
        // вызов ошибки
        // ERROR_CONSTANT;
-       if (isset($_COOKIE['js']) &&$_COOKIE['js'] == 1) {
+       if (isset($_COOKIE['js']) && $_COOKIE['js'] == 1) {
               define ('JS', true);
               unset ($_COOKIE['js']);   // удаляем куки JS из сервера
        } else define ('JS', false);
@@ -43,16 +43,21 @@
  <div id="main">
        <?
 
+
+
+
+
+
+
+
        /** начало страницы */
        if ($banck->get('current_album')) {
 
-       /** Отключить проверку пароля */
-//     $may_view = true;
        // <!-- Ввод и блокировка пароля -->
        $banck->parol();
 
-
-
+       /** Отключить проверку пароля */
+       // $banck->set('may_view', false);
        /** Аккордеон */
        if ($banck->get('may_view')) {
 
@@ -214,7 +219,6 @@
               /**  кнопки разделов (категорий) */
               $renderData['buttons'] = go\DB\query('select * from categories order by id_num asc', NULL, 'assoc:id');
               $loadTwig('_kategorii.twig', $renderData);
-
        }
 
 }

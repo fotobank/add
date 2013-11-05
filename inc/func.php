@@ -971,29 +971,6 @@ return $data;
 	}
 
 
-	/**
-	 *
-	 * Преобразование объекта в массив
-	 * $array = objectToArray( $obj );
-	 *
-	 * @param   $object преобразуемый объект
-	 * @return   array
-	 *
-	 */
-       function objectToArray( $object )
-	{
-		if( !is_object( $object ) && !is_array( $object ) )
-		{
-			return $object;
-		}
-		if( is_object( $object ) )
-		{
-			$object = get_object_vars( $object );
-		}
-		return array_map( 'objectToArray', $object );
-	}
-
-
 
        /**
         * функция для обратимого шифрования
@@ -1155,3 +1132,81 @@ return $data;
               $value = array_filter($value);
               return array_values($value);
        }
+
+       /**
+        *
+        * антимат
+        *
+        * $pattern - то что ищем
+        * $replacement - то чем заменяем
+        * $text - то что обрабатываем
+        *
+        */
+       function anti_mat($text){
+       @setlocale(LC_ALL, array ('ru_RU.CP1251', 'rus_RUS.1251'));
+       $pattern = "/\w{0,5}[хx]([хx\s\!@#\$%\^&*+-\|\/]{0,6})[уy]([уy\s\!@#\$%\^&*+-\|\/]{0,6})[ёiлeеюийя]\w{0,7}|\w{0,6}[пp]([пp\s\!@#\$%\^&*+-\|\/]{0,6})[iие]([iие\s\!@#\$%\^&*+-\|\/]{0,6})[3зс]([3зс\s\!@#\$%\^&*+-\|\/]{0,6})[дd]\w{0,10}|[сcs][уy]([уy\!@#\$%\^&*+-\|\/]{0,6})[4чkк]\w{1,3}|\w{0,4}[bб]([bб\s\!@#\$%\^&*+-\|\/]{0,6})[lл]([lл\s\!@#\$%\^&*+-\|\/]{0,6})[yя]\w{0,10}|\w{0,8}[её][bб][лске@eыиаa][наи@йвл]\w{0,8}|\w{0,4}[еe]([еe\s\!@#\$%\^&*+-\|\/]{0,6})[бb]([бb\s\!@#\$%\^&*+-\|\/]{0,6})[uу]([uу\s\!@#\$%\^&*+-\|\/]{0,6})[н4ч]\w{0,4}|\w{0,4}[еeё]([еeё\s\!@#\$%\^&*+-\|\/]{0,6})[бb]([бb\s\!@#\$%\^&*+-\|\/]{0,6})[нn]([нn\s\!@#\$%\^&*+-\|\/]{0,6})[уy]\w{0,4}|\w{0,4}[еe]([еe\s\!@#\$%\^&*+-\|\/]{0,6})[бb]([бb\s\!@#\$%\^&*+-\|\/]{0,6})[оoаa@]([оoаa@\s\!@#\$%\^&*+-\|\/]{0,6})[тnнt]\w{0,4}|\w{0,10}[ё]([ё\!@#\$%\^&*+-\|\/]{0,6})[б]\w{0,6}|\w{0,4}[pп]([pп\s\!@#\$%\^&*+-\|\/]{0,6})[иeеi]([иeеi\s\!@#\$%\^&*+-\|\/]{0,6})[дd]([дd\s\!@#\$%\^&*+-\|\/]{0,6})[oоаa@еeиi]([oоаa@еeиi\s\!@#\$%\^&*+-\|\/]{0,6})[рr]\w{0,12}/i";
+
+       $replacement = "Цензура";
+       $ret_text = preg_replace($pattern, $replacement, $text);
+              return $ret_text;
+       }
+
+/**
+ * Функция автоочистки папки через определенное время
+ *  $cleanTime = '24'; //период очистки в часах
+ *  $dir = $_SERVER['DOCUMENT_ROOT'].'/tmp/'; //папка, которую чистим
+ */
+
+       function clearDirRec ($dir , $cleanTime = 24)
+       {
+              if(file_exists($dir . 'lastclean.dat') && @filemtime($dir.'lastclean.dat') < (time() - $cleanTime * 3600)) {
+                     while($files = array_diff(scandir($dir), array('.', '..', '.htaccess'))) { //читаем папку
+                            foreach($files as $file){
+                                   if(is_dir($dir.$file)) { //если полученый результат - папка, то рекурсивно чистим и ее
+                                          clearDirRec($dir.$file, $cleanTime); //то рекурсивно чистим и ее
+                                          rmdir($dir.$file); //удаляем папку
+                                   }
+                                   else {
+                                          unlink($dir.$file); //удаляем файл
+                                   }
+                            }
+                     }
+              }
+              elseif(!file_exists($dir . 'lastclean.dat')) {
+                     file_put_contents($dir.'lastclean.dat', 1);
+              }
+       }
+
+       /**
+        * memory usage
+        * @param $size
+        *
+        * @return string
+        */
+       function chpu_Bytes($size) {
+              $filesize = array(" байт", " Киллобайт", " Мегабайт", " Гигабайт", " Террабайт", " Петабайт", " ЭксаБайт", " Зеттабайт", " Йоттабайт");
+              return $size ? round($size / pow(1024, ($i = floor(log($size, 1024)))), 3) . $filesize[$i] : '0 байт';
+       }
+
+ /**
+  *  Определение размера папки
+  * @param $path
+  *
+  * @return int
+  */
+function getFilesSize($path)
+{
+       $fileSize = 0;
+       $dir = scandir($path);
+
+       foreach($dir as $file)
+       {
+              if (($file!='.') && ($file!='..'))
+                     if(is_dir($path . '/' . $file))
+                            $fileSize += getFilesSize($path.'/'.$file);
+                     else
+                            $fileSize += filesize($path . '/' . $file);
+       }
+
+       return $fileSize;
+}
