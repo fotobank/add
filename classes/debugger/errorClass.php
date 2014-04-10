@@ -314,10 +314,9 @@
                         <div class="center"><div class="centered" style="margin: -70px -600px; position: absolute; z-index: 10;">
                         <span class="label label-success"><?= "RAM: ".chpu_Bytes(memory_get_usage()) ?> </span>
                         <? if($cpuLoad) echo "<span class='label label-success'>CPU: ".($cpuLoad*100)."% </span>";
-                               $dir = $_SERVER['DOCUMENT_ROOT'];
-                               $sizeDir = getFilesSize($dir);
-                               $sizeDir = chpu_Bytes($sizeDir); ?>
-                        <span class="label label-success"><?= "SIZE: ".$sizeDir ?> </span>
+                     //    $dir = $_SERVER['DOCUMENT_ROOT']; $sizeDir = getFilesSize($dir); $sizeDir = chpu_Bytes($sizeDir);
+                        ?>
+<!--                        <span class="label label-success">--><?//= "SIZE: ".$sizeDir ?><!-- </span>-->
                         </div></div>
                      <?
                      }
@@ -507,7 +506,6 @@
               }
 
 
-
               /**
                * private function buildLog ()
                * the error handler : builds the XML error log
@@ -535,7 +533,7 @@
                             $aElem[]     = $this->XML_DOC->createElement('PHP_MESSAGE', iconv("WINDOWS-1251", "UTF-8", $sErrStr));
                             $aElem[]     = $this->XML_DOC->createElement('FILE', $sErrFile);
                             $aElem[]     = $this->XML_DOC->createElement('LINE', $iErrLine);
-                            $iMem = function_exists('memory_get_usage') ? iconv("WINDOWS-1251", "UTF-8", $this->chpu_Bytes(@memory_get_usage())) : 'n/a';
+                            $iMem = function_exists('memory_get_usage') ? iconv("WINDOWS-1251", "UTF-8", chpu_Bytes(@memory_get_usage())) : 'n/a';
                             $aElem[]     = $this->XML_DOC->createElement('MEMORY', $iMem);
                             $aElem[]     = $this->XML_DOC->createElement('TRANSLATION', iconv("WINDOWS-1251", "UTF-8", $aTempArr['TRANSLATION']));
                             $aElem[]     = $this->XML_DOC->createElement('SUGGESTION', iconv("WINDOWS-1251", "UTF-8", $aTempArr['SUGGESTION']));
@@ -690,6 +688,11 @@
                             }
                      }
               }
+
+
+            /*  public function __toString() {
+                     return $this->showAll();
+              }*/
 
 
               /**

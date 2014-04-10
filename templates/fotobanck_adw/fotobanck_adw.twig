@@ -41,17 +41,12 @@
 							через email в разделе <a href="/kontakty.php"><span class="ttext_blue">"Контакты"</span>.</a>
 						</div>
 						<br/>
-
 						<form action="/fotobanck_adw.php"
 						      id="parol"
 						      method="post">
 							<label for="inputError"
 							       class="ttext_red"
-							       style="float: left; margin-right: 10px;">Пароль: </label> <input id="inputError"
-							                                                                        type="text"
-							                                                                        name="album_pass"
-							                                                                        value=""
-							                                                                        maxlength="20"/>
+							       style="float: left; margin-right: 10px;">Пароль: </label> <input id="inputError" type="text" name="album_pass" value="" maxlength="20"/>
 							<input class="btn-small btn-primary" type="submit" value="ввод"/>
 						</form>
 						<div id="err_parol"></div>
@@ -171,3 +166,169 @@
 					{% include 'content_header.twig' %}
 
 				{% endblock content_header %}
+
+		{#<div id="main">#}
+
+
+
+		{#</div>#}
+
+{% if current_album %}
+
+			{{ parol }}
+
+			{% if may_view %}
+
+			{{ akkordeon }}
+
+
+				<script language=JavaScript type="text/javascript">
+					$(function () {
+						$('.modern').click(function () {
+							onJS('/js_test.php');
+							return false;
+						});
+					});
+					$(function () {
+						$('.profile_bitton , .profile_bitton2').click(function () {
+							$('.profile').slideToggle();
+							return false;
+						});
+					});
+				</script>
+
+				<!-- кнопки назад -->
+				<div class="page">
+					<a class="next" href="/fotobanck_adw.php?back_to_albums">« назад</a> <a class="next" href="/fotobanck_adw.php?unchenge_cat">« выбор категорий </a>
+					<a class="next" href="/fotobanck_adw.php?back_to_albums">« раздел "{{ razdel }}"</a>
+					<a class="next">« альбом"{{ current_album }}"</a>
+				{#<a class="next">« альбом"{{ album_name.current_album }}"</a>#}
+				</div>
+
+				<!-- Название альбома  -->
+				<div class="cont-list"
+				     style="margin: 40px 10px 30px 0;">
+					<div class="drop-shadow lifted">
+						<h2><span style="color: #00146e;">Фотографии альбома "{{ current_album }}"</span>
+						</h2>
+					</div>
+				</div>
+				<div style="clear: both;"></div>
+
+				<!--/**	выводим фотографию - заголовок альбома*/ -->
+				<div id="alb_opis"
+				     class="span3">
+					<div class="alb_logo">
+						<div id="fb_alb_fotoP">
+							<img src="/album_id.php?num=<?= substr(($banck->get('album_img')), 2, -4) ?>"
+							     width="130px"
+							     height="124px"
+							     alt="-"/>
+						</div>
+					</div>
+					{{ descr }}
+				</div>
+
+			{% if JS %}
+				{% if event == 'on' %}
+					{#$pager->renderTop();#}
+					<!-- Вывод фото в альбом -->
+					<div id="modern">
+						<hr class='style-one' style='margin-top: 10px; margin-bottom: -20px;'/> <div style= 'clear: both;'>
+							{{ fotoPageModern }}
+						</div>
+					</div>
+					<script type="text/javascript">
+						$(function () {
+							$("img.lazy").lazyload({
+								threshold: 200,
+								effect: "fadeIn"
+							});
+						});
+					</script>
+
+					<!-- тело --><!-- 4 -->
+					<hr class="style-one"
+					    style="clear: both; margin-bottom: -20px; margin-top: 0"/>
+					{#$pager->renderTop();#}
+				{% else %}
+
+					{% include '/fotobanck_adw/_podpiska.twig' %}
+
+				{% endif %}
+			{% else %}
+			<br><br>
+			<hfooter style="font-size: 20px; font-weight: 400; font-style: inherit; color: #df0000; text-shadow: 1px 1px 0 #d1a2a2;"
+					>В Вашем браузере не работает JavaScript!
+			</hfooter>
+			<script type='text/javascript'>
+				$(function(){
+					window.document.location.href = '{{ REQUEST_URI }}';
+				}
+			</script>
+			<NOSCRIPT>
+				<br><br>
+				<hfooter style="font-size: 20px; font-weight: 400; font-style: inherit; color: #df0000; text-shadow: 1px 1px 0 #d1a2a2;"
+						>Из - за отключенной JavaScript показ фотографий невозможен!
+				         ( <a href="http://www.enable-javascript.com/ru/">Как включить JavaScript?</a>)
+				</hfooter>
+			</NOSCRIPT>
+
+			{% endif %}
+			{% else %}
+				<div class="center" style="margin-top: 30px;">
+					<hfooter style="font-size: 20px; font-weight: 400; font-style: inherit; color: #df0000; text-shadow: 1px 1px 0 #d1a2a2;">
+						Альбом заблокирован паролем
+					</hfooter>
+				</div>
+				<div class="center" style="margin-top: 30px;">
+					<NOSCRIPT>
+						<hfooter style="font-size: 20px; font-weight: 400; font-style: inherit; color: #df0000; text-shadow: 1px 1px 0 #d1a2a2;">
+							При отключенной JavaScript функционал сайта заблокирован! ( <a href="http://www.enable-javascript.com/ru/">Как включить JavaScript?</a> )
+						</hfooter>
+					</NOSCRIPT>
+				</div>
+			{% endif %}
+
+		{% else %}
+
+			{% if current_cat %}
+			{#/**  Печать альбомов*/#}
+			{% include '/fotobanck_adw/fotobanck_adw_razdel.twig' %}
+	{% else %}
+		{#/**  кнопки разделов (категорий) */#}
+		{% include '/fotobanck_adw/fotobanck_adw_kategorii.twig' %}
+
+	{% endif %}
+{% endif %}
+
+
+
+			{% block bottom %}
+
+			{% endblock bottom %}
+
+			{% block content %}
+				<script src="{{ merge_files('/cache/fotobank.min.js', 'js', include_Js_banck, '',  include_Js_banck) }}" ></script >
+			{% endblock content %}
+			<div class="clear"></div>
+
+
+		</div>
+
+
+		{% block end_content %}
+			<div class="end_content" ></div >
+		{% endblock end_content %}
+
+
+
+		{% block footer %}
+			{% include 'footer.twig' %}
+		{% endblock footer %}
+
+
+	</body>
+{% block html %}
+</html>
+{% endblock html %}

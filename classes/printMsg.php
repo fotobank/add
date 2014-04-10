@@ -41,6 +41,11 @@
 						}
 
 
+           /*  public function __toString() {
+                    return $this->msg;
+             }*/
+
+
 						public function withJs() {
 
 									if (isset($this->ok_msg2)) {

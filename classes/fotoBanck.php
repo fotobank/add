@@ -123,13 +123,18 @@ class fotoBanck {
               isset($this->current_album)?$this->session->set('current_album', $this->current_album):false;
               isset($this->current_cat)?$this->session->set('current_cat', $this->current_cat):false;
               $this->session->set('popitka', $this->popitka);
-              $this->session->set('album_name', $this->album_name);
-              $this->session->set('album_pass', $this->album_pass);
-              $this->session->set('current_page', $this->current_page);
-              $this->session->set('razdel', $this->razdel);
-              $this->session->set('record_count', $this->record_count);
+//              $this->session->set('album_name', $this->album_name);
+//              $this->session->set('album_pass', $this->album_pass);
+//              $this->session->set('current_page', $this->current_page);
+//              $this->session->set('razdel', $this->razdel);
+//              $this->session->set('record_count', $this->record_count);
        }
 
+
+       /**
+        * @return null|string
+        * проверка на парольную блокировку альбома
+        */
        public function check_block() {
               if (isset($this->current_album) && isset($this->popitka[$this->current_album])) {
                      $ostPop = $this->popitka[$this->current_album];
@@ -152,6 +157,7 @@ class fotoBanck {
               }
               return NULL;
        }
+
 
        private function may_view() {
 
@@ -493,23 +499,17 @@ class fotoBanck {
         *
         */
        function verifyParol() {
-
+                     $return = NULL;
               if (!$this->may_view && $this->current_album != NULL) {
-                     ?>
-                     <div class="row">
-                            <div class="page">
-                                   <a class="next"
-                                      href="/fotobanck_adw.php?back_to_albums">« назад</a> <a class="next"
-                                                                                              href="/fotobanck_adw.php">« попробовать еще раз</a>
-                            </div>
-                            <img style="margin: 20px 0 0 40px;"
-                                 src="/img/Stop Photo Camera.png"
-                                 width="348"
-                                 height="350"/>
-                            <?
+
+                     $return .= "<div class='row'><div class='page'>
+                                 <a class='next' href='/fotobanck_adw.php?back_to_albums'>« назад</a>
+                                 <a class='next' href='/fotobanck_adw.php'>« попробовать еще раз</a></div>
+                                 <img style='margin: 20px 0 0 40px;' src='/img/Stop Photo Camera.png' width='348' height='350'/>";
+
                                    if ($this->popitka[$this->current_album] == -10) // проверка и вывод времени бана
                                    {
-                                          echo "<script type='text/javascript'>
+                                          $return .= "<script type='text/javascript'>
                                              $(document).ready(function(){
                                              $('#zapret').modal('show');
                                              });
@@ -521,10 +521,10 @@ class fotoBanck {
                                              </script>";
                                           $this->popitka[$this->current_album] = 5;
                                    }
-                            ?>
-                     </div>
-              <?
+
+                     $return .= "</div>";
               }
+              return $return;
        }
 
 
@@ -676,17 +676,19 @@ class fotoBanck {
         */
        function parol() {
 
+              $return = NULL;
               if (!$this->may_view && $this->current_album != NULL) {
                      $ostPop = $this->popitka[$this->current_album];
+
                      if ($ostPop > 0 && $ostPop <= 5) {
-                            echo "<script type='text/javascript'>
+                            $return .= "<script type='text/javascript'>
                              $(document).ready(function load() {
                              $('#static').modal('show');
                              });
                              </script>";
                      }
                      if ($ostPop <= 0 && $ostPop != -10) {
-                            echo "<script type='text/javascript'>
+                            $return .= "<script type='text/javascript'>
                              $(document).ready(function(){
                              $('#zapret').modal('show');
                              });
@@ -716,7 +718,7 @@ class fotoBanck {
                             }
                             if ($ostPop != 5) {
                                    $msg = ($ost.' '.($ostPop + 1).' '.$pop);
-                                   echo "<script type='text/javascript'>
+                                   $return .= "<script type='text/javascript'>
                                              var infdok = document.getElementById('err-modal');
                                              var summDok = '$msg';
                                              infdok.innerHTML = summDok;
@@ -726,7 +728,8 @@ class fotoBanck {
                      }
               }
      // <!-- Проверка пароля на блокировку -->
-              $this->verifyParol();
+              $return .= $this->verifyParol();
+              return  $return;
        }
 
 } 

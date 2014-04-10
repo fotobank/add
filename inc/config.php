@@ -16,8 +16,8 @@
               $session->set('referralSeed', false);
        }
        $link = new link_Obfuscator($session->get('referralSeed'));
-       //test seed
-       //print "actual referral Seed:". $_SESSION['referralSeed'] ."<br />\n";
+//       test seed
+//       print "actual referral Seed:". $_SESSION['referralSeed'] ."<br />\n";
 
 
 //       require_once (__DIR__.'/../classes/go/DB/autoload.php');
@@ -47,7 +47,7 @@
               '_debug'   => false,
               '_lazy'    => false,
        );
-       go\DB\Storage::getInstance()->create($configDB); // create main database in main storage
+       go\DB\Storage::getInstance()->create($configDB); // created main database in main storage
 
 
 
