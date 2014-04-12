@@ -109,6 +109,32 @@ class check_Session {
 		return false;
     }
 
+
+       /**
+        * @param     $key
+        * @param int $value
+        *
+        * @return bool
+        */
+       public function inc($key, $value=1) {
+
+              $this->set($key,$this->get($key)+$value);
+              return true;
+       }
+
+
+       /**
+        * @param     $key
+        * @param int $value
+        *
+        * @return bool
+        */
+       public function dec($key, $value=1) {
+
+              $this->set($key,$this->get($key)-$value);
+              return true;
+       }
+
     /**
      * Check whether the session has a key.
      * @param  $key

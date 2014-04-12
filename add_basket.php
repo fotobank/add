@@ -1,5 +1,5 @@
 <?php
-  include (dirname(__FILE__).'/inc/config.php');
+  include (__DIR__.'/inc/config.php');
   if (isset($_POST['id']))
 	 {
 		ob_start();
@@ -24,17 +24,8 @@
 					 {
 						$id_album = $rs['id_album'];
 						$nm = $rs['nm'];
-						if (!isset($_SESSION['basket']))
-						  {
-							 $_SESSION['basket']      = array();
-							 $_SESSION['basket'][$id] = 1;
-							 $_SESSION['zakaz']['album_name'][$id_album] = $nm;
-						  }
-						else
-						  {
-							 $_SESSION['basket'][$id]++;
-							 $_SESSION['zakaz']['album_name'][$id_album] = $nm;
-						  }
+            $session->inc("basket/".$idImg); // увеличить на 1
+            $session->set("zakaz/album_name/".$id_album, $nm); // установить название альбома
 						$status = 'OK';
 						$msg    = 'Фотография добавлена в корзину';
 					 }
