@@ -566,6 +566,7 @@
                 });
 
 var arr = e[Y].link;
+// alert(arr);
 var fotoId = arr.split(/[\?]/);
 goParam(fotoId['1']);
 // alert(fotoId['1']);

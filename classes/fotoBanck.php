@@ -603,10 +603,11 @@ class fotoBanck {
 
 
        /**
-        *
+        * גûגûמה ג עמן 5
         */
        function top5Modern() {
 
+              ob_start();
               if ($this->may_view) {
                      ?>
                      <div class="cont-list"
@@ -668,6 +669,9 @@ class fotoBanck {
                             <div style="clear: both"></div>
                             <?
               }
+              $result = ob_get_contents();
+              ob_end_clean();
+              return $result;
        }
 
 

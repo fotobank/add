@@ -16,10 +16,10 @@
        /** -----------------------------------------------------------------------------------*/
        $session = check_Session::getInstance();
        /** -----------------------------------------------------------------------------------*/
-       // запрет показа ошибок в DUMP_R ( true - показавать )
+       // запрет показа ошибок в DUMP_R ( true - показывать )
        $session->set('DUMP_R', true);
-       // запрет показа ошибок в Debug_HackerConsole_Main ( true - показавать false - нет )
-       $session->set('Debug_HC', false);
+       // запрет показа ошибок в Debug_HackerConsole_Main ( true - показывать false - нет )
+       $session->set('Debug_HC', true);
        /** -----------------------------------------------------------------------------------*/
        // капча
        $cryptinstall = '/classes/dsp/cryptographp.fct.php';

@@ -88,6 +88,10 @@ a {
     color: #3737d4; /* ÷вет текста */
 }
 
+a img {
+    border: none; /* ”бираем рамку */
+}
+
 a:visited {
      /*color: #ffc; */
     /* ÷вет посещенной ссылки */
@@ -494,7 +498,7 @@ a.bt_rgstr:hover {
     width:80%;
     height: auto;
     position: absolute;
-    top: -12px;
+    top: 306px;
     left: 10%;
     border: 1px solid #fff;
     background: #979797;
@@ -3113,8 +3117,8 @@ div.error{
     background:  #ccc; /* дл€ не поддерживающих css3 браузеров */
     background: -moz-linear-gradient(top, #fff, #ccc);
     background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ccc));
-    filter: progid:DXImageTransform.Microsoft.gradient(enabled='true',startColorstr=#fff,endColorstr=#ccc,GradientType=0); zoom: 1;
-    background-image: -o-linear-gradient(top,  #fff,  #ccc);/* дл€ Opera11+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled='true',startColorstr=#ffffff,endColorstr=#cccccc,GradientType=0); zoom: 1;
+    background-image: -o-linear-gradient(top,  #fff,  #ccc); /*дл€ Opera11+ */
 
 
 }

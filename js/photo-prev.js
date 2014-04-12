@@ -111,6 +111,7 @@ humane.timeout = (2500);
 
 
 function basketAdd(idPhoto) {
+//    alert (idPhoto);
     $.post('add_basket.php', {'id': idPhoto}, function (data) {
         $(this).outDebug(data,"add_basket.php","basketAdd");
         var ans = JSON.parse(data);

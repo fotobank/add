@@ -14,13 +14,14 @@
 
   if(isset($_POST['fotoId']))
 	 {
+          include(__DIR__.'./../classes/md5/md5_ini.php');
           /*$ini =  array(
                  "pws"          => "Protected_Site_Sec", // секретная строка
                  "iv_len"       => 24, // сложность шифра
-          );
-          $idImg = go::call('md5_loader', $ini)->idImg(array( "query"  => $_POST['fotoId']));*/
+          );*/
+          $idImg = go::call('md5_loader', $ini)->idImg(array( "query"  => $_POST['fotoId']));
           // передать через сессию
-          $idImg = check_Session::getInstance()->get('idImg');
+          //$idImg = check_Session::getInstance()->get('idImg');
           $rs = go\DB\query('select p.votes, p.price, a.vote_price from photos as p, albums as a where p.id = ?i and a.id = ?i',
                                                  array($idImg, $session->get('current_album')), 'assoc');
 

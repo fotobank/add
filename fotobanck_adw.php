@@ -56,10 +56,10 @@
        /** Аккордеон */
               $renderData['may_view'] = $banck->get('may_view');
        if ($banck->get('may_view')) {
+       /** выдавать контент только c включенным JS в браузере */
+       if (JS) {
 
               $renderData['akkordeon'] = $banck->akkordeon();
-              echo $renderData['akkordeon'];
-
               $renderData['razdel'] = $banck->get('razdel');
               $renderData['album_name']['current_album'] = $banck->get_arr('album_name', 'current_album');
               $renderData['descr'] = $banck->get('descr');
@@ -67,13 +67,10 @@
               $renderData['REQUEST_URI'] = $_SERVER['REQUEST_URI'];
               $renderData['event'] = $banck->get('event');
               $renderData['current_album'] = $banck->get('current_album');
-              // выдавать контент только c включенным JS в браузере
-       if (JS) {
 
               if ($banck->get('event') == 'on') {
-                     //		<!-- вывод топ 5  -->
-                     $banck->top5Modern();
-
+                     /** вывод топ 5  */
+                     $renderData['top5'] = $banck->top5Modern();
                      if (!$banck->get_arr('record_count', 'current_album')) {
                             $rs = go\DB\query('select SQL_CALC_FOUND_ROWS p.* from photos p where id_album = ?i', array($banck->get('current_album')), 'assoc');
                             $session->set('record_count/'.$banck->get('current_album'), go\DB\query('select FOUND_ROWS() as cnt', NULL, 'el')); // количество записей
@@ -85,25 +82,22 @@
                      $pager->lastPagesCnt = 3;
                      $pager->setPageVarName($page);
                      $pager->enableCacheRemover = false;
-                     $pager->renderTop();
+                     $renderData['renderTop'] = $pager->renderTop();
                      // $pager->printDebug();
-                     ?>
-
-                     <!-- Вывод фото в альбом -->
-
-                     <?
+                           // Вывод фото в альбом
                      $renderData['fotoPageModern'] = $banck->fotoPageModern();
-                     $pager->render();
-//                   $pager->printDebug();
+                     $renderData['renderBottom'] = $pager->render();
+                     $renderData['album_img'] = substr(($banck->get('album_img')), 2, -4);
+                     // $pager->printDebug();
               } else {
                      /**  подписка на альбом (когда альбом появится в категории)*/
               }
        } else {
-
+              /** в браузере отключен ява скрипт */
        }
 
 } else {
-
+         /** альбом запаролен */
        }
 
        /** Вывод альбомов в разделах */

@@ -279,16 +279,18 @@ class Pager2
   {
     if (is_null($this->renderer)) return NULL;
     $this->renderer->setPager($this);
-    echo $this->renderer->render();
+    $result = $this->renderer->render();
     unset ($this->pagesList);
+    return $result;
   }
 
   function renderTop()
   {
 	 if (is_null($this->renderer)) return NULL;
 	 $this->renderer->setPager($this);
-	 echo $this->renderer->renderTop();
+   $result = $this->renderer->renderTop();
    unset ($this->pagesList);
+   return $result;
   }
 }
 

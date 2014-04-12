@@ -14,10 +14,12 @@
 		  {
 			 if ($id)
 				{
+          include(__DIR__.'/classes/md5/md5_ini.php');
+          $idImg = go::call('md5_loader', $ini)->idImg(array("query"  => $id));
 				  $rs = go\DB\query('select p.id_album, a.nm
 				                    from photos p, albums a
 				                    where p.id_album = a.id
-				                    and p.id = ?i', array($id), 'row');
+				                    and p.id = ?i', array($idImg), 'row');
 				  if ($rs)
 					 {
 						$id_album = $rs['id_album'];

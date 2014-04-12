@@ -181,7 +181,6 @@
 
 			{{ akkordeon }}
 
-
 				<script language=JavaScript type="text/javascript">
 					$(function () {
 						$('.modern').click(function () {
@@ -199,17 +198,17 @@
 
 				<!-- кнопки назад -->
 				<div class="page">
-					<a class="next" href="/fotobanck_adw.php?back_to_albums">« назад</a> <a class="next" href="/fotobanck_adw.php?unchenge_cat">« выбор категорий </a>
-					<a class="next" href="/fotobanck_adw.php?back_to_albums">« раздел "{{ razdel }}"</a>
-					<a class="next">« альбом"{{ current_album }}"</a>
-				{#<a class="next">« альбом"{{ album_name.current_album }}"</a>#}
+					{#<a class="next" href="/fotobanck_adw.php?back_to_albums">« назад</a> #}
+					<a class="next" href="/fotobanck_adw.php?unchenge_cat">« категории </a>
+					<a class="next" href="/fotobanck_adw.php?back_to_albums">« {{ razdel }}</a>
+					<a class="next">« {{ album_name }}</a>
 				</div>
 
 				<!-- Название альбома  -->
 				<div class="cont-list"
 				     style="margin: 40px 10px 30px 0;">
 					<div class="drop-shadow lifted">
-						<h2><span style="color: #00146e;">Фотографии альбома "{{ current_album }}"</span>
+						<h2><span style="color: #00146e;">Фотографии альбома "{{ album_name }}"</span>
 						</h2>
 					</div>
 				</div>
@@ -220,7 +219,7 @@
 				     class="span3">
 					<div class="alb_logo">
 						<div id="fb_alb_fotoP">
-							<img src="/album_id.php?num=<?= substr(($banck->get('album_img')), 2, -4) ?>"
+							<img src="/album_id.php?num={{ album_img }}"
 							     width="130px"
 							     height="124px"
 							     alt="-"/>
@@ -231,8 +230,11 @@
 
 			{% if JS %}
 				{% if event == 'on' %}
-					{#$pager->renderTop();#}
-					<!-- Вывод фото в альбом -->
+					{# Вывод фото в шапку альбома #}
+					{{ top5 }}
+					{# верхний пагитнатор#}
+					{{ renderTop }}
+					{# Вывод фото в альбом #}
 					<div id="modern">
 						<hr class='style-one' style='margin-top: 10px; margin-bottom: -20px;'/> <div style= 'clear: both;'>
 							{{ fotoPageModern }}
@@ -247,10 +249,8 @@
 						});
 					</script>
 
-					<!-- тело --><!-- 4 -->
-					<hr class="style-one"
-					    style="clear: both; margin-bottom: -20px; margin-top: 0"/>
-					{#$pager->renderTop();#}
+					<hr class="style-one" style="clear: both; margin-bottom: -20px; margin-top: 0"/>
+					{{ renderBottom }}
 				{% else %}
 
 					{% include '/fotobanck_adw/_podpiska.twig' %}
