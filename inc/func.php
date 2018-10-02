@@ -47,7 +47,6 @@ function main_redir($addr = '', $close_conn = true, $code = 'HTTP/1.1 303 See Ot
   exit();
  }
 
-
   /**
 	* @param string $msg
 	* @param string $addr
