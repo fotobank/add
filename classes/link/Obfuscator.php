@@ -12,7 +12,7 @@ class link_Obfuscator
 	var $referralSeed=0;
 
 
-	function link_Obfuscator($referralSeed=false)
+	function __construct($referralSeed=false)
 				{
 					// new seed, to obfuscate new pages
 								srand();

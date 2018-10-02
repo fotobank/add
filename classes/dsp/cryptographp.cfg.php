@@ -20,7 +20,7 @@ $bgimg = '';                 // В криптограмме фон может быть
 				                 // Изображение будет изменять размер
                              // чтобы уместиться в криптограмму.
                              // если заданно несколько фонов -
-                             // фон будет взят наугат
+                             // фон будет взят наугад
                              // из доступных заданных rйpertoire
 
 $bgframe = false;    // Добавляет рамку (true/false)
@@ -36,46 +36,46 @@ $charR = 0;     // Couleur des caractиres au format RGB: Red (0->255)
 $charG = 0;     // Couleur des caractиres au format RGB: Green (0->255)
 $charB = 0;     // Couleur des caractиres au format RGB: Blue (0->255)
 
-$charcolorrnd = true;      // Choix alйatoire de la couleur. выбор цвета.
-$charcolorrndlevel = 2;    // Niveau de clartй des caractиres si choix alйatoire (0->4)
-                           // 0: Aucune sйlection  нет
-                           // 1: Couleurs trиs sombres (surtout pour les fonds clairs)  очень темные цвета (особенно для светлого фона)
-                           // 2: Couleurs sombres  Темные цвета
-                           // 3: Couleurs claires   Светлые цвета
-                           // 4: Couleurs trиs claires (surtout pour fonds sombres)  очень яркие цвета (особенно для темных фонов)
+$charcolorrnd = true;      // Случайный выбор цвета.
+$charcolorrndlevel = 2;    // Уровень четкости символов, если случайный выбор (0->4)
+                           // 0: Нет выбора
+                           // 1: Очень темные цвета (особенно для светлых фона)
+                           // 2: Темные цвета
+                           // 3: Светлые цвета
+                           // 4: Очень яркие цвета (особенно для темных фонов)
 
-$charclear = 0;   // Intensitй de la transparence des caractиres (0->127)
-                  // 0=opaques; 127=invisibles
-	                // interessant si vous utilisez une image $bgimg
-	                // Uniquement si PHP >=3.2.1
+$charclear = 0;   // Интенсивность прозрачности персонажей (0->127)
+                  // 0=затемнение; 127=невидимый
+	                // интересно, если вы используете изображение $bgimg
+	                // Только если PHP >=3.2.1
 
-// Polices de caractиres
+// шрифты
 
-//$tfont[] = 'Alanden_.ttf';       // Les polices seront alйatoirement utilisйes.
-//$tfont[] = 'bsurp___.ttf';       // Vous devez copier les fichiers correspondants
-//$tfont[] = 'ELECHA__.TTF';       // sur le serveur.
-$tfont[] = 'luggerbu.ttf';         // Ajoutez autant de lignes que vous voulez
-//$tfont[] = 'RASCAL__.TTF';       // Respectez la casse !
+//$tfont[] = 'Alanden_.ttf';       // Шрифты будут использоваться случайным образом.
+//$tfont[] = 'bsurp___.ttf';       // Вы должны скопировать соответствующие файлы
+//$tfont[] = 'ELECHA__.TTF';       // на сервере.
+  $tfont[] = 'luggerbu.ttf';       // Добавьте столько строк, сколько хотите.
+//$tfont[] = 'RASCAL__.TTF';       // Уважать дело!
 //$tfont[] = 'SCRAWL.TTF';
 //$tfont[] = 'WAVY.TTF';
 
 
-// Caracteres autorisйs
-// Attention, certaines polices ne distinguent pas (ou difficilement) les majuscules
-// et les minuscules. Certains caractиres sont faciles а confondre, il est donc
-// conseillй de bien choisir les caractиres utilisйs.
+// Авторские персонажи
+// Предупреждение. Некоторые шрифты не различают (или едва ли) заглавные буквы
+// и в нижнем регистре. Некоторые символы легко путать, поэтому
+// рекомендуется выбирать используемые символы.
 
-$charel = 'ABCDEFGHKLMNPRTWXYZ234569';       // Caractиres autorisйs
+$charel = 'ABCDEFGHKLMNPRTWXYZ234569';       // Авторские характеристики
 
-$crypteasy = false;       // Crйation de cryptogrammes "faciles а lire" (true/false)
-                         // composйs alternativement de consonnes et de voyelles.
+$crypteasy = false;       // Создание криптограмм "легко читается" (true/false)
+                         // поочередно состоящий из согласных и гласных.
 
 $charelc = 'BCDFGHKLMNPRTVWXZ';   // Consonnes utilisйes si $crypteasy = true
 $charelv = 'AEIOUY';              // Voyelles utilisйes si $crypteasy = true
 
 $difuplow = false;          // Diffйrencie les Maj/Min lors de la saisie du code (true, false)
 
-$charnbmin = 4;         // минимальное число символов на картинке
+$charnbmin = 4;         // минимальный число символов на картинке
 $charnbmax = 5;         // максимальное число символов на картинке
 
 $charspace = 22;        // хранится значение интервала между символами в пикселях.
@@ -109,7 +109,7 @@ $noisecolorchar  = 3;  // Шум: Написание цвета пикселей, линии, круги:
                        // 1: Цвет почерка caractиres des caractиres
                        // 2: Цвет фона
                        // 3: Цвет Случайный цвет
-                       
+
 $brushsize = 1;        // Размер шрифта princeaiu (в пикселях)
                         // 1 а 25 (чем выше значения могут привести к
                         // Внутренняя ошибка сервера на некоторых версиях PHP / GD)
@@ -127,9 +127,9 @@ $cryptformat = "png";   //  Формат файла изображения "GIF", "PNG" или "JPG"
 
 $cryptsecure = "sha1";    // Mйthode de crytpage utilisйe: "md5", "sha1" ou "" (aucune)
                          // "sha1" seulement si PHP>=4.2.0
-                         // Si aucune mйthode n'est indiquйe, le code du cyptogramme est stockй 
+                         // Si aucune mйthode n'est indiquйe, le code du cyptogramme est stockй
                          // en clair dans la session.
-                       
+
 $cryptusetimer = 0;        //Времени (в секундах) перед тем, способны регенерировать новые криптограммы
 
 
@@ -142,12 +142,10 @@ $cryptusertimererror = 2;  // Если минимальное время не соблюдается:
 
 $cryptusemax = 1000;  // Максимальное количество раз пользователь может выводить криптограммы
                       // Si dйpassement, l'image renvoyйe est "images/erreur1.png"
-                      // PS: Par dйfaut, la durйe d'une session PHP est de 180 mn, sauf si 
-                      // l'hebergeur ou le dйveloppeur du site en ont dйcidй autrement... 
-                      // Cette limite est effective pour toute la durйe de la session. 
-                      
+                      // PS: Par dйfaut, la durйe d'une session PHP est de 180 mn, sauf si
+                      // l'hebergeur ou le dйveloppeur du site en ont dйcidй autrement...
+                      // Cette limite est effective pour toute la durйe de la session.
+
 $cryptoneuse = false;  // Si vous souhaitez que la page de verification ne valide qu'une seule    Если вы хотите, чтобы страница проверки была только
                        // fois la saisie en cas de rechargement de la page indiquer "true".       После ввода при перезагрузки страницы указывают "true".
                        // Sinon, le rechargement de la page confirmera toujours la saisie.        В противном случае перезагрузки страницы всегда будет подтвердить ввод.
-                      
-?>

@@ -7,7 +7,7 @@
               }
        }
        if (!function_exists('dump_d')) {
-              function dump_d($this) {
-                     return dump_r(iconv("UTF-8", "WINDOWS-1251", print_r($this, true)));
+              function dump_d($obj) {
+                     return dump_r(iconv("UTF-8", "WINDOWS-1251", print_r($obj, true)));
               }
        }

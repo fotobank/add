@@ -69,7 +69,7 @@
 						  // показ остаточного времени
 									if (Get_IP() == $subdata[0] && $now < ($subdata[1] + 60 * $timeout) && $current_album == $subdata[2])
 										{
-											$begin = ((($subdata[1] + 60 * $timeout) - $now) / 60);
+										   $begin = ((($subdata[1] + 60 * $timeout) - $now) / 60);
 										   $min = intval($begin);
 										   $sec = round((($begin - $min)*60),2);
 										   $session->set("popitka/$current_album", -10);

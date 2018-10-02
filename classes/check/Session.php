@@ -62,7 +62,7 @@ class check_Session {
 
     /**
      * Get a session value by its key.
-     * @param array $key
+     * @param string $key
      * @return mixed
      */
 
@@ -71,15 +71,15 @@ class check_Session {
             return NULL;
         }
 		$arg = $this->arrKey($key);
-		$kol = count($arg);
-		if($kol == 1)
+		$total = count($arg);
+		if($total == 1)
 		  {
 			 return $_SESSION[$arg[0]];
 		  }
-		 elseif($kol == 2) {
+		 elseif($total == 2) {
 		    return $_SESSION[$arg[0]][$arg[1]];
 		  }
-		 elseif($kol == 3) {
+		 elseif($total == 3) {
 		    return $_SESSION[$arg[0]][$arg[1]][$arg[2]];
 		  }
 		 return false;
@@ -95,15 +95,15 @@ class check_Session {
 	 public function set($key, $value) {
 
 		$arg = $this->arrKey($key);
-      $kol = count($arg);
-		if($kol == 1)
+      $total = count($arg);
+		if($total == 1)
 		{
 		  return $_SESSION[$arg[0]] = $value;
 		}
-		elseif($kol == 2) {
+		elseif($total == 2) {
 		  return $_SESSION[$arg[0]][$arg[1]] = $value;
 		}
-		elseif($kol == 3) {
+		elseif($total == 3) {
 		  return $_SESSION[$arg[0]][$arg[1]][$arg[2]] = $value;
 		}
 		return false;
@@ -144,16 +144,16 @@ class check_Session {
 
 		$arg = $this->arrKey($key);
 
-		foreach($arg as $kol => $fold)
+		foreach($arg as $total => $fold)
 		  {
-			 if($kol == 0)
+			 if($total == 0)
 				{
 				  if($this->multi_array_key_exists($fold, $_SESSION) == false) return false;
 				}
-			 elseif($kol == 1) {
+			 elseif($total == 1) {
 				  if($this->multi_array_key_exists($fold, $_SESSION[$arg[0]]) == false) return false;
 			   }
-			 elseif($kol == 2) {
+			 elseif($total == 2) {
 				  if($this->multi_array_key_exists($fold, $_SESSION[$arg[0]][$arg[1]]) == false) return false;
 			   }
 		   }
@@ -200,15 +200,15 @@ class check_Session {
             return;
         }
 		$arg = $this->arrKey($key);
-		$kol = count($arg);
-		if($kol == 1)
+		$total = count($arg);
+		if($total == 1)
 		  {
 			 unset($_SESSION[$arg[0]]);
 		  }
-		elseif($kol == 2) {
+		elseif($total == 2) {
 		    unset($_SESSION[$arg[0]][$arg[1]]);
 		  }
-		elseif($kol == 3) {
+		elseif($total == 3) {
 		    unset($_SESSION[$arg[0]][$arg[1]][$arg[2]]);
 		  }
 

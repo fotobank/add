@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="1756315827">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
     <data-source source="LOCAL" name="Data Source" uuid="a46906b6-bd6c-4b02-820e-8fdf813c6119">
       <synchronize>true</synchronize>
       <jdbc-url>jdbc://</jdbc-url>
       <default-dialect>GenericSQL</default-dialect>
-      <libraries />
     </data-source>
   </component>
 </project>
-

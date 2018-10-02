@@ -159,6 +159,4 @@ $cryptusemax = 1000;  // Nb maximum de fois que l'utilisateur peut générer le cr
                       
 $cryptoneuse = false;  // Si vous souhaitez que la page de verification ne valide qu'une seule 
                        // fois la saisie en cas de rechargement de la page indiquer "true".
-                       // Sinon, le rechargement de la page confirmera toujours la saisie.                          
-                      
-?>
+                       // Sinon, le rechargement de la page confirmera toujours la saisie.

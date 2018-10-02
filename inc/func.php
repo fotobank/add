@@ -4,6 +4,23 @@
 	require_once (__DIR__.'/../classes/autoload.php');
 	autoload::getInstance();
 
+	
+	function downloadFile($file){
+        $file_name = $file;
+        $mime = 'application/force-download';
+	header('Pragma: public'); 	// required
+	header('Expires: 0');		// no cache
+	header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+	header('Cache-Control: private',false);
+	header('Content-Type: '.$mime);
+	header('Content-Disposition: attachment; filename="'.basename($file_name).'"');
+	header('Content-Transfer-Encoding: binary');
+	header('Connection: close');
+	readfile($file_name);		// push it out
+	exit();
+}
+	
+	
   /**
 	* @param        $addr
 	* @param bool   $close_conn
@@ -57,7 +74,7 @@ function ok_exit($msg = 'Операция успешно завершена', $addr = '')
 
   function admin_only()
   {
-	 if (isset($_COOKIE['admnews']) && $_COOKIE['admnews'] != md5(login().'///'.pass()));
+	 if (isset($_COOKIE['admnews']) && $_COOKIE['admnews'] != md5(login().'///'.pass()))
 	 {
 		if(!check_Session::getInstance()->has('admin_logged')) {
 		  echo '<div class="title2">Извините ,данная функция доступна только для администратора<br/><a href="index.php">Админка</a></div>';
@@ -68,7 +85,7 @@ function ok_exit($msg = 'Операция успешно завершена', $addr = '')
 
   function if_adm($str)
   {
-	 if (isset($_COOKIE['admnews']) && $_COOKIE['admnews'] == md5(login().'///'.pass()));
+	 if (isset($_COOKIE['admnews']) && $_COOKIE['admnews'] == md5(login().'///'.pass()))
 	 {
 		if(check_Session::getInstance()->has('admin_logged')) {
 		  return $str;
@@ -997,7 +1014,7 @@ return $data;
               $n = $len>100 ? 8 : 2;
               while( strlen($gamma)<$len )
               {
-                     $gamma .= substr(pack('H*', sha1($this->pws.$gamma.$salt)), 0, $n);
+                     $gamma .= substr(pack('H*', sha1($gamma.$salt)), 0, $n);
               }
               return $str^$gamma;
        }

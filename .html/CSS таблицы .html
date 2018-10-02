@@ -1,0 +1,312 @@
+<html>
+<head>
+<title>Пример жесткой блочной верстки сайта в три колонки</title>
+
+<style type ="text/css">
+
+
+html,body{margin:0;padding:0}
+body{font: 80% arial,sans-serif}
+p{margin:0 10px 10px}
+a{display:block;color: #981793;padding:10px}
+
+
+div#block {width:1200px; margin:0; auto; background-color:#110011; }
+
+  <!---- Для настройки ---->
+, .c_colonka, .l_colonka, .header, div.footer, .r_colonka, .center_left, .center_righ, .center_top, .small_menu
+ {color: #fff ; border-bottom:1px dashed #fff;}
+,.center_left,.small_menu {background-color:#444;}
+,.center_righ {background-color:#333;}
+,.center_top {background-color:#555;}
+,.c_colonka {background-color:#777;}
+,.footer ,.header {background-color:#666;}
+,.l_colonka, .r_colonka {background-color:#555;}
+  <!---- Для настройки ---->
+  
+, .c_colonka, .l_colonka, .header, div.footer, .r_colonka, .center_left, .center_righ, .center_top, .small_menu
+{ float:left; padding-left:10px; padding-right:10px; padding-top:10px; padding-bottom:5px;} 
+
+, .small_menu, .small_head
+{ margin:0 10px;} 
+
+
+
+div.header {width:1200px; height:100px;}
+div.l_colonka {width:250px; height:350px; border-right:0px dashed #fff; margin-bottom:-15px}
+div.c_colonka {width:700px;}
+div.r_colonka { width:250px; height:350px; border-left:1px dashed #fff; margin-bottom:-15px}
+
+div.center_left {width:450px; clear:both}
+div.center_top {width:680px;}
+div.center_righ {width:230px;}
+
+
+div.footer {width:1200px; height:70px; clear:both}
+
+div.small_head {width:205px;font:normal 16px Arial, Helvetica, sans-serif;
+	text-transform:uppercase; color:#000000; background:url(title_contacts.gif) no-repeat;
+	height:26px; padding:5px 0 0 8px;
+}
+div.small_menu {width:205px;}
+div.contact {width:205px; background:url(back_contact.png) top no-repeat;
+	border-bottom:1px solid #2a2a2a; font:normal 15px Arial, Helvetica, sans-serif;
+	color:#999999; padding:20px;}
+
+div.news {
+	font:normal 11px Arial, Helvetica, sans-serif;
+	color:#676767;
+	padding:46px 76px 22px 22px;	
+}	
+	
+	
+div.news_title {
+	font-size:13px;
+	color:#ffc800;
+	text-decoration:underline;
+}	
+	
+div.data {
+	font-size:12px;
+	color:#151515;
+	background:url(data.gif) no-repeat;
+	height:18px;
+	width:71px;
+	padding:3px 16px 0 9px;
+	text-align:center;
+}	
+
+div.news_title {
+	font:normal 26px Arial, Helvetica, sans-serif;
+	color:#ffffff;
+	text-transform:uppercase;
+	margin:0 0 16px 0;
+
+div.news_tit {
+	font-size:13px;
+	color:#ffc800;
+	text-decoration:underline;
+}	
+
+
+
+
+div.small_pass {width:200px; height: 70px; margin: 0px; padding-left:0px;}
+
+
+
+
+
+
+</style>
+
+
+</head>
+<body>
+<div id = "block">
+
+
+<div class  ="header"><h1 align="center">Верстка сайта</h1>
+padding-left: – определяет внутренний отступ слева.
+margin-top: – определяет внешний отступ сверху.
+margin-left: – определяет внешний отступ слева.
+min-width: – определяет минимальную ширину.
+max-width: – определяет максимальную ширину.
+</div>
+
+
+<div class ="l_colonka">
+
+<div class ="small_pass"></div>
+<div class ="small_head"><p align="center">Меню:</p>
+
+</div>
+<div class ="small_menu">
+<p align="left">
+	> 1.Главная <br>
+	> 2.Фотобанк <br>
+	> 3.Услуги
+	
+	
+	</p>
+</div>
+
+<div class ="small_pass"></div>
+
+<div class ="small_head"><p align="center">Контакты:</p>
+
+</div>
+
+<div class =".contact">
+	<p align="center"><br><br>
+		Видеооператор <br><br>
+		тел. 787-40-70 <br><br><br><br>
+		Фотограф <br><br>
+		тел. 703-01-67
+				
+		</p>
+
+</div>
+
+<div class ="small_pass"></div>
+
+Атрибуты и значения:
+background-color: – определяет цвет фона.
+margin:0 auto – определяет центрирование блока.
+width: – определяет ширину в пикселях или в процентах.
+height: – определяет высоту.
+float:left – определяет обтекание слева.
+border-right: – определяет свойства правой границы.
+clear:both – отменяет обтекание с обеих сторон.
+padding-left: – определяет внутренний отступ слева.
+margin-top: – определяет внешний отступ сверху.
+margin-left: – определяет внешний отступ слева.
+min-width: – определяет минимальную ширину.
+max-width: – определяет максимальную ширину.
+Атрибуты и значения:
+background-color: – определяет цвет фона.
+margin:0 auto – определяет центрирование блока.
+width: – определяет ширину в пикселях или в процентах.
+height: – определяет высоту.
+float:left – определяет обтекание слева.
+border-right: – определяет свойства правой границы.
+clear:both – отменяет обтекание с обеих сторон.
+padding-left: – определяет внутренний отступ слева.
+margin-top: – определяет внешний отступ сверху.
+margin-left: – определяет внешний отступ слева.
+min-width: – определяет минимальную ширину.
+max-width: – определяет максимальную ширину.
+Атрибуты и значения:
+background-color: – определяет цвет фона.
+margin:0 auto – определяет центрирование блока.
+width: – определяет ширину в пикселях или в процентах.
+height: – определяет высоту.
+float:left – определяет обтекание слева.
+border-right: – определяет свойства правой границы.
+clear:both – отменяет обтекание с обеих сторон.
+padding-left: – определяет внутренний отступ слева.
+margin-top: – определяет внешний отступ сверху.
+margin-left: – определяет внешний отступ слева.
+min-width: – определяет минимальную ширину.
+max-width: – определяет максимальную ширину.
+</div>
+
+
+<div class  ="c_colonka">
+<div class  ="center_top">
+Атрибуты и значения:
+background-color: – определяет цвет фона.
+margin:0 auto – определяет центрирование блока.
+width: – определяет ширину в пикселях или в процентах.
+height: – определяет высоту.
+float:left – определяет обтекание слева.
+</div>
+
+<div class  = "center_left" ><p align="center">Фотограф</p>
+</div>
+
+<div class  = "center_righ" ><p align="center">Цены</p>
+</div>
+
+<h2 align   ="center">CSS верстка сайта</h2>
+<h4 align   ="center">Жесткая верстка блоками</h4>
+Атрибуты и значения:
+background-color: – определяет цвет фона.
+margin:0 auto – определяет центрирование блока.
+width: – определяет ширину в пикселях или в процентах.
+height: – определяет высоту.
+float:left – определяет обтекание слева.
+border-right: – определяет свойства правой границы.
+clear:both – отменяет обтекание с обеих сторон.
+padding-left: – определяет внутренний отступ слева.
+margin-top: – определяет внешний отступ сверху.
+margin-left: – определяет внешний отступ слева.
+min-width: – определяет минимальную ширину.
+max-width: – определяет максимальную ширину.
+</div>
+
+
+
+<div class  = "r_colonka">
+
+
+<div class ="data">
+ 	<p>10.01.2013</p>
+</div>
+
+<div class  = "news_title">
+	<p>Скидки 400гр</p>
+</div>
+<div class  = "news">
+<p>Скидки на все дни, кроме выходных</p>
+</div>
+
+
+<div class="news">
+<p class="news_title">Новости</p>
+<div class="data">10.01.2013</div>
+<p class="news_tit" style="margin:8px 0;">Скидка 2000р.</p>
+<p style="margin:0;"></p>
+<p>
+<strong>Скидка 2000р. на все дни, кроме Сб</strong>
+</p>
+
+</div>
+
+
+
+
+
+<div class ="small_head"><p align="center">Меню:</p>
+
+</div>
+<div class ="small_menu">
+<p align="left">
+	> 1.Главная <br>
+	> 2.Фотобанк <br>
+	> 3.Услуги
+	
+</p>
+</div>
+
+<div class ="small_pass"></div>
+
+<div class ="small_head"><p align="center">Контакты:</p>
+
+</div>
+
+<div class ="small_menu">
+	<p align="center">
+		Видеооператор <br><br>
+		тел. 787-40-70 <br><br><br><br>
+		Фотограф <br><br>
+		тел. 703-01-67
+				
+		</p>
+
+</div>
+
+<div class ="small_pass"></div>
+
+
+
+padding-left: – определяет внутренний отступ слева.
+margin-top: – определяет внешний отступ сверху.
+margin-left: – определяет внешний отступ слева.
+min-width: – определяет минимальную ширину.
+max-width: – определяет максимальную ширину.
+</div>
+
+
+<div class  ="footer"><p>© 2010</p>
+padding-left: – определяет внутренний отступ слева.
+margin-top: – определяет внешний отступ сверху.
+margin-left: – определяет внешний отступ слева.
+min-width: – определяет минимальную ширину.
+max-width: – определяет максимальную ширину.
+</div>
+
+
+</div>
+</body>
+</html>

@@ -8,7 +8,7 @@
 							$Debug_HackerConsole_Main = Debug_HackerConsole_Main::getInstance(true);
 			 }
 			 // проверка работы консоли
-			 //	if (function_exists('debugHC'))  debugHC("test");
+//			 	if (function_exists('debugHC'))  debugHC("test");
 			 /**
 				* Class Error_Processor
 				*/

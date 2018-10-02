@@ -32,11 +32,11 @@
 						) {
 									$e4 .= "Неверный телефон!";
 						}
-						$skype = trim(htmlspecialchars($_POST["skype"]));
+						$skype = trim(htmlspecialchars($_POST['skype']));
 						$e5    = NULL;
-						$umath = trim(htmlspecialchars($_POST["umath"]));
+						$umath = trim(htmlspecialchars($_POST['umath']));
 						if ($umath != chk_crypt($umath)) {
-									$e5 .= "Введено неверное контрольное число";
+									$e5 .= 'Введено неверное контрольное число';
 						}
 						$eAll = $e1.$e2.$e3.$e4.$e5;
 			}

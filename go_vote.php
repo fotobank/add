@@ -6,25 +6,30 @@ error_reporting(0);
 include (BASEPATH.'inc/config.php');
 include (BASEPATH.'inc/func.php');
 ob_start();
-$id = intval($_POST['id']);
+$hаch = $_POST['id'];
 $status = 'ERR';
 $msg = 'File not found!';
 $balans = null;;
 $votes = null;
 $vote = array();
+$id = null;
 
-if(!isset($_SESSION['logged']))
+if(!$session->has("logged"))
 {
   $msg = 'Голосование доступно только загегистрированным пользователям. Пожалуйста, зарегистрируйтесь и войдите на сайт под своим именем!';
 }
 else
 {
-  if($id > 0)
+  if($hаch)
   {
+
+         include(__DIR__.'/classes/md5/md5_ini.php'); // подключть настройки md5 class
+         $id = go::call('md5_loader', $ini)->idImg(array("query"  => $hаch)); // восстановить номер фотографии из хеша
+
     $id_album = go\DB\query('select id_album from photos where id = ?i', array($id), 'el');
     if($id_album)
     {
-       $balans = floatval(go\DB\query('select balans from users where id = ?i', array($_SESSION['userid']), 'el'));
+      $balans = floatval(go\DB\query('select balans from users where id = ?i', array($_SESSION['userid']), 'el'));
 	    $vote = go\DB\query('select vote_price, vote_time, vote_time_on from albums where id = ?i', array($id_album), 'row');
 	    $golos_time = go\DB\query('select  golos_time from votes where id_user = ?i and id_photo = ?i ORDER BY golos_time desc limit 1', array($_SESSION['userid'],$id), 'el');
 	    $time_zone =60; // поправка на временную зону
@@ -52,7 +57,7 @@ else
 }
 ob_end_clean();
 
-echo json_encode(array('status' => $status, 'msg' => $msg, 'balans' => $balans, 'votpr' => $vote['vote_price'] , 'votes' => $votes));
+echo json_encode(array('status' => $status, 'msg' => $msg, 'balans' => $balans, 'votpr' => $vote['vote_price'] , 'votes' => $votes , 'idPhoto' => $id));
 
 go\DB\Storage::getInstance()->get()->close(true);
 ?>

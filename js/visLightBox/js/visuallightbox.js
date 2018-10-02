@@ -489,9 +489,10 @@
 //                            alert (html);
                             var ans = $.parseJSON(html);
                             var reiting = str_repeat("<img src='/img/reyt.png' style='margin-top: -10px;'/>", Math.round(ans.votes/5).toFixed(0));
+                            var retingTxt = ((Math.round(ans.votes/5).toFixed(0)) == 0)?'':'Рейтинг:';
 
                             if (ans.votes > 4) {
-                            $(' #vlb1Reiting ').empty().append("Голосов: "+ans.votes+"   Рейтинг: "+reiting);
+                            $(' #vlb1Reiting ').empty().append("Голосов: "+ans.votes+"&nbsp;&nbsp;&nbsp;"+retingTxt+"&nbsp;"+reiting);
                             } else {
                                 $(' #vlb1Reiting ').empty().append("Голосов: "+ans.votes)
                             }
@@ -519,7 +520,7 @@
                                         data:  {'id': idPhoto},
 
                                         error:function(XHR) {
-                                            $(this).outDebug(" Ошибка: "+XHR.status+ "  " + XHR.statusText,"/js/visLightBox/js/visuallightbox.js","voteAdd");
+                                            $(this).outDebug(" Ошибка: "+XHR.status+ "&nbsp;&nbsp;" + XHR.statusText,"/js/visLightBox/js/visuallightbox.js","voteAdd");
                                         },
                                         statusCode: {
                                             404: function() {
@@ -538,10 +539,11 @@
                                                 dhtmlx.message({ text: ans.msg, expire: 10000, type: "addgolos" });
                                                 var newBalans = ans.balans.toFixed(2);
                                                 $('#balans').empty().append(newBalans);
-                                                $('span#s'+idPhoto).empty().append(ans.votes);
+                                                $('span#s'+ans.idPhoto).empty().append(ans.votes);
                                     var reiting = str_repeat("<img src='/img/reyt.png' style='margin-top: -10px;' />", Math.round(ans.votes/5).toFixed(0));
-                                                $('div#d'+idPhoto).empty().append("Рейтинг: "+reiting);
-                                                $(' #vlb1Reiting ').empty().append("Голосов: "+ans.votes+"  Рейтинг: "+reiting);
+                                    var retingTxt = ((Math.round(ans.votes/5).toFixed(0)) == 0)?'':'Рейтинг:';
+                                                $('div#d'+ans.idPhoto).empty().append(retingTxt+" "+reiting);
+                                                $(' #vlb1Reiting ').empty().append("Голосов: "+ans.votes+"&nbsp;&nbsp;&nbsp;"+retingTxt+"&nbsp;"+reiting);
                    goVoteP.empty().append((ans.votpr != 0)?"цена голоса: "+ans.votpr+" гр.":"цена голоса: бесплатно");
                                             }
                                         }
