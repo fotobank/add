@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Пример использования библиотеки Message | Материалы сайта RUSELLER.COM</title>
+	<meta charset="utf-8">
+	<script type="text/javascript" src='../codebase/message.js'></script>
+	<link rel="stylesheet" type="text/css" href="../codebase/themes/message_default.css">
+	<style type="text/css">
+		.dhtmlx-error{
+			font-weight:bold;
+			color:white;
+			background-color:red;
+		}
+		body, html {
+			height:100%;
+		}
+		input{
+			width:300px;
+			display:block;
+			font-family:Tahoma;
+			font-size:12pt;
+			padding:5px 20px;
+		}
+	</style>
+</head>
+<body>
+	<input type='button' value='Показать сообщение' onclick='dhtmlx.message("Вы нажали кнопку!")'> 
+	<input type='button' value='Показать сообщение с пользовательским стилем' onclick='dhtmlx.message({ type:"error", text:"Вы нажали кнопку <br> с пользовательским стилем!" })'> 
+	<input type='button' value='Постоянное сообщение' onclick='dhtmlx.message({ expire:-1, text:"Нажмите на меня, чтобы закрыть!" })'> 
+	<br>
+
+
+	<script type="text/javascript">
+	var num = 1;
+	function show_message(){
+		var n = Math.random()*20;
+		if (n<15) return;
+
+		var message = {
+			text:"Сообщение #"+(num++),
+			type:(n>18?"error":"")
+		}
+		dhtmlx.message(message);
+	}
+	for (var i = 0; i < 10; i++)
+		show_message();
+	window.setInterval(show_message, 500);
+	</script>
+</body>
+</html>

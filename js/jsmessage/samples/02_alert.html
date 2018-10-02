@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Пример использования библиотеки Message | Материалы сайта RUSELLER.COM</title>
+	<meta charset="utf-8">
+	<script type="text/javascript" src='../codebase/message.js'></script>
+	<link rel="stylesheet" type="text/css" href="../codebase/themes/message_default.css">
+	<style type="text/css">
+		body, html {
+			height:100%;
+		}
+	</style>
+</head>
+<body>
+	<script type="text/javascript">
+		dhtmlx.alert("Проверка функции alert", function(result){
+			dhtmlx.alert({
+				title:"Заголовок",
+				ok:"Кнопка ОК",
+				text:"Результат: "+result,
+				callback:function(){
+					dhtmlx.alert({
+						type:"alert-warning",
+						text:"Пример предупреждения",
+						callback:function(){
+							dhtmlx.alert({
+								type:"alert-error",
+								text:"Пример сообщения об ошибке"
+							});
+						}
+					});
+				}
+			});
+		});
+	</script>	
+</body>
+</html>

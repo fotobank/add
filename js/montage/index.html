@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <title>Автоматический монтаж изображений на jQuery | Материалы проекта RUSELLER.COM</title>
+		<meta charset="UTF-8" />
+
+
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+
+    </head>
+    <body>
+
+			<div class="am-container" id="am-container">
+				<img src="images/1.jpg">
+				<img src="images/2.jpg">
+				<img src="images/3.jpg">
+				<img src="images/4.jpg">
+				<img src="images/5.jpg">
+				<img src="images/6.jpg">
+				<img src="images/7.jpg">
+				<img src="images/8.jpg">
+				<img src="images/9.jpg">
+				<img src="images/10.jpg">
+				<img src="images/11.jpg">
+				<img src="images/13.jpg">
+				<img src="images/15.jpg">
+				<img src="images/16.jpg">
+				<img src="images/17.jpg">
+				<img src="images/18.jpg">
+				<img src="images/20.jpg">
+				<img src="images/21.jpg">
+				<img src="images/22.jpg">
+				<img src="images/23.jpg">
+				<img src="images/25.jpg">
+				<img src="images/26.jpg">
+
+			</div>
+
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+		<script type="text/javascript" src="js/jquery.montage.min.js"></script>
+            <script type="text/javascript">
+                $(function() {
+
+                    var $container 	= $('#am-container'),
+                          $imgs		= $container.children('img').hide(),
+                          totalImgs	= $imgs.length,
+                          cnt			= 0;
+
+                    $imgs.each(function(i) {
+                        var $img	= $(this);
+                        $('<img/>').load(function() {
+                            ++cnt;
+                            if( cnt === totalImgs ) {
+                                $imgs.show();
+                                $container.montage({
+
+                                    // Если вы используете проценты (или не устанавливаете ширину совсем)
+// для ширину контейнера, то данную опцию надо установить в значение true.
+// Таким образом установится свойство overflow-y для body
+// в значение 'scroll'
+                                    liquid					: true,
+// Расстоянием между изображениями в px
+                                    margin					:1,
+// Минимальная ширина изображения
+                                    minw					: 70,
+// Минимальная высота изображения
+                                    minh					: 20,
+// Максимальная высота изображения
+                                    maxh					: 250,
+// Изменение высоты каждой строки.
+// Данная опция имеет более высокий приоритет, чем fixedHeight
+                                    alternateHeight			: false,
+// Высота будет случайной величиной в диапазоне между 'min' и 'max':
+                                    alternateHeightRange	: {
+                                        min	: 100,
+                                        max	: 300
+                                    },
+// Данная опция имеет приоритет над опцией minsize.
+// Все изображения имеют данную высоту:
+                                    fixedHeight				: null,
+// Использование данной опции делает недействительными значения опций minw и minh.
+// Выбор высоты осуществляется по самому маленькому изображению,
+// когда данная опция имеет значение true:
+                                    minsize					: true,
+// Если значение опции true, в конце контейнера не будет пробелов.
+// Последнее изображение будет заполнять все оставшееся пространство:
+                                    fillLastRow				: false
+                                });
+                            }
+                        }).attr('src',$img.attr('src'));
+                    });
+
+                });
+            </script>
+    </body>
+</html>

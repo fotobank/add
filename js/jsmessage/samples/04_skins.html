@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Пример использования библиотеки Message | Материалы сайта RUSELLER.COM</title>
+	<meta charset="utf-8">
+	<script type="text/javascript" src='../codebase/message.js'></script>
+	<link rel="stylesheet" type="text/css" href="../codebase/themes/message_default.css" title="Default">
+	<link rel="stylesheet" type="text/css" href="../codebase/themes/message_growl_dark.css" title="Growl - dark">
+	<link rel="stylesheet" type="text/css" href="../codebase/themes/message_growl_shiny.css" title="Growl - shiny">
+	<link rel="stylesheet" type="text/css" href="../codebase/themes/message_solid.css" title="Solid">
+	<link rel="stylesheet" type="text/css" href="../codebase/themes/message_skyblue.css" title="SkyBlue">
+	<style type="text/css">
+		fieldset {
+			width:250px;
+			margin-top:10px;
+		}
+		fieldset input{
+			width:250px;
+			padding:7px 10px;
+		}
+		legend{
+			color:navy;
+			font-size:10pt;
+			font-family:Tahoma;
+		}
+	</style>
+	<script type="text/javascript">
+	function setActiveStyleSheet(title){
+		var links = document.getElementsByTagName("link");
+		for (var i = 0; i < links.length; i++){
+			links[i].disabled = (links[i].getAttribute("title") != title);
+		}
+	}
+	setActiveStyleSheet("Default")
+	</script>
+</head>
+<body>
+	
+	
+	<fieldset>
+		<legend>Тема оформления</legend>
+		<select onchange="setActiveStyleSheet(this.value);">
+			<option>Default</option>
+			<option>Growl - dark</option>
+			<option>Growl - shiny</option>
+			<option>Solid</option>
+			<option>SkyBlue</option>
+		</select>
+	</fieldset>
+
+	<fieldset>
+		<legend>Сообщение</legend>
+		<div><input type='button' value='Показать сообщение' onclick='dhtmlx.message("Вы нажали кнопку!")'> </div>
+		<div><input type='button' value='Показать соообщение со стилем' onclick='dhtmlx.message({ type:"error", text:"Вы нажали кнопку <br>сообщения об ошибке!" })'> </div>
+		<div><input type='button' value='Показать расширенное содержание' onclick='rich_message();'> </div>
+	</fieldset>
+
+	<fieldset>
+		<legend>Предупреждение</legend>
+		<div><input type='button' value='Показать предупреждение' onclick='dhtmlx.alert("Пример предупреждения!")'></div>
+		<div><input type='button' value='Показать предупреждение с заголовком' onclick='dhtmlx.alert({title:"Заголовок", text:"Текст сообщения."})'></div>
+		<div><input type='button' value='Показать сообщение со стилем' onclick='dhtmlx.alert({type:"alert-error", title:"Заголовок", text:"Текст сообщения"})'></div>
+		<div><input type='button' value='Показать расширенное содержание' onclick='rich_alert();'></div>
+	</fieldset>
+
+	<fieldset>
+		<legend>Подтверждение</legend>
+		<div><input type='button' value='Показать диалог' onclick='dhtmlx.confirm("Текст вопроса.")'></div>
+		<div><input type='button' value='Показать диалог с заголовком' onclick='dhtmlx.confirm({ title: "Заголовок", text:"Текст вопроса."})'> </div>
+		<div><input type='button' value='Показать диалог со стилем' onclick='dhtmlx.confirm({type:"confirm-error", title:"Заголвок", text:"Текст вопроса."})'></div>
+		<div><input type='button' value='Показать расширенное содержание' onclick='rich_confirm();'></div>
+	</fieldset>
+
+	
+	
+
+	<script type="text/javascript">
+	var num = 1;
+	function show_message(){
+		var n = Math.random()*20;
+		if (n<15) return;
+
+		var message = {
+			text:"Сообщение #"+(num++),
+			type:(n>18?"error":"")
+		}
+		dhtmlx.message(message);
+	}
+	for (var i = 0; i < 10; i++)
+		show_message();
+	window.setInterval(show_message, 500);
+
+	function rich_confirm(){
+		dhtmlx.confirm("<img src='alert_medium.png'><strong>Уроки по веб строительству на сайте <a target='blank' href='http://www.ruseller.com'>RUSELLER.COM</a></strong><br/><br/> Вы можете использовать здесь любые элементы HTML - ссылки, изображения и так далее.");
+	}
+	function rich_alert(){
+		dhtmlx.alert("<img src='alert_medium.png'><strong>Уроки по веб строительству на сайте <a target='blank' href='http://www.ruseller.com'>RUSELLER.COM</a></strong><br/><br/> Вы можете использовать здесь любые элементы HTML - ссылки, изображения и так далее.");
+	}
+	function rich_message(){
+		dhtmlx.message({
+			text:"<img src='alert_medium.png'><strong>Уроки по веб строительству на сайте <a target='blank' href='http://www.ruseller.com'>RUSELLER.COM</a></strong><br/><br/> Вы можете использовать здесь любые элементы HTML - ссылки, изображения и так далее.",
+			expire:-1
+		});
+	}
+	</script>
+</body>
+</html>

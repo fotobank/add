@@ -1,0 +1,1431 @@
+(function($) {
+  /**
+   * @param {Object} options
+   * @return {?}
+   */
+  $.fn.visualLightbox = function(options) {
+    /**
+     * @param {?} path
+     * @param {string} event
+     * @param {Function} handler
+     * @return {undefined}
+     */
+    function bind(path, event, handler) {
+      $("#" + path).unbind()[event](handler);
+    }
+    /**
+     * @return {undefined}
+     */
+    function init() {
+      bind(callback("overlay"), "click", close);
+      if (options.openByHover) {
+        jQuery("lightbox").unbind().hover(function() {
+          fake_onhashchange.start();
+        }, function() {
+          fake_onhashchange.stop();
+        });
+      } else {
+        bind(callback("lightbox"), "click", close);
+      }
+      bind(callback("prevLinkDetails"), "click", onTouchEnd);
+      bind(callback("slideShowControl"), "click", complete);
+      bind(callback("closeLink"), "click", close);
+      bind(callback("nextLinkDetails"), "click", onTouchStart);
+      if (!options.enableRightClick) {
+        bind(callback("hoverNav"), "mousemove", mousemove);
+        bind(callback("hoverNav"), "mouseout", keyup);
+      }
+      bind(callback("prevLinkImg"), "click", onTouchEnd);
+      bind(callback("nextLinkImg"), "click", onTouchStart);
+      bind(callback("loadingLink"), "click", close);
+    }
+    /**
+     * @param {Element} root
+     * @return {?}
+     */
+    function run(root) {
+      if (root.tagName.toLowerCase() != "a") {
+        root = $("A:first", root);
+      }
+      return $(root).attr("href");
+    }
+    /**
+     * @param {Element} element
+     * @return {?}
+     */
+    function process(element) {
+      if (/^a$/i.test(element.tagName)) {
+        return $(element).attr("title") || element.title;
+      }
+      return $(">div:first", element).html();
+    }
+    /**
+     * @return {undefined}
+     */
+    function onSuccess() {
+      $("." + fmt.replace(/\,/g, ",."), lis).each(function() {
+        if (run(this)) {
+          if (options.openByHover) {
+            $(this).hover(function() {
+              fake_onhashchange.start(this);
+            }, function() {
+              fake_onhashchange.stop(this);
+            });
+          } else {
+            $(this).click(function(types) {
+              types.preventDefault();
+              unfoldSoak(this);
+              return false;
+            });
+          }
+        }
+      });
+    }
+    /**
+     * @param {number} recurring
+     * @return {undefined}
+     */
+    function handler(recurring) {
+      /** @type {number} */
+      i = recurring;
+      done();
+      log();
+      render();
+      if (!options.startZoom) {
+        jQuery("lightboxImage").hide();
+      }
+      jQuery("prevLinkImg").hide();
+      jQuery("nextLinkImg").hide();
+      if (options.descSliding) {
+        jQuery("imageDataContainer").hide();
+      }
+      /** @type {Image} */
+      image = new Image;
+      /**
+       * @return {undefined}
+       */
+      image.onload = function() {
+        /**
+         * @param {?} __
+         * @return {undefined}
+         */
+        function callback(__) {
+          var $this = $(" #vlb1iBasketP ");
+          var $preview = $(" #vlb1igoVoteP ");
+          $.ajax({
+            type : "POST",
+            header : "Content-Type: application/json; charset=windows-1251;",
+            url : "/inc/ajaxModern.php",
+            data : {
+              fotoId : __
+            },
+            /**
+             * @param {Object} jqXHR
+             * @return {undefined}
+             */
+            error : function(jqXHR) {
+              $(this).outDebug(" \u041e\u0448\u0438\u0431\u043a\u0430: " + jqXHR.status + "  " + jqXHR.statusText, "/js/visLightBox/js/visuallightbox.js", "goParam");
+            },
+            statusCode : {
+              /**
+               * @return {undefined}
+               */
+              404 : function() {
+                $(this).outDebug("\u0421\u0442\u0440\u0430\u043d\u0438\u0446\u0430 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u0430", "/js/visLightBox/js/visuallightbox.js", "goParam");
+              }
+            },
+            /**
+             * @param {?} response
+             * @return {undefined}
+             */
+            success : function(response) {
+              $(this).outDebug(response, "/js/visLightBox/js/visuallightbox.js", "goParam");
+              var data = $.parseJSON(response);
+              var elem3 = indent("<img src='/img/reyt.png' style='margin-top: -10px;'/>", Math.round(data.votes / 5).toFixed(0));
+              /** @type {string} */
+              var transClass = Math.round(data.votes / 5).toFixed(0) == 0 ? "" : "\u0420\u0435\u0439\u0442\u0438\u043d\u0433:";
+              if (data.votes > 4) {
+                $(" #vlb1Reiting ").empty().append("\u0413\u043e\u043b\u043e\u0441\u043e\u0432: " + data.votes + "&nbsp;&nbsp;&nbsp;" + transClass + "&nbsp;" + elem3);
+              } else {
+                $(" #vlb1Reiting ").empty().append("\u0413\u043e\u043b\u043e\u0441\u043e\u0432: " + data.votes);
+              }
+              $this.empty().append(data.price != 0 ? "\u0446\u0435\u043d\u0430 \u0444\u043e\u0442\u043e: " + data.price + " \u0433\u0440." : "\u0446\u0435\u043d\u0430 \u0444\u043e\u0442\u043e: \u0431\u0435\u0441\u043f\u043b\u0430\u0442\u043d\u043e");
+              $preview.empty().append(data.votpr != 0 ? "\u0446\u0435\u043d\u0430 \u0433\u043e\u043b\u043e\u0441\u0430: " + data.votpr + " \u0433\u0440." : "\u0446\u0435\u043d\u0430 \u0433\u043e\u043b\u043e\u0441\u0430: \u0431\u0435\u0441\u043f\u043b\u0430\u0442\u043d\u043e");
+            }
+          });
+        }
+        /**
+         * @param {string} indent
+         * @param {string} i
+         * @return {?}
+         */
+        function indent(indent, i) {
+          return(new Array(++i)).join(indent);
+        }
+        /**
+         * @param {string} _id
+         * @return {undefined}
+         */
+        function init(_id) {
+          var $this = $(" #vlb1igoVoteP ");
+          $.ajax({
+            type : "POST",
+            header : "Content-Type: application/json; charset=utf-8;",
+            url : "/go_vote.php",
+            data : {
+              "id" : _id
+            },
+            /**
+             * @param {Object} jqXHR
+             * @return {undefined}
+             */
+            error : function(jqXHR) {
+              $(this).outDebug(" \u041e\u0448\u0438\u0431\u043a\u0430: " + jqXHR.status + "&nbsp;&nbsp;" + jqXHR.statusText, "/js/visLightBox/js/visuallightbox.js", "voteAdd");
+            },
+            statusCode : {
+              /**
+               * @return {undefined}
+               */
+              404 : function() {
+                $(this).outDebug("\u0421\u0442\u0440\u0430\u043d\u0438\u0446\u0430 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u0430", "/js/visLightBox/js/visuallightbox.js", "voteAdd");
+              }
+            },
+            /**
+             * @param {?} response_data
+             * @return {undefined}
+             */
+            success : function(response_data) {
+              $(this).outDebug(response_data, "/js/visLightBox/js/visuallightbox.js", "voteAdd");
+              /** @type {*} */
+              var response = JSON.parse(response_data);
+              if (response.status == "ERR") {
+                /** @type {number} */
+                humane.timeout = 8E3;
+                humane.error(response.msg);
+              } else {
+                dhtmlx.message({
+                  text : response.msg,
+                  expire : 1E4,
+                  type : "addgolos"
+                });
+                var lineSeparator = response.balans.toFixed(2);
+                $("#balans").empty().append(lineSeparator);
+                $("span#s" + response.idPhoto).empty().append(response.votes);
+                var value = indent("<img src='/img/reyt.png' style='margin-top: -10px;' />", Math.round(response.votes / 5).toFixed(0));
+                /** @type {string} */
+                var name = Math.round(response.votes / 5).toFixed(0) == 0 ? "" : "\u0420\u0435\u0439\u0442\u0438\u043d\u0433:";
+                $("div#d" + response.idPhoto).empty().append(name + " " + value);
+                $(" #vlb1Reiting ").empty().append("\u0413\u043e\u043b\u043e\u0441\u043e\u0432: " + response.votes + "&nbsp;&nbsp;&nbsp;" + name + "&nbsp;" + value);
+                $this.empty().append(response.votpr != 0 ? "\u0446\u0435\u043d\u0430 \u0433\u043e\u043b\u043e\u0441\u0430: " + response.votpr + " \u0433\u0440." : "\u0446\u0435\u043d\u0430 \u0433\u043e\u043b\u043e\u0441\u0430: \u0431\u0435\u0441\u043f\u043b\u0430\u0442\u043d\u043e");
+              }
+            }
+          });
+        }
+        items[i].link = image.src;
+        items[i].width = image.width;
+        items[i].height = image.height;
+        var $fixture = $(" #vlb1iBasket ");
+        $fixture.unbind("click");
+        $fixture.bind("click", function() {
+          basketAdd(elems["1"]);
+        });
+        var $doc = $(" #vlb1igoVote ");
+        $doc.unbind("click");
+        $doc.bind("click", function() {
+          init(elems["1"]);
+        });
+        var link = items[i].link;
+        var elems = link.split(/[\?]/);
+        callback(elems["1"]);
+        initialize(false);
+      };
+      if (options.startZoom && !jQuery("lightboxImage").attr("src")) {
+        /** @type {number} */
+        items[i].width = 320;
+        /** @type {number} */
+        items[i].height = 240;
+        initialize(false, true);
+      }
+      image.src = items[i].link;
+      if (options.googleAnalytics) {
+        urchinTracker(items[i].link);
+      }
+    }
+    /**
+     * @param {boolean} recurring
+     * @param {boolean} deepDataAndEvents
+     * @return {undefined}
+     */
+    function initialize(recurring, deepDataAndEvents) {
+      var originalWidth = items[i].width;
+      var originalHeight = items[i].height;
+      var self = getWindowSize();
+      /** @type {number} */
+      var m = originalWidth / originalHeight;
+      if (options.featBrowser) {
+        /** @type {number} */
+        var b = self.winWidth / self.winHeight;
+        /** @type {number} */
+        var a = (originalWidth + options.borderSize * 2 + options.breathingSize * 2) / (originalHeight + options.borderSize * 2 + options.breathingSize * 2 + x);
+        if (a > b) {
+          /** @type {number} */
+          var ms = self.winWidth - options.borderSize * 2 - options.breathingSize * 2;
+          /** @type {number} */
+          var arg2 = Math.round(ms / m);
+        } else {
+          /** @type {number} */
+          arg2 = self.winHeight - options.borderSize * 2 - options.breathingSize * 2 - x;
+          /** @type {number} */
+          ms = Math.round(arg2 * m);
+        }
+        if (originalWidth > ms || originalHeight > arg2) {
+          /** @type {number} */
+          originalWidth = ms;
+          /** @type {number} */
+          originalHeight = arg2;
+        }
+      }
+      var a3;
+      var left;
+      var barWidth;
+      var height;
+      barWidth = originalWidth + options.borderSize * 2;
+      height = originalHeight + x + options.borderSize * 2;
+      var e = offset();
+      if (options.openByHover) {
+        /** @type {number} */
+        left = Math.min(Math.max($(canvas).offset().left + $(canvas).width() / 2 - barWidth / 2, e.x), e.x + self.winWidth - barWidth);
+        /** @type {number} */
+        a3 = Math.min(Math.max($(canvas).offset().top + $(canvas).height() / 2 - height / 2, e.y), e.y + self.winHeight - height);
+      } else {
+        a3 = e.y + (self.winHeight - height) / 2;
+        left = e.x;
+      }
+      /** @type {number} */
+      height = Math.max(height, parseInt(jQuery("lightbox").height()));
+      if (height > self.winHeight) {
+        /** @type {number} */
+        a3 = Math.max(Math.min(jQuery("lightbox").offset().top, e.y), e.y + self.winHeight - height);
+      }
+      /** @type {string} */
+      var parameters = options.openByHover ? barWidth + "px" : /mobile.+safari/i.test(navigator.userAgent) ? self.winWidth + "px" : "100%";
+      var container = jQuery("imageContainer");
+      if (recurring == true) {
+        container.css({
+          height : originalHeight + "px",
+          width : originalWidth + "px"
+        });
+        if (options.floating) {
+          resize(jQuery("lightbox"), left, a3, parameters);
+        } else {
+          jQuery("lightbox").css({
+            top : a3 + "px",
+            left : left + "px"
+          });
+        }
+      } else {
+        var element = jQuery("lightboxImage");
+        container.stop(true, false);
+        element.stop(true, false);
+        var content;
+        if (options.startZoom && element.attr("src")) {
+          content = element;
+          content.attr({
+            id : callback("lightboxImage2")
+          });
+        } else {
+          element.remove();
+        }
+        if (!deepDataAndEvents) {
+          element = $(image);
+          element.hide();
+          element.attr({
+            id : callback("lightboxImage")
+          });
+          container.append(element);
+        }
+        /** @type {number} */
+        var restoreScript = m / (container.width() / container.height());
+        if (!deepDataAndEvents) {
+          if (options.startZoom) {
+            if (content) {
+              jQuery("lightboxImage2").stop(true, true);
+            }
+            /** @type {number} */
+            var selectionIndex = content ? 120 : 100;
+            if (content) {
+              content.css({
+                width : 1 > restoreScript ? "auto" : content.width() / content.parent().width() * 100 + "%",
+                height : 1 > restoreScript ? content.height() / content.parent().height() * 100 + "%" : "auto",
+                left : 0,
+                top : 0
+              });
+            }
+            element.css({
+              opacity : 0,
+              display : "block",
+              position : "absolute",
+              width : 1 > restoreScript ? selectionIndex + "%" : "auto",
+              height : 1 > restoreScript ? "auto" : selectionIndex + "%",
+              left : (100 - selectionIndex * (1 > restoreScript ? 1 : restoreScript)) / 2 + "%",
+              top : (100 - selectionIndex * (1 > restoreScript ? 1 / restoreScript : 1)) / 2 + "%"
+            });
+          }
+          if (options.startZoom) {
+            animate();
+          }
+        }
+        open(left, a3, originalWidth, originalHeight, parameters, restoreScript, deepDataAndEvents);
+      }
+      if (jQuery("imageDataContainer").css("position") != "absolute") {
+        jQuery("imageDataContainer").css({
+          width : originalWidth + "px"
+        });
+      }
+      if (options.enableRightClick) {
+        jQuery("lightboxImage").mousemove(mousemove);
+        jQuery("lightboxImage").mouseout(keyup);
+      }
+    }
+    /**
+     * @param {number} settings
+     * @param {number} a3
+     * @param {number} w
+     * @param {number} h
+     * @param {?} parameters
+     * @param {number} callback
+     * @param {boolean} deepDataAndEvents
+     * @return {undefined}
+     */
+    function open(settings, a3, w, h, parameters, callback, deepDataAndEvents) {
+      var $foo = jQuery("imageContainer");
+      var elem = jQuery("lightboxImage");
+      var $this = jQuery("lightbox");
+      if (!deepDataAndEvents) {
+        var foo = jQuery("lightboxImage2")
+      }
+      if (options.startZoom) {
+        elem.fadeTo(split * 1E3, 1);
+        if (!document.all) {
+          jQuery("outerImageContainer").fadeTo(split * 1E3, 1);
+        }
+      }
+      resize($this, settings, a3, parameters);
+      if (options.startZoom && !deepDataAndEvents) {
+        foo.animate($.extend({
+          opacity : 0
+        }, callback < 1 ? {
+          height : "120%",
+          top : "-10%",
+          left : (100 - 120 / callback) / 2 + "%"
+        } : {
+          width : "120%",
+          left : "-10%",
+          top : (100 - callback * 120) / 2 + "%"
+        }), {
+          queue : false,
+          duration : split * 1E3,
+          /**
+           * @return {undefined}
+           */
+          complete : function() {
+            $(this).remove();
+          }
+        });
+        elem.animate($.extend({
+          left : 0,
+          top : 0
+        }, callback < 1 ? {
+          width : "100%"
+        } : {
+          height : "100%"
+        }), {
+          queue : false,
+          duration : split * 1E3
+        });
+      }
+      $foo.animate({
+        width : w + "px",
+        height : h + "px"
+      }, {
+        queue : false,
+        duration : split * 1E3,
+        complete : !deepDataAndEvents ? function() {
+          start();
+        } : null
+      });
+    }
+    /**
+     * @param {Object} $img
+     * @param {number} b
+     * @param {number} force
+     * @param {number} w
+     * @return {undefined}
+     */
+    function resize($img, b, force, w) {
+      $img.stop(true, false);
+      var style = {
+        top : force,
+        left : b
+      };
+      if (w != $img.get(0).style.width) {
+        /** @type {number} */
+        style.width = w;
+      }
+      $img.animate(style, {
+        queue : false,
+        duration : split * 1E3
+      });
+    }
+    /**
+     * @return {undefined}
+     */
+    function render() {
+      clearTimeout(tref);
+      var form = jQuery("loading");
+      form.show();
+      form.css({
+        visibility : "hidden"
+      });
+      /** @type {number} */
+      tref = setTimeout(function() {
+        jQuery("loading").css({
+          visibility : "visible"
+        });
+      }, 300);
+    }
+    /**
+     * @return {undefined}
+     */
+    function animate() {
+      clearTimeout(tref);
+      jQuery("loading").hide();
+    }
+    /**
+     * @return {undefined}
+     */
+    function start() {
+      animate();
+      if (options.startZoom) {
+        jQuery("overlay:hidden").css({
+          opacity : 0
+        }).show().fadeTo(abilityTimer * 1E3, options.overlayOpacity);
+        fn();
+      } else {
+        jQuery("lightboxImage").css({
+          opacity : 0
+        }).show().fadeTo(500, 1, function() {
+          fn();
+        });
+      }
+      _start();
+    }
+    /**
+     * @return {undefined}
+     */
+    function show() {
+      jQuery("caption").html((items[i].title || "").replace(/\n/g, "<br>"));
+      if (items[i].title) {
+        jQuery("caption").show();
+      } else {
+        jQuery("caption").hide();
+      }
+      if (items.length > 1) {
+        /** @type {string} */
+        var url = options.strings.numDisplayPrefix + " " + parseInt(i + 1) + " " + options.strings.numDisplaySeparator + " " + items.length;
+        if (options.showGroupName && data) {
+          url += " " + options.strings.numDisplaySeparator + " " + data;
+        }
+        jQuery("numberDisplay").text(url);
+        jQuery("slideShowControl").css({
+          display : visible ? "" : "none"
+        });
+      }
+    }
+    /**
+     * @return {undefined}
+     */
+    function fn() {
+      show();
+      if (options.descSliding) {
+        jQuery("imageDataContainer").animate({
+          height : "show",
+          opacity : "show"
+        }, 650, null, function() {
+          hide();
+        });
+      } else {
+        hide();
+      }
+    }
+    /**
+     * @return {undefined}
+     */
+    function hide() {
+      /** @type {number} */
+      var a = 1 / items.length;
+      /** @type {number} */
+      x = x * (1 - a) + jQuery("imageDataContainer").height() * a;
+      if (items.length > 1) {
+        jQuery("prevLinkImg").show();
+        jQuery("nextLinkImg").show();
+        if (visible) {
+          if (async) {
+            focus();
+          } else {
+            stop();
+          }
+        }
+      } else {
+        jQuery("prevLinkImg").hide();
+        jQuery("nextLinkImg").hide();
+      }
+      enableScrolling();
+    }
+    /**
+     * @return {undefined}
+     */
+    function focus() {
+      if (jQuery("lightbox:hidden").length) {
+        return;
+      }
+      log();
+      /** @type {boolean} */
+      async = true;
+      /** @type {number} */
+      hoverTimer = setTimeout(function() {
+        onTouchStart();
+      }, options.slideTime * 1E3);
+      jQuery("slideShowControl").text(options.strings.stopSlideshow);
+      jQuery("slideShowControl").addClass("started");
+    }
+    /**
+     * @return {undefined}
+     */
+    function stop() {
+      /** @type {boolean} */
+      async = false;
+      log();
+      jQuery("slideShowControl").text(options.strings.startSlideshow);
+      jQuery("slideShowControl").removeClass("started");
+    }
+    /**
+     * @return {undefined}
+     */
+    function complete() {
+      if (async) {
+        stop();
+      } else {
+        focus();
+      }
+    }
+    /**
+     * @return {undefined}
+     */
+    function log() {
+      if (hoverTimer) {
+        hoverTimer = clearTimeout(hoverTimer);
+      }
+    }
+    /**
+     * @return {undefined}
+     */
+    function onTouchStart() {
+      if (items.length > 1) {
+        log();
+        if (!options.loop && (i == items.length - 1 && recurring == 0 || i + 1 == recurring)) {
+          close();
+          return;
+        }
+        if (i == items.length - 1) {
+          ready(0);
+        } else {
+          ready(i + 1);
+        }
+      }
+    }
+    /**
+     * @param {number} recurring
+     * @return {undefined}
+     */
+    function ready(recurring) {
+      if (options.descSliding) {
+        jQuery("imageDataContainer").animate({
+          height : "hide",
+          opacity : "hide"
+        }, 650, null, function() {
+          handler(recurring);
+        });
+      } else {
+        handler(recurring);
+      }
+    }
+    /**
+     * @return {undefined}
+     */
+    function onTouchEnd() {
+      if (items.length > 1) {
+        if (i == 0) {
+          ready(items.length - 1);
+        } else {
+          ready(i - 1);
+        }
+      }
+    }
+    /**
+     * @return {undefined}
+     */
+    function constructor() {
+      if (items.length > 1) {
+        ready(0);
+      }
+    }
+    /**
+     * @return {undefined}
+     */
+    function completed() {
+      if (items.length > 1) {
+        ready(items.length - 1);
+      }
+    }
+    /**
+     * @return {undefined}
+     */
+    function enableScrolling() {
+      /** @type {function (Object): undefined} */
+      document.onkeydown = keyboardAction;
+    }
+    /**
+     * @return {undefined}
+     */
+    function done() {
+      /** @type {string} */
+      document.onkeydown = "";
+    }
+    /**
+     * @param {Object} e
+     * @return {undefined}
+     */
+    function keyboardAction(e) {
+      if (e == null) {
+        keycode = event.keyCode;
+      } else {
+        keycode = e.which;
+      }
+      /** @type {string} */
+      key = String.fromCharCode(keycode).toLowerCase();
+      if (key == "x" || (key == "o" || (key == "c" || keycode == 27))) {
+        close();
+      } else {
+        if (key == "p" || key == "%") {
+          onTouchEnd();
+        } else {
+          if (key == "n" || key == "'") {
+            onTouchStart();
+          } else {
+            if (key == "f") {
+              constructor();
+            } else {
+              if (key == "l") {
+                completed();
+              } else {
+                if (key == "s") {
+                  if (items.length > 0 && options.enableSlideshow) {
+                    complete();
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    /**
+     * @return {undefined}
+     */
+    function _start() {
+      var j = items.length - 1 == i ? 0 : i + 1;
+      (new Image).src = items[j].link;
+      /** @type {number} */
+      var y = i == 0 ? items.length - 1 : i - 1;
+      (new Image).src = items[y].link;
+    }
+    /**
+     * @param {Event} e
+     * @return {undefined}
+     */
+    function close(e) {
+      if (e) {
+        var request = $(e.target).attr("id");
+        if (callback("closeLink") != request && (callback("lightbox") != request && callback("overlay") != request)) {
+          return;
+        }
+      }
+      jQuery("imageContainer").stop(true, false);
+      jQuery("lightboxImage").stop(true, false);
+      if (image) {
+        /** @type {null} */
+        image.onload = null;
+      }
+      done();
+      log();
+      jQuery("lightbox").hide();
+      destroy();
+      if (options.overlayOpacity) {
+        jQuery("overlay").fadeOut(abilityTimer * 1E3);
+      } else {
+        jQuery("overlay").hide();
+      }
+      $(window).unbind("resize", onScroll);
+      $(window).unbind("scroll", onScroll);
+      $(window).unbind("resize", update);
+      $(window).unbind("scroll", update);
+    }
+    /**
+     * @param {Object} e
+     * @return {undefined}
+     */
+    function mousemove(e) {
+      if (e.pageX - jQuery("imageContainer").offset().left < jQuery("imageContainer").width() / 2) {
+        jQuery("prevLinkImg").addClass("hover");
+        jQuery("nextLinkImg").removeClass("hover");
+      } else {
+        jQuery("prevLinkImg").removeClass("hover");
+        jQuery("nextLinkImg").addClass("hover");
+      }
+    }
+    /**
+     * @return {undefined}
+     */
+    function keyup() {
+      jQuery("prevLinkImg").removeClass("hover");
+      jQuery("nextLinkImg").removeClass("hover");
+    }
+    /**
+     * @return {undefined}
+     */
+    function onScroll() {
+      initialize(true);
+    }
+    /**
+     * @return {undefined}
+     */
+    function update() {
+      jQuery("overlay").css({
+        left : offset().x + "px",
+        top : 0,
+        width : "100%",
+        height : reset()[1] + "px"
+      });
+    }
+    /**
+     * @return {undefined}
+     */
+    function destroy() {
+      var list;
+      /** @type {Array} */
+      var codeSegments = op;
+      /** @type {number} */
+      var i = 0;
+      for (;i < codeSegments.length;i++) {
+        /** @type {NodeList} */
+        list = document.getElementsByTagName(codeSegments[i]);
+        /** @type {number} */
+        var j = 0;
+        for (;j < list.length;j++) {
+          $(list[j]).css({
+            visibility : "visible"
+          });
+        }
+      }
+    }
+    /**
+     * @return {undefined}
+     */
+    function Node() {
+      /** @type {Array} */
+      var codeSegments = op;
+      /** @type {number} */
+      var i = 0;
+      for (;i < codeSegments.length;i++) {
+        $(codeSegments[i]).css({
+          visibility : "hidden"
+        });
+      }
+    }
+    /**
+     * @return {?}
+     */
+    function offset() {
+      var left;
+      var top;
+      if (self.pageYOffset || self.pageXOffset) {
+        /** @type {number} */
+        left = self.pageXOffset;
+        /** @type {number} */
+        top = self.pageYOffset;
+      } else {
+        if (document.documentElement && (document.documentElement.scrollTop || document.documentElement.scrollLeft)) {
+          /** @type {number} */
+          left = document.documentElement.scrollLeft;
+          /** @type {number} */
+          top = document.documentElement.scrollTop;
+        } else {
+          if (document.body) {
+            /** @type {number} */
+            left = document.body.scrollLeft;
+            /** @type {number} */
+            top = document.body.scrollTop;
+          }
+        }
+      }
+      return{
+        x : left,
+        y : top
+      };
+    }
+    /**
+     * @return {?}
+     */
+    function getWindowSize() {
+      var innerWidth;
+      var centerY;
+      if (self.innerHeight) {
+        /** @type {number} */
+        innerWidth = self.innerWidth;
+        /** @type {number} */
+        centerY = self.innerHeight;
+      } else {
+        if (document.documentElement && document.documentElement.clientHeight) {
+          /** @type {number} */
+          innerWidth = document.documentElement.clientWidth;
+          /** @type {number} */
+          centerY = document.documentElement.clientHeight;
+        } else {
+          if (document.body) {
+            /** @type {number} */
+            innerWidth = document.body.clientWidth;
+            /** @type {number} */
+            centerY = document.body.clientHeight;
+          }
+        }
+      }
+      return{
+        winWidth : innerWidth,
+        winHeight : centerY
+      };
+    }
+    /**
+     * @return {?}
+     */
+    function reset() {
+      /** @type {(HTMLElement|null)} */
+      var b = document.body;
+      /** @type {Element} */
+      var de = document.documentElement;
+      /** @type {number} */
+      var closingAnimationTime = 0;
+      /** @type {number} */
+      var maxRows = 0;
+      if (de) {
+        /** @type {number} */
+        closingAnimationTime = Math.max(closingAnimationTime, de.scrollWidth, de.offsetWidth);
+        /** @type {number} */
+        maxRows = Math.max(maxRows, de.scrollHeight, de.offsetHeight);
+      }
+      if (b) {
+        /** @type {number} */
+        closingAnimationTime = Math.max(closingAnimationTime, b.scrollWidth, b.offsetWidth);
+        /** @type {number} */
+        maxRows = Math.max(maxRows, b.scrollHeight, b.offsetHeight);
+        if (window.innerWidth) {
+          /** @type {number} */
+          closingAnimationTime = Math.max(closingAnimationTime, window.innerWidth);
+          /** @type {number} */
+          maxRows = Math.max(maxRows, window.innerHeight);
+        }
+      }
+      return[closingAnimationTime, maxRows];
+    }
+    /**
+     * @param {string} value
+     * @return {?}
+     */
+    function callback(value) {
+      return options.prefix + value;
+    }
+    /**
+     * @param {string} value
+     * @return {?}
+     */
+    function jQuery(value) {
+      return $("#" + callback(value));
+    }
+    /**
+     * @param {?} selector
+     * @param {?} amount
+     * @param {?} next
+     * @param {?} milliseconds
+     * @return {undefined}
+     */
+    function add(selector, amount, next, milliseconds) {
+      var el;
+      var tref;
+      var going;
+      /**
+       * @param {Node} node
+       * @return {undefined}
+       */
+      this.start = function(node) {
+        if (going) {
+          clearTimeout(going);
+        }
+        /** @type {number} */
+        going = 0;
+        if (!node || node == el) {
+          return;
+        }
+        if (el) {
+          if (tref) {
+            clearTimeout(tref);
+          } else {
+            next(el);
+          }
+          /** @type {number} */
+          tref = 0;
+        }
+        /** @type {Node} */
+        el = node;
+        /** @type {number} */
+        tref = setTimeout(function() {
+          /** @type {number} */
+          tref = 0;
+          selector(node);
+        }, amount);
+      };
+      /**
+       * @param {boolean} dataAndEvents
+       * @return {undefined}
+       */
+      this.stop = function(dataAndEvents) {
+        if (!el || dataAndEvents && el != dataAndEvents) {
+          return;
+        }
+        if (tref) {
+          clearTimeout(tref);
+        }
+        /** @type {number} */
+        tref = 0;
+        if (!going) {
+          /** @type {number} */
+          going = setTimeout(function() {
+            /** @type {number} */
+            going = 0;
+            next(dataAndEvents || el);
+            /** @type {number} */
+            el = 0;
+          }, milliseconds);
+        }
+      };
+    }
+    /** @type {null} */
+    var i = null;
+    /** @type {Array} */
+    var op = ["select", "object", "embed"];
+    /** @type {null} */
+    var data = null;
+    /** @type {Array} */
+    var items = [];
+    /** @type {null} */
+    var hoverTimer = null;
+    /** @type {null} */
+    var recurring = null;
+    /** @type {number} */
+    var canvas = 0;
+    /** @type {number} */
+    var x = 50;
+    var image;
+    var tref;
+    if (!document.getElementsByTagName) {
+      return;
+    }
+    options = $.extend({
+      animate : true,
+      autoPlay : false,
+      borderSize : 39,
+      containerID : document,
+      enableSlideshow : true,
+      googleAnalytics : false,
+      descSliding : true,
+      imageDataLocation : "south",
+      shadowLocation : "",
+      closeLocation : "",
+      pauseLocation : "",
+      initImage : "",
+      loop : true,
+      overlayDuration : 0.2,
+      overlayOpacity : 0.7,
+      prefix : "",
+      classNames : "vlightbox",
+      resizeSpeed : 7,
+      showGroupName : false,
+      slideTime : 4,
+      strings : {
+        closeLink : "",
+        loadingMsg : "\u0437\u0430\u0433\u0440\u0443\u0437\u043a\u0430",
+        nextLink : "",
+        prevLink : "",
+        startSlideshow : "",
+        stopSlideshow : "",
+        numDisplayPrefix : "",
+        numDisplaySeparator : "/"
+      },
+      openByHover : false,
+      enableRightClick : false,
+      featBrowser : true,
+      breathingSize : 10,
+      startZoom : false,
+      floating : true
+    }, options);
+    if (options.animate) {
+      /** @type {number} */
+      var abilityTimer = Math.max(options.overlayDuration, 0);
+      /** @type {number} */
+      options.resizeSpeed = Math.max(Math.min(options.resizeSpeed, 10), 1);
+      /** @type {number} */
+      var split = (11 - options.resizeSpeed) * 0.15;
+    } else {
+      /** @type {number} */
+      abilityTimer = 0;
+      /** @type {number} */
+      split = 0;
+    }
+    var visible = options.enableSlideshow;
+    /** @type {number} */
+    options.overlayOpacity = Math.max(Math.min(options.overlayOpacity, 1), 0);
+    var async = options.autoPlay;
+    var lis = $(options.containerID);
+    var fmt = options.classNames;
+    onSuccess();
+    var rootNode = lis.length && lis.get(0) != document ? lis.get(0) : document.getElementsByTagName("body").item(0);
+    if (rootNode.childNodes.length) {
+      $(rootNode.childNodes[0]).before($("<div></div>"));
+      rootNode = rootNode.childNodes[0];
+    }
+    if (!document.getElementById(callback("overlay"))) {
+      /** @type {Element} */
+      var node = document.createElement("div");
+      node.setAttribute("id", callback("overlay"));
+      /** @type {string} */
+      node.style.display = "none";
+      rootNode.appendChild(node);
+      /** @type {Element} */
+      var testNode = document.createElement("div");
+      testNode.setAttribute("id", callback("lightbox"));
+      /** @type {string} */
+      testNode.style.display = "none";
+      rootNode.appendChild(testNode);
+      /** @type {Element} */
+      var domElement = document.createElement("div");
+      domElement.setAttribute("id", callback("imageDataContainer"));
+      domElement.className = callback("clearfix");
+      /** @type {Element} */
+      var table = document.createElement("table");
+      table.setAttribute("id", callback("outerImageContainer"));
+      table.setAttribute("style", "margin-top: -20px;");
+      /** @type {number} */
+      table.cellSpacing = 0;
+      testNode.appendChild(table);
+      var row = table.insertRow(-1);
+      var elem = row.insertCell(-1);
+      /** @type {string} */
+      elem.className = "tl";
+      var pNode = row.insertCell(-1);
+      /** @type {string} */
+      pNode.className = "tc";
+      var tree = row.insertCell(-1);
+      /** @type {string} */
+      tree.className = "tr";
+      var r = table.insertRow(-1);
+      var expandIconEl = r.insertCell(-1);
+      /** @type {string} */
+      expandIconEl.className = "ml";
+      var parent = r.insertCell(-1);
+      parent.setAttribute("id", callback("lightboxFrameBody"));
+      var tooltip = r.insertCell(-1);
+      /** @type {string} */
+      tooltip.className = "mr";
+      var newRow = table.insertRow(-1);
+      var s = newRow.insertCell(-1);
+      /** @type {string} */
+      s.className = "bl";
+      var o = newRow.insertCell(-1);
+      /** @type {string} */
+      o.className = "bc";
+      var tt = newRow.insertCell(-1);
+      /** @type {string} */
+      tt.className = "br";
+      if (options.imageDataLocation == "north") {
+        parent.appendChild(domElement);
+      }
+      /** @type {Element} */
+      var dummy = document.createElement("div");
+      dummy.setAttribute("id", callback("Reiting"));
+      dummy.setAttribute("class", "div_reiting");
+      pNode.appendChild(dummy);
+      /** @type {Element} */
+      var title = document.createElement("div");
+      title.setAttribute("id", callback("caption"));
+      title.setAttribute("class", "ph_modern_nm");
+      domElement.appendChild(title);
+      /** @type {string} */
+      title.style.display = "none";
+      /** @type {Element} */
+      var div1 = document.createElement("div");
+      div1.setAttribute("id", callback("imageData"));
+      div1.setAttribute("style", "height: 40px;");
+      domElement.appendChild(div1);
+      /** @type {Element} */
+      var inShadowTable = document.createElement("table");
+      inShadowTable.setAttribute("id", callback("tableData"));
+      inShadowTable.setAttribute("border", "0");
+      inShadowTable.setAttribute("cellspacing", "10px");
+      inShadowTable.setAttribute("width", "100%");
+      div1.appendChild(inShadowTable);
+      /** @type {Element} */
+      var inShadowTbody = document.createElement("tbody");
+      inShadowTable.appendChild(inShadowTbody);
+      /** @type {Element} */
+      var dom = document.createElement("tr");
+      inShadowTbody.appendChild(dom);
+      /** @type {Element} */
+      var legend = document.createElement("td");
+      legend.setAttribute("width", "24%");
+      legend.setAttribute("valign", "top");
+      dom.appendChild(legend);
+      /** @type {Element} */
+      var td = document.createElement("td");
+      td.setAttribute("width", "33%");
+      td.setAttribute("valign", "top");
+      td.setAttribute("align", "left");
+      dom.appendChild(td);
+      /** @type {Element} */
+      var menu = document.createElement("td");
+      menu.setAttribute("width", "33%");
+      menu.setAttribute("valign", "top");
+      menu.setAttribute("align", "right");
+      dom.appendChild(menu);
+      /** @type {Element} */
+      var li = document.createElement("td");
+      li.setAttribute("width", "10%");
+      li.setAttribute("valign", "top");
+      dom.appendChild(li);
+      /** @type {Element} */
+      var dialog = document.createElement("div");
+      dialog.setAttribute("id", callback("imageDetails"));
+      dialog.setAttribute("style", "width: 90px; padding-top: 0;");
+      legend.appendChild(dialog);
+      /** @type {Element} */
+      var el = document.createElement("input");
+      el.setAttribute("id", callback("iBasket"));
+      el.setAttribute("type", "button");
+      el.setAttribute("value", "\u0432 \u043a\u043e\u0440\u0437\u0438\u043d\u0443");
+      el.setAttribute("style", "cursor: pointer;");
+      td.appendChild(el);
+      /** @type {Element} */
+      var text = document.createElement("p");
+      text.setAttribute("id", callback("iBasketP"));
+      td.appendChild(text);
+      /** @type {Element} */
+      var container = document.createElement("input");
+      container.setAttribute("id", callback("igoVote"));
+      container.setAttribute("type", "button");
+      container.setAttribute("value", "\u0433\u043e\u043b\u043e\u0441\u043e\u0432\u0430\u0442\u044c");
+      container.setAttribute("style", "cursor: pointer;");
+      menu.appendChild(container);
+      /** @type {Element} */
+      var box = document.createElement("p");
+      box.setAttribute("id", callback("igoVoteP"));
+      menu.appendChild(box);
+      /** @type {Element} */
+      var footer = document.createElement("span");
+      footer.setAttribute("id", callback("detailsNav"));
+      dialog.appendChild(footer);
+      /** @type {Element} */
+      var p = document.createElement("p");
+      p.setAttribute("id", callback("numberDisplay"));
+      p.setAttribute("style", "margin-left: 20px; margin-top: -6px;");
+      dialog.appendChild(p);
+      /** @type {Element} */
+      var newElement = document.createElement("div");
+      newElement.setAttribute("id", callback("imageContainerMain"));
+      parent.appendChild(newElement);
+      /** @type {Element} */
+      var div2 = document.createElement("div");
+      div2.setAttribute("id", callback("imageContainer"));
+      newElement.appendChild(div2);
+      /** @type {Element} */
+      var img = document.createElement("img");
+      img.setAttribute("id", callback("lightboxImage"));
+      div2.appendChild(img);
+      if (!options.enableRightClick) {
+        /** @type {Element} */
+        var div = document.createElement("div");
+        div.setAttribute("id", callback("hoverNav"));
+        /** @type {string} */
+        div.style.background = "white";
+        /** @type {number} */
+        div.style.opacity = 0;
+        /** @type {string} */
+        div.style.filter = "alpha(opacity=0)";
+        div2.appendChild(div);
+      }
+      /** @type {Element} */
+      var linkElement = document.createElement("a");
+      linkElement.setAttribute("id", callback("prevLinkImg"));
+      linkElement.setAttribute("href", "javascript:void(0);");
+      newElement.appendChild(linkElement);
+      /** @type {Element} */
+      var element = document.createElement("a");
+      element.setAttribute("id", callback("nextLinkImg"));
+      element.setAttribute("href", "javascript:void(0);");
+      newElement.appendChild(element);
+      /** @type {Element} */
+      var btn = document.createElement("div");
+      btn.setAttribute("id", callback("loading"));
+      div2.appendChild(btn);
+      /** @type {Element} */
+      var anchor = document.createElement("a");
+      anchor.setAttribute("id", callback("loadingLink"));
+      anchor.setAttribute("href", "javascript:void(0);");
+      anchor.innerHTML = options.strings.loadingMsg;
+      btn.appendChild(anchor);
+      if (options.imageDataLocation != "north") {
+        parent.appendChild(domElement);
+      }
+      /** @type {Element} */
+      var tabs = document.createElement("div");
+      tabs.setAttribute("id", callback("shadow"));
+      (options.shadowLocation ? document.getElementById(callback(options.shadowLocation)) : o).appendChild(tabs);
+      /** @type {Element} */
+      var a = document.createElement("a");
+      a.setAttribute("id", callback("prevLinkDetails"));
+      a.setAttribute("href", "javascript:void(0);");
+      a.innerHTML = options.strings.prevLink;
+      footer.appendChild(a);
+      /** @type {Element} */
+      var item = document.createElement("a");
+      item.setAttribute("id", callback("slideShowControl"));
+      item.setAttribute("href", "javascript:void(0);");
+      document.getElementById(callback(options.pauseLocation || "detailsNav")).appendChild(item);
+      /** @type {Element} */
+      var tmp = document.createElement("a");
+      tmp.setAttribute("id", callback("closeLink"));
+      tmp.setAttribute("href", "javascript:void(0);");
+      tmp.innerHTML = options.strings.closeLink;
+      if (options.closeLocation == "nav") {
+        footer.appendChild(tmp);
+      } else {
+        /** @type {Element} */
+        var n = document.createElement("div");
+        n.setAttribute("id", callback("close"));
+        n.setAttribute("style", "padding-top: 0px; float: right;");
+        if (options.closeLocation == "top") {
+          tree.appendChild(n);
+        } else {
+          li.appendChild(n);
+        }
+        n.appendChild(tmp);
+      }
+      /** @type {Element} */
+      var link = document.createElement("a");
+      link.setAttribute("id", callback("nextLinkDetails"));
+      link.setAttribute("href", "javascript:void(0);");
+      link.innerHTML = options.strings.nextLink;
+      footer.appendChild(link);
+    }
+    var fake_onhashchange = new add(function(o) {
+      unfoldSoak(o);
+    }, 400, function() {
+      close();
+    }, 300);
+    if (options.initImage != "") {
+      unfoldSoak("#" + options.initImage);
+    }
+    /** @type {function (Object): undefined} */
+    var unfoldSoak = this.start = function(label) {
+      Node();
+      label = $(label);
+      canvas = label.get(0);
+      jQuery("overlay").css({
+        height : reset()[1] + "px",
+        top : 0,
+        left : offset().x + "px"
+      });
+      if (options.descSliding) {
+        jQuery("imageDataContainer").hide();
+      }
+      jQuery("lightboxImage").hide().attr({
+        src : ""
+      });
+      if (options.startZoom) {
+        jQuery("imageContainer").css({
+          width : label.width() + "px",
+          height : label.height() + "px"
+        });
+        if (!document.all) {
+          jQuery("outerImageContainer").css({
+            opacity : 0.1
+          });
+        }
+        jQuery("lightbox").css({
+          left : label.offset().left - options.borderSize + "px",
+          top : label.offset().top - options.borderSize + "px",
+          width : label.width() + options.borderSize * 2 + "px",
+          height : "auto"
+        });
+      } else {
+        jQuery("overlay").css({
+          opacity : 0
+        }).show().fadeTo(abilityTimer * 1E3, options.overlayOpacity);
+        jQuery("lightbox").css({
+          left : 0,
+          width : "100%"
+        });
+      }
+      init();
+      jQuery("lightbox").show();
+      /** @type {Array} */
+      items = [];
+      /** @type {null} */
+      data = null;
+      /** @type {number} */
+      recurring = 0;
+      $("." + (label.attr("className") || label.get(0).className), lis).each(function() {
+        if (run(this)) {
+          items.push({
+            link : run(this),
+            title : process(this)
+          });
+          if (this == label.get(0)) {
+            /** @type {number} */
+            recurring = items.length - 1;
+          }
+        }
+      });
+      if (items.length > 1) {
+        data = label.attr("className");
+      }
+      if (options.featBrowser) {
+        $(window).resize(onScroll);
+      }
+      if (options.floating) {
+        $(window).scroll(onScroll);
+      }
+      $(window).resize(update);
+      $(window).scroll(update);
+      handler(recurring);
+    };
+    return this;
+  };
+})(jQuery);

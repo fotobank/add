@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Анимированная проверка сложности пароля с помощью jQuery  | Демонстрация для сайта RUDEBOX</title>
+        
+        <!-- Стили -->
+        <link rel="stylesheet" href="assets/css/styles.css" />
+        
+        <!--[if lt IE 9]>
+          <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    
+    <body>
+
+        <div id="main">
+        	
+        	<h1><br></h1>
+        	
+        	<form class="" method="post" action="">
+        		
+        		<div class="row email">
+	    			<input type="text" id="email" name="email" placeholder="Email" />
+        		</div>
+        		
+        		<div class="row pass">
+        			<input type="password" id="password1" name="password1" placeholder="Пароль" />
+        		</div>
+        		
+        		<div class="row pass">
+        			<input type="password" id="password2" name="password2" placeholder="Пароль (нужно повторить)" disabled="true" />
+        		</div>
+        		
+        		<!-- Стрелка индикатор -->
+        		<div class="arrowCap"></div>
+        		<div class="arrow"></div>
+        		
+        		<p class="meterText">Сложность пароля</p>
+        		
+        		<input type="submit" value="Регистрация" />
+        		
+        	</form>
+        </div>
+        
+        
+        
+        <!-- Включения JavaScript - jQuery, плагин complexify и наш скрипт script.js -->
+		<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+		<script src="assets/js/jquery.complexify.js"></script>
+		<script src="assets/js/script.js"></script>
+		     
+    </body>
+</html>

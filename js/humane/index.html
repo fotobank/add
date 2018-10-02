@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+   <head>
+      <title>Скрипт Humane JS - вывод сообщений | Материалы сайта RUSELLER.COM</title> 
+	  <meta charset="utf-8">
+      <link href='http://fonts.googleapis.com/css?family=Ubuntu&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+      <link href='http://fonts.googleapis.com/css?family=Ubuntu+Mono&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+      <link href='http://fonts.googleapis.com/css?family=Cabin+Sketch:700&v2' rel='stylesheet' type='text/css'>
+      <style>
+         body {
+            font-family: Ubuntu, sans-serif;
+            padding: 80px;
+            background-color: #f0f0f0;
+         }
+         h1,h3 {
+            font-family: 'Cabin Sketch', serif;
+            text-shadow: -1px 0px 1px #aaa;
+         }
+         h1 {
+            font-size: 4em;
+            margin: 0
+         }
+         h3 {
+            font-size: 2em;
+            margin: 0
+         }
+         select {
+            font-size: 0.8em;
+         }
+         a {
+            text-decoration: none;
+            color: #a13;
+            font-weight: bold;
+         }
+         a:hover {
+            text-decoration: underline;
+         }
+         pre {
+            font-family: "Ubuntu Mono";
+            font-size: 0.9em;
+            background-color: #fff;
+            border: 1px solid #aaa;
+            border-radius: 6px;
+            padding: 10px;
+            text-decoration: none;
+         }
+         blockquote {
+            font-size: 0.8em
+         }
+      </style>
+      <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+      <link id='theme' rel='stylesheet' href='themes/libnotify.css'/>
+      <script src='humane.js'></script>
+   </head>
+   <body>
+      <h1>Humane JS</h1>
+      <p>
+         <strong>Простая, современная, независимая, хорошо протестированная, ненавязчивая система для вывода сообщений.</strong>
+         <br/>Использует трансформации CSS, когда они доступны, или анимацию JavaScript. Включает поддержку мобильных систем.
+      </p>
+      <h3>Выберите тему оформления: 
+         <select onchange='document.getElementById("theme").href = "themes/" + this.options[this.selectedIndex].value + ".css"'>
+            <option selected>libnotify</option>
+            <option>bigbox</option>
+            <option>boldlight</option>
+            <option>jackedup</option>
+         </select>
+      </h3>
+      <p>Нажмите на коде ниже, чтобы увидеть его в действии:</p>
+
+      <a href='javascript:humane.log("Добро пожаловать!")'>
+         <pre>humane("Добро пожаловать!");
+humane.log("Добро пожаловать!");</pre>
+      </a>
+      <a href='javascript:humane.info("Запись <b>392</b> обновлена.")'>
+         <pre>humane.info("Запись &lt;b>392&lt;/b> обновлена.");</pre>
+      </a>
+      <a href='javascript:humane.error("Неправильное имя пользователя и/или пароль")'>
+         <pre>humane.error("Неправильное имя пользователя и/или пароль");</pre>
+      </a>
+      <a href='javascript:humane.success(["Список","разных","пунктов"])'>
+         <pre>humane.success(["Список","разных","пунктов"]);</pre>
+      </a>
+      <a href='javascript:humane("Фон будет изменен, после скрытия сообщения",function(){document.body.style.backgroundColor="#6699FF"})'>
+         <pre>humane("Второй параметр задает возвратную функцию, запускаему по завершении времени вывода", function(){
+   document.body.style.backgroundColor="#6699FF";
+});</pre>
+      </a>
+      <h3>Опции</h3>
+      <pre>humane.timeout = (число миллисекунд);</pre>
+      <blockquote>
+         <p>Устанавливает время показа сообщения.</p>
+         <p>
+            Попробуйте:
+            <input type='radio' name='timeout' onclick='humane.timeout = 2500' checked> 2500 <small>(2с - по умолчаниюdefault)</small>
+            <input type='radio' name='timeout' onclick='humane.timeout = 5000'> 5000 <small>(5с)</small>
+            <input type='radio' name='timeout' onclick='humane.timeout = 500'> 500 <small>(0.5с)</small>
+         </p>
+      </blockquote>
+      <pre>humane.waitForMove = (true|false);</pre>
+      <blockquote>
+         <p>Ожидать события мыши, клавиатуры или сенсорного экрана для скрытия сообщения (после завершения отсчета времени показа)</p>
+         <p>
+            Попробуйте:
+            <input type='radio' name='waitformove' onclick='humane.waitForMove = true'> true
+            <input type='radio' name='waitformove' onclick='humane.waitForMove = false' checked> false <small>(по умолчанию)</small>
+         </p>
+      </blockquote>
+      <pre>humane.forceNew = (true|false);</pre>
+      <blockquote>
+         <p>Выводить новое сообщение немедленно</p>
+         <p>
+            Попробуйте:
+            <input type='radio' name='forceNew' onclick='humane.forceNew = true'> true
+            <input type='radio' name='forceNew' onclick='humane.forceNew = false' checked> false <small>(по умолчанию)</small>
+         </p>
+      </blockquote>
+      <pre>humane.clickToClose = (true|false);</pre>
+      <blockquote>
+         <p>Сообщение будет закрываться по нажатию клавиши мыши</p>
+         <p>
+            Попробуйте:
+            <input type='radio' name='clickToClose' onclick='humane.clickToClose = true'> true
+            <input type='radio' name='clickToClose' onclick='humane.clickToClose = false' checked> false <small>(по умолчанию)</small>
+         </p>
+      </blockquote>
+
+      <h3>Поддержка браузерами</h3>
+      <p>Используются трансформации CSS? когда они доступны, или анимация JavaScript для обратной совместимости.</p>
+      <ul>
+         <li>Internet Explorer 7+</li>
+         <li>Firefox 3+</li>
+         <li>Chrome 9+</li>
+         <li>Safari 3+</li>
+         <li>Opera 10+</li>
+         <li>iOS (экспериментальная версия)</li>
+         <li>Android (экспериментальная версия)</li>
+      </ul>
+   </body>
+</html> 

@@ -1,0 +1,53 @@
+{% extends "uslugi/uslugi.twig" %}
+
+    {% block content_header %}
+	    {{ parent() }}
+	    <script type="text/JavaScript" src="{{ merge_files( '/cache/f_svadbi.min.js', 'js',  include_Js_f_svadbi , '',  include_Js_f_svadbi ) }}"></script>
+    {% endblock %}
+
+{% block top %}
+	<div id="cont_fb">
+		<div class="cont-list" style="margin: 0 10px 20px 43%;">
+			<div class="drop-shadow lifted">
+				<h2><span style="color: #00146e;">Свадьбы</span></h2>
+			</div>
+		</div>
+		<a class="small button full blue" href="/uslugi.php"><span>Назад к категориям</span></a>
+	</div>
+	<div style="clear: both;"></div>
+	<!-- вывод описания-->
+	{{ txt }}
+	{#вывод альбомов#}
+	{{ autoPrev.printAlbum('/reklama/photo/svadbi/', 250, true) }}
+
+	{#вывод фотографий из первого альбома при загрузке#}
+	{{ autoPrev.printStart }}
+	<div id='thumb' style="min-height: 600px; margin-top: 50px;"></div>
+
+{% endblock top %}
+
+
+
+
+ {% block l_colonka %}
+	 {#{{ parent() }}#}
+ {% endblock %}
+
+
+
+   {% block c_colonka %}
+
+		    {#{{ dump(txt) }}#}
+		    {#{{ dump_r(txt) }}#}
+
+   {% endblock c_colonka %}
+
+
+
+
+{% block r_colonka %}
+{% endblock r_colonka %}
+
+
+ {% block bottom %}
+ {% endblock bottom %}
