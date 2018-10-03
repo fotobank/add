@@ -1,9 +1,9 @@
 <?php
 
 namespace dump_r\Rend\String;
-use dump_r\Rend\String;
+use dump_r\Rend\StringTypeLen;
 
-class Datetime extends String {
+class Datetime extends StringTypeLen {
 	public function get_len($node) {
 		$ts = strtotime($node->raw);
 		return $this->rel_date($ts);

@@ -1,5 +1,7 @@
 <?php
+
   define ('BASEPATH', realpath(__DIR__).'/', true);
+
   include (BASEPATH.'inc/head.php');
   if (!isset($_SESSION['logged'])) {
     $rLogin      = 'Имя для входа (Login)';
@@ -10,10 +12,10 @@
     $rPhone      = 'Можно ввести потом';
     $rName_us    = 'Настоящее имя';
     $rSurName_us = 'Фамилия';
-    $rCity       = 'Город, поселок (и т.д.) проживания';
+    $rCity       = 'Город';
     $ok_msg      = false;
     $err_msg     = NULL;
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $rLogin      = trim($_POST['rLogin']);
       $rPass       = trim($_POST['rPass']);
       $rPass2      = trim($_POST['rPass2']);
@@ -25,48 +27,40 @@
       $rPkey       = trim($_POST['rPkey']);
       $rCity       = trim($_POST['rCity']);
       $rIp         = Get_IP();
-      if ($rLogin != 'Имя для входа (Login)') {
-        if (preg_match("/[?a-zA-Zа-яА-Я0-9_-]{3,20}$/", $rLogin)) {
-          if ($rEmail != 'Рабочий E-mail') {
-            if ($rName_us != '' && $rName_us != 'Настоящее имя' || preg_match("/[?a-zA-Zа-яА-Я0-9_-]{2,20}$/", $rName_us)) {
-              $rName_us = ($rName_us == 'Настоящее имя') ? '' : $rName_us;
-              if ($rSurName_us == '' || $rSurName_us == 'Фамилия' || preg_match("/[?a-zA-Zа-яА-Я0-9_-]{2,20}$/", $rSurName_us)) {
-                $rSurName_us = ($rSurName_us == 'Фамилия') ? '' : $rSurName_us;
+      if ($rLogin !== 'Имя для входа (Login)') {
+        if (preg_match('/[?a-zA-Zа-яА-Я0-9_-]{3,20}$/u', $rLogin)) {
+          if ($rEmail !== 'Рабочий E-mail') {
+            if (($rName_us !== '' && $rName_us !== 'Настоящее имя') || preg_match('/[?a-zA-Zа-яА-Я0-9_-]{2,20}$/u', $rName_us)) {
+              $rName_us = ($rName_us === 'Настоящее имя') ? '' : $rName_us;
+              if ($rSurName_us === '' || $rSurName_us === 'Фамилия' || preg_match('/[?a-zA-Zа-яА-Я0-9_-]{2,20}$/u', $rSurName_us)) {
+                $rSurName_us = ($rSurName_us === 'Фамилия') ? '' : $rSurName_us;
                 if (preg_match("/[0-9a-z_]+@[0-9a-z_^\.-]+\.[a-z]{2,3}/i", $rEmail)) {
-                  if ($rPass != '' || $rPass2 != '') {
+                  if ($rPass !== '' || $rPass2 !== '') {
                     if ($rPass === $rPass2) {
                       if (preg_match("/^[0-9a-z\_\-\!\~\*\:\<\>\+\.]{8,20}$/i", $rPass)) {
                         $mdPassword = md5($rPass);
-                        $cnt        =
-                          intval(go\DB\query('select count(*) cnt from users where login = ?string',
-                            array($rLogin), 'el'));
+                        $cnt  = (int)go\DB\query('select count(*) cnt from users where login = ?string',
+                                      array($rLogin), 'el');
                         if ($cnt <= 0) {
-                          $cnt =
-                            intval(go\DB\query('select count(*) cnt from users where email = ?string',
-                              array($rEmail),
-                              'el'));
+                          $cnt = (int)go\DB\query('select count(*) cnt from users where email = ?string', array($rEmail),'el');
                           if ($cnt <= 0) {
-                            if ($rPhone == 'Можно ввести потом') {
+                            if ($rPhone === 'Можно ввести позже') {
                               $rPhone = '';
                             }
-                            if ((strlen($rPhone) == '')
-                                || (strlen($rPhone) >= 7)
-                                   && (!preg_match("/[%a-z_@.,^=:;а-я\"*&$#№!?<>\~`|[{}\]]/i",
-                                  $rPhone))
+                            if ((strlen($rPhone) == '') || ((strlen($rPhone) >= 7)
+                                                            && (!preg_match("/[%a-z_@.,^=:;а-я\"*&$#№!?<>\~`|[{}\]]/iu",
+                                                 $rPhone)))
                             ) {
-                              if ($rCity
-                                  != 'Для отправки заказанных фотографий ( можно ввести потом )'
-                                  || preg_match("/[?a-zA-Zа-яА-Я0-9_-]{2,30}$/", $rCity)
+                              if ($rCity !== 'Для отправки заказанных фотографий ( можно ввести позже )'
+                                  || preg_match('/[?a-zA-Zа-яА-Я0-9_-]{2,30}$/u', $rCity)
                               ) {
-                                $rCity = ($rCity
-                                          == 'Для отправки заказанных фотографий ( можно ввести потом )') ?
-                                  '' : $rCity;
-                                if ($rSkype == 'Не обязательно') {
+                                $rCity = ($rCity === 'Для отправки заказанных фотографий ( можно ввести позже )') ? '' : $rCity;
+                                if ($rSkype === 'Не обязательно') {
                                   $rSkype = '';
                                 }
                                 $time = time();
                                 // проверка капчи
-                                if ($rPkey == chk_crypt($rPkey)) {
+                                if ($rPkey === chk_crypt($rPkey)) {
                                   // Устанавливаем соединение с бд(не забудьте подставить ваши значения сервер-логин-пароль)
                                   try {
                                     // Получаем Id, под которым юзер добавился в базу
@@ -81,9 +75,8 @@
                                       ), 'id');
                                   }
                                   catch (go\DB\Exceptions\Exception  $e) {
-                                    trigger_error("Ошибка при работе с базой данных во время регистрации пользователя! Файл - registr.php.");
-                                    $err_msg =
-                                      "Ошибка при работе с базой данных!";
+                                    trigger_error('Ошибка при работе с базой данных во время регистрации пользователя! Файл - registr.php.');
+                                    $err_msg = 'Ошибка при работе с базой данных!';
                                     die("<div align='center' class='err_f_reg'>Ошибка при работе с базой данных!</div>");
                                   }
                                   // Составляем "keystring" для активации
@@ -96,7 +89,7 @@
                                   $subject = '=?koi8-r?B?'.base64_encode(convert_cyr_string($title, "w", "k")).'?=';
                                   $letter  = <<< LTR
 													  Здравствуйте, $rName_us.
-													  Вы успешно зарегистрировались на Creative line studio.
+													  Вы успешно зарегистрировались на Creative Line Studio.
 													  После активации аккаунта Вам станут доступны скачивание, покупка или голосование за понравившуюся фотографию.
 													  Так же для всех зарегистрированных пользователей предусмотрены различные бонусы и скидки.
 													  Ваши регистрационные данные:
@@ -120,61 +113,55 @@ LTR;
                                     go\DB\query('DELETE FROM users WHERE login= (?string) LIMIT 1',
                                       array($rLogin));
                                     $err_msg =
-                                      "Произошла ошибка при отправке письма.<br> Попробуйте зарегистрироваться еще раз.";
+                                           'Произошла ошибка при отправке письма.<br> Попробуйте зарегистрироваться еще раз.';
                                   } else {
                                     $ok_msg = true;
 
                                   }
                                 } else {
-                                  $err_msg =
-                                    "Неправильны ввод проверочного числа!";
+                                  $err_msg = 'Неправильны ввод проверочного числа!';
                                 }
 
                               } else {
-                                $err_msg =
-                                  "Ошибка в названии города!";
+                                $err_msg = 'Ошибка в названии города!';
                               }
                             } else {
-                              $err_msg =
-                                "Телефон указан неправильно! (должно быть больше 6 цифр)<br> пример: (067)-123-45-67";
+                              $err_msg = 'Телефон указан неправильно! (должно быть больше 6 цифр)<br> пример: (067)-123-45-67';
                             }
                           } else {
-                            $err_msg
-                              =
-                              "Пользователь с таким E-mail уже существует!<br>Нажмите на восстановление пароля<br> или зарегистрируйтесь на другой E-mail.";
+                            $err_msg = 'Пользователь с таким E-mail уже существует!<br>Нажмите на восстановление пароля<br> или зарегистрируйтесь на другой E-mail.';
                           }
                         } else {
-                          $err_msg = "Пользователь с таким логином уже существует!";
+                          $err_msg = 'Пользователь с таким логином уже существует!';
                         }
 
                       } else {
-                        $err_msg =
-                          "В поле `Пароль` введены недопустимые символы<br> или длина меньше 8 символов.<br> Допускаются только английские символы, цифры и знаки<br>  . - _ ! ~ * : < > + ";
+                        $err_msg = 'В поле `Пароль` введены недопустимые символы<br> или длина меньше 8 символов.<br> Допускаются только английские символы, цифры и знаки<br>  . - _ ! ~ * : < > + ';
                       }
                     } else {
-                      $err_msg = "Пароли не совпадают!";
+                      $err_msg = 'Пароли не совпадают!';
                     }
                   } else {
-                    $err_msg = "Поле `Пароль` не заполнено!";
+                    $err_msg = 'Поле `Пароль` не заполнено!';
                   }
                 } else {
-                  $err_msg = "Указанный `E-mail` имеет недопустимый формат!";
+                  $err_msg = 'Указанный `E-mail` имеет недопустимый формат!';
                 }
               } else {
-                $err_msg = "Заполните поле `Фамилия`!";
+                $err_msg = 'Заполните поле `Фамилия`!';
               }
             } else {
-              $err_msg = "Заполните поле `Ваше имя`!";
+              $err_msg = 'Заполните поле `Ваше имя`!';
             }
           } else {
-            $err_msg = "Поле `E-mail` не заполнено!";
+            $err_msg = 'Поле `E-mail` не заполнено!';
           }
 
         } else {
-          $err_msg = "Логин может состоять из букв, цифр, дефисов и подчёркиваний.<br> Длина от 3 до 20 символов.";
+          $err_msg = 'Логин может состоять из букв, цифр, дефисов и подчёркиваний.<br> Длина от 3 до 20 символов.';
         }
       } else {
-        $err_msg = "Поле `Логин` не заполнено!";
+        $err_msg = 'Поле `Логин` не заполнено!';
       }
 
     }
@@ -192,14 +179,12 @@ LTR;
       'rSurName_us' => $rSurName_us
     );
     $renderData = array_merge($renderData, $regData);
+  //       $renderData  = (object) $renderData;
     $loadTwig('.twig', $renderData);
     if (isset($err_msg)) {
       unset ($err_msg);
     }
-    ?>
 
-
-  <?
   } else {
     echo "<script type='text/javascript'>window.document.location.href='/index.php'</script>";
   }

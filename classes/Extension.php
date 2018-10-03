@@ -1,4 +1,7 @@
 <?php
+
+
+
        /**
         * Created by JetBrains PhpStorm.
         * User: Jurii
@@ -6,7 +9,8 @@
         * Time: 21:03
         * To change this template use File | Settings | File Templates.
         */
-       class Extension extends Twig_Extension {
+       class Extension extends Twig_Extension
+       {
 
               /**
                * Returns the name of the extension.
@@ -28,7 +32,7 @@
               public function getFilters() {
 
                      return array(
-                            'truncate' => new Twig_Filter_Method($this, 'truncate')
+                            'truncate' => new Twig_SimpleFilter('truncate', array($this, 'truncate'))
                      );
               }
 
@@ -40,10 +44,11 @@
               public function getFunctions() {
 
                      return array(
-                            'merge_files' => new Twig_Function_Method($this, 'merge_files'),
-                            'dump_r'      => new Twig_Function_Method($this, '__dump_r'),
-                            'kapca'       => new Twig_Function_Method($this, 'kapca'),
+                            'merge_files' => new Twig_SimpleFunction('merge_files', [$this, 'merge_files']),
+                            't_dump_r'      => new Twig_SimpleFunction('t_dump_r', [$this, 't_dump_r']),
+                            'captcha'       => new Twig_SimpleFunction('captcha', [$this, 'captcha']),
                      );
+
               }
 
 
@@ -59,13 +64,11 @@
                */
               public function truncate($text, $max = 30) {
 
-                     $lastSpace = 0;
                      if (strlen($text) >= $max) {
                             $text      = substr($text, 0, $max);
                             $lastSpace = strrpos($text, ' ');
                             $text      = substr($text, 0, $lastSpace).'...';
                      }
-
                      return $text;
               }
 
@@ -77,6 +80,7 @@
                * @param $e
                * @param $f
                * дополнительная функция для twig - сжатие css и js
+               *
                * @return bool|string
                */
               public function merge_files($a, $b, $c, $e, $f) {
@@ -108,21 +112,17 @@
                *
                * @return bool|void
                */
-              public function kapca($crypt, $num) {
+              public function captcha($crypt, $num) {
 
                      try {
-                            /** @noinspection PhpVoidFunctionResultUsedInspection */
-                            return dsp_crypt($crypt, $num);
+                            dsp_crypt($crypt, $num);
                      }
                      catch (Exception $e) {
                             if (check_Session::getInstance()->has('DUMP_R')) {
                                    dump_r($e->getMessage());
                             }
-
-                            return false;
                      }
               }
-
 
 
               /**
@@ -131,8 +131,7 @@
                * @return bool|string
                */
               public
-              function __dump_r($dump
-              ) {
+              function t_dump_r($dump) {
 
                      return dump_r($dump);
               }

@@ -264,9 +264,11 @@
                      $this->XML_ROOT = $this->XML_DOC->appendChild($root);
 
                      if (!is_dir($_SERVER['DOCUMENT_ROOT'].'/logs')) {
-                            mkdir($_SERVER['DOCUMENT_ROOT'].'/logs', 0744);
+                            if (!mkdir($concurrentDirectory = $_SERVER['DOCUMENT_ROOT'].'/logs', 0744) && !is_dir($concurrentDirectory)) {
+                                   throw new \RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
+                            }
                      }
-                     $this->sCurId = date('Ymd').'_'.uniqid();
+                     $this->sCurId = date('Ymd').'_'.uniqid('', true);
                      if ($this->sFile === NULL) {
                             $this->sFile = $_SERVER['DOCUMENT_ROOT'].'/logs/'.$this->sCurId.'_error_log.xml';
                      }

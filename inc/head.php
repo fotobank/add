@@ -83,12 +83,12 @@
        $_SESSION['accVer']  = ($session->has('accVer')) ? $session->get('accVer') : genpass(10, 2);
        // $razdel для фиксации главного меню
        $razdel = $_SERVER['PHP_SELF'];
-       if ($_SERVER['PHP_SELF'] == '/fotobanck_adw.php') {
+       if ($_SERVER['PHP_SELF'] === '/fotobanck_adw.php') {
               $razdel = '/fotobanck_adw.php?unchenge_cat';
        }
        $printErr = $session->get('err_msg').$session->get('ok_msg').$session->get('ok_msg2');
        if (!empty($error)) {
-              $printErr .= $error;
+              $printErr .= is_array($error) ? implode(' ', $error) : $error;
        }
        $renderData = array(
               // SEO в top

@@ -1,9 +1,9 @@
 <?php
 
 namespace dump_r\Type\String;
-use dump_r\Type\String;
+use dump_r\Type\StringTypeLen;
 
-class XML extends String {
+class XML extends StringTypeLen {
 	function get_nodes() {
 		return (array)$this->val;
 	}

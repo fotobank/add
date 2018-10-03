@@ -40,11 +40,10 @@ $header = "design/header.inc.php";
 $send_form = "design/send.inc.php";
 $anti_email = "yes";
 $email_size = "2";
-$spamcontrol = "yes";
+$spamcontrol = "yes"; // 'yes' или 'no' - учитывать или нет капчу
 $spamcontrol_length = 4;
 $spamcontrol_size = "6";
 $spamcontrol_color = "#0000cc";
 $mailto = "aleksjurii@gmail.com";
 $send_mail = "yes";
 $mail_spam = "yes";
-?>

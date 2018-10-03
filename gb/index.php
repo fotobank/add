@@ -395,7 +395,7 @@
 					}
 		 }
 		 ///////////   если передается содержание формы и ошибок нет, то грузим файл write.php    ////////////
-		 if ($name != "" && $mess != "" && isset($_POST["add"]) && $error == "") {
+		 if ($name != "" && $mess != "" && isset($_POST["add"]) && (!isset($error) || empty($error))) {
 					include("write.php");
 					exit;
 		 }
@@ -404,8 +404,8 @@
 		 include("$header");
 		 echo "<table width=100% border=0 cellspacing=0 cellpadding=0 class=p><tr><td align=center>";
 		 ///////////   загружаем  сообщения об ошибках   ////////////
-		 if ($name != "" && $mess != "" && isset($_POST["add"]) && $error == ""):
-		 elseif (isset($error) && $error != ""):
+		 if ($name != '' && $mess != '' && isset($_POST['add']) && (!isset($error) || empty($error))):
+		 elseif (isset($error) || !empty($error)):
 					echo "<table width=\"100%\" border=\"0\" cellspacing=\"1\" cellpadding=\"3\" bgcolor=\"$BORDER\">";
 					echo "<tr><td align=\"center\" class=\"error\" bgcolor=\"#FF0000\"><b>Ошибка!</b></td></tr>";
 					echo "<tr><td align=\"left\" class=\"p\" bgcolor=\"$LIGHT\">";

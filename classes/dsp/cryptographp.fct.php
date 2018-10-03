@@ -13,6 +13,11 @@
 
        }
        check_Session::getInstance()->set('cryptdir', dirname($cryptinstall));
+
+       /**
+        * @param int $cfg
+        * @param int $reload
+        */
        function dsp_crypt($cfg = 0, $reload = 1) {
 
               $session = check_Session::getInstance();
@@ -48,7 +53,7 @@
                                           $code = sha1($code);
                                           break;
                             }
-                            if ($session->get('cryptcode') == $code) {
+                            if ($session->get('cryptcode') === $code) {
                                    $session->del('cryptreload');
                                    if ($cryptoneuse) {
                                           $session->del('cryptcode');
@@ -60,12 +65,9 @@
 
                                    return false;
                             }
-
                      } else {
                             return true;
                      }
-
               }
-
               return false;
        }

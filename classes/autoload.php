@@ -50,6 +50,9 @@ class autoload {
 			$fileName  = '';
 			$namespace = '';
 
+
+
+
 			if (strpos($className, 'Twig') === 0) {
 				return false;
 			}
@@ -63,12 +66,15 @@ class autoload {
 			$file = site_path.'classes'.DIRSEP.$fileName;
 
 			try {
-//		echo $file.'<br>';
+	//	echo $file.'<br>';
+             if ($file == 'O:\domains\add.pr\classes\dump_r\Type\String.php'){
+                    echo $file.'<br>';
+             }
 				require_once $file;
 			} catch (Exception $e) {
 
 						 if (check_Session::getInstance()->has('DUMP_R')) {
-										dump_r($e->getMessage());
+							//			dump_r($e->getMessage());
 						 }
 			}
 

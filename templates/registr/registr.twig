@@ -16,8 +16,8 @@
 	    {% if err_msg %}
 		    <script language='Javascript'
 		            type='text/javascript'>
-			    humane.timeout = (6000);
-			    humane.error('Ошибка!<br>{{ err_msg }}');
+                humane.timeout = (6000);
+                humane.error('Ошибка!<br>{{ err_msg }}');
 		    </script>
 
 		    <NOSCRIPT>
@@ -42,19 +42,23 @@
 		    <div style='clear: both;'></div>
 		    <script language='Javascript'
 		            type='text/javascript'>
-			    humane.timeout = (10000);
-			    humane.success('Спасибо.<br>Вы успешно зарегистрировались в системе.<br>' +
-					    'На указанный вами e-mail было отправлено письмо со ссылкой для активации аккаунта.');
-			    function reLoad() {
-				    location = "registr.php"
-			    }
-			    setTimeout('reLoad()', 14000)
+                humane.timeout = (10000);
+                humane.success('Спасибо.<br>Вы успешно зарегистрировались в системе.<br>' +
+                    'На указанный вами e-mail было отправлено письмо со ссылкой для активации аккаунта.');
+
+                function reLoad() {
+                    location = "registr.php"
+                }
+
+                setTimeout(reLoad(), 14000)
 		    </script>
 
 	    {% endif %}
 
-	    <div id="form_reg" style="margin-top: 20px;">
-		    <div class="cont-list" style="margin: 0 0 0 160px">
+	    <div id="form_reg"
+	         style="margin-top: 20px;">
+		    <div class="cont-list"
+		         style="margin: 0 0 0 160px">
 			    <div class="drop-shadow curved curved-vt-2">
 				    <h2><b><span style="color: #001591">Регистрация на сайте:</span></b></h2>
 			    </div>
@@ -63,13 +67,14 @@
 
 		    <div class="center">
 			    <div class="centered">
-				    <div class="tagged" style="width: 550px;">
+				    <div class="tagged"
+				         style="width: 550px;">
 					    <ul>
 						    <li>
 							    <b>
 								    Поля не отмеченные * можно не заполнять. Эта информация понадобится
-								       только при заказе фотографий и её можно будет ввести потом.
-								       Ваши данные сохраняются конфиденциально и нигде не афишируются.
+								    только при заказе фотографий и её можно будет ввести позже.
+								    Ваши данные сохраняются конфиденциально и нигде не афишируются.
 
 							    </b>
 						    </li>
@@ -97,8 +102,9 @@
 						           data-placement="right"
 						           id="td_name">
 					    </td>
-					    <td ><span id="valid_form_name" class="label label-important"
-					               style="margin-left: 10px;" ></span ></td >
+					    <td><span id="valid_form_name"
+					              class="label label-important"
+					              style="margin-left: 10px;"></span></td>
 				    </tr>
 				    <tr>
 					    <td> Пароль:*</td>
@@ -113,8 +119,9 @@
 						           onkeyup="runPassword(this.value, 'mypassword');"
 						           id="td_pass1">
 					    </td>
-					    <td ><span id="valid_form_pass1" class="label label-important"
-					               style="margin-left: 10px;" ></span ></td >
+					    <td><span id="valid_form_pass1"
+					              class="label label-important"
+					              style="margin-left: 10px;"></span></td>
 				    </tr>
 				    <tr>
 					    <td>Пароль ещё раз:*</td>
@@ -129,24 +136,28 @@
 						           onkeyup="runPassword(this.value, 'mypassword');"
 						           id="td_pass2">
 					    </td>
-					    <td ><span id="valid_form_pass2" class="label label-important"
-					               style="margin-left: 10px;" ></span ></td >
+					    <td><span id="valid_form_pass2"
+					              class="label label-important"
+					              style="margin-left: 10px;"></span></td>
 				    </tr>
 
 				    <tr>
-				    <td>Безопасность пароля:</td>
-					<td><div id="mypassword_text"><b></b></div>
-					</td>
-					<td>
-					<div style="width: 100px;"><div id="mypassword_bar"
-					                                style="
+					    <td>Безопасность пароля:</td>
+					    <td>
+						    <div id="mypassword_text"><b></b></div>
+					    </td>
+					    <td>
+						    <div style="width: 100px;">
+							    <div id="mypassword_bar"
+							         style="
 					                                font-size: 1px;
 					                                height: 20px;
 					                                width: 0;
 					                                /*border: 1px solid white;*/
 					                                margin-left: 8px;
-					                                "></div></div>
-					</td>
+					                                "></div>
+						    </div>
+					    </td>
 				    </tr>
 
 				    <tr>
@@ -161,8 +172,9 @@
 						           data-placement="right"
 						           id="td_name_us">
 					    </td>
-					    <td ><span id="valid_form_name_us" class="label label-important"
-					               style="margin-left: 10px;" ></span ></td >
+					    <td><span id="valid_form_name_us"
+					              class="label label-important"
+					              style="margin-left: 10px;"></span></td>
 				    </tr>
 				    <tr>
 					    <td>Фамилия:</td>
@@ -176,8 +188,9 @@
 						           data-placement="right"
 						           id="td_surname_us">
 					    </td>
-					    <td ><span id="valid_form_surname_us" class="label label-important"
-					               style="margin-left: 10px;" ></span ></td >
+					    <td><span id="valid_form_surname_us"
+					              class="label label-important"
+					              style="margin-left: 10px;"></span></td>
 				    </tr>
 				    <tr>
 					    <td>E-mail:*</td>
@@ -191,8 +204,9 @@
 						           data-placement="right"
 						           id="td_email">
 					    </td>
-					    <td ><span id="valid_form_email" class="label label-important"
-					                                             style="margin-top: 7px; margin-left: 10px;" ></span ></td >
+					    <td><span id="valid_form_email"
+					              class="label label-important"
+					              style="margin-top: 7px; margin-left: 10px;"></span></td>
 				    </tr>
 				    <tr>
 					    <td>Skype:</td>
@@ -206,8 +220,9 @@
 						           data-placement="right"
 						           id="td_skype">
 					    </td>
-					    <td ><span id="valid_form_skype" class="label label-important"
-					               style=" margin-left: 10px;" ></span ></td >
+					    <td><span id="valid_form_skype"
+					              class="label label-important"
+					              style=" margin-left: 10px;"></span></td>
 				    </tr>
 				    <tr>
 					    <td>Телефон:</td>
@@ -215,15 +230,16 @@
 						    <input name="rPhone"
 						           class="inp_f_reg"
 						           type="text"
-						           title="Для заказа фотографий обязательно - можно ввести потом ( пример: (067)-123-45-67 или 787-12-34, 767_54_68, +3-067-123-45-67 )"
+						           title="Для заказа фотографий обязательно - можно ввести позже ( пример: (067)-123-45-67 или 787-12-34, 767_54_68, +3-067-123-45-67 )"
 						           onkeyup="parseField(this.name)"
 						           value="{{ rPhone }}"
 						           maxlength="30"
 						           data-placement="right"
 						           id="td_phone_reg">
 					    </td>
-					    <td ><span id="valid_form_phone_reg" class="label label-important"
-					               style=" margin-left: 10px;" ></span ></td >
+					    <td><span id="valid_form_phone_reg"
+					              class="label label-important"
+					              style=" margin-left: 10px;"></span></td>
 				    </tr>
 				    <tr>
 					    <td>Город:</td>
@@ -231,35 +247,37 @@
 						    <input name="rCity"
 						           class="inp_f_reg"
 						           type="text"
-						           title="Для отправки заказанных фотографий фотографий ( можно ввести потом )"
+						           title="Для отправки заказанных фотографий фотографий ( можно ввести позже )"
 						           value="{{ rCity }}"
 						           maxlength="30"
 						           data-placement="right"
 						           id="td_city">
 					    </td>
-					    <td ><span id="valid_form_city" class="label label-important"
-					               style=" margin-left: 10px;" ></span ></td >
+					    <td><span id="valid_form_city"
+					              class="label label-important"
+					              style=" margin-left: 10px;"></span></td>
 				    </tr>
 				    <tr>
 					    <td style="padding-right: 30px">Проверочный код:*</td>
 					    <td>
 						    <input name="rPkey"
-						           {#id="captcha"#}
-						           class="inp_f_reg"
-						           type="text"
-						           title="Цифры внизу. Если не видны, нажмите на колечко со стрелками"
-						           value="Защита от спама"
-						           maxlength="20"
-						           data-placement="right"
-						           id="td_key">
+								    {#id="captcha"#}
+								   class="inp_f_reg"
+								   type="text"
+								   title="Цифры внизу. Если не видны, нажмите на колечко со стрелками"
+								   value="Защита от спама"
+								   maxlength="20"
+								   data-placement="right"
+								   id="td_key">
 					    </td>
-					    <td ><span id="valid_form_key" class="label label-important"
-					               style=" margin-left: 10px;" ></span ></td >
+					    <td><span id="valid_form_key"
+					              class="label label-important"
+					              style=" margin-left: 10px;"></span></td>
 				    </tr>
 				    <tr>
 					    <td>Обновить:</td>
 					    <td>
-						    <div style="margin: 10px 0 -10px 30px;">{{ kapca('cryptographp.cfg.php', 1) }}</div>
+						    <div style="margin: 10px 0 -10px 30px;">{{ captcha('cryptographp.cfg.php', 1) }}</div>
 					    </td>
 				    </tr>
 			    </table>
@@ -291,8 +309,10 @@
 		    </div>
 	    </div>
 
-	    <script type="text/javascript" src="/js/valdator_kontakty.js"></script>
-	    <script type="text/javascript" src="/js/passValid.js"></script>
+	    <script type="text/javascript"
+	            src="/js/valdator_kontakty.js"></script>
+	    <script type="text/javascript"
+	            src="/js/passValid.js"></script>
     {% endblock c_colonka %}
 
 

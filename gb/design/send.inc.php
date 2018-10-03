@@ -1,4 +1,4 @@
-<?
+<?php
 $cryptinstall = '/../../classes/dsp/cryptographp.fct.php';
 require_once  (__DIR__.'/../../classes/dsp/cryptographp.fct.php');
  ?>
@@ -19,7 +19,7 @@ require_once  (__DIR__.'/../../classes/dsp/cryptographp.fct.php');
 <tr><td width=83 align=right class=p valign=top style="padding-left: 10px;">*Сообщение:</td><td><textarea class=form2 style="margin: 3px 10px 0 10px;
 	  width: <?=$SENDWIDTH;?>px; font-size:16px; height: 100px;" name=mess rows=5><?=htmlspecialchars(stripslashes($mess));?></textarea></td></tr>
 </table></td>
-  <td class=p align=center valign=top><div align="center">   
+  <td class=p align=center valign=top><div align="center">
     </div>
     <table width="150" border=0 cellpadding=0 cellspacing=1 bgcolor=#CCCCCC style="margin-top: 10px;">
         <tr>
@@ -43,7 +43,7 @@ require_once  (__DIR__.'/../../classes/dsp/cryptographp.fct.php');
           <td align=center valign=middle bgcolor=<?=$LIGHT;?>><a href="JavaScript: smile(' :vsk: ');"><img src=img/vsk.gif border=0 width=19 height=19></a></td>
           <td align=center valign=middle bgcolor=<?=$LIGHT;?>><a href="JavaScript: smile(' :vop: ');"><img src=img/vop.gif border=0 width=19 height=19></a></td>
         </tr>
-      </table>    
+      </table>
       <a class="sml" href="javascript:"  onClick="openBrWindow('design/smiles.php','smiles','scrollbars=yes,resizable=yes,width=380,height=400');return false;">Еще смайлики</a><br>
       <br>
       <table width="150" border="0" cellspacing="1" cellpadding="2">
@@ -58,7 +58,7 @@ require_once  (__DIR__.'/../../classes/dsp/cryptographp.fct.php');
 <tr>
   <td colspan="2"><span class="p">
   
-<? if ($spamcontrol == "yes") { 
+<?php if ($spamcontrol === 'yes') {
 ?>
 		  <div class='p' style='width: 110px; margin:10px 10px; float: left;'>*Введите код: &nbsp;&nbsp;</div>
 		  <div class='p' align='left' style='width: 80px; margin:10px 10px; float: left; position: relative;'>
@@ -66,8 +66,8 @@ require_once  (__DIR__.'/../../classes/dsp/cryptographp.fct.php');
 		  </div>
 		  <div style='float: left; margin: 6px 0 0 -10px;'><? dsp_crypt('kontakti.cfg.php') ?></div>
 
-<?
- } else echo "<img src='img/spacer.gif' alt='' width='1' height='3' />"; 
+<?php
+ } else echo "<img src='img/spacer.gif' alt='' width='1' height='3' />";
 ?>
   </span></td>
   </tr>

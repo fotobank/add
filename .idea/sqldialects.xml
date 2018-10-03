@@ -49,7 +49,6 @@
     <file url="file://$PROJECT_DIR$/inc/ip-ban.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/inc/phpIni.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/inc/php_ftp_class.php" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/inc/plugins_Twig.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/inc/secureSession.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/inc/sobrZakaz.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/inc/title.php" dialect="GenericSQL" />
@@ -79,4 +78,3 @@
     <file url="file://$PROJECT_DIR$/v_vipusk.php" dialect="GenericSQL" />
   </component>
 </project>
-

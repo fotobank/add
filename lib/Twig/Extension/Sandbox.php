@@ -3,38 +3,29 @@
 /*
  * This file is part of Twig.
  *
- * (c) 2009 Fabien Potencier
+ * (c) Fabien Potencier
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-class Twig_Extension_Sandbox extends Twig_Extension
+
+final class Twig_Extension_Sandbox extends Twig_Extension
 {
-    protected $sandboxedGlobally;
-    protected $sandboxed;
-    protected $policy;
+    private $sandboxedGlobally;
+    private $sandboxed;
+    private $policy;
 
     public function __construct(Twig_Sandbox_SecurityPolicyInterface $policy, $sandboxed = false)
     {
-        $this->policy            = $policy;
+        $this->policy = $policy;
         $this->sandboxedGlobally = $sandboxed;
     }
 
-    /**
-     * Returns the token parser instances to add to the existing list.
-     *
-     * @return array An array of Twig_TokenParserInterface or Twig_TokenParserBrokerInterface instances
-     */
     public function getTokenParsers()
     {
         return array(new Twig_TokenParser_Sandbox());
     }
 
-    /**
-     * Returns the node visitor instances to add to the existing list.
-     *
-     * @return array An array of Twig_NodeVisitorInterface instances
-     */
     public function getNodeVisitors()
     {
         return array(new Twig_NodeVisitor_Sandbox());
@@ -93,20 +84,10 @@ class Twig_Extension_Sandbox extends Twig_Extension
 
     public function ensureToStringAllowed($obj)
     {
-        if (is_object($obj)) {
+        if ($this->isSandboxed() && is_object($obj)) {
             $this->policy->checkMethodAllowed($obj, '__toString');
         }
 
         return $obj;
-    }
-
-    /**
-     * Returns the name of the extension.
-     *
-     * @return string The extension name
-     */
-    public function getName()
-    {
-        return 'sandbox';
     }
 }
