@@ -1,0 +1,19 @@
+<?php
+	/**
+	*
+	* test comment
+	*
+	*
+	*/
+	$var = "string";
+
+	$var2 = "\x59\x65\x73\x20";
+
+	echo '<BR> <font color="red" size="4"> END </font>';
+	echo "Yes You did it ! $var";
+	print("<HR>I am trying to do ...$var2 ");
+	
+	@fopen('abc.txt','r') or die("Error : blah blah .. ");
+
+
+?>

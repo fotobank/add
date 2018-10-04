@@ -1,0 +1,199 @@
+<html>
+<head>
+<style>
+	body {
+    		background-color: #ffffff;
+		font-family: sans-serif;
+		color: #000;		
+	}
+	div.cabecera {
+		position: relative;
+		background-color: #ffaa44;
+		color:#44aaff;
+		text-align:left;
+		font-weight: bold;
+		font-size: 50px;
+		left: 0px;
+		top: 0px;		
+		padding: 4px 0px 4px 0px;
+		margin-bottom: 4px;
+	}
+	div.titulo {
+		position: relative;
+		background-color: #ffaa44;
+		color: #000;
+		font-weight: bold;
+		padding: 4px 2em 4px 2em;
+		
+	}
+	div.texto{
+		position: relative;
+		padding: 2em 2em 2em 2em;
+	}
+	a {
+		text-decoration: none;
+    	   	color: #999999;
+		background-color: #ffffff;
+	        font-weight: normal;
+	}
+	div.cabecera a {
+		text-decoration: none;
+    		font-size: medium;
+		color: #999999;
+		background-color: #ffaa44;
+		font-weight: normal;	
+	}
+	div.langs{
+		background-color: #ffaa44;
+		width: 100%;
+		text-align: right;
+		font-size: 12pt;
+		color: #000;
+	}
+	div.langs a{
+		text-decoration: none;
+		color: #999999;
+		background-color: #ffaa44;
+		font-weight: small;
+		font-size: 12pt;
+	}
+	div.pie {
+		text-decoration: none;
+		font-size: normal;
+		color: #345678;
+		background-color: #ffaa44;
+		font-weight: bold;
+		width: 100%;
+		text-align: center;
+	}
+
+	
+</style>
+</head>
+<body>
+<div class="cabecera">
+	<div class="langs"><b>gl</b> | <a href="doces.html">es</a> | <a href="docen.html">en</a></div>
+	<table><tr><td><big><big><b>Rar for PHP&nbsp;&nbsp;</b></big></big></td><td>
+	<a href="#intro">Introducci&oacute;n</a> |
+	<a href="#install">Instalaci&oacute;n</a> |
+	<a href="#config">Configuraci&oacute;n</a> |
+	<a href="#fconf">Funci&oacute;ns de configuraci&oacute;n</a> |
+	<a href="#fcomp">Funci&oacute;ns de compresi&oacute;n</a> |
+	<a href="#ej">Exemplos</a></td></tr></table>
+</div>
+<div class="contenido">
+	<a name="intro"></a>
+	<div class="titulo">Introducci&oacute;n:</div>
+	<div class="texto">
+		<b>Rar for PHP</b> &eacute; un sinxelo script que permite comprimir ficheiros e carpetas en formato <i>RAR</i>.<br/> 
+		RarLabs, propietaria do algoritmo de compresi&oacute;n <i>RAR</i> non permite que outros programas, agás os seus, poidan comprimir ficheiros no formato <i>RAR</i>.
+		<b>Rar for PHP</b>, cumprindo coa licencia, non implementa o algoritmo de compresi&oacute;n <i>RAR</i>.<br/>
+		<b>Rar for PHP</b> &eacute; unha interfaz para o programa <i>rar.exe</i>, do cal &eacute; propietario RarLabs. Para poder comprimir ficheiros
+		<i>RAR</i> deberedes ter este programa, o cal at&oacute;pase na carpeta de instalaci&oacute;n de WinRAR.
+		<br/>Non probei este algoritmo en Linux, pero se os par&aacute;metros da interfaz de li&ntilde;a de comandos de linux os mesmos que en Windows, deber&iacute;a funcionar sen problemas.
+	</div>
+	<a name="install"></a>
+	<div class="titulo">Instalaci&oacute;n:</div>
+	<div class="texto">
+		Para instalar <b>Rar for PHP</b> so fai falla copiar o ficheiro <i>rar.php</i> 
+		o teu directorio de execuci&oacute;n de scripts php. Despois deberedes edita-lo para po&ntilde;e-los valores por defecto que dexesedes.		
+	</div>
+	<a name="config"></a>
+	<div class="titulo">Configuraci&oacute;n:</div>
+	<div class="texto">
+		As opci&oacute;ns de configuraci&oacute;n de <b>Rar for PHP</b> son as seguintes:
+		<ul>
+			<li><b>$rar:</b> Debedes indicar aqui a ubicaci&oacute;n do ficheiro executable de rar (rar.exe).</li>
+			<li><b>$rarpasswords:</b> Se queres gardar as contrasinais dos ficheiros que comprimas 
+			deberás indicar nesta variable a ruta o arquivo en que queres que se almacenen. Deixao en branco para que non garde ningunha contrasinal.
+			<li><b>$defaultCompression:</b> Debes indicar o nivel de compresi&oacute;n que tomar&aacute; por defecto:
+				<ul>
+					<li>"NiNGUNO" - Sin compresion </li>
+					<li>"BAJO" - Compresi&oacute;n baixa </li>
+					<li>"MEDiO" - Compresi&oacute;n media </li>
+					<li>"NORMAL" - Compresi&oacute;n normal </li>
+					<li>"ALTO" - Compresi&oacute;n alta </li>
+					<li>"MAXiMO" - Compresi&oacute;n m&aacute;xima </li>
+				</ul>
+			        Ten en conta que a m&aacute;s compresi&oacute;n m&aacute;s teempo tardar&aacute; en comprimir.
+			</li>
+			<li><b>$mkSolid:</b> Se pos este valor a <i>true</i> crearase un ficheiro s&oacute;lido. Esto &eacute; &uacute;til se tes que  
+			comprimir moitos ficheiros pequenos nun s&oacute; paquete, debido a o ficheiro de saida será mais pequeno.</li>
+			<li><b>$limitetiempo:</b> indica o tempo m&aacute;ximo que se executar&aacute; o script</li>
+		</ul>
+	</div>
+	<a name="fconf"></a>
+	<div class="titulo">Funci&oacute;ns de configuraci&oacute;n:</div>
+	<div class="texto">
+		Con estas funci&oacute;ns podes modificar a configuraci&oacute;n para cada ficheiro que crees:
+		<ul>
+			<li><b>setPassword(txtContrase&ntilde;a):</b> Se queres una que un determinado ficheiro te&ntilde;a unha contrasinal podes chamar
+			a esta funci&oacute;n antes de comprimir nada. Podes pasarlle como par&aacute;metro a contrasinal que desexes. Se
+			a chamas sen par&aacute;metros, xenerar&aacute;se autom&aacute;ticamente una contrasinal de entre 8 y 32 caracteres.</li>
+			<li><b>compression(txtNivelCompres, boolSolido): </b> Podes axustar o nivel de compresi&oacute;n do ficheiro que 
+			queres comprimir por medio desta funci&oacute;n. O primeiro par&aacute;metro ser&aacute; o nivel de compresi&oacute;n desexado (ver Configuracion)
+			e o segundo par&aacute;metro indicar&aacute; se queres un ficheiro s&oacute;lido ou non ("true" ou "false").</li>
+			<li><b>getPassword():</b> Retorna a contrasinal actual usada para comprimir o ficheiro.</li>
+			<li><b>setRecovery(intRatio):</b> Engade datos de recuperaci&oacute;n &oacute; paquete. O par&aacute;metro <i>intRatio</i> é un valor enteiro que  
+			representa o tanto por cento de datos de recuperaci&oacute;n que se engadir&aacute;n (1-10).</li>
+		</ul>			
+	</div>
+	<a name="fcomp"></a>
+	<div class="titulo">Funci&oacute;ns de compresi&oacute;n:</div>
+	<div class="texto">
+		Estas funci&oacute;ns son as que se chaman para comprimir ficheiros ou carpetas:
+		<ul>
+			<li><b>addfile(txtArchivo):</b> Engado o paquete o arquivo indicado polo par&aacute;metro <i>txtArchivo</i></li>
+			<li><b>addfolder(txtCarpeta, boolRecursivo): </b> Engade o paquete a carpeta indicada polo parámetro <i>txtCarpeta</i>.
+			Por defecto comprime todolos ficheiros e carpetas que cont&eacute;n <i>txtCarpeta</i>. Se non se quere que a compresi&oacute;n sexa recursiva
+                        deberáse indicar no par&aacute;metro <i>boolRecursivo</i> "false". Para o contrario, indicar "true" ou omitir el par&aacute;metro.</li>
+			<li><b>addList(arrayLista): </b> Engade unha lista de ficheiros e carpetas dadas no par&aacute;metro <i>arrayLista</i>.
+			Este par&aacute;metro pode ser un vector coa lista de ficheiros o una cadea de caracteres separada por ";"</li>
+		</ul>			
+	</div>
+	<a name="ej"></a>
+	<div class="titulo">Exemplos:</div>
+	<div class="texto">
+		<ul>
+			<li><b>B&aacute;sico:</b>Este exemplo comprimir&aacute; como <i>"c:/archivo.rar"</i> o ficheiro <i>"c:/comprimir.txt"</i> coas opci&oacute;ns por defecto.<br/>
+				<br/>
+				<i>
+					&nbsp;&nbsp;require_once('rar.php');<br/>
+					&nbsp;&nbsp;$rar=new phpRar("c:/archivo.rar");<br/>
+					&nbsp;&nbsp;$rar->addfile("c:/comprimir.txt");<br/>
+				</i><br/>
+	
+			</li>
+		
+			<li><b>Con contrasinal:</b> Comprimirase a carpeta <i>"c:/carpeta"</i> como <i>"c:/archivo.rar"</i> coa contrasinal <i>12345</i>.<br/>
+				<br/>
+				<i>
+					&nbsp;&nbsp;require_once('rar.php');<br/>
+					&nbsp;&nbsp;$rar=new phpRar("c:/archivo.rar");<br/>
+					&nbsp;&nbsp;$rar->setPassword("12345");<br/>
+					&nbsp;&nbsp;$rar->addfolder("c:/carpeta");<br/>
+				</i><br/>
+			</li>
+			<li><b>Complexo:</b> Comprimirase a carpeta <i>"c:/carpeta"</i> e o arquivo <i>"c:/comprimir.txt"</i> no paquete <i>"c:/archivo.rar"</i> con contrasinal aleatoria e logo mostrarase no explorador.
+						Crearase un arquivo rar s&oacute;lico cun nivel de compresi&oacute;n <i>Normal</i> <br/>
+				<br/>
+				<i>
+					&nbsp;&nbsp;require_once('rar.php');<br/>
+					&nbsp;&nbsp;$rar=new rar("c:/archivo.rar");<br/>
+					&nbsp;&nbsp;$rar->setPassword();<br/>
+					&nbsp;&nbsp;$rar->compression("NORMAL",true);<br/>
+					&nbsp;&nbsp;$rar->setRecovery(2);<br/>
+					&nbsp;&nbsp;$rar->addList("c:\carpeta1; c:\carpeta2; c:\carpeta3\*.exe");<br/>
+					&nbsp;&nbsp;$rar->addfile("c:/comprimir.txt");<br/>
+					&nbsp;&nbsp;$rar->addfolder("c:/carpeta");<br/>
+					&nbsp;&nbsp;echo $rar->getPassword();
+				</i><br/><br/>
+				NOTA: Se este script fora un sistema de copia de seguridade sinxelo, a contrasinal en vez de mostrarse podr&iacute;ase enviar &oacute; administrador mediante mensaxe electr&oacute;nico.
+			</li>
+
+		</ul>
+
+	</div>
+</div>
+<div class="pie">Jos&eacute; Manuel Busto</div
+</body>

@@ -1,0 +1,92 @@
+
+
+-------------------------------------------------------------------------------
+  PROPERTIES
+-------------------------------------------------------------------------------
+string addr - Recipient e-mail address.
+string subject - Mail subject.
+bool is_html - Is message html or plain text?
+string msg - Message text or html body.
+array attachments - Array of attached file paths.
+string to - Recipient name.
+string from_addr - Sender e-mail address.
+string from_name -  Sender name.
+string cc - Carbon copies.
+string bcc - Blind carbon copies.
+string mailer - Name of mailing program.
+string reply_to - Reply e-mail address.
+string date - Message date, use FormatMsgDate() to set this value.
+int priority - Message priority: PRIORITY_LOW, PRIORITY_NORMAL or PRIORITY_HIGH.
+string extra_headers - Any custom headers.
+string cp_base - Base charset of message or template.
+string tpl_containers - Associative array of template containers.
+
+
+-------------------------------------------------------------------------------
+  METHODS
+-------------------------------------------------------------------------------
+
+void XPhpMailer ( ) - Class constructor.
+void ClearFields ( ) - Sets class properties to default values.
+void FormatMsgDate ( $tm ) - Sets the value to date property in correct format.
+  The parameter is UNIX timestamp.
+int GetAttachedSize ( ) - Returns total size of attached files in bytes.
+void ProcessTemplate ( $tpl_file ) - Processes email template.
+bool SendMail ( $encoding = '' ) - Sends the message. The parameter is target
+  encoding of sending message. Predefined charset constants are: KOI8_R,
+  WINDOWS_1251, ISO8859_5, X_CP866, X_MAC_CYRILLIC and TRANSLIT. Cyrillic
+  characters will convert to english equivalents if TRANSLIT charset is used.
+
+
+-------------------------------------------------------------------------------
+  CODE SAMPLES
+-------------------------------------------------------------------------------
+
+Following sample demonstrates how to send koi8 encoded russian message with two
+attachments:
+
+$xmailer = new XPhpMailer ( );
+$xmailer->addr = 'ivanov@mail.ru';
+$xmailer->to = 'Иванов Сергей';
+$xmailer->subject = 'Здравствуйте!';
+$xmailer->from_addr = 'petrov@myhost.com';
+$xmailer->from_name = 'Петров А.';
+$xmailer->attachments = array ( 'docs/project.zip', 'images/misc/me.jpg' );
+$xmailer->msg = '<b>Текст сообщения...</b>';
+$xmailer->is_html = TRUE;
+$xmailer->cp_base = WINDOWS_1251;
+//$xmailer->SendMail ( TRANSLIT );
+$xmailer->SendMail ( KOI8_R );
+
+Next sample shows how to process e-mail templates:
+
+$xmailer = new XPhpMailer ( );
+$xmailer->addr = 'john@email.com';
+$xmailer->to = 'John';
+$xmailer->subject = 'Hello, John!';
+$xmailer->from_addr = 'webmaster@myhost.com';
+$xmailer->tpl_containers = array ( '{%NAME%}'=>'John',
+  '{%SIGNATURE%}'=>'Admin' );
+$xmailer->ProcessTemplate ( 'msg.txt' );
+$xmailer->SendMail ( );
+
+-------------------------------------------------------------------------------
+File "msg.txt"
+-------------------------------------------------------------------------------
+Dear {%NAME%},
+
+Here is your new Member Account Username and Temporary Password:
+
+Username: myuser
+Password: a5928b0d6jb5
+
+Best wishes,
+{%SIGNATURE%}
+-------------------------------------------------------------------------------
+
+
+
+Please, contact the author to get any kind of additional information or to
+report bugs: vagh@armdex.com
+
+

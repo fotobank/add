@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Calx : Simple jQuery plugin for building calculation form">
+    <style>
+    
+    html, body, div, span, applet, object, iframe,
+    h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+    a, abbr, acronym, address, big, cite, code,
+    del, dfn, em, img, ins, kbd, q, s, samp,
+    small, strike, strong, sub, sup, tt, var,
+    b, u, i, center,
+    dl, dt, dd, ol, ul, li,
+    fieldset, form, label, legend,
+    table, caption, tbody, tfoot, thead, tr, th, td,
+    article, aside, canvas, details, embed,
+    figure, figcaption, footer, header, hgroup,
+    menu, nav, output, ruby, section, summary,
+    time, mark, audio, video {
+      margin: 0;
+      padding: 0;
+      border: 0;
+      font: inherit;
+      vertical-align: baseline;
+    }
+    
+    /* HTML5 display-role reset for older browsers */
+    article, aside, details, figcaption, figure,
+    footer, header, hgroup, menu, nav, section {
+      display: block;
+    }
+    
+    ol, ul {
+      list-style: none;
+    }
+    
+    blockquote, q {
+    }
+    
+    table {
+      border-collapse: collapse;
+      border-spacing: 0;
+    }
+    
+    a:focus {
+      outline: none;
+    }
+    
+    /*******************************************************************************
+    Theme Styles
+    *******************************************************************************/
+    
+    body {
+      box-sizing: border-box;
+      color:#373737;
+      background: #212121;
+      font-size: 16px;
+      font-family: 'Myriad Pro', Calibri, Helvetica, Arial, sans-serif;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+      margin: 10px 0;
+      font-weight: 700;
+      color:#222222;
+      font-family: 'Lucida Grande', 'Calibri', Helvetica, Arial, sans-serif;
+      letter-spacing: -1px;
+    }
+    
+    h1 {
+      font-size: 36px;
+      font-weight: 700;
+    }
+    
+    h2 {
+      padding-bottom: 10px;
+      font-size: 32px;
+      background: url('../images/bg_hr.png') repeat-x bottom;
+    }
+    
+    h3 {
+      font-size: 24px;
+    }
+    
+    h4 {
+      font-size: 21px;
+    }
+    
+    h5 {
+      font-size: 18px;
+    }
+    
+    h6 {
+      font-size: 16px;
+    }
+    
+    p {
+      margin: 10px 0 15px 0;
+    }
+    
+    footer p {
+      color: #f2f2f2;
+    }
+    
+    a {
+      text-decoration: none;
+      color: #007edf;
+      text-shadow: none;
+    
+      transition: color 0.5s ease;
+      transition: text-shadow 0.5s ease;
+      -webkit-transition: color 0.5s ease;
+      -webkit-transition: text-shadow 0.5s ease;
+      -moz-transition: color 0.5s ease;
+      -moz-transition: text-shadow 0.5s ease;
+      -o-transition: color 0.5s ease;
+      -o-transition: text-shadow 0.5s ease;
+      -ms-transition: color 0.5s ease;
+      -ms-transition: text-shadow 0.5s ease;
+    }
+    
+    #main_content a:hover {
+      color: #0069ba;
+      text-shadow: #0090ff 0px 0px 2px;
+    }
+    
+    footer a:hover {
+      color: #43adff;
+      text-shadow: #0090ff 0px 0px 2px;
+    }
+    
+    em {
+      font-style: italic;
+    }
+    
+    strong {
+      font-weight: bold;
+    }
+    
+    img {
+      position: relative;
+      margin: 0 auto;
+      max-width: 739px;
+      padding: 5px;
+      margin: 10px 0 10px 0;
+      border: 1px solid #ebebeb;
+    
+      box-shadow: 0 0 5px #ebebeb;
+      -webkit-box-shadow: 0 0 5px #ebebeb;
+      -moz-box-shadow: 0 0 5px #ebebeb;
+      -o-box-shadow: 0 0 5px #ebebeb;
+      -ms-box-shadow: 0 0 5px #ebebeb;
+    }
+    
+    pre, code {
+      width: 100%;
+      color: #222;
+      background-color: #fff;
+    
+      font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+      font-size: 14px;
+    
+      border-radius: 2px;
+      -moz-border-radius: 2px;
+      -webkit-border-radius: 2px;
+    
+    
+    
+    }
+    
+    pre {
+      width: 100%;
+      padding: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,.1);
+      overflow: auto;
+    }
+    
+    code {
+      padding: 3px;
+      margin: 0 3px;
+      box-shadow: 0 0 10px rgba(0,0,0,.1);
+    }
+    
+    pre code {
+      display: block;
+      box-shadow: none;
+    }
+    
+    blockquote {
+      color: #666;
+      margin-bottom: 20px;
+      padding: 0 0 0 20px;
+      border-left: 3px solid #bbb;
+    }
+    
+    ul, ol, dl {
+      margin-bottom: 15px
+    }
+    
+    ul li {
+      list-style: inside;
+      padding-left: 20px;
+    }
+    
+    ol li {
+      list-style: decimal inside;
+      padding-left: 20px;
+    }
+    
+    dl dt {
+      font-weight: bold;
+    }
+    
+    dl dd {
+      padding-left: 20px;
+      font-style: italic;
+    }
+    
+    dl p {
+      padding-left: 20px;
+      font-style: italic;
+    }
+    
+    hr {
+      height: 1px;
+      margin-bottom: 5px;
+      border: none;
+      background: url('../images/bg_hr.png') repeat-x center;
+    }
+    
+    table {
+      border: 1px solid #373737;
+      margin-bottom: 20px;
+      text-align: left;
+     }
+    
+    th {
+      font-family: 'Lucida Grande', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      padding: 10px;
+      background: #373737;
+      color: #fff;
+     }
+    
+    td {
+      padding: 10px;
+      border: 1px solid #373737;
+     }
+    
+    form {
+      background: #f2f2f2;
+      padding: 20px;
+    }
+    
+    img {
+      width: 100%;
+      max-width: 100%;
+    }
+    
+    /*******************************************************************************
+    Full-Width Styles
+    *******************************************************************************/
+    
+    .outer {
+      width: 100%;
+    }
+    
+    .inner {
+      position: relative;
+      max-width: 640px;
+      padding: 20px 10px;
+      margin: 0 auto;
+    }
+    
+    #forkme_banner {
+      display: block;
+      position: absolute;
+      top:0;
+      right: 10px;
+      z-index: 10;
+      padding: 10px 50px 10px 10px;
+      color: #fff;
+      background: url('../images/blacktocat.png') #0090ff no-repeat 95% 50%;
+      font-weight: 700;
+      box-shadow: 0 0 10px rgba(0,0,0,.5);
+      border-bottom-left-radius: 2px;
+      border-bottom-right-radius: 2px;
+    }
+    
+    #header_wrap {
+      background: #212121;
+      background: -moz-linear-gradient(top, #373737, #212121);
+      background: -webkit-linear-gradient(top, #373737, #212121);
+      background: -ms-linear-gradient(top, #373737, #212121);
+      background: -o-linear-gradient(top, #373737, #212121);
+      background: linear-gradient(top, #373737, #212121);
+    }
+    
+    #header_wrap .inner {
+      padding: 50px 10px 30px 10px;
+    }
+    
+    #project_title {
+      margin: 0;
+      color: #fff;
+      font-size: 42px;
+      font-weight: 700;
+      text-shadow: #111 0px 0px 10px;
+    }
+    
+    #project_tagline {
+      color: #fff;
+      font-size: 24px;
+      font-weight: 300;
+      background: none;
+      text-shadow: #111 0px 0px 10px;
+    }
+    
+    #downloads {
+      position: absolute;
+      width: 210px;
+      z-index: 10;
+      bottom: -40px;
+      right: 0;
+      height: 70px;
+      background: url('../images/icon_download.png') no-repeat 0% 90%;
+    }
+    
+    .zip_download_link {
+      display: block;
+      float: right;
+      width: 90px;
+      height:70px;
+      text-indent: -5000px;
+      overflow: hidden;
+      background: url(../images/sprite_download.png) no-repeat bottom left;
+    }
+    
+    .tar_download_link {
+      display: block;
+      float: right;
+      width: 90px;
+      height:70px;
+      text-indent: -5000px;
+      overflow: hidden;
+      background: url(../images/sprite_download.png) no-repeat bottom right;
+      margin-left: 10px;
+    }
+    
+    .zip_download_link:hover {
+      background: url(../images/sprite_download.png) no-repeat top left;
+    }
+    
+    .tar_download_link:hover {
+      background: url(../images/sprite_download.png) no-repeat top right;
+    }
+    
+    #main_content_wrap {
+      background: #f2f2f2;
+      border-top: 1px solid #111;
+      border-bottom: 1px solid #111;
+    }
+    
+    #main_content {
+      padding-top: 40px;
+    }
+    
+    #footer_wrap {
+      background: #212121;
+    }
+    
+    
+    
+    /*******************************************************************************
+    Small Device Styles
+    *******************************************************************************/
+    
+    @media screen and (max-width: 480px) {
+      body {
+        font-size:14px;
+      }
+    
+      #downloads {
+        display: none;
+      }
+    
+      .inner {
+        min-width: 320px;
+        max-width: 480px;
+      }
+    
+      #project_title {
+      font-size: 32px;
+      }
+    
+      h1 {
+        font-size: 28px;
+      }
+    
+      h2 {
+        font-size: 24px;
+      }
+    
+      h3 {
+        font-size: 21px;
+      }
+    
+      h4 {
+        font-size: 18px;
+      }
+    
+      h5 {
+        font-size: 14px;
+      }
+    
+      h6 {
+        font-size: 12px;
+      }
+    
+      code, pre {
+        min-width: 320px;
+        max-width: 480px;
+        font-size: 11px;
+      }
+    
+    }
+    
+    </style>
+
+    <title>Calx</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer"> 
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/ikhsan017/calx">View on GitHub</a>
+
+          <h1 id="project_title">Calx</h1>
+          <h2 id="project_tagline">Simple jQuery plugin for building calculation form</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/ikhsan017/calx/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/ikhsan017/calx/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h2>Overview</h2>
+
+<p>jQuery Calx is simple jQuery plugin for building javascript based 
+calculation form. This is the initial release, so there is still lack of
+ features and still changed recently. In the core of jQuery Calx, it 
+uses standard calculator jison parser</p>
+
+<p><a href="http://zaach.github.com/jison/try/">http://zaach.github.com/jison/try/</a>
+ which is generated using standard jison calculator grammar. But you can
+ extend the parser to use your own parser (this feature still in dev)</p>
+
+<h2>Documentation</h2>
+
+<p>Since this plugin is still under intensive development, the documentation is very limited </p>
+
+<h4>HTML Structure</h4>
+
+<p>Firstly, of course you need to build the form structure, its simple enough to make the calculation form work </p>
+
+<ul>
+<li>  Specify the form id and the id for each form element, this id attribute will be used as formula reference. ( e.g. :  )</li>
+<li>  Specify data-formula attribute for the calculation formula. the 
+variable placeholder format is dollar sign [$+reference_id] followed by 
+standard calculation operators [+-/*^()] ( e.g. )</li>
+<li>  Specify data-format attribute if you want to format the value of 
+the form, data-ormat syntax use css like syntax with key:value pair and 
+delimited by semicolon (;). ( e.g.  ) Below is available data format:<br><ul>
+<li>  format, define how the number should be formatted (default : number)
+
+<ul>
+<li>  number : format input value as number without any formatting ( e.g. 109878.2345 )</li>
+<li>  percent : format input value as percentage and will be divided by 
+100 on calculation process ( e.g. value of 10 will be parsed as 0.1 when
+ calculation is performed )</li>
+<li>  currency : format input value as currency, the decimal separator and thousand separator depend on decsep and digitsep</li>
+</ul>
+</li>
+<li>  decimal, define how many decimal place at the end of number ( default: 0 )</li>
+<li>  prefix, append prefix to the value, useful for currency format ( e.g. $ 1,000.00 | default: '' )</li>
+<li>  suffix, append prefix to the value, useful for percentage, measurement unit, etc ( e.g. 100 miles, 80 % | default: '' )</li>
+<li>  digitsep, digit separator per thousand ( e.g. 1,000,987 | default: , )</li>
+<li>  decsep, decimal separator ( e.g. 1,000,987.34 | default: .  )</li>
+<li>  absolute, mark negative number as absolute number (will add "absolute" class to the input | default:false)</li>
+</ul>
+</li>
+<li>  Every input field that contain data-formula attribute, will be 
+marked as readonly and "readonly" class added to the input element</li>
+<li>  Every input field that have no data-formula defined, will have "writeable" class added to the input element</li>
+</ul><div class="highlight"><pre><span class="nt">&lt;form</span> <span class="na">id=</span><span class="s">"calx"</span><span class="nt">&gt;</span>
+    Price :<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">id=</span><span class="s">"price"</span> <span class="na">value=</span><span class="s">"29.5"</span> <span class="na">data-format=</span><span class="s">"format:currency;decimal:2;prefix:$ "</span> <span class="nt">/&gt;&lt;br</span> <span class="nt">/&gt;</span>
+    Qty :<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">id=</span><span class="s">"qty"</span> <span class="na">value=</span><span class="s">"4"</span> <span class="nt">/&gt;&lt;br</span> <span class="nt">/&gt;</span>
+    Discount :<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">id=</span><span class="s">"discount"</span> <span class="na">value=</span><span class="s">"15"</span> <span class="na">data-format=</span><span class="s">"format:percent;decimal:2;suffix: %"</span> <span class="nt">/&gt;&lt;br</span> <span class="nt">/&gt;</span>
+    Total :<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">id=</span><span class="s">"total"</span> <span class="na">data-formula=</span><span class="s">"($price*$qty)*(1-$discount)"</span> <span class="na">data-format=</span><span class="s">"format:currency;decimal:2;prefix:$ "</span> <span class="nt">/&gt;&lt;br</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;/form&gt;</span>
+</pre></div>
+
+<h4>CSS Classes</h4>
+
+<p>Css classew is optional, you can define class for readonly, 
+writeable, and absolute type of input field. Below is the sample input 
+classes</p>
+
+<div class="highlight"><pre><span class="nt">input</span><span class="nc">.writeable</span><span class="p">{</span>
+    <span class="k">background</span><span class="o">:</span><span class="m">#ffffcc</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nt">input</span><span class="nc">.readonly</span><span class="p">{</span>
+    <span class="k">background</span><span class="o">:</span><span class="m">#f8f8f8</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nt">input</span><span class="nc">.absolute</span><span class="p">{</span>
+    <span class="k">color</span><span class="o">:</span><span class="nb">red</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+<h4>Javascript Section</h4>
+
+<p>Finally, after building the HTML structure and CSS rule, you can apply the calculator by simply type </p>
+
+<div class="highlight"><pre><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+   <span class="nx">$</span><span class="p">(</span><span class="s1">'#calx'</span><span class="p">).</span><span class="nx">calx</span><span class="p">();</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>That's all, now your calculation form should work.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Calx maintained by <a href="https://github.com/ikhsan017">ikhsan017</a></p>
+        <p>Published with <a href="http://pages.github.com/">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  
+
+</body></html>

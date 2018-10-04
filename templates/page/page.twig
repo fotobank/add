@@ -23,12 +23,12 @@
 		    <div class="user-tabs">
 				    <ul id="myTab" class="nav nav-tabs">
 						    <li class="active">
-								    <a data-toggle="tab" href="#user" data-toggle="tab">Редактирование данных пользователя</a>
+								    <a data-toggle="tab" href="#user">Редактирование данных пользователя</a>
 						    </li>
 						    <li class="">
-								    <a data-toggle="tab" href="#zakaz" data-toggle="tab">Мои фотографии</a>
+								    <a data-toggle="tab" href="#zakaz">Мои фотографии</a>
 						    </li>
-						    <!--<li class="dropdown">
+						    {#<li class="dropdown">
 		<a class="dropdown-toggle" data-toggle="dropdown" href="#">
 			Dropdown
 			<b class="caret"></b>
@@ -41,7 +41,7 @@
 				<a data-toggle="tab" href="#dropdown2">тест2</a>
 			</li>
 		</ul>
-	</li>-->
+	</li>#}
 				    </ul>
 				    <div id="myTabContent" class="tab-content">
 						    <div id="user" class="tab-pane fade active in">
@@ -55,7 +55,7 @@
 								    <p>В этом разделе Вы имеете возможность скачать выкупленные фотографии. Выберите галочками нужные фотографии и нажмите на кнопку
 								       "скачать". Заказ действителен не менее пяти дней после последней закачки фотографий. </p>
 
-								    require_once (__DIR__.'/inc/zip.php');
+							<?	    require_once (__DIR__.'/inc/zip.php'); ?>
 
 						    </div>
 						    {# <div id="dropdown1" class="tab-pane fade">

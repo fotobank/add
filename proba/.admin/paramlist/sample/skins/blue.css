@@ -1,0 +1,16 @@
+body {
+  background-color: blue;
+  color: white;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+a {
+  color: yellow;
+  text-decoration: underline;
+  font-weight: bold;
+}
+a:hover {
+  color: pink;
+  text-decoration: none;
+  font-weight: bold;
+}

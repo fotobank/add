@@ -1,0 +1,848 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs For Class DBWrapper</title>
+            <style type="text/css">
+            a { color: #336699; text-decoration: none; }
+a:hover { color: #6699CC; text-decoration: underline; }
+a:active { color: #6699CC; text-decoration: underline; }
+
+body { background : #FFFFFF; }
+body, table { font-family: Georgia, Times New Roman, Times, serif; font-size: 10pt }
+p, li { line-height: 140% }
+a img { border: 0px; }
+dd { margin-left: 0px; padding-left: 1em; }
+
+/* Page layout/boxes */
+
+.info-box {}
+.info-box-title { margin: 1em 0em 0em 0em; padding: .25em; font-weight: normal; font-size: 14pt; border: 2px solid #999999; background-color: #CCCCFF }
+.info-box-body { border: 1px solid #999999; padding: .5em; }
+.nav-bar { font-size: 8pt; white-space: nowrap; text-align: right; padding: .2em; margin: 0em 0em 1em 0em; }
+
+.oddrow { background-color: #F8F8F8; border: 1px solid #AAAAAA; padding: .5em; margin-bottom: 1em}
+.evenrow { border: 1px solid #AAAAAA; padding: .5em; margin-bottom: 1em}
+
+.page-body { max-width: 800px; margin: auto; }
+.tree dl { margin: 0px }
+
+/* Index formatting classes */
+
+.index-item-body { margin-top: .5em; margin-bottom: .5em}
+.index-item-description { margin-top: .25em }
+.index-item-details { font-weight: normal; font-style: italic; font-size: 8pt }
+.index-letter-section { background-color: #EEEEEE; border: 1px dotted #999999; padding: .5em; margin-bottom: 1em}
+.index-letter-title { font-size: 12pt; font-weight: bold }
+.index-letter-menu { text-align: center; margin: 1em }
+.index-letter { font-size: 12pt }
+
+/* Docbook classes */
+
+.description {}
+.short-description { font-weight: bold; color: #666666; }
+.tags {	padding-left: 0em; margin-left: 3em; color: #666666; list-style-type: square; }
+.parameters {	padding-left: 0em; margin-left: 3em; font-style: italic; list-style-type: square; }
+.redefinitions { font-size: 8pt; padding-left: 0em; margin-left: 2em; }
+.package {  }
+.package-title { font-weight: bold; font-size: 14pt; border-bottom: 1px solid black }
+.package-details { font-size: 85%; }
+.sub-package { font-weight: bold; font-size: 120% }
+.tutorial { border-width: thin; border-color: #0066ff }
+.tutorial-nav-box { width: 100%; border: 1px solid #999999; background-color: #F8F8F8; }
+.nav-button-disabled { color: #999999; }
+.nav-button:active,
+.nav-button:focus,
+.nav-button:hover { background-color: #DDDDDD; outline: 1px solid #999999; text-decoration: none }
+.folder-title { font-style: italic }
+
+/* Generic formatting */
+
+.field { font-weight: bold; }
+.detail { font-size: 8pt; }
+.notes { font-style: italic; font-size: 8pt; }
+.separator { background-color: #999999; height: 2px; }
+.warning {  color: #FF6600; }
+.disabled { font-style: italic; color: #999999; }
+
+/* Code elements */
+
+.line-number {  }
+
+.class-table { width: 100%; }
+.class-table-header { border-bottom: 1px dotted #666666; text-align: left}
+.class-name { color: #000000; font-weight: bold; }
+
+.method-summary { padding-left: 1em; font-size: 8pt }
+.method-header { }
+.method-definition { margin-bottom: .3em }
+.method-title { font-weight: bold; }
+.method-name { font-weight: bold; }
+.method-signature { font-size: 85%; color: #666666; margin: .5em 0em }
+.method-result { font-style: italic; }
+
+.var-summary { padding-left: 1em; font-size: 8pt; }
+.var-header { }
+.var-title { margin-bottom: .3em }
+.var-type { font-style: italic; }
+.var-name { font-weight: bold; }
+.var-default {}
+.var-description { font-weight: normal; color: #000000; }
+
+.include-title {  }
+.include-type { font-style: italic; }
+.include-name { font-weight: bold; }
+
+.const-title {  }
+.const-name { font-weight: bold; }
+
+/* Syntax highlighting */
+
+.src-code {  border: 1px solid #336699; padding: 1em; background-color: #EEEEEE; }
+.src-line {  font-family: 'Courier New', Courier, monospace; font-weight: normal; }
+
+.src-comm { color: green; }
+.src-id {  }
+.src-inc { color: #0000FF; }
+.src-key { color: #0000FF; }
+.src-num { color: #CC0000; }
+.src-str { color: #66cccc; }
+.src-sym { font-weight: bold; }
+.src-var { }
+
+.src-php { font-weight: bold; }
+
+.src-doc { color: #009999 }
+.src-doc-close-template { color: #0000FF }
+.src-doc-coretag { color: #0099FF; font-weight: bold }
+.src-doc-inlinetag { color: #0099FF }
+.src-doc-internal { color: #6699cc }
+.src-doc-tag { color: #0080CC }
+.src-doc-template { color: #0000FF }
+.src-doc-type { font-style: italic }
+.src-doc-var { font-style: italic }
+
+.tute-tag { color: #009999 }
+.tute-attribute-name { color: #0000FF }
+.tute-attribute-value { color: #0099FF }
+.tute-entity { font-weight: bold; }
+.tute-comment { font-style: italic }
+.tute-inline-tag { color: #636311; font-weight: bold }
+
+/* tutorial */
+
+.authors {  }
+.author { font-style: italic; font-weight: bold }
+.author-blurb { margin: .5em 0em .5em 2em; font-size: 85%; font-weight: normal; font-style: normal }
+.example { border: 1px dashed #999999; background-color: #EEEEEE; padding: .5em; }
+*[class="example"] { line-height : 0.5em }
+.listing { border: 1px dashed #999999; background-color: #EEEEEE; padding: .5em; white-space: nowrap; }
+*[class="listing"] { line-height : 0.5em }
+.release-info { font-size: 85%; font-style: italic; margin: 1em 0em }
+.ref-title-box {  }
+.ref-title {  }
+.ref-purpose { font-style: italic; color: #666666 }
+.ref-synopsis {  }
+.title { font-weight: bold; margin: 1em 0em 0em 0em; padding: .25em; border: 2px solid #999999; background-color: #CCCCFF  }
+.cmd-synopsis { margin: 1em 0em }
+.cmd-title { font-weight: bold }
+.toc { margin-left: 2em; padding-left: 0em }
+
+            </style>
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">
+<h2 class="class-name">Class DBWrapper</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+													<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+						|											<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+
+					</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">MySQL database wrapper class</p>
+<p class="description"><p>This class is a simple object-oriented wrapper of PHP's MySQL functions.</p></p>
+	<ul class="tags">
+				<li><span class="field">author:</span> Vagharshak Tozalakyan &lt;<a href="mailto:vagh@tozalakyan.com">vagh@tozalakyan.com</a>&gt;</li>
+				<li><span class="field">access:</span> public</li>
+				<li><span class="field">version:</span> 1.0</li>
+			</ul>
+
+
+		<pre></pre>
+
+			</div>
+</div>
+
+
+
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variable Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+						<span class="disabled">Vars</span> (<a href="#sec-vars">details</a>)
+							|
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+
+								</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+																																<div class="var-title">
+					<span class="var-type">int</span>
+					<a href="#$debugMode" title="details" class="var-name">$debugMode</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">int</span>
+					<a href="#$numQueries" title="details" class="var-name">$numQueries</a>
+				</div>
+											</div>
+		</div>
+	</div>
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+																		<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+
+				|
+						<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">
+			<div class="method-summary">
+
+												<div class="method-definition">
+											<span class="method-result">int</span>
+										<a href="#affectedRows" title="details" class="method-name">affectedRows</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">resource</span>
+										<a href="#connect" title="details" class="method-name">connect</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$server</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$username</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$password</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$database</span>, [<span class="var-type">bool</span>&nbsp;<span class="var-name">$persistency</span> = <span class="var-default">false</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">bool</span>
+										<a href="#disconnect" title="details" class="method-name">disconnect</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#escape" title="details" class="method-name">escape</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$str</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">mixed</span>
+										<a href="#fetchResult" title="details" class="method-name">fetchResult</a>
+											(<span class="var-type">int</span>&nbsp;<span class="var-name">$row</span>, <span class="var-type">mixed</span>&nbsp;<span class="var-name">$field</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">mixed</span>
+										<a href="#fetchRow" title="details" class="method-name">fetchRow</a>
+											([<span class="var-type">int</span>&nbsp;<span class="var-name">$fetchType</span> = <span class="var-default">DBW_FETCH_ASSOC</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">mixed</span>
+										<a href="#fetchRows" title="details" class="method-name">fetchRows</a>
+											([<span class="var-type">int</span>&nbsp;<span class="var-name">$fetchType</span> = <span class="var-default">DBW_FETCH_ASSOC</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#fieldName" title="details" class="method-name">fieldName</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$index</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#fieldType" title="details" class="method-name">fieldType</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$index</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">bool</span>
+										<a href="#freeResult" title="details" class="method-name">freeResult</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">array</span>
+										<a href="#getError" title="details" class="method-name">getError</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">int</span>
+										<a href="#insertID" title="details" class="method-name">insertID</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">int</span>
+										<a href="#numFields" title="details" class="method-name">numFields</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">int</span>
+										<a href="#numRows" title="details" class="method-name">numRows</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">bool</span>
+										<a href="#query" title="details" class="method-name">query</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$sql</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">bool</span>
+										<a href="#seekRow" title="details" class="method-name">seekRow</a>
+											(<span class="var-type">int</span>&nbsp;<span class="var-name">$row</span>)
+									</div>
+								</div>
+		</div>
+	</div>
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variables</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+										<a href="#sec-var-summary">Vars</a> (<span class="disabled">details</span>)
+
+
+										|
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+
+					</div>
+		<div class="info-box-body">
+			<a name="var$debugMode" id="$debugMode"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">int</span>
+			<span class="var-name">$debugMode</span>
+			 = <span class="var-default"> DBW_NO_DEBUG</span>			(line <span class="line-number">75</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Debugging mode</p>
+<p class="description"><p>DBW_NO_DEBUG - not in debugging mode (default);  DBW_WARNINGS - generate debug warnings;  DBW_ERRORS - generate debug errors.</p></p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+
+
+
+
+
+</div>
+<a name="var$numQueries" id="$numQueries"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">int</span>
+			<span class="var-name">$numQueries</span>
+			 = <span class="var-default"> 0</span>			(line <span class="line-number">63</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Total number of executed queries</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+
+
+
+
+
+</div>
+
+		</div>
+	</div>
+
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+															<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+																	<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+
+<a name="methodaffectedRows" id="affectedRows"><!-- --></a>
+<div class="oddrow">
+
+	<div class="method-header">
+		<span class="method-title">affectedRows</span> (line <span class="line-number">182</span>)
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Get number of affected rows in previous operation</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> Number of affected rows, -1 if the last query failed                   or false if the function failed.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+
+	<div class="method-signature">
+		<span class="method-result">int</span>
+		<span class="method-name">
+			affectedRows
+		</span>
+				()
+			</div>
+
+
+
+	</div>
+<a name="methodconnect" id="connect"><!-- --></a>
+<div class="evenrow">
+
+	<div class="method-header">
+		<span class="method-title">connect</span> (line <span class="line-number">105</span>)
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Connect the database server and select a database on it</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> A Valid connection ID or false.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+
+	<div class="method-signature">
+		<span class="method-result">resource</span>
+		<span class="method-name">
+			connect
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$server</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$username</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$password</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$database</span>, [<span class="var-type">bool</span>&nbsp;<span class="var-name">$persistency</span> = <span class="var-default">false</span>])
+			</div>
+
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$server</span><span class="var-description">: Database hostname.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$username</span><span class="var-description">: Database connection username.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$password</span><span class="var-description">: Database connection password.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$database</span><span class="var-description">: Database name.</span>			</li>
+					<li>
+				<span class="var-type">bool</span>
+				<span class="var-name">$persistency</span><span class="var-description">: Create a persistant connection?</span>			</li>
+				</ul>
+
+
+	</div>
+<a name="methoddisconnect" id="disconnect"><!-- --></a>
+<div class="oddrow">
+
+	<div class="method-header">
+		<span class="method-title">disconnect</span> (line <span class="line-number">132</span>)
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Close database connection</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+
+	<div class="method-signature">
+		<span class="method-result">bool</span>
+		<span class="method-name">
+			disconnect
+		</span>
+				()
+			</div>
+
+
+
+	</div>
+<a name="methodescape" id="escape"><!-- --></a>
+<div class="evenrow">
+
+	<div class="method-header">
+		<span class="method-title">escape</span> (line <span class="line-number">150</span>)
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Escape unescaped string to use in SQL statement</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> Escaped string.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			escape
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$str</span>)
+			</div>
+
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$str</span><span class="var-description">: Unescaped string.</span>			</li>
+				</ul>
+
+
+	</div>
+<a name="methodfetchResult" id="fetchResult"><!-- --></a>
+<div class="oddrow">
+
+	<div class="method-header">
+		<span class="method-title">fetchResult</span> (line <span class="line-number">316</span>)
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Get result data</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> Result data or Enumerated array of fetched row                          arrays or objects.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+
+	<div class="method-signature">
+		<span class="method-result">mixed</span>
+		<span class="method-name">
+			fetchResult
+		</span>
+					(<span class="var-type">int</span>&nbsp;<span class="var-name">$row</span>, <span class="var-type">mixed</span>&nbsp;<span class="var-name">$field</span>)
+			</div>
+
+			<ul class="parameters">
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$row</span><span class="var-description">: Row index.</span>			</li>
+					<li>
+				<span class="var-type">mixed</span>
+				<span class="var-name">$field</span><span class="var-description">: Field name or index.</span>			</li>
+				</ul>
+
+
+	</div>
+<a name="methodfetchRow" id="fetchRow"><!-- --></a>
+<div class="evenrow">
+
+	<div class="method-header">
+		<span class="method-title">fetchRow</span> (line <span class="line-number">274</span>)
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Fetch a result row</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> Fetched array or object.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+
+	<div class="method-signature">
+		<span class="method-result">mixed</span>
+		<span class="method-name">
+			fetchRow
+		</span>
+					([<span class="var-type">int</span>&nbsp;<span class="var-name">$fetchType</span> = <span class="var-default">DBW_FETCH_ASSOC</span>])
+			</div>
+
+			<ul class="parameters">
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$fetchType</span><span class="var-description">: DBW_FETCH_ASSOC - fetch an associative array,                               DBW_FETCH_ORDERED - fetch an enumerated array,                               DBW_FETCH_OBJECT - fetch object.</span>			</li>
+				</ul>
+
+
+	</div>
+<a name="methodfetchRows" id="fetchRows"><!-- --></a>
+<div class="oddrow">
+
+	<div class="method-header">
+		<span class="method-title">fetchRows</span> (line <span class="line-number">297</span>)
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Fetch a set of result rows</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> Enumerated array of fetched row arrays or objects</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+
+	<div class="method-signature">
+		<span class="method-result">mixed</span>
+		<span class="method-name">
+			fetchRows
+		</span>
+					([<span class="var-type">int</span>&nbsp;<span class="var-name">$fetchType</span> = <span class="var-default">DBW_FETCH_ASSOC</span>])
+			</div>
+
+			<ul class="parameters">
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$fetchType</span><span class="var-description">: DBW_FETCH_ASSOC - fetch rows as associative arrays,                               DBW_FETCH_ORDERED - fetch rows as enumerated arrays,                               DBW_FETCH_OBJECT - fetch rows as objects</span>			</li>
+				</ul>
+
+
+	</div>
+<a name="methodfieldName" id="fieldName"><!-- --></a>
+<div class="evenrow">
+
+	<div class="method-header">
+		<span class="method-title">fieldName</span> (line <span class="line-number">235</span>)
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Get the name of the specified field in a result</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> Name of the specified field or false if the                           function failed.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			fieldName
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$index</span>)
+			</div>
+
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$index</span><span class="var-description">: Field_index starts at 0.</span>			</li>
+				</ul>
+
+
+	</div>
+<a name="methodfieldType" id="fieldType"><!-- --></a>
+<div class="oddrow">
+
+	<div class="method-header">
+		<span class="method-title">fieldType</span> (line <span class="line-number">254</span>)
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Get the type of the specified field in a result</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> Type of the specified field or false if the                           function failed.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			fieldType
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$index</span>)
+			</div>
+
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$index</span><span class="var-description">: Field_index starts at 0.</span>			</li>
+				</ul>
+
+
+	</div>
+<a name="methodfreeResult" id="freeResult"><!-- --></a>
+<div class="evenrow">
+
+	<div class="method-header">
+		<span class="method-title">freeResult</span> (line <span class="line-number">360</span>)
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Free result memory</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> False if the function failed.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+
+	<div class="method-signature">
+		<span class="method-result">bool</span>
+		<span class="method-name">
+			freeResult
+		</span>
+				()
+			</div>
+
+
+
+	</div>
+<a name="methodgetError" id="getError"><!-- --></a>
+<div class="oddrow">
+
+	<div class="method-header">
+		<span class="method-title">getError</span> (line <span class="line-number">376</span>)
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns the text and code of the error message from previous operation</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> [0]=&gt;string $errorMsg, [1]=&gt;int $errorCode.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+
+	<div class="method-signature">
+		<span class="method-result">array</span>
+		<span class="method-name">
+			getError
+		</span>
+				()
+			</div>
+
+
+
+	</div>
+<a name="methodinsertID" id="insertID"><!-- --></a>
+<div class="evenrow">
+
+	<div class="method-header">
+		<span class="method-title">insertID</span> (line <span class="line-number">348</span>)
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Get the ID generated from the previous INSERT operation</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> 0 if the previous query does not generate an AUTO_INCREMENT value.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+
+	<div class="method-signature">
+		<span class="method-result">int</span>
+		<span class="method-name">
+			insertID
+		</span>
+				()
+			</div>
+
+
+
+	</div>
+<a name="methodnumFields" id="numFields"><!-- --></a>
+<div class="oddrow">
+
+	<div class="method-header">
+		<span class="method-title">numFields</span> (line <span class="line-number">216</span>)
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Get number of fields in result</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> Number of fields in result or false if the function failed.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+
+	<div class="method-signature">
+		<span class="method-result">int</span>
+		<span class="method-name">
+			numFields
+		</span>
+				()
+			</div>
+
+
+
+	</div>
+<a name="methodnumRows" id="numRows"><!-- --></a>
+<div class="evenrow">
+
+	<div class="method-header">
+		<span class="method-title">numRows</span> (line <span class="line-number">199</span>)
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Get number of rows in result</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> Number of rows in result or false if the function failed.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+
+	<div class="method-signature">
+		<span class="method-result">int</span>
+		<span class="method-name">
+			numRows
+		</span>
+				()
+			</div>
+
+
+
+	</div>
+<a name="methodquery" id="query"><!-- --></a>
+<div class="oddrow">
+
+	<div class="method-header">
+		<span class="method-title">query</span> (line <span class="line-number">163</span>)
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Execute SQL statement</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+
+	<div class="method-signature">
+		<span class="method-result">bool</span>
+		<span class="method-name">
+			query
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$sql</span>)
+			</div>
+
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$sql</span><span class="var-description">: SQL statement.</span>			</li>
+				</ul>
+
+
+	</div>
+<a name="methodseekRow" id="seekRow"><!-- --></a>
+<div class="evenrow">
+
+	<div class="method-header">
+		<span class="method-title">seekRow</span> (line <span class="line-number">332</span>)
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Move internal result pointer</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> False if failed to move the pointer.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+
+	<div class="method-signature">
+		<span class="method-result">bool</span>
+		<span class="method-name">
+			seekRow
+		</span>
+					(<span class="var-type">int</span>&nbsp;<span class="var-name">$row</span>)
+			</div>
+
+			<ul class="parameters">
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$row</span><span class="var-description">: Row_number starts at 0.</span>			</li>
+				</ul>
+
+
+	</div>
+
+		</div>
+	</div>
+
+
+	<p class="notes" id="credit">
+		Documentation generated by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor</a>
+	</p>
+	</div></body>
+</html>

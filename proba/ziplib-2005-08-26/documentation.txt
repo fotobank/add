@@ -1,0 +1,59 @@
+ZipLib2 Documentation
+
+Introduction: ZipLib2 is a wrapper of original ziplib file developed by Eric Mueller.  Original ZipLib compress the data if 
+
+you submit the data as stream. This creates an enormous hassle and you have to care a lot of things like file opening, 
+
+reading it and then passing the content as an array. ZipLib2 wraps that method so that you can add any number of zip files 
+
+but just supplying their absolute or relative path.  So there is no more hassle. Just supply the file name and get your zip 
+
+file ready. By this time, ziplib can only create zip files. There is no support for reading and extracting zip files. Very 
+
+soon we will add that support. 
+
+------------------------------------------------------------------------------------------------------------
+
+How to create zip file using ZipLib2:  Creating zip files using zip file is a matter of minute. Lets see how you can compress 
+
+with ZipLib2.
+
+ZipLIb2 exposes two methods for developers to compress files. And to output that The method for compression is “addFiles” 
+
+which takes variable number of arguments (filenames) and then zip it. 
+
+------------------------------------------------------------------------------------------------------------
+Function addFiles($files)
+
+$files is an array which contains name of the files to compress, as an array. You can write $files as follows
+
+$files = array(“readme.pdf”, “news/news1.pdf”, “../mypic.jpg”);
+
+you can supply file names with absolute path or relative path. 
+
+That’s it, you have compressed these files. Now output your zip file. 
+
+------------------------------------------------------------------------------------------------------------
+Function Output($filename)
+
+To output your newly created zip files just supply the name of zip file. This could also be filename with relative path and 
+
+absolute path. Like this
+
+$ziplib2->output(“news/archivednews.zip”);  
+
+this time an zip file named archivednews.zip will be created in “news” folder in the same directory. But you have to take 
+
+care of file permission. You must set the write permission of the folder where you want to put your zip file. In this example 
+
+“news” folder must have write permission (at least 744)
+
+-------------------------------------------------------------------------------------------------------
+so guys, look at this complete example  to make the zip file. 
+
+<?
+include("zip.lib.php");
+$ziper = new zipfile();
+$ziper->addFiles(array("m.pdf","file.png"));
+$ziper->output("zip2.zip");
+?>

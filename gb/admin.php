@@ -55,6 +55,7 @@ if (file_exists("passwords.php") && isset($alogin) && isset($pass) && $QUERY_STR
 	}
 
 endif;
+    header('Content-type: text/html; charset=windows-1251');
 ?>
 
 <html>
@@ -63,9 +64,7 @@ endif;
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="content-type" content="text/html; charset=windows-1251">
 <style>
-<?
-header('Content-type: text/html; charset=windows-1251');
-?>
+
 body 
   {
   font-family: Verdana, Tahoma, Helvetica, Arial, sans-serif, "Arial Cyr"; font-size: 11px; color: #222222; 

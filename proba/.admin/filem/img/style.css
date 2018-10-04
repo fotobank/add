@@ -1,0 +1,40 @@
+.main
+{
+	font-size: 12px;
+	font-family: Tahoma;
+}
+
+
+INPUT
+{
+	border-right: black thin solid;
+	border-top: black thin solid;
+	border-left: black thin solid;
+	border-bottom: black thin solid;
+	background-color: #d3d3d3;
+}
+.header
+{
+	font-weight: bold;
+	font-size: 18px;
+	font-family: Arial;
+	text-align: center;
+}
+
+A, A:visited
+{
+	color: blue;
+}
+
+A:hover
+{
+	color: red;
+}
+
+IMG
+{
+	border-top-style: none;
+	border-right-style: none;
+	border-left-style: none;
+	border-bottom-style: none;
+}

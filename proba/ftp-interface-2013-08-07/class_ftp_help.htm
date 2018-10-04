@@ -1,0 +1,420 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>FTP Scripting Help</title>
+<style>
+table {
+	border-collapse:collapse;
+}
+table th {
+	border-style:solid;
+	border-width:thin;
+	border-color:#AAAAFF;
+	background-color: #0000CC;
+	color: #FFFFFF;
+	padding: 3px;
+}
+table td {
+	border-style:solid;
+	border-width:thin;
+	border-color:#AAAAFF;
+	padding: 3px;
+}
+.subth {
+	border-style:solid;
+	border-width:thin;
+	border-color:#AAAAFF;
+	background-color: #AAAAFF;
+	color: #000000;
+	padding: 3px;
+}
+.subnote {
+	font-size: 11px;
+}
+</style>
+</head>
+<body>
+<h1>FTP Scripting Help</h1>
+<h2>Commands</h2>
+<table>
+    <tr valign="top">
+      <th align="left">Command</td>
+      <th align="left">Operation</td>
+    </tr>
+    <tr valign="top">
+      <td align="left"><code>#</code></td>
+      <td align="left">Remark (comment) indicator.  The text following this will be ignored.</td>
+    </tr>
+    <tr valign="top">
+      <td align="left"><code>ascii </code></td>
+      <td align="left">Switch to ASCII mode. ASCII  mode is the default mode; use it for transferring text files. </td>
+    </tr>
+    <tr valign="top">
+      <td align="left"><code>binary</code></td>
+      <td align="left">Switch to binary mode. Use this to transfer binary files, including  files ending in .zip, .tar, .Z,   and .gz, executable programs, and graphics files. </td>
+    </tr>
+    <tr valign="top">
+      <td align="left"> <p><code>bye<br />quit<br />close</code></p></td>
+      <td align="left">Close the connection to the remote computer (optional)</td>
+    </tr>
+    <tr valign="top">
+      <td align="left"><code>cd</code></td>
+      <td align="left"><dl>
+      	<dt><strong><code>cd </code></strong><code><em>remote-directory</em></code><em></em></dt>
+        <dd>Change the working directory on the remote machine to <em>remote-directory </em></dd></dl></td>
+    </tr>
+    <tr valign="top">
+      <td align="left"><p><code>del<br />delete</code></td>
+      <td align="left"><dl>
+        <dt><strong><code>delete </code></strong><code><em>remote-file</em></code><em></em></dt>
+        <dd>Delete the file <em>remote-file</em> on the remote machine. </dd>
+      </dl></td>
+    </tr>
+    <tr valign="top">
+      <td align="left"><code>get</code></td>
+      <td align="left"><dl>
+        <dt><strong><code>get </code></strong><code><em>remote-file</em></code><em></em></dt>
+        <DD>Retrieve the <em>remote-file</em> and store it on the local machine.  </dd>
+      </dl></td>
+    </tr>
+    <tr valign="top">
+      <td align="left"><code>lcd</code></td>
+      <td align="left"><dl>
+        <dt><strong><code>lcd </code></strong><code><em>directory</em></code><em></em></dt>
+        <DD>Change the working directory on the local machine.</dd>
+      </dl></td>
+    </tr>
+    <tr valign="top">
+      <td align="left"><code>mdel<br />mdelete</code></td>
+      <td align="left"><dl>
+        <dt><strong><code>mdelete </code></strong><code><em>remote-files</em></code><em></em></dt>
+        <DD>Delete the <em>remote-files</em> on the remote machine. </dd>
+      </dl></td>
+    </tr>
+    <tr valign="top">
+      <td align="left"><code>mget</code></td>
+      <td align="left"><dl>
+        <dt><strong><code>mget </code></strong><code><em>remote-files</em> [<em>remote-files</em>2 [...]]</code></dt>
+        <DD>Expand the <em>remote-files</em> on the remote machine  and do a <strong>get</strong> for each file name thus produced.  Files are transferred into the local working directory,  which can be changed with  `lcd'    directory.</dd>
+      </dl></td>
+    </tr>
+    <tr valign="top">
+      <td align="left"><p><code>ren<br />
+        rename
+      </code></p></td>
+      <td align="left"><dl>
+        <dt><strong><code>rename </code></strong><code><em>remote-file</em> <em>remote-file-new-name</em></code></dt>
+        <DD>Renames <em>remote-files</em> on the remote machine to the given new name, <code><em>remote-file-new-name</em></code>.</dd>
+      </dl></td>
+    </tr>
+    <tr valign="top">
+      <td align="left"><code>mkdir</code></td>
+      <td align="left"><dl>
+        <dt><strong><code>mkdir </code></strong><code><em>directory-name</em></code><em></em></dt>
+        <DD>Make a directory on the remote machine. </dd>
+      </dl></td>
+    </tr>
+    <tr valign="top">
+      <td align="left"><code>mput</code></td>
+      <td align="left"><dl>
+        <dt><strong><code>mput </code></strong><code><em>local-files</em>  [<em>local-files</em>2 [...]]</code></dt>
+        <DD>Expand wild cards in the list of local files given as arguments  and do a <strong>put</strong> for each file in the resulting list.</dd>
+      </dl></td>
+    </tr>
+    <tr valign="top">
+      <td align="left"><code>put</code></td>
+      <td align="left"><dl>
+        <dt><strong><code>put </code></strong><code><em>local-file</em></code><em></em></dt>
+        <DD>Store a local file on the remote machine.</dd>
+      </dl></td>
+    </tr>
+    <tr valign="top">
+      <td align="left"><code>chmod</code></td>
+      <td align="left"><dl>
+        <dt><strong><code>chmod </code></strong><code><em>permissions remote-file</em></code><em></em></dt>
+        <dt><DD>Attempts to change the permission of <code><em>remote-file</em></code> to the given value. This <strong>only</strong> works on Linux/UNIX host servers.<br /><br  /></dd>
+        <DD>The permissions should be given using the three octal numbers for permissions. The three values are owner (first number), group (second  number), and other (third  number). Please reference the following to determine each of these values:
+        <dt><br />
+        </dt>
+        <DD>
+          <dl>
+            <dt>7 = 4+2+1 (read/write/execute; <em><strong>all</strong></em> rights)<br />
+              6 = 4+2 (read/write)<br />
+              5 = 4+1 (read/execute)<br />
+              4 = 4 (read)<br />
+              3 = 2+1 (write/execute)<br />
+              2 = 2 (write)<br />
+              1 = 1 (execute)<br />
+            0 = 0 (no rights)</dt>
+          </dl>
+          <p>For example, to allow only the owner to read and write, the group to read, and refuse anyone else rights, the permissions would be 640. To allow the owner all rights, the group read and write, and everyone else read the permissions would be 764. To allow everyone everything the permissions would be 777 (<em>not</em> recommended).</p>        
+        </dt>
+      </dl></td>
+    </tr>
+    <tr valign="top">
+      <td align="left"><code>rmdir</code></td>
+      <td align="left"><dl>
+        <dt><strong><code>rmdir </code></strong><code><em>directory-name</em></code><em></em></dt>
+        <DD>Delete a directory on the remote machine. This will attempt to remove the directory, regardless if there are files or subdirectories within the directory.</dd>
+      </dl></td>
+    </tr>
+</table>
+<h2>Tokens</h2>
+<p>Tokens allow a more dynamic execution of the script. For instance, when your script runs you want it to create a folder using the current date and upload to this unique folder; therefore, the script would use the following code:</p>
+<p><code>mkdir script_<em>%Y%%m%%d%<br />
+</em></code><code>cd script</code><code>_<em>%Y%%m%%d%</em></code></p>
+<p>Assuming today is August 6, 2013, this would translate into:</p>
+<p><code>mkdir script_<em>20130806<br />
+</em>cd script_<em>20130806</em></code></p>
+<p>All of the following tokens are expected to be contained within percentile symbols (&quot;<code>%</code>&quot;).</p>
+<table>
+  <thead>
+    <tr>
+      <th>Token</th>
+      <th>Description</th>
+      <th>Example returned values</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td colspan="3" class="subth"><em>Date/Time Formatting Shortcuts</em></td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>LONGDATE</code></div></td>
+      <td>Long date, formatted as day of the week, month day, 4-digit year</td>
+      <td>Example: <em>Tuesday, August 6, 2013</em><em></em></td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>SHORTDATE</code></div></td>
+      <td>Short date, formatted as day of the month/day/4-digit year</td>
+      <td>Example: <em>8/6/2013</em><em></em></td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>LONGTIME</code></div></td>
+      <td>Long time, formatted as hour:minite:second AM/PM</td>
+      <td>Example: <em>1:38:23 PM</em><em></em></td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>SHORTTIME</code></div></td>
+      <td>Short time, formatted as 24-hour:minite:second</td>
+      <td>Example: <em>13:38:23</em><em></em></td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>DATESTAMP</code></div></td>
+      <td>Numeric value representing the date</td>
+      <td>Example: &quot;8/6/2013 10:57 AM&quot; results in <em>1375811820</em></td>
+    </tr>
+    <tr>
+      <td colspan="3" class="subth"><em>Day</em></td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>d</code></div></td>
+      <td>Day of the month, 2 digits with leading zeros</td>
+      <td><em>01</em> to <em>31</em></td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>D</code></div></td>
+      <td>A textual representation of a day, three letters</td>
+      <td><em>Mon</em> through <em>Sun</em></td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>j</code></div></td>
+      <td>Day of the month without leading zeros</td>
+      <td><em>1</em> to <em>31</em></td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>l</code><br />
+		  <span class="subnote">(lowercase 'L')</span></div></td>
+      <td>A full textual representation of the day of the week</td>
+      <td><em>Sunday</em> through <em>Saturday</em></td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>N</code></div></td>
+      <td>ISO-8601 numeric representation of the day of the week</td>
+      <td><em>1</em> (for Monday) through <em>7</em> (for Sunday)</td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>S</code></div></td>
+      <td>English ordinal suffix for the day of the month, 2 characters</td>
+      <td><em>st</em>, <em>nd</em>, <em>rd</em> or <em>th</em>.  Works well with <em>j</em></td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>w</code></div></td>
+      <td>Numeric representation of the day of the week</td>
+      <td><em>0</em> (for Sunday) through <em>6</em> (for Saturday)</td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>z</code></div></td>
+      <td>The day of the year (starting from 0)</td>
+      <td><em>0</em> through <em>365</em></td>
+    </tr>
+    <tr>
+      <td colspan="3" class="subth"><em>Week</em></td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>W</code></div></td>
+      <td>ISO-8601 week number of year, weeks starting on Monday</td>
+      <td>Example: <em>42</em> (the 42nd week in the year)</td>
+    </tr>
+    <tr>
+      <td colspan="3" class="subth"><em>Month</em></td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>F</code></div></td>
+      <td>A full textual representation of a month, such as January or March</td>
+      <td><em>January</em> through <em>December</em></td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>m</code></div></td>
+      <td>Numeric representation of a month, with leading zeros</td>
+      <td><em>01</em> through <em>12</em></td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>M</code></div></td>
+      <td>A short textual representation of a month, three letters</td>
+      <td><em>Jan</em> through <em>Dec</em></td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>n</code></div></td>
+      <td>Numeric representation of a month, without leading zeros</td>
+      <td><em>1</em> through <em>12</em></td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>t</code></div></td>
+      <td>Number of days in the given month</td>
+      <td><em>28</em> through <em>31</em></td>
+    </tr>
+    <tr>
+      <td colspan="3" class="subth"><em>Year</em></td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>L</code></div></td>
+      <td>Whether it's a leap year</td>
+      <td><em>1</em> if it is a leap year, <em>0</em> otherwise.</td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>o</code></div></td>
+      <td>ISO-8601 year number. This has the same value as <em>Y</em>, except that if the ISO week number              (<em>W</em>) belongs to the previous or next year, that year is used instead.</td>
+      <td>Examples: <em>1999</em> or <em>2003</em></td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>Y</code></div></td>
+      <td>A full numeric representation of a year, 4 digits</td>
+      <td>Examples: <em>1999</em> or <em>2003</em></td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>y</code></div></td>
+      <td>A two digit representation of a year</td>
+      <td>Examples: <em>99</em> or <em>03</em></td>
+    </tr>
+    <tr>
+      <td colspan="3" class="subth"><em>Time</em></td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>a</code></div></td>
+      <td>Lowercase Ante meridiem and Post meridiem</td>
+      <td><em>am</em> or <em>pm</em></td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>A</code></div></td>
+      <td>Uppercase Ante meridiem and Post meridiem</td>
+      <td><em>AM</em> or <em>PM</em></td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>B</code></div></td>
+      <td>Swatch Internet time</td>
+      <td><em>000</em> through <em>999</em></td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>g</code></div></td>
+      <td>12-hour format of an hour without leading zeros</td>
+      <td><em>1</em> through <em>12</em></td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>G</code></div></td>
+      <td>24-hour format of an hour without leading zeros</td>
+      <td><em>0</em> through <em>23</em></td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>h</code></div></td>
+      <td>12-hour format of an hour with leading zeros</td>
+      <td><em>01</em> through <em>12</em></td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>H</code></div></td>
+      <td>24-hour format of an hour with leading zeros</td>
+      <td><em>00</em> through <em>23</em></td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>i</code></div></td>
+      <td>Minutes with leading zeros</td>
+      <td><em>00</em> to <em>59</em></td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>s</code></div></td>
+      <td>Seconds, with leading zeros</td>
+      <td><em>00</em> through <em>59</em></td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>u</code></div></td>
+      <td> Microseconds</td>
+      <td>Example: <em>654321</em></td>
+    </tr>
+    <tr>
+      <td colspan="3" class="subth"><em>Timezone</em></td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>e</code></div></td>
+      <td>Timezone identifier</td>
+      <td>Examples: <em>UTC</em>, <em>GMT</em>, <em>Atlantic/Azores</em></td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>I</code><br />
+        <span class="subnote">(capital '<code>i</code>')</span></div></td>
+      <td>Whether or not the date is in daylight saving time</td>
+      <td><em>1</em> if Daylight Saving Time, <em>0</em> otherwise.</td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>O</code></div></td>
+      <td>Difference to Greenwich time (GMT) in hours</td>
+      <td>Example: <em>+0200</em></td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>P</code></div></td>
+      <td>Difference to Greenwich time (GMT) with colon between hours and minutes</td>
+      <td>Example: <em>+02:00</em></td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>T</code></div></td>
+      <td>Timezone abbreviation</td>
+      <td>Examples: <em>EST</em>, <em>MDT</em> ...</td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>Z</code></div></td>
+      <td>Timezone offset in seconds. The offset for timezones west of UTC is always negative, and for those east of UTC is always positive.</td>
+      <td><em>-43200</em> through <em>50400</em></td>
+    </tr>
+    <tr>
+      <td colspan="3" class="subth"><em>Full Date/Time</em></td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>c</code></div></td>
+      <td>ISO 8601 date</td>
+      <td>2004-02-12T15:19:21+00:00</td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>r</code></div></td>
+      <td><a href="http://www.faqs.org/rfcs/rfc2822">» RFC 2822</a> formatted date</td>
+      <td>Example: <em>Thu, 21 Dec 2000 16:01:07 +0200</em></td>
+    </tr>
+    <tr>
+      <td><div align="center"><code>U</code></div></td>
+      <td>Seconds since the Unix Epoch (January 1 1970 00:00:00 GMT)</td>
+      <td>&nbsp;</td>
+    </tr>
+  </tbody>
+</table>
+<p>&nbsp;</p>
+</body>
+</html>

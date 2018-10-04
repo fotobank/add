@@ -1,0 +1,15 @@
+[DEFAULT]
+BASEURL=http://www.bishome.ru/
+[InternetShortcut]
+URL=http://www.bishome.ru/
+IDList=
+IconFile=http://www.bishome.ru/favicon.ico
+IconIndex=1
+[{000214A0-0000-0000-C000-000000000046}]
+Prop3=19,2
+[DOC#12]
+BASEURL=http://a.ucoz.net/popup/?ref=http%3A%2F%2Fwww.bishome.ru%2F&par=BHOkMYc8dRj4zn8w0LcTafXobUJEL3u-mRGUNRe9ZZB40ENc1-38tXYS2PpAEg88-BhYHOPXl_nKdm672i_eYb3rkOBh4GVlN-LvQlk9RIGyjN8BwO5Bi9CBM4x7arUsXbw0bqcu1TS24X1xncBHKs5V8KM4Pu-t651LUZLOVQ==
+ORIGURL=http://a.ucoz.net/popup/?ref=http%3A%2F%2Fwww.bishome.ru%2F&par=BHOkMYc8dRj4zn8w0LcTafXobUJEL3u-mRGUNRe9ZZB40ENc1-38tXYS2PpAEg88-BhYHOPXl_nKdm672i_eYb3rkOBh4GVlN-LvQlk9RIGyjN8BwO5Bi9CBM4x7arUsXbw0bqcu1TS24X1xncBHKs5V8KM4Pu-t651LUZLOVQ==
+[DOC#151]
+BASEURL=http://www.bishome.ru/mchat/
+ORIGURL=http://www.bishome.ru/mchat/

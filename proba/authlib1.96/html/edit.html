@@ -1,0 +1,62 @@
+	<HTML>
+	<HEAD><TITLE><?php echo $cfgx->namer(); ?> - Admin : Edit</TITLE></HEAD>
+	<BODY>
+	<form action=edit.php METHOD=POST>
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#3333FF">
+  	<tr bgcolor="#FFFFFF"> 
+    	<td><font face="Arial, Helvetica, sans-serif" size="2">Name : </font></td>
+      
+    	<td><font face="Arial, Helvetica, sans-serif" size="2"> 
+      	<input type=text name=name value="<? echo $name; ?>">
+        </font></td>
+    	</tr>
+
+  	<tr bgcolor="#FFFFFF"> 
+    	<td><font face="Arial, Helvetica, sans-serif" size="2">Age : </font></td>
+      
+    	<td><font face="Arial, Helvetica, sans-serif" size="2"> 
+      	<input type=text name=age value=<? echo $age; ?>>
+        </font></td>
+    	</tr>
+    
+  	<tr bgcolor="#FFFFFF"> 
+    	<td><font face="Arial, Helvetica, sans-serif" size="2">Sex : </font></td>
+      
+    	<td><font face="Arial, Helvetica, sans-serif" size="2"> 
+      	<select name="sex">
+      	<?php echo $st; ?>
+        </font></td>
+    	</tr>
+    
+  	<tr bgcolor="#FFFFFF"> 
+    	<td><font face="Arial, Helvetica, sans-serif" size="2">School : </font></td>
+      
+    	<td><font face="Arial, Helvetica, sans-serif" size="2"> 
+      	<input type=text name=school value="<? echo $school; ?>">
+        </font></td>
+    	</tr>
+    
+  	<tr bgcolor="#FFFFFF"> 
+    	<td width="50%"><font face="Arial, Helvetica, sans-serif" size="2">Username 
+      	: </font></td>
+      
+    	<td><font face="Arial, Helvetica, sans-serif" size="2"> 
+      	<?php echo $login_check[0]; ?>
+        </font></td>
+    	</tr>
+
+  	<tr bgcolor="#FFFFFF"> 
+    	<td width="50%"><font face="Arial, Helvetica, sans-serif" size="2">Email 
+      	: </font></td>
+      
+    	<td><font face="Arial, Helvetica, sans-serif" size="2"> 
+      	<?php echo $email; ?>
+        </font></td>
+    	</tr>
+	<td bgcolor="#FFFFFF">&nbsp;</td><td bgcolor="#FFFFFF"><input type=submit value=Edit></td></tr>
+  	</table></form>
+	<br><center><font face="Arial, Helvetica, sans-serif" size="2"><a href=chemail.php>Change Email</a></center><br></font>
+	<br><center><font face="Arial, Helvetica, sans-serif" size="2"><a href=chpass.php>Change Password</a></center><br></font>
+	<br><center><font face="Arial, Helvetica, sans-serif" size="2"><a href=delete.php>Delete Account</a></center></font>
+  	</BODY>
+  	</HTML>

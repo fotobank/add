@@ -1,0 +1,364 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+
+<style type="text/css"> 
+<!-- 
+body  {
+	font: 12px Verdana, Arial, Helvetica, sans-serif;
+	background: #666666;
+	margin: 0; /* it's good practice to zero the margin and padding of the body element to account for differing browser defaults */
+	padding: 0;
+	text-align: center; /* this centers the container in IE 5* browsers. The text is then set to the left aligned default in the #container selector */
+	color: #000000;
+	line-height:130%;
+	
+}
+.twoColFixLt #container { 
+	width: 980px;  /* using 20px less than a full 800px width allows for browser chrome and avoids a horizontal scroll bar */
+	background: #FFFFFF;
+	margin: 0 auto; /* the auto margins (in conjunction with a width) center the page */
+	border: 1px solid #000000;
+	text-align: left; /* this overrides the text-align: center on the body element. */
+}
+.twoColFixLt #sidebar1 {
+	float: left; /* since this element is floated, a width must be given */
+	width: 200px; /* the actual width of this div, in standards-compliant browsers, or standards mode in Internet Explorer will include the padding and border in addition to the width */
+	background: #f7f7f7; /* the background color will be displayed for the length of the content in the column, but no further */
+	padding: 15px 10px 15px 20px;
+	position:fixed;
+	border-right:2px dotted #CCCCCC;
+	border-bottom:2px dotted #CCCCCC;
+}
+.twoColFixLt #mainContent { 
+	color:#555;
+	margin: 0 0 0 250px; /* the left margin on this div element creates the column down the left side of the page - no matter how much content the sidebar1 div contains, the column space will remain. You can remove this margin if you want the #mainContent div's text to fill the #sidebar1 space when the content in #sidebar1 ends. */
+	padding: 0 20px 20px; /* remember that padding is the space inside the div box and margin is the space outside the div box */
+} 
+.fltrt { /* this class can be used to float an element right in your page. The floated element must precede the element it should be next to on the page. */
+	float: right;
+	margin-left: 8px;
+	line-height:150%;
+}
+.fltlft { /* this class can be used to float an element left in your page */
+	float: left;
+	margin-right: 8px;
+}
+.clearfloat { /* this class should be placed on a div or break element and should be the final element before the close of a container that should fully contain a float */
+	clear:both;
+    height:0;
+    font-size: 1px;
+    line-height: 0px;
+}
+#sidebar1 a{ text-decoration:none; color:#0066FF; border-bottom:1px dotted #FFCC33;}
+#sidebar1 a:hover{ color:#FF00FF; border-bottom:1px dotted #FFCC33;}
+#sidebar1 .sublinks a{ text-decoration:none; color:#66CC00; border-bottom:1px dotted #FFCC33;}
+#sidebar1 .sublinks a:hover{ color:#FF3300; border-bottom:1px dotted #FFCC33;}
+#sidebar1 ul{ margin-top:2px;}
+h1,h2,h3{ font-weight:normal;}
+h2{color:#3366CC; }
+h1{color:#66CC33; }
+h3{margin-top:0; color:#999999; font-family:"Trebuchet MS", Georgia, Arial}
+.style1 {
+	font-size: 36px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+.style2 {color: #0066FF}
+.style4 {color: #FFCC33}
+.style6 {color: #FF3300}
+.style9 {color: #FF00FF}
+.style11 {color: #66CC00}
+.style14 {
+	font-size: 10px;
+	color: #666666;
+}
+.upp{ vertical-align:top; line-height:10px; }
+pre{ background-color:#FFFFe4; padding:10px 10px 10px 20px; border:1px dotted #FFCC33; overflow:auto; }
+--> 
+</style><!--[if IE 5]>
+<style type="text/css"> 
+/* place css box model fixes for IE 5* in this conditional comment */
+.twoColFixLt #sidebar1 { width: 230px; }
+</style>
+<![endif]--><!--[if IE]>
+<style type="text/css"> 
+/* place css fixes for all versions of IE in this conditional comment */
+.twoColFixLt #sidebar1 { padding-top: 30px; }
+.twoColFixLt #mainContent { zoom: 1; }
+/* the above proprietary zoom property gives IE the hasLayout it needs to avoid several bugs */
+</style>
+<![endif]--></head>
+
+<body class="twoColFixLt">
+
+<div id="container">
+  <div id="sidebar1">
+    <h3><span class="style1"><span class="style2">B<span class="style11">L</span></span><span class="style4">I</span><span class="style9">T</span><span class="style6">Z</span></span><span class="upp">Multi-Byte</span><br />
+    </h3><br />
+    Quick Links
+    <ul>
+      <li><a href="#Introduction"><strong>Introduction</strong></a></li>
+      <li><a href="#Functions"><strong>Functions</strong></a><br />
+        <div class="sublinks" style="padding-left:20px;">
+      <a href="#LoadHTML">LoadHTML() </a><br />
+      <a href="#Analyze">Analyze()</a><br />
+      <a href="#GetEncoding">GetEncoding()</a><br />
+      <a href="#GetDocType">GetDocType()</a><br />
+      <a href="#GetMeta">GetMeta()</a><br />
+      <a href="#GetPageTitle">GetPageTitle()</a><br />
+      <a href="#GetBaseUrl">GetBaseUrl()</a><br />
+      <a href="#GetLinks">GetLinks()</a><br />
+      <a href="#GetImages">GetImages()</a><br />
+      <a href="#GetText">GetText()</a><br />
+      <a href="#GetWords">GetWords()</a><br />
+      <a href="#GetH1Words">GetH1Words()</a><br />
+      <a href="#GetTitleWords">GetTitleWords()</a><br />
+      <a href="#GetLinkedWords">GetLinkedWords()</a><br />
+      <a href="#GetLinkTitleWords">GetLinkTitleWords()</a><br />
+      <a href="#GetAltWords">GetAltWords()</a><br />
+      <a href="#GetWeightedWords">GetWeightedWords()</a><br />
+      <a href="#GetWordDensity">GetWordDensity()</a><br />
+      <a href="#String2Words">String2Words()</a><br />
+      <a href="#FixHTML">FixHTML()</a><br />
+<br /></div>
+      </li>
+      <li><a href="#Usage"><strong>Usage</strong></a></li>
+      <li><a href="#Credits"><strong>Credits</strong></a></li>
+    </ul>
+    <span class="style14">Copyrights &copy; 2009<br />
+    Sameer Shelavale </span>
+    <!-- end #sidebar1 --></div>
+  <div id="mainContent">
+    <h1> <a name="Introduction" id="Introduction"></a>Blitz Multi-Byte HTML Parser &amp; Analyzer </h1>
+    <p>Blitz is a PHP class written specifically for parsing and analyzing Multi-Byte HTML and XHTML without compromising performance. </p>
+    <p> Blitz Multi-Byte HTML Parser &amp; Analyzer Class provides functions to retrieve document encoding, Base url,  Hyperlinks with their titles and text, Images with their ALT tags, Text in the document,  Text in &lt;title&gt; or &lt;h1&gt; tag, contents of Meta tags.<br />
+      <br />
+       Blitz Multi-Byte HTML Parser &amp; Analyzer can also find all keywords with specified length in the html document and the keyword density.  Interestingly this class can also prepare array of weighted keywords, in which keywords can have different weights depending on their position, Like a keyword in &lt;title&gt; or &lt;h1&gt; or keywords in hyperlinks or Image ALT tag can have more weight that same keyword in normal text.<br />
+    </p>
+  <pre> keyword weight for html = no. of occurances X weight for one occurance(single weight)</pre>      
+      <br />
+      We can easily define keyword weights for position in each tag and then we get Array of all keywords and their weights.<br />
+      This is particularly helpful in indexing keywords in the html document for search engines.<br />
+    </p>
+    <p>Blitz HTML Parser &amp; Analyzer can also fix syntax of incorrect HTML very fast.</p>
+    <p>&nbsp;</p>
+    <h2><a name="Functions" id="Functions"></a>Functions </h2>
+    <p><strong><a name="LoadHTML" id="LoadHTML"></a><span class="style11">Function LoadHTML()</span></strong><br />
+      Description: This loads HTML as string and initializes DOMDocument object for it.<br />
+ Parameters:	</p>
+    <blockquote>
+      <p><em class="style9">$html</em> - can be any string containing html<br />
+        <em class="style9">$baseUrl</em> - the url from where the html is retrieved (optional)<br />
+        <em class="style9">$strp</em> - array of tag names as keys to strip off to find text contents in document<br />
+        <em class="style9">$weights</em> - array of positions and weight of keywords in it. <br />
+        supporeted positions are 
+        h1, title, links, linkTitle, metaTitle, metaKeywords, metaDescription, alt<br />
+        if weight is 0 for attributes(linkTitle, metaTitle, metaKeywords, metaDescription, alt) then keywords in that attribute will not be considered<br />
+        if weight is 0 for tags(h1, title, links) then keywords in them will not receive any extra weight and will be counted only once<br />
+      if weight is 1 or more for tags(h1, title, links) then keywords in them will receive additional weight<br />
+      <!-- end #mainContent --></p>
+      <p>&nbsp;</p>
+    </blockquote>
+    <p><strong><a name="Analyze" id="Analyze"></a><span class="style11">Function Analyze()</span></strong></p>
+    <p><strong>Description: </strong>returns array containing full analysis of html. 
+    The array keys are</p>
+    <blockquote>
+      <p>        <em class="style6">encoding</em> 	- document encoding <br />
+        <em class="style6">doctype</em> 	- array containing doctype info<br />
+        <em class="style6">meta</em>		- content of Meta tags in array<br />
+        <em class="style6">title</em>		- text in &lt;title&gt;<br />
+        <em class="style6">links</em>		- array of hyperlinks with each element having 'href','title','text' as keys<br />
+        <em class="style6">images</em>		- array of image urls with each image having 'src', 'alt' as keys<br />
+        <em class="style6">text</em>		- text content of the &lt;body&gt;<br />
+        <em class="style6">words</em>		- an array of unique words in different parts of document<br />
+        It has following keys<br />
+        </p>
+      <blockquote>
+        <p><em class="style4">h1</em>		- sorted keyword density array of words in &lt;h1&gt; <br />
+          <em class="style4">title</em>	- sorted keyword density array of words in &lt;title&gt;<br />
+          <em class="style4">a</em> 		- sorted keyword density array of words in &lt;a&gt;<br />
+          <em class="style4">a_title</em>	- sorted keyword density array of words in title attribute of hyperlinks<br />
+          <em class="style4">img_alt</em>	- sorted keyword density array of words in image al attributes<br />
+          <em class="style4">density</em> - sorted keyword density array of all words in the document<br />
+          <em class="style4">weights</em> - sorted array of words and their weight</p>
+      </blockquote>
+    </blockquote>
+    <p>&nbsp;</p>
+    <p><strong><a name="GetEncoding" id="GetEncoding"></a><span class="style11">Function GetEncoding()</span></strong></p>
+    <p><strong>Description: </strong>returns the document encoding as string</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p><strong><a name="GetDocType" id="GetDocType"></a><span class="style11">Function GetDocType()</span><br />
+    Description:</strong> returns the array containing DOCTYPE info</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p><strong><a name="GetMeta" id="GetMeta"></a><span class="style11">Function GetMeta()</span><br />
+  Description:</strong> 	returns array of meta tags. Each element in the array relates to one meta tag 
+	and has 'name', 'content', 'http-equiv' as array keys</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p><strong><a name="GetPageTitle" id="GetPageTitle"></a><span class="style11">Function GetPageTitle()</span><br />
+  Description:</strong> Returns Page title in the &lt;title&gt; tag</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p><strong><a name="GetBaseUrl" id="GetBaseUrl"></a><span class="style11">Function GetBaseUrl()</span><br />
+  	Description:</strong>	returns the base url for the document if specified in &lt;base&gt; tag 					else returns empty string </p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p><strong><a name="GetLinks" id="GetLinks"></a><span class="style11">Function GetLinks()</span><br />
+  Description:</strong>	Returns array of all the hyperlinks in the html provided. 					Please note that this does not include hyperlinks in comments<br />
+	Each element contains following keys</p>
+    <blockquote>
+      <p>      <span class="style6">'href'</span>  - the url ( this can be relative url or full url and needs validation)<br />
+        <span class="style6">'title'</span> - titles for links( the title attribute )<br />
+        <span class="style6">'text'</span>  - the linked text/phrase</p>
+      <p>&nbsp;</p>
+    </blockquote>
+    <p>&nbsp;</p>
+    <p><strong><a name="GetImages" id="GetImages"></a><span class="style11">Function  GetImages()</span><br />
+  Description:</strong>	Returns array of urls of Images in the document, all images and their alt tags<br />
+	Each element of array contains following keys</p>
+    <blockquote>
+      <p>      <span class="style6">'src'</span> - image url<br />
+        <span class="style6">'alt'</span> - description in alt tag if specified else empty string</p>
+      <p>&nbsp;</p>
+    </blockquote>
+    <p><a name="GetText" id="GetText"></a><span class="style11"><strong>Function GetText()</strong></span><strong><br />
+  	Description:</strong>	Returns the text content within  &lt;body&gt; tag </p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p><strong><a name="GetWords" id="GetWords"></a><span class="style11">Function GetWords()</span><br />
+  	Description:</strong>	returns array of unique words in the &lt;body&gt; tag of html with the number of occurances in short it returns the array of keywords sorted by density. Each element is array with 'keyword' and 'count' as keys.  				</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p><strong><a name="GetH1Words" id="GetH1Words"></a><span class="style11">Function GetH1Words()</span><br />
+  Description:</strong>	Get array of unique keywords in H1 with their density 
+ 					in short it returns the array of keyword density in &lt;h1&gt; tag. 
+					Each element is array with 'keyword' and 'count' as keys.  				 <br />
+    </p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p><strong><a name="GetTitleWords" id="GetTitleWords"></a><span class="style11">Function GetTitleWords()</span><br />
+  Description:</strong>	Get array of unique keywords in Title with their density 
+ 					in short it returns the array of keyword density in &lt;title&gt; tag. 
+Each element is array with 'keyword' and 'count' as keys.  				 <br />
+    </p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p><strong><a name="GetLinkedWords" id="GetLinkedWords"></a><span class="style11">Function GetLinkedWords()</span><br />
+  Description:</strong>	Get array of unique keywords in Hyperlinks with their density 
+ 					in short it returns the array of keyword density in &lt;a&gt; tag.<br />
+ 					Note that this does not include the words in link title(title attribute)<br />
+ 					Each element is array with 'keyword' and 'count' as keys. <br />
+    </p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p><strong><a name="GetLinkTitleWords" id="GetLinkTitleWords"></a><span class="style11">Function GetLinkTitleWords()</span><br />
+  Description:</strong>	Get array of unique keywords in Hyperlinks Titles(title attribute) with their density 
+ 					in short it returns the array of keyword density in 'title' attribute of &lt;a&gt; tag. <br />
+ 					Each element is array with 'keyword' and 'count' as keys.  				<br />
+    </p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p><strong><a name="GetAltWords" id="GetAltWords"></a><span class="style11">Function GetAltWords()</span><br />
+  Description:</strong>	Get array of unique keywords in image ALT attribute with their density. In short it returns the array of keyword density in 'alt' attribute of &lt;img&gt; tag. <br />
+    Each element is array with 'keyword' and 'count' as keys. </p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p><a name="GetWeightedWords" id="GetWeightedWords"></a><span class="style11"><strong>Function GetWeightedWords()</strong></span><strong><br />
+  	Description:</strong>	returns array of unique words in the html with the weight(importance) of it<br />
+					Keyword weights can be used for searching multiple articles and keywords may receive different weights depending on its position in HTML. for example. Keywords in &lt;title&gt; or 					&lt;h1&gt; tags should receive higher weight.	Likewise wach keyword position can have different weight. Each element key is keyword and value is the weight the keyword depending on its position in html<br />
+                    <strong>Parameters:</strong>		<em class="style9">$weights </em>- (optional) - array specifying each position as key and its weight as value<br />
+    </p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p><strong><a name="GetWordDensity" id="GetWordDensity"></a><span class="style11">Function GetWordDensity()</span><br />
+  	Description:</strong>	returns array of unique words in the html with the word density<br />
+					This unlike GetWords() can also include words in meta tags, alt and title attributes. Each element key is keyword and value is the density<br />
+<strong>Parameters:</strong><em class="style9"> $weights</em>- array specifying each position as key and value as 0 or 1<br />
+  					value 0 means dont count words in that particular position<br />
+  					value 1 or nonzero means count words in that particular position or tag in html<br />
+  				The advantage is we can use same weight array as for GetEWeightedWords <br />
+    </p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p><strong><a name="String2Words" id="String2Words"></a><span class="style11">Function String2Words()</span><br />
+      Description:</strong> This returns an array of words in the passed string. 
+    Please note that the returned words can contain duplicates. And if it is multi-byte mode then these words are base64 encoded so that they can be used as array keys in later execution</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p><strong><a name="FixHTML" id="FixHTML"></a><span class="style11">Funciton FixHTML( )</span><br />
+</strong>	This function corrects HTML with incorrect syntax e.g. unclosed tags etc.<br />
+ 					This can be useful where we need to cut input html without causing 
+ 					unclosed tags etc.<br />
+ 					Please note this is not a multi-byte function yet.<br />
+	                <strong>Parameters:</strong> </p>
+    <blockquote>
+      <p><em class="style9">$htmlStr</em> - string containing html/xhtml<br />
+        <em class="style9">$autoAddWrappers</em> - if true it will automatically add &lt;html&gt;&lt;head&gt;&lt;body&gt; etc. tags and will make it a full valid html document, 
+        if false it will just correcy whatever input is given</p>
+      <p>&nbsp;</p>
+    </blockquote>
+    <h2><a name="Usage" id="Usage"></a>Usage</h2>
+    <p>Multi-Byte Mode (Default )
+    <pre><code>$blitz = new Blitz(); //default multi-byte mode or you can also use $blitz = new Blitz(&quot;multi-byte&quot;);
+$blitz->LoadHTML($data);
+$result =  $blitz->Analyze();
+    </code></pre>
+    </p>
+    <p>Single-Byte Mode(Use it only when you are sure that there are no multi-byte characters. This is almost 3 times faster than multi-byte version  )<pre><code>$blitz = new Blitz("single-byte"); //Multi-Byte version by default
+$blitz->LoadHTML($data);
+$result =  $blitz->Analyze();
+    </code></pre>
+    </p>
+    <p>Setting keyword Weights
+    <pre><code>
+
+$blitz = new Blitz();
+
+$blitz->defaultWeight = 1;	//default weight for any keyword
+$blitz->minWordLength = 3;	//minimum length of a keyword
+$blitz->maxWordLength = 255;	//maximum allowed keyword length
+$blitz->LoadHTML($data);
+
+$blitz->wordWeights = array(	'h1'=>2,	//keywords in h1 receive additional weight 2(total 3)
+				'title'=>3, 	//each keywords in Title receive total 3 weight 
+				'links'=>0, 	//receives default weight as they are in body text
+				'linkTitle'=>1, // will receive total 1 weight, 
+				'metaTitle'=>1, 
+				'metaKeywords'=>1, 
+				'metaDescription'=>1, 
+				'alt'=>0 );	//keywords in alt tags will not be counted at all
+                
+$result =  $blitz->Analyze();
+
+    </code></pre>
+    
+    </p>
+    <p>Fixing wrong HTML
+    (This does not  yet suport multi-byte)<pre><code>
+
+$blitz = new Blitz();
+$blitz->FixHTML( $data, false );
+
+    </code></pre>
+    
+    </p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <h2><a name="Credits" id="Credits"></a>Credits</h2>
+    <p>Author: Sameer Shelavale<br />
+    Email: samiirds{(at)}gmail{(DoT)}com<br />
+    skype: phpmysqlcoder<br />
+    YahooIM: php.developer<br />
+    Website: <a href="http://possible.in">http://possible.in</a></p>
+  </div>
+	<!-- This clearing element should immediately follow the #mainContent div in order to force the #container div to contain all child floats --><br class="clearfloat" />
+<!-- end #container --></div>
+</body>
+</html>

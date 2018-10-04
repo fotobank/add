@@ -67,10 +67,8 @@
        );
        /** ----------------------------------------------------------------------------------*/
        try {
-              require_once (__DIR__.'/../lib/Twig/Autoloader.php');
-              Twig_Autoloader::register();
+              require_once (__DIR__.'/../vendor/autoload.php');
               $loadTwig = new loadTwig();
-              //					require_once ('plugins_Twig.php');
        }
        catch (Exception $e) {
               if (check_Session::getInstance()->has('DUMP_R')) {
@@ -78,9 +76,9 @@
               }
        }
        /** ----------------------------------------------------------------------------------*/
-       $user_balans         = ($session->has('userid')) ? go\DB\query('select `balans` from `users` where `id` = ?f', array($session->get('userid')), 'el'):NULL;
-       $_SESSION['userVer'] = ($session->has('userVer')) ? $session->get('userVer') : genpass(10, 2);
-       $_SESSION['accVer']  = ($session->has('accVer')) ? $session->get('accVer') : genpass(10, 2);
+       $user_balans         = $session->has('userid') ? go\DB\query('select `balans` from `users` where `id` = ?f', array($session->get('userid')), 'el'):NULL;
+       $_SESSION['userVer'] = $session->has('userVer') ? $session->get('userVer') : genpass(10, 2);
+       $_SESSION['accVer']  = $session->has('accVer') ? $session->get('accVer') : genpass(10, 2);
        // $razdel для фиксации главного меню
        $razdel = $_SERVER['PHP_SELF'];
        if ($_SERVER['PHP_SELF'] === '/fotobanck_adw.php') {

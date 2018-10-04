@@ -1,0 +1,22 @@
+protect picture class changelog
+contact: http://www.phplibrairies.com
+
+v1.0.1:
+    update pattern for src detection: following pattern are now recognize
+    <img alt="Text" src="filename.jpg">
+    <img src=example.jpg>
+    <img
+    src="filename.jpg">
+    thanks to Thiemo MATTIG
+
+v1.0.2:
+    class won't change url for external link (reduce bandwith use)
+    better php code
+    thanks to cerber (http://www.phpfrance.com)
+
+
+v1.0.3:
+    an error in the code protect only the 5st differents pictures found the  HTML code.
+it's fixed
+
+v1.5: allow use of others sessions save handlers by using a cache file system.

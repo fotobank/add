@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta http-equiv="content-style-type" content="text/css" />
+<meta http-equiv="content-script-type" content="text/javascript" />
+<meta http-equiv="pragma" content="no-cache" />
+<meta http-equiv="expires" content="-1" />
+<meta http-equiv="imagetoolbar" content="no" />
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<meta name="distribution" content="global" />
+
+<title>ImageBatchProcessor for PHP</title>
+
+<style type="text/css">
+body {
+    text-align: center;
+    margin: 20px 0px;
+}
+#content {
+    width: 760px;
+    text-align: justify;
+    margin: auto;
+}
+.listing {
+    background-color: #f2f2f2;
+    color: #000000;
+    border: 1px solid #cccccc;
+    padding: 10px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div id="content">
+
+<h1>ImageBatchProcessor for PHP</h1>
+
+<h2>1. Preamble</h2>
+
+<p>
+ImageBatchProcessor class can be used to perform different kind of operations
+over a group of images. It can proportionally resize images (create thumbnails),
+rotate images, convert between different image formats, append textual labels
+and/or small graphic watermarks to images, etc.
+</p>
+
+<p>
+Transformation parameters may be applied to all images in a directory or
+separately to each image in a set - the images in source or destination sets may
+be located in the same or different directories.
+</p>
+
+<p>
+The class also contains a traversal method which walks through a directory and
+calls a callback function for each item. The method may be used, for example, to
+rename all images (or other files) in a directory using predefined naming
+template (<i>photo01.jpg, photo02.jpg, ...</i>).
+</p>
+
+<h3>1.2. Requirements</h3>
+
+<ul>
+<li>Apache or other compatible Web server.</li>
+<li>PHP 4.3 or higher version.</li>
+<li>GD extension 2.x or higher version.</li>
+<li>ThumbnailImage class version 1.2 (included in distribution archive).</li>
+</ul>
+
+<h3>1.3. License Agreement</h3>
+
+<p>
+The class is distributed under the
+<a href="http://www.opensource.org/licenses/mit-license.php">MIT license</a> and
+may be used for commercial and non-commercial purposes without any fee.
+</p>
+
+<p>
+&copy; 2008 Vagharshak Tozalakyan &lt;vagh{at}tozalakyan{dot}com&gt;
+</p>
+
+<p>
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to use,
+copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the
+Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+</p>
+
+<p>
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+</p>
+
+<p>
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+</p>
+
+<h2>2. Samples of Usage</h2>
+
+<h3>2.1. Processing the Whole Directory</h3>
+
+<p>
+In the following example all JPEG images from the <i>c:/mypicts/album1/</i>
+directory will be processed as thumbnails to the <i>d:/album/</i> directory:
+</p>
+
+<div class="listing"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php
+<br />
+<br /></span><span style="color: #FF8000">//&nbsp;Set&nbsp;script&nbsp;execution&nbsp;time&nbsp;limit&nbsp;to&nbsp;10&nbsp;minutes.
+<br /></span><span style="color: #0000BB">set_time_limit</span><span style="color: #007700">(</span><span style="color: #0000BB">600</span><span style="color: #007700">);
+<br />
+<br /></span><span style="color: #FF8000">//&nbsp;Include&nbsp;class&nbsp;definition&nbsp;file.
+<br /></span><span style="color: #007700">require_once&nbsp;</span><span style="color: #DD0000">'class.ImageBatchProcessor.php'</span><span style="color: #007700">;
+<br />
+<br /></span><span style="color: #FF8000">//&nbsp;Create&nbsp;transformation&nbsp;object.
+<br /></span><span style="color: #0000BB">$t&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">ImageBatchTransformation</span><span style="color: #007700">();
+<br /></span><span style="color: #FF8000">//&nbsp;Source&nbsp;and&nbsp;destination&nbsp;directories.
+<br /></span><span style="color: #0000BB">$t</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">source&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'c:/mypicts/album1/'</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">destination&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'d:/album/'</span><span style="color: #007700">;
+<br /></span><span style="color: #FF8000">//&nbsp;Destination&nbsp;image&nbsp;format:&nbsp;TI_JPEG,&nbsp;TI_PNG&nbsp;or&nbsp;TI_GIF.
+<br /></span><span style="color: #0000BB">$t</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">format&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">TI_JPEG</span><span style="color: #007700">;
+<br /></span><span style="color: #FF8000">//&nbsp;Destination&nbsp;JPEG&nbsp;quality:&nbsp;0&nbsp;-&nbsp;100&nbsp;or&nbsp;-1&nbsp;for&nbsp;default&nbsp;value.
+<br /></span><span style="color: #0000BB">$t</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">jpegQuality&nbsp;</span><span style="color: #007700">=&nbsp;-</span><span style="color: #0000BB">1</span><span style="color: #007700">;
+<br /></span><span style="color: #FF8000">//&nbsp;Interlacing&nbsp;mode:&nbsp;TI_INTERLACE_ON&nbsp;or&nbsp;TI_INTERLACE_OFF.
+<br /></span><span style="color: #0000BB">$t</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">interlace&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">TI_INTERLACE_ON</span><span style="color: #007700">;
+<br /></span><span style="color: #FF8000">//&nbsp;Maximal&nbsp;width&nbsp;and&nbsp;height&nbsp;of&nbsp;destination&nbsp;image.
+<br /></span><span style="color: #0000BB">$t</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">maxWidth&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">150</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">maxHeight&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">150</span><span style="color: #007700">;
+<br /></span><span style="color: #FF8000">//&nbsp;Force&nbsp;small&nbsp;images&nbsp;to&nbsp;enlarge&nbsp;to&nbsp;fit&nbsp;the&nbsp;maximal&nbsp;width&nbsp;and&nbsp;height.
+<br /></span><span style="color: #0000BB">$t</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">fitToMax&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">false</span><span style="color: #007700">;
+<br /></span><span style="color: #FF8000">//&nbsp;Replace&nbsp;existed&nbsp;files&nbsp;in&nbsp;destination&nbsp;directory.
+<br /></span><span style="color: #0000BB">$t</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">replaceExisted&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">;
+<br />
+<br /></span><span style="color: #FF8000">//&nbsp;Create&nbsp;batch&nbsp;processor&nbsp;object.
+<br /></span><span style="color: #0000BB">$ibp&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">ImageBatchProcessor</span><span style="color: #007700">();
+<br />
+<br /></span><span style="color: #FF8000">//&nbsp;Process&nbsp;batch&nbsp;transformation.
+<br />//
+<br />//&nbsp;First&nbsp;parameter&nbsp;is&nbsp;a&nbsp;trasformation&nbsp;object,&nbsp;second&nbsp;is&nbsp;optional&nbsp;filter&nbsp;of
+<br />//&nbsp;filenames&nbsp;(there&nbsp;are&nbsp;2&nbsp;predefined&nbsp;filters:&nbsp;the&nbsp;default&nbsp;IBP_IMAGE_REGEXP,
+<br />//&nbsp;which&nbsp;filters&nbsp;only&nbsp;images&nbsp;and&nbsp;IBP_ALL_REGEXP&nbsp;for&nbsp;all&nbsp;files),&nbsp;third&nbsp;is&nbsp;an
+<br />//&nbsp;optional&nbsp;maximum&nbsp;number&nbsp;of&nbsp;files&nbsp;to&nbsp;be&nbsp;processed.
+<br />//
+<br />//&nbsp;Returns&nbsp;the&nbsp;number&nbsp;of&nbsp;processed&nbsp;files.
+<br /></span><span style="color: #0000BB">$n&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$ibp</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">process</span><span style="color: #007700">(</span><span style="color: #0000BB">$t</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'/^(.*)(\.jpg|\.jpeg)$/is'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">10</span><span style="color: #007700">);
+<br />
+<br /></span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">'%d&nbsp;images&nbsp;processed.'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$n</span><span style="color: #007700">);
+<br />
+<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+<h3>2.2. Processing the Files Separately</h3>
+
+<p>
+The following example shows how to process the files separately:
+</p>
+
+<div class="listing"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php
+<br />
+<br />set_time_limit</span><span style="color: #007700">(</span><span style="color: #0000BB">600</span><span style="color: #007700">);
+<br />
+<br />require_once&nbsp;</span><span style="color: #DD0000">'class.ImageBatchProcessor.php'</span><span style="color: #007700">;
+<br />
+<br /></span><span style="color: #FF8000">//&nbsp;Transform&nbsp;c:/mypics/picture1.jpg&nbsp;to&nbsp;c:/album/picture_large.jpg.
+<br />//&nbsp;Maximal&nbsp;size:&nbsp;800x600,&nbsp;rotate&nbsp;90'&nbsp;clockwise,&nbsp;add&nbsp;a&nbsp;text&nbsp;label.
+<br /></span><span style="color: #0000BB">$t1&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">ImageBatchTransformation</span><span style="color: #007700">();
+<br /></span><span style="color: #0000BB">$t1</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">source&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'c:/mypicts/picture1.jpg'</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t1</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">destination&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'c:/album/picture_large.jpg'</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t1</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">maxWidth&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">800</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t1</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">maxHeight&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">600</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t1</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">format&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">TI_JPEG</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">jpegQuality&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">85</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t1</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">interlace&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t1</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">rotateAngle&nbsp;</span><span style="color: #007700">=&nbsp;-</span><span style="color: #0000BB">90</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t1</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">rotateBgColor&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'#000000'</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t1</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">replaceExisted&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t3</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">label</span><span style="color: #007700">[</span><span style="color: #DD0000">'text'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #DD0000">'(c)&nbsp;2008&nbsp;www.example.com'</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t3</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">label</span><span style="color: #007700">[</span><span style="color: #DD0000">'vertPos'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">TI_POS_BOTTOM</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t3</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">label</span><span style="color: #007700">[</span><span style="color: #DD0000">'horzPos'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">TI_POS_RIGHT</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t3</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">label</span><span style="color: #007700">[</span><span style="color: #DD0000">'font'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #DD0000">'c:/windows/fonts/Arial.ttf'</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t3</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">label</span><span style="color: #007700">[</span><span style="color: #DD0000">'size'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">10</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t3</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">label</span><span style="color: #007700">[</span><span style="color: #DD0000">'color'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #DD0000">'#ffff00'</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t3</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">label</span><span style="color: #007700">[</span><span style="color: #DD0000">'angle'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">;
+<br />
+<br /></span><span style="color: #FF8000">//&nbsp;Transform&nbsp;c:/mypics/picture1.jpg&nbsp;to&nbsp;c:/album/picture_small.jpg.
+<br />//&nbsp;Maximal&nbsp;size:&nbsp;100x100,&nbsp;rotate&nbsp;90'&nbsp;clockwise.
+<br /></span><span style="color: #0000BB">$t2&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">ImageBatchTransformation</span><span style="color: #007700">();
+<br /></span><span style="color: #0000BB">$t2</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">source&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'c:/mypicts/picture1.jpg'</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t2</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">destination&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'c:/album/picture_small.jpg'</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t2</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">maxWidth&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">100</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t2</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">maxHeight&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">100</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t2</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">format&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">TI_JPEG</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t2</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">interlace&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">false</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t2</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">rotateAngle&nbsp;</span><span style="color: #007700">=&nbsp;-</span><span style="color: #0000BB">90</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t2</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">rotateBgColor&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'#000000'</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t2</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">replaceExisted&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">;
+<br />
+<br /></span><span style="color: #FF8000">//&nbsp;Transform&nbsp;c:/mypics/picture2.jpg&nbsp;to&nbsp;c:/album/picture2.jpg.
+<br />//&nbsp;Maximal&nbsp;size:&nbsp;450x400,&nbsp;add&nbsp;a&nbsp;text&nbsp;label&nbsp;and&nbsp;a&nbsp;watermark.
+<br /></span><span style="color: #0000BB">$t3&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">ImageBatchTransformation</span><span style="color: #007700">();
+<br /></span><span style="color: #0000BB">$t3</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">source&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'c:/mypics/picture2.jpg'</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t3</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">destination&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'c:/album/picture2.jpg'</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t3</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">maxWidth&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">450</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t3</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">maxHeight&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">400</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t3</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">format&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">TI_JPEG</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">jpegQuality&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">85</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t3</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">interlace&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t3</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">replaceExisted&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t3</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">label</span><span style="color: #007700">[</span><span style="color: #DD0000">'text'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #DD0000">'(c)&nbsp;2008&nbsp;www.example.com'</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t3</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">label</span><span style="color: #007700">[</span><span style="color: #DD0000">'vertPos'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">TI_POS_BOTTOM</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t3</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">label</span><span style="color: #007700">[</span><span style="color: #DD0000">'horzPos'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">TI_POS_RIGHT</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t3</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">label</span><span style="color: #007700">[</span><span style="color: #DD0000">'font'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #DD0000">'c:/windows/fonts/Arial.ttf'</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t3</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">label</span><span style="color: #007700">[</span><span style="color: #DD0000">'size'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">10</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t3</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">label</span><span style="color: #007700">[</span><span style="color: #DD0000">'color'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #DD0000">'#ffff00'</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t3</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">label</span><span style="color: #007700">[</span><span style="color: #DD0000">'angle'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t3</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">logo</span><span style="color: #007700">[</span><span style="color: #DD0000">'file'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #DD0000">'c:/mypics/logos/logo.gif'</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t3</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">logo</span><span style="color: #007700">[</span><span style="color: #DD0000">'vertPos'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">TI_POS_TOP</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t3</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">logo</span><span style="color: #007700">[</span><span style="color: #DD0000">'horzPos'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">TI_POS_LEFT</span><span style="color: #007700">;
+<br />
+<br /></span><span style="color: #0000BB">$ibp&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">ImageBatchProcessor</span><span style="color: #007700">();
+<br /></span><span style="color: #0000BB">$n&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$ibp</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">processEx</span><span style="color: #007700">(array(</span><span style="color: #0000BB">$t1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$t2</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$t3</span><span style="color: #007700">));
+<br />
+<br /></span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">'%d&nbsp;images&nbsp;processed.'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$n</span><span style="color: #007700">);
+<br />
+<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+<h3>2.3. Processing the Whole Directory with Some Exceptions</h3>
+
+<p>
+Sometimes there could be a situation when almost the whole directory should be
+processed the same way while only some of the files should be processed another
+way. For example, one of the files could be rotated:
+</p>
+
+<div class="listing"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php
+<br />
+<br />set_time_limit</span><span style="color: #007700">(</span><span style="color: #0000BB">600</span><span style="color: #007700">);
+<br />
+<br />require_once&nbsp;</span><span style="color: #DD0000">'class.ImageBatchProcessor.php'</span><span style="color: #007700">;
+<br />
+<br /></span><span style="color: #0000BB">$ibp&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">ImageBatchProcessor</span><span style="color: #007700">();
+<br />
+<br /></span><span style="color: #0000BB">$t&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">ImageBatchTransformation</span><span style="color: #007700">();
+<br /></span><span style="color: #0000BB">$t</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">source&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'c:/mypicts/album1/'</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">destination&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'d:/album/'</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">format&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">TI_JPEG</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">jpegQuality&nbsp;</span><span style="color: #007700">=&nbsp;-</span><span style="color: #0000BB">1</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">interlace&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">TI_INTERLACE_ON</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">maxWidth&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">150</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">maxHeight&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">150</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">fitToMax&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">false</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">replaceExisted&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">;
+<br />
+<br /></span><span style="color: #FF8000">//&nbsp;Process&nbsp;all&nbsp;JPEGs&nbsp;from&nbsp;the&nbsp;directory&nbsp;except&nbsp;mypict.jpg.
+<br /></span><span style="color: #0000BB">$n&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$ibp</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">process</span><span style="color: #007700">(</span><span style="color: #0000BB">$t</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'/^(?!mypict.jpg$)(.*)(\.jpg)$/is'</span><span style="color: #007700">);
+<br />
+<br /></span><span style="color: #0000BB">$t</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">source&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'c:/mypicts/album1/mypict.jpg'</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">destination&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'d:/album/mypict.jpg'</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$t</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">rotateAngle&nbsp;</span><span style="color: #007700">=&nbsp;-</span><span style="color: #0000BB">90</span><span style="color: #007700">;
+<br />
+<br /></span><span style="color: #FF8000">//&nbsp;Rotate&nbsp;and&nbsp;process&nbsp;mypict.jpg.
+<br /></span><span style="color: #0000BB">$n&nbsp;</span><span style="color: #007700">+=&nbsp;</span><span style="color: #0000BB">$ibp</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">processEx</span><span style="color: #007700">(array(</span><span style="color: #0000BB">$t</span><span style="color: #007700">));
+<br />
+<br /></span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">'%d&nbsp;images&nbsp;processed.'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$n</span><span style="color: #007700">);
+<br />
+<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+<h3>2.4. Batch Renaming of All Images in a Directory</h3>
+
+<p>
+The following example shows how to use the <i>dirWalk()</i> method to rename all
+JPEG images in a directory:
+</p>
+
+<div class="listing"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php
+<br />
+<br />set_time_limit</span><span style="color: #007700">(</span><span style="color: #0000BB">600</span><span style="color: #007700">);
+<br />
+<br /></span><span style="color: #FF8000">//&nbsp;Define&nbsp;a&nbsp;callback&nbsp;function.
+<br />//
+<br />//&nbsp;The&nbsp;parameters&nbsp;are:&nbsp;directory&nbsp;path,&nbsp;current&nbsp;index,&nbsp;zero-padded&nbsp;index,&nbsp;full
+<br />//&nbsp;filename,&nbsp;filename&nbsp;without&nbsp;extension&nbsp;and&nbsp;extension&nbsp;started&nbsp;with&nbsp;a&nbsp;dot.
+<br /></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">batchRename</span><span style="color: #007700">(</span><span style="color: #0000BB">$path</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$index</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$padded</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$fileName</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$baseName</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$extension</span><span style="color: #007700">)
+<br />{
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$oldName&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$path&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$fileName</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$newName&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$path&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">'photo'&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$padded&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$extension</span><span style="color: #007700">;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">rename</span><span style="color: #007700">(</span><span style="color: #0000BB">$oldName</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$newName</span><span style="color: #007700">);
+<br />}
+<br />
+<br />require_once&nbsp;</span><span style="color: #DD0000">'class.ImageBatchProcessor.php'</span><span style="color: #007700">;
+<br /></span><span style="color: #0000BB">$ibp&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">ImageBatchProcessor</span><span style="color: #007700">();
+<br />
+<br /></span><span style="color: #FF8000">//&nbsp;Walk&nbsp;through&nbsp;a&nbsp;directory.
+<br />//
+<br />//&nbsp;First&nbsp;parameter&nbsp;is&nbsp;directory&nbsp;path,&nbsp;second&nbsp;is&nbsp;the&nbsp;name&nbsp;of&nbsp;callback&nbsp;function,
+<br />//&nbsp;third&nbsp;is&nbsp;optional&nbsp;filter&nbsp;of&nbsp;filenames&nbsp;(there&nbsp;are&nbsp;2&nbsp;predefined&nbsp;filters:&nbsp;the
+<br />//&nbsp;default&nbsp;IBP_ALL_REGEXP&nbsp;and&nbsp;IBP_IMAGE_REGEXP&nbsp;for&nbsp;images&nbsp;only).
+<br />//
+<br />//&nbsp;Returns&nbsp;the&nbsp;number&nbsp;of&nbsp;processed&nbsp;files.
+<br /></span><span style="color: #0000BB">$ibp</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">dirWalk</span><span style="color: #007700">(</span><span style="color: #DD0000">'d:/album/'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'batchRename'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'/^(.*)(\.jpg|\.jpeg)$/is'</span><span style="color: #007700">);
+<br />
+<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+</div>
+
+</body>
+
+</html>

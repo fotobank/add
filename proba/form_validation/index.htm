@@ -1,0 +1,152 @@
+<html>
+<head>
+<title>Form Validation</title>
+<script language="JavaScript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script language="JavaScript" src="validation.js"></script>
+<script language="JavaScript">
+    var valid = new validate();
+</script>
+<style type="text/css">
+<!--
+.validationError { 
+    border:1px solid red!important; 
+}
+
+#validationError { 
+    width: 700px;
+    margin: 0 auto;
+}
+
+.required {
+    background-color: yellow;
+}
+
+input {
+    background-color: #BAFFFF;
+}
+-->
+</style>
+</head>
+<body>
+    <h2 style="text-align: center; margin-top: 30px;">Form Validation Demonstration</h2>
+        <!--<div id="validationError" class="validationError" style="display: none;"></div>-->
+        <form method="POST" action="index.htm" name="FormName" id="FormName" onsubmit="return valid.validateForm(this);" action="index.htm">
+        <table style="margin-top: 10px; margin-left: auto; margin-right: auto;">
+            <tr>
+                <td valign="top"><label for="name">Name</label></td>
+                <td>
+                    <input type="text" name="name" id="name" class="required" onchange="javascript: valid.validateInput(this);">
+                    <div id="nameError" class="validationError" style="display: none;"></div>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top"><label for="date">Date</label></td>
+                <td>
+                    <input type="text" name="date" id="date" class="required date" onchange="javascript: valid.validateInput(this);">
+                    <div id="dateError" class="validationError" style="display: none;"></div>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top"><label for="time">Time</label></td>
+                <td>
+                    <input type="text" name="time" id="time" class="required time" onchange="javascript: valid.validateInput(this);">
+                    <div id="timeError" class="validationError" style="display: none;"></div>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top"><label for="state">State</label></td>
+                <td>
+                    <input type="text" name="state" id="state" class="required state" onchange="javascript: valid.validateInput(this);">
+                    <div id="stateError" class="validationError" style="display: none;"></div>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top"><label for="zip">ZipCode</label></td>
+                <td>
+                    <input type="text" name="zip" id="zip" class="required zipcode" onchange="javascript: valid.validateInput(this);">
+                    <div id="zipError" class="validationError" style="display: none;"></div>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top"><label for="email">Email</label></td>
+                <td>
+                    <input type="text" name="email" id="email" class="required email" onchange="javascript: valid.validateInput(this);">
+                    <div id="emailError" class="validationError" style="display: none;"></div>
+                </td>
+            </tr>
+                <td valign="top"><label for="phone">Phone</label></td>
+                <td>
+                    <input type="text" name="phone" id="phone" class="required phone" onchange="javascript: valid.validateInput(this);">
+                    <div id="phoneError" class="validationError" style="display: none;"></div>
+                </td>
+            </tr>
+                <td valign="top"><label for="url">URL</label></td>
+                <td>
+                    <input type="text" name="url" id="url" class="required urlentry" onchange="javascript: valid.validateInput(this);">
+                    <div id="urlError" class="validationError" style="display: none;"></div>
+                </td>
+            </tr>
+            </tr>
+                <td valign="top"><label for="hours">Hours per Day</label></td>
+                <td>
+                    <input type="text" name="hours" id="hours" class="required numeric" onchange="javascript: valid.validateInput(this);">
+                    <div id="hoursError" class="validationError" style="display: none;"></div>
+                </td>
+            </tr>
+            </tr>
+                <td valign="top"><label for="rate">Rate</label></td>
+                <td>
+                    <input style="float: left;" type="text" name="rate" id="rate" class="required currency" onchange="javascript: valid.validateInput(this);">
+                    <div id="rateError" class="validationError" style="display: none;"></div>
+                </td>
+            </tr>
+            </tr>
+                <td valign="top"><label for="serial">Serial Number</label></td>
+                <td>
+                    <input type="text" name="serial" id="serial" class="required alphanumeric" onchange="javascript: valid.validateInput(this);">
+                    <div id="serialError" class="validationError" style="display: none;"></div>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top"><label for="disclaimer">disclaimer</label></td>
+                <td>
+                    <textarea rows="4" cols="50" name="disclaimer" id="disclaimer" class="required alpha" onchange="javascript: valid.validateInput(this);"></textarea>
+                    <div id="disclaimerError" class="validationError" style="display: none;"></div>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top"><label for="comments">Comments</label></td>
+                <td>
+                    <textarea rows="4" cols="50" name="comments" id="comments" class="required" onchange="javascript: valid.validateInput(this);"></textarea>
+                    <div id="commentsError" class="validationError" style="display: none;"></div>
+                </td>
+            </tr>
+        <tr>
+
+            <td valign="top"><label for="dropdownList">Dropdown List</label></td>
+            <td>
+                <select name="dropdownList" id="dropdownList" class="required" onchange="return valid.validateInput(this);">
+                <option value="">Please Select</option>
+                <option value="1">Option 1</option>
+                <option value="2">Option 2</option>
+                <option value="3">Option 3</option>
+                </select>
+                <div id="dropdownListError" class="validationError" style="display: none;"></div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="top"><label for="group">Foods List</label></td>
+            <td>
+               <input type="radio" name="group" id="group" value="Milk" class="required"> Milk<br>
+                <input type="radio" name="group" id="group" value="Butter" class="required"> Butter<br>
+                <input type="radio" name="group" id="group" value="Cheese" class="required"> Cheese<br>
+                <div id="groupError" class="validationError" style="display: none;"></div>
+            </td>
+        </tr>
+            <tr>
+                <td colspan="2"><center><input type="submit" name="submit" id="submit" value="Submit"></center></td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>

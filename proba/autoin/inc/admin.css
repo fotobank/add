@@ -1,0 +1,169 @@
+body {
+  margin: 10px;
+  padding: 0px;
+  color: #FFFFFF;
+	scrollbar-arrow-color : #818181;
+	scrollbar-base-color : #DADADA;
+	scrollbar-face-color : #FFFFFF;
+	scrollbar-highlight-color : #DADADA;
+	scrollbar-3dlight-color : #FFFFFF;
+	scrollbar-shadow-color : #DADADA;
+	scrollbar-darkshadow-color : #DADADA;
+	scrollbar-track-color : #FFFFFF;
+}
+
+form {
+  display:inline;
+}
+
+table {
+  border: 0px solid black;
+  empty-cells: show;
+}
+
+table.listlines {
+  background-color: Black;
+}
+
+td {
+  vertical-align: middle;
+  color: Black;
+  font : 12px Verdana;
+  padding: 5px;
+}
+
+td.listlines {
+  padding: 0px;
+}
+
+td.mainheader {
+  background-color: #FAFAFA;
+  font-size: 17px;
+  font-weight: bold; 
+  height: 50px;
+  padding: 10px;
+  vertical-align: middle;
+}
+
+td.formheader {
+  font-size: 17px;
+  font-weight: bold; 
+  height: 50px;
+  padding: 10px;
+  vertical-align: middle;
+}
+
+td.listfooter {
+  background-color: #FAFAFA;
+  height: 50px;
+  padding: 10px;
+}
+
+td.listtop {
+  background-color: #FAFAFA;
+}
+
+td.icon_darkbg {
+  padding: 0px;
+  background-color: #EEEEEE;
+  text-align: center;
+  width: 23px;
+}
+
+td.icon_lightbg {
+  padding: 0px;
+  background-color: #FFFFFF;
+  text-align: center;
+  width: 23px;
+}
+
+td.darkbg {
+  background-color: #EEEEEE;
+}
+
+td.lightbg {
+  background-color: White;
+}
+
+td.listheader {
+  font-weight: bold;
+  background-color: #EEEEEE;
+}
+
+td.formtext {
+  text-align: right;
+  vertical-align: top;
+}
+
+button.cancel {
+  background-color: #9E0B0E;
+  border-top : 1px solid #D81F2A;
+  border-left : 1px solid #D81F2A;
+  border-right : 1px solid #7C1D20;
+  border-bottom : 1px solid #7C1D20;
+  color : #FFFFFF;
+}
+
+button.save {
+  background-color: #009600;
+  border-top : 1px solid #12AD2B;
+  border-left : 1px solid #12AD2B;
+  border-right : 1px solid #2F8927;
+  border-bottom : 1px solid #2F8927;
+  color : #FFFFFF;
+}
+
+button {
+  background-color: #DADADA;
+  border-top : 1px solid #E6E6E6;
+  border-left : 1px solid #E6E6E6;
+  border-right : 1px solid #B4B4B4;
+  border-bottom : 1px solid #B4B4B4;
+  color : #000000;
+  font : 11px Verdana;
+  font-weight : bold;
+  height : 20px;
+}
+
+.radiocheck {
+	background: #FFFFFF;
+	border : 0px solid #000000;
+	height : 17px;
+	vertical-align : middle;
+  width : 17px;
+}
+
+select {
+	background: #FAFAFA;
+	height : 20px;
+	font : 11px Verdana;
+	color : #000000;
+	vertical-align : middle;
+}
+
+input {
+  background-color: #FAFAFA;
+  border : 1px solid #000000;
+  font : 11px Verdana;
+  height : 19px;
+  width : 200px;
+  widows: 0;
+  }
+
+textarea {
+	background: #FAFAFA;
+	border : 1px solid #000000;
+	font : 12px Curier New;
+  height : 200px;
+  width : 300px;
+}
+
+A:link, A:visited, A:active {
+  text-decoration: none; 
+	color : blue;
+}
+
+A:hover { 
+  text-decoration: underline; 
+	color : blue;
+}

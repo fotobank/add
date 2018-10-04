@@ -1,0 +1,2 @@
+(1) Just edit config.php.inc to reflect your database stuff
+(2) Run install.php from browser

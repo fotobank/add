@@ -1,0 +1,7 @@
+CHANGES
+	(X) Fixed "/" bugfix
+	(X) All database issues involving installation resolved
+	(X) Central config.php file
+	(X) Error defination seperate
+	(X) Configurable outgoing emails
+	(X) No need to change every page for title

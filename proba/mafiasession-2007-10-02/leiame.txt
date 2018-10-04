@@ -1,0 +1,169 @@
+A classe class_mafiasession.php foi criada a partir do desafio de fazer uma forma
+segura de efetuar um login em um sistema crítico em segurança.
+
+O uso de SSL seria uma opção obvia e bastante válida, mas mesmo sem o uso de SSL
+a classe mafiasession provem uma forma confiavel e de alto grau de segurança, superior
+ao simples uso do SSL.
+
+A segurança é provida por um conjunto de soluções confiaveis na troca de informações
+entre cliente servidor.
+
+Metodos de autenticações possuem seus pontos fracos , alguem pode interceptar os dados 
+enviados por formulário com uma ferramenta tipo "snif" como o tcpdump presente em diversos 
+sistemas operacionais ou com o uso de programas como por exemplo Wireshark .
+
+Em um formulário comum tanto o login quanto a senha são enviados ao servidor sem nenhum 
+tipo de criptografia, a aplicação então executa a ação requisitada e verifica a autenticidade 
+do par senha/login. 
+
+Muitos desenvolvedores adotaram a solução de criptografar a senha 
+no banco de dados, desta forma a aplicação aplica a criptografia a senha enviada 
+pelo formulário e a compara com a senha criptografada no banco de dados, essa implementação 
+por sua vez é relativamente fraca pois bastaria saber qual o tipo de criptografia aplicada, 
+normalmente MD5, mas contunia permitindo a visualização da senha que sai do banco de dados, 
+permite o uso do própio formulário de login ou mesmo um clone do mesmo.
+
+Outra implementação de segurança seria criptografar a senha na saida do formulario, com javascript, 
+mas mesmo essa solução ainda é relativamente fraca já que torna possivel a quebra "offline" da senha, 
+ou seja capturar a senha criptografada e atravez de um programa baseado em dicionário de palavras
+ou na simples tentativa e erro encontrar uma "colisão" entre uma palavra e a senha digitada, mas 
+a quebra de segurança desse método pode ser mais facil ainda caso a senha a ser comparada seja a mesma 
+só que criptografada , nem seria necessário quebrar a senha bastaria envia-la criptografada 
+comforme foi capturada.
+
+Diversas solução podem ser usadas mas o que elas tem em comum é não serem o suficiente fortes
+ou permitir que seja descoberto um método de faze-lo , alguns aplicam a criptografia seguida vezes 
+a mesma string, o que pode ser descoberto por tentativa e erro. 
+
+vou explicar como funciona a classe mafiasession:
+
+Primeiro vamos entender o que vem a ser criptografia:
+
+Criptografia é uma forma codificada de se trocar mensagem, voce envia uma mensagem com os caracteres trocados 
+mas quem recebe sabe qual foi a forma que voce fez isso e decodifica sua mensagem.
+
+Podemos dividir os modelos de criptografia em dois tipos, encode e hash.
+
+O método Encode é como se voce simplesmente embaralhasse os caracteres seguindo uma forma 
+matemática ao qual quem recebe sabe como fazer a conta para desfazer o que foi feito e ler
+a sua mensagem exatamente como foi escrita, ou seja para toda forma de encode tem um decode.
+
+O método Hash já funciona de forma diferente , ela não simplesmente executa operações matematica, 
+ele tambem retira alguns valores , troca de posição no meio da conta, faz uma grande bagunça 
+com os caracteres, para isso ele usa algoritimos muitos grandes , numeros gigantescos , mas seus resultados
+tem que ser comprimidos, por causa disso ele apresenta somente uma certa quantidade de caracteres,
+por exemplo não importa o que voce criptografa em MD5 o resultado sera sempre 32 caracteres,  
+assim fica "impossivel" fazer a conta ao contrário , aplicar um decode, mas mesmo esse método
+possue limitações, ou seja pode existir o que é denominado de colisão, ou seja dois conjuntos de caracteres
+podem ter o mesmo resultado, mesmo MD5. A solução foi criar algoritimos mais poderosos ainda que o MD5
+como por exemplo o SHA1,SHA256,ripemd160 entre outros. Apenas como informação complementar 
+string com até 4 caracteres são facilmente encotradas colisões em MD5 , recomenda-se um minimo de 6 
+caracteres, para SHA1 foi noticiado apenas duas vezes na casa de 2 elevado 63 e a 69 e espera-se que
+seja suportado 2 elevado a 80 a probabilidade de se encontrar uma colisão.
+
+compreendido os métodos básicos de criptografia vamos a uma pequena consideração:
+
+encontrar uma colisão em MD5 é possivel mas não é facil , encontrar uma colisão em SHA1 é ainda
+quase impossivel mas encontrar uma colisão que atenda tanto a MD5 ou a SHA1 é por hora
+algo considerado impossivel.
+
+Todos os meios de criptografia tem sua limitações , assim como toda aplicação cliente servidor 
+pois existem formas conhecidas de interceptar as informações, tendo ciencia disso foi desenvolvido 
+um método para permitir a troca de informações de forma criptografa por hash, sem volta portanto, 
+atravez de uma chave criptografica qualquer. Ou seja não basta aplicar a criptografia tem que saber
+qual é a chave que esta misturada e ela, esta chave não é totalmente secreta muitas vezes , alguma são
+chaves publicas mesmo, esse método foi denominado HMAC.
+
+Como funciona o HMAC:
+
+O HMAC se baseia no uso de um método hash para ocultar uma mensagem, ou seja é usado um hash misturado a
+uma "chave" HMAC para um serivor , este servidor tem tanto as informações quanto a "chave" HMAC , o servidor
+então executa o HMAC com a chave que ele possue nas prováveis mensagens enviadas e por igualdade
+de resultado determina qual a mensagem foi enviada. A segurança desse formato se baseia tanto o 
+quanto é seguro o HASH assim como a "chave" do HMAC de verificação de autenticidade de origem , ou seja
+ a chave HMAC é uma forma de verificar a autenticidade da arigem da mensagem criptografada.
+ 
+ O quanto é seguro o HMAC:
+ 
+ O HMAC é a principio tão seguro o quanto é o seu método hash caso sua chave seja publica , muito mais 
+ seguro se sua chave não for "totalmente" publica e extremamente seguro se voce fazer uma 
+ rotina, com quem troca a mensagem, para trocar periodicamente a chave.
+ 
+Foi então estabelecido um critério para troca de informações atravez de uma chave publica para
+poder adquirir uma chave privada, esse critério é hoje largamente utilizado , é o mesmo principio
+da criptografia SSL para troca de chaves.
+
+E a classe mafiasession o que ela faz:
+
+Exatamente isso , ela estabelece uma chave publica para cada uma requisição, após a autenticação
+desta chave é verificada as informações de login e senha e fornecida uma chave privada e mesmo
+ depois de obter a chave privada a mesma é trocada a cada 60 segundos para tornar a aplicação
+ o maximo em qualidade e segurança.
+ 
+ Os passos funcionais da classe mafiasession:
+ 
+ Para se iniciar o processo de login se faz necessário acessar o formulário, este formulario traz
+ em um campo hidden uma chave que foi estabelecida para aquela requisição e valida por um tempo
+ pre-determinado , default de 30 segundos. Ao digitar a senha e o login as "strings" são
+ criptografadas tanto em MD5 como em SHA1, submetidas ao processo HMAC de cada uma com a 
+respectiva chave de autenticação temporária , um HMAC para MD5 e outro para SHA1 e enviada 
+ao servidor que primeiro verifica a autenticidade dea chave publica temporária e depois verifica
+por processo de HMAC com a mesma chave publica temporária a autenticação do usuario, tento sucesso
+nos dois processos é então criado então uma chave privada no servidor, guardadas em sessão
+no servidor tanto as chaves que foram usadas para autenticar o formulário como a que permitiu
+a autenticação do usuario, e a cada 60 segundos é verificado novamente a chave privada e gerada
+uma nova chave privada que sobreescreve a chave privada guardada na sessão do servidor.
+
+Caracteristicas principais de segurança da classe mafiasession:
+
+possuir uma chave de autenticidade de requisição de autenticação em sha256.
+
+possuir essa chave de autenticação um tempo util para ser usada.
+
+possuir uma chave privada armazenada em sessão no servidor em sha256.
+
+trocar a cada intervalo de tempo a chave privada armazenada no servidor.
+
+tornar o servidor assim como o banco de dados totalmente ignorantes quanto
+qual a senha do usuario, já que no banco é armazenado os hash MD5 e SHA1 a ser
+aplicado o HMAC para comparar com o resultado dos dados HMAC recebidos do
+formulário de login.
+
+Um exemplo funcional esta publicado junto com a classe.
+
+A classe mafiasession esta publicada sob licensa BSD, o que implica que voce
+pode usar e alterar sem qualquer restrição ao não ser de manter o texto
+de direitos autorais do autor.
+
+para contribuir com idéias e soluções que tornem essa classe mais restritiva e ter
+maior grau de confiabilidade em segurança contacte o autor.
+
+A classe mafiasession apesar de ser extremente segura ela não tem um mecanismo
+para evitar o uso de senhas inseguras como com menos de 4 caracteres , senhas 
+com palavras simples, 123456 por exemplo, ou impedir que a seja digitada seja
+capturada por keylog , para isso seria necessário um teclado virtual.
+
+esta é a primeira versão dessa classe e outras versões com caracteristicas
+de implementação de itens de segurança serão bem acolhidas.
+
+O autor espera ter contribuido no aumento da segurança dos processos de autenticação
+de usuários junto a comunidade de desenvolvedores de aplicações que exigem login.
+
+O uso da classe mafiasession não diminue e sim contribui para o seu uso conjunto
+com processo de troca de dados via SSL.  
+
+Dependencias:
+
+A classe mafiasession precisa do php cm suporte a PECL Hash
+
+http://br.php.net/manual/en/ref.hash.php
+http://pecl.php.net/package/hash
+http://www.freebsd.org/cgi/url.cgi?ports/security/pecl-hash/pkg-descr
+
+Referencias:
+
+http://pajhome.org.uk/crypt/md5/auth.html
+
+http://www.ietf.org/rfc/rfc2104.txt
+
+http://en.wikipedia.org/wiki/SHA-1

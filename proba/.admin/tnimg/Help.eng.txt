@@ -1,0 +1,247 @@
+ThumbnailImage 1.0 - Readme.txt (March 20, 2005)
+
+
+***********************************************************
+CONTENTS
+***********************************************************
+
+How to use
+
+Class Properties
+  src_file
+  dest_file
+  dest_type
+  interlace
+  jpeg_quality 
+  max_width
+  max_height 
+  fit_to_max
+  logo
+    logo [ 'file']
+    logo [ 'vert_pos' ]
+    logo [ 'horz_pos' ]
+  label
+    label [ 'text']
+    label [ 'vert_pos' ]
+    label [ 'horz_pos' ]
+    label [ 'font' ]
+    label [ 'size' ]
+    label [ 'color' ]
+    label [ 'angle' ]
+
+Class Methods
+  ThumbnailImage ( )
+  Output ( )
+
+
+===========================================================
+HOW TO USE
+===========================================================
+
+1) Copy TNIMG.LIB.PHP somewhere on your server.
+
+2) Include the library to your script:
+
+  require_once ( '/tnimg.lib.php' );
+
+3) Create the ThumbnailImage object:
+
+  $ti = new ThumbnailImage ( );
+
+4) Specify values for class properties:
+
+  $ti->src_file = 'images/mypic.jpg';
+  $ti->dest_type = THUMB_JPEG;
+  $ti->dest_file = STDOUT;
+  $ti->max_width = 300;
+  $ti->max_height = 300;
+
+5) Call Output() to proceed:
+
+  $ti->Output ( ); 
+
+
+===========================================================
+CLASS PROPERTIES
+===========================================================
+
+string src_file
+
+  Default value - ''
+
+  Filename of the initial image. The format of specified 
+  image should be supported by GD library.
+
+string dest_file
+
+  Default value - STDOUT
+
+  The name of a disk file in which the final image will be
+  saved. If the value of this property is equal to STDOUT, 
+  than the final image will be printed directly in the
+  browser.
+
+string dest_type
+
+  Default value - THUMB_JPEG
+
+  Defines a format of the final image. It is possible 
+  to use one of the following constants:
+
+  THUMB_JPEG 	 the image in JPEG format
+  THUMB_PNG 	 the image in PNG format
+  ÒHUMB_GIF 	 the image in GIF format
+
+  Writing in the format of final image must be supported by 
+  the current installation of GD library. 
+
+int interlace
+
+  Default value - INTERLACE_OFF
+
+  Turns the interlace bit on or off. 
+
+  INTERLACE_OFF  turn on interlace bit
+  INTERLACE_ON 	 turn off interlace bit
+
+  If the interlace bit is set and the image is used as a 
+  JPEG image, the image is created as a progressive JPEG. 
+
+int jpeg_quality
+
+  Default value - IJG quality (about 75)
+
+  Defines quality of the final JPEG image in percents. It 
+  is meaningful only when dest_type is equal to THUMB_JPEG.  
+
+int max_width
+  
+  Default value - 100
+
+  Maximal width of final figure in pixels. 
+
+int max_height
+
+  Default value - 90
+  
+  Maximal height of final figure in pixels. 
+
+bool fit_to_max
+
+  Default value - FALSE
+
+  If the value of property is equal TRUE and the sizes of
+  initial image are less than the maximal sizes of final 
+  image, than the initial image will be zoomed out to the 
+  maximal sizes of the final image.  
+
+array logo
+
+  Defines a logotype image added atop of the final image. 
+  By default no logotype is added. 
+
+  string logo [ 'file' ]
+
+    Default value - NO_LOGO
+  
+    Filename of the logotype image. Is possible to specify 
+    image in any allowable format including transparent GIF.
+    The logotype image is not used if defined as NO_LOGO.
+  
+  int logo [ 'vert_pos' ]
+
+    Default value - POS_TOP
+
+    Vertical position of the logo. You can use one of the 
+    following values: 
+
+    POS_TOP 	 at the top
+    POS_CENTER 	 at the centre 
+    POS_BOTTOM 	 at the bottom
+
+  int logo [ 'horz_pos' ]
+
+    Default value - POS_LEFT
+
+    Horizontal position of the logo. You can use onr of the 
+    following values: 
+
+    POS_RIGHT 	 at the right 
+    POS_CENTER 	 at the centre 
+    POS_LEFT 	 at the left
+
+array label
+
+  Defines a textual label added atop the final image. By 
+  default no label is added. 
+
+  string label [ 'text' ]
+
+    Default value - NO_LABEL
+
+    The text of the label. 
+
+  int label [ 'vert_pos' ]
+
+    Default value - POS_BOTTOM
+
+    Vertical position of the label. You can use one of the 
+    following values: 
+
+    POS_TOP 	 at the top
+    POS_CENTER 	 at the centre 
+    POS_BOTTOM 	 at the bottom
+
+  int label [ 'horz_pos' ]
+
+    Default value - POS_RIGHT
+
+    Horizontal position of the logo. You can use onr of the 
+    following values: 
+
+    POS_RIGHT 	 at the right 
+    POS_CENTER 	 at the centre 
+    POS_LEFT 	 at the left
+
+  string label [ 'font' ]
+
+    Default value - ''
+
+    Path to the font used to draw the label.
+
+  int label [ 'size' ]
+
+    Default value - 20
+
+    The size of the font.
+
+  string label [ 'color' ]
+
+    Default value - '#000000'
+
+    Color of the label in '#rrggbb' format (HTML format).
+
+  int label [ 'angle' ]
+
+    Default value - 0
+
+    Angle in degrees, with 0 degrees being left-to-right 
+    reading text (3 o'clock direction), and higher values 
+    representing a counter-clockwise rotation. (i.e., a 
+    value of 90 would result in bottom-to-top reading text).
+
+
+===========================================================
+CLASS METHODS 
+===========================================================
+
+constructor ThumbnailImage ( string src_file = '' )
+
+  Class constructor. The name of initial image file
+  can be defined directly in constructor or in src_file
+  property
+
+void Output ( )
+  
+  Used to output final image according to the values of 
+  properties.

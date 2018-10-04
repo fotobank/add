@@ -1,0 +1,1 @@
+<?php define('INDIR', '/canon68452/filem/'); ?>

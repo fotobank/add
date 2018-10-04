@@ -6,6 +6,7 @@ php_flag magic_quotes_sybase Off
 #php_value auto_append_file "O:/domains/add.pr/test/mem_log_past.php"
 
  <IfModule mod_rewrite.c>
+   #Запускаем url_rewriting
    RewriteEngine on
    RewriteRule    ^(fotobanck)$ fotobanck_adw.php?unchenge_cat [L]
    RewriteRule    ^(svadba)$ fotobanck_adw.php?chenge_cat=1 [L]
@@ -17,6 +18,16 @@ php_flag magic_quotes_sybase Off
    RewriteRule    ^(gimnastika)$ fotobanck_adw.php?chenge_cat=7 [L]
    RewriteRule    ^(fotobanck.php)$ fotobanck_adw.php [L]
    RewriteRule    ^index.php$ / [QSA,R]
+   #Включаем отслеживание сим-ссылок
+   Options +FollowSymLinks
+   #Блокируем все ссылки, содержащие <script>
+   RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
+   #Блокируем все скрипты, которые пытаются изменить переменные PHP Globals:
+   RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+   #Блокируем все скрипты, которые пытаются изменить переменную _REQUEST:
+   RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2})
+   #Перенаправляем все подобные на страницу с ошибкой 403 - запрещено
+   RewriteRule ^(.*)$ index.php [F,L]
  </IfModule>
 
 ErrorDocument 400 /error.php?400

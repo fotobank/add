@@ -1,0 +1,4 @@
+Options +Indexes -MultiViews
+<FilesMatch ^.*\.(php)$>
+Deny from all
+</FilesMatch>

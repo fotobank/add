@@ -1,0 +1,364 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Class: HTML image tag generator</title>
+</head>
+<body>
+<center><h1>Class: HTML image tag generator</h1></center>
+<hr />
+<ul>
+<p><b>Version:</b> <tt>@(#) $Id: html_image_tag_class.php,v 1.17 2008/08/10 02:03:02 mlemos Exp $</tt></p>
+<h2><a name="table_of_contents">Contents</a></h2>
+<ul>
+<li><a href="#2.1.1">Summary</a></li>
+<ul>
+<li><a href="#3.2.0">Name</a></li>
+<li><a href="#3.2.0.0">Author</a></li>
+<li><a href="#3.2.0.1">Copyright</a></li>
+<li><a href="#3.2.0.2">Version</a></li>
+<li><a href="#3.2.0.3">Purpose</a></li>
+<li><a href="#3.2.0.4">Usage</a></li>
+</ul>
+<li><a href="#4.1.1">Variables</a></li>
+<ul>
+<li><a href="#5.2.20">SRC</a></li>
+<li><a href="#5.2.21">ALT</a></li>
+<li><a href="#5.2.22">TITLE</a></li>
+<li><a href="#5.2.23">ALIGN</a></li>
+<li><a href="#5.2.24">WIDTH</a></li>
+<li><a href="#5.2.25">HEIGHT</a></li>
+<li><a href="#5.2.26">BORDER</a></li>
+<li><a href="#5.2.27">STYLE</a></li>
+<li><a href="#5.2.28">CLASS</a></li>
+<li><a href="#5.2.29">mime_type</a></li>
+<li><a href="#5.2.30">full_URI</a></li>
+<li><a href="#5.2.31">base_url</a></li>
+<li><a href="#5.2.32">remote_image</a></li>
+<li><a href="#5.2.33">embedded</a></li>
+<li><a href="#5.2.34">from_data</a></li>
+<li><a href="#5.2.35">buffer_length</a></li>
+<li><a href="#5.2.36">error</a></li>
+<li><a href="#5.2.37">hidden</a></li>
+<li><a href="#5.2.38">xhtml</a></li>
+</ul>
+<li><a href="#6.1.1">Functions</a></li>
+<ul>
+<li><a href="#7.2.4">GetDataURL</a></li>
+<li><a href="#9.2.5">GetFileDataURL</a></li>
+<li><a href="#11.2.6">GetMarkup</a></li>
+</ul>
+</ul>
+<p><a href="#table_of_contents">Top of the table of contents</a></p>
+</ul>
+<hr />
+<ul>
+<h2><li><a name="2.1.1">Summary</a></li></h2>
+<ul>
+<h3><a name="3.2.0">Name</a></h3>
+<p>HTML image tag generator</p>
+<h3><a name="3.2.0.0">Author</a></h3>
+<p>Manuel Lemos (<a href="mailto:mlemos@acm.org">mlemos@acm.org</a>)</p>
+<h3><a name="3.2.0.1">Copyright</a></h3>
+<p>Copyright &copy; (C) Manuel Lemos 2003</p>
+<h3><a name="3.2.0.2">Version</a></h3>
+<p>@(#) $Id: html_image_tag_class.php,v 1.17 2008/08/10 02:03:02 mlemos Exp $</p>
+<h3><a name="3.2.0.3">Purpose</a></h3>
+<p>This class is meant to generate <tt>IMG</tt> HTML tag and its attributes for given images.</p>
+<p> It can automatically compute the image size to fill the <tt>width</tt> and <tt>height</tt> attributes for images defined from locally accessible files.</p>
+<p> The class can also generate an image tag with a special source URL that contains the actual image data defined according to RFC 2397. This way it, the image can be embedded in your HTML documents, making it possible to display the HTML documents without requiring external image files.</p>
+<p> This may be useful for embeding images in single file HTML pages or including images in HTML e-mail messages without the need to attach the image files to the messages.</p>
+<p> The data for embedded images may be supplied from a locally accessible file or from a string that contains the image file binary data.</p>
+<h3><a name="3.2.0.4">Usage</a></h3>
+<p>Set the <tt><a href="#variable_SRC">SRC</a></tt> and other class variables to specify the image details.</p>
+<p> Call the <tt><a href="#function_GetMarkup">GetMarkup</a></tt> function to generate the corresponding HTML <tt>IMG</tt> tag.</p>
+<p> Call the <tt><a href="#function_GetFileDataURL">GetFileDataURL</a></tt> function to generate the data URL of a locally accessible image file, so it can be used to embed images in HTML documents.</p>
+<p> The <tt><a href="#function_GetDataURL">GetDataURL</a></tt> function can be used to generate a data URL from string of binary data. The generated data URL may be of any type, not necessarily of an image.</p>
+<p><a href="#table_of_contents">Table of contents</a></p>
+</ul>
+</ul>
+<hr />
+<ul>
+<h2><li><a name="variables"></a><a name="4.1.1">Variables</a></li></h2>
+<ul>
+<li><tt><a href="#variable_SRC">SRC</a></tt></li><br />
+<li><tt><a href="#variable_ALT">ALT</a></tt></li><br />
+<li><tt><a href="#variable_TITLE">TITLE</a></tt></li><br />
+<li><tt><a href="#variable_ALIGN">ALIGN</a></tt></li><br />
+<li><tt><a href="#variable_WIDTH">WIDTH</a></tt></li><br />
+<li><tt><a href="#variable_HEIGHT">HEIGHT</a></tt></li><br />
+<li><tt><a href="#variable_BORDER">BORDER</a></tt></li><br />
+<li><tt><a href="#variable_STYLE">STYLE</a></tt></li><br />
+<li><tt><a href="#variable_CLASS">CLASS</a></tt></li><br />
+<li><tt><a href="#variable_mime_type">mime_type</a></tt></li><br />
+<li><tt><a href="#variable_full_URI">full_URI</a></tt></li><br />
+<li><tt><a href="#variable_base_url">base_url</a></tt></li><br />
+<li><tt><a href="#variable_remote_image">remote_image</a></tt></li><br />
+<li><tt><a href="#variable_embedded">embedded</a></tt></li><br />
+<li><tt><a href="#variable_from_data">from_data</a></tt></li><br />
+<li><tt><a href="#variable_buffer_length">buffer_length</a></tt></li><br />
+<li><tt><a href="#variable_error">error</a></tt></li><br />
+<li><tt><a href="#variable_hidden">hidden</a></tt></li><br />
+<li><tt><a href="#variable_xhtml">xhtml</a></tt></li><br />
+<p><a href="#table_of_contents">Table of contents</a></p>
+<h3><a name="variable_SRC"></a><li><a name="5.2.20">SRC</a></li></h3>
+<h3>Type</h3>
+<p><tt><i>string</i></tt></p>
+<h3>Default value</h3>
+<p><tt>''</tt></p>
+<h3>Purpose</h3>
+<p>Pass the image source URL, file name or binary data.</p>
+<h3>Usage</h3>
+<p>Set this variable with the URL or the name of the image file.</p>
+<p> If you specify a local image file but you want the generated image tag to use its full URL, set the <tt><a href="#variable_full_URI">full_URI</a></tt> variable to <tt>1</tt> and set the <tt><a href="#variable_base_url">base_url</a></tt> variable to the prefix that needs to prepended to the local file path to generate the expanded URL.</p>
+<p> Set this variable to a string of binary data if you want to generate an HTML tag with an embedded image with its data passed explicitily. In this case set both the <tt><a href="#variable_embedded">embedded</a></tt> and <tt><a href="#variable_from_data">from_data</a></tt> variables to <tt>1</tt>.</p>
+<p><a href="#variables">Variables</a></p>
+<h3><a name="variable_ALT"></a><li><a name="5.2.21">ALT</a></li></h3>
+<h3>Type</h3>
+<p><tt><i>string</i></tt></p>
+<h3>Default value</h3>
+<p><tt>''</tt></p>
+<h3>Purpose</h3>
+<p>Pass the alternative text to present in the place of the image.</p>
+<h3>Usage</h3>
+<p>Set this variable with the text that you want to see displayed in circumstances when the image graphics cannot be presented. Set to an empty string if you do not want to specify an alternative text.</p>
+<p><a href="#variables">Variables</a></p>
+<h3><a name="variable_TITLE"></a><li><a name="5.2.22">TITLE</a></li></h3>
+<h3>Type</h3>
+<p><tt><i>string</i></tt></p>
+<h3>Default value</h3>
+<p><tt>''</tt></p>
+<h3>Purpose</h3>
+<p>Pass the title text to display as tool tip.</p>
+<h3>Usage</h3>
+<p>Set this variable with the text that you want to see displayed as the image tool tip, usually when the user leaves the mouse pointer over the image in a graphical browser. Set to an empty string if you do not want to specify an alternative text.</p>
+<p><a href="#variables">Variables</a></p>
+<h3><a name="variable_ALIGN"></a><li><a name="5.2.23">ALIGN</a></li></h3>
+<h3>Type</h3>
+<p><tt><i>string</i></tt></p>
+<h3>Default value</h3>
+<p><tt>''</tt></p>
+<h3>Purpose</h3>
+<p>Pass the type of vertical alignment of the image relatively the current text line.</p>
+<h3>Usage</h3>
+<p>Set this variable with either the values <tt>'top'</tt>, <tt>'middle'</tt> or <tt>'top'</tt> to specify the image vertical alignment. If you leave the empty string default value, the bottom of the image will appear align with the current text baseline.</p>
+<p><a href="#variables">Variables</a></p>
+<h3><a name="variable_WIDTH"></a><li><a name="5.2.24">WIDTH</a></li></h3>
+<h3>Type</h3>
+<p><tt><i>int</i></tt></p>
+<h3>Default value</h3>
+<p><tt>0</tt></p>
+<h3>Purpose</h3>
+<p>Pass the width of the image to be used when the class is not able to determine it automatically.</p>
+<h3>Usage</h3>
+<p>Set this variable with the number of pixels of width of the image so the class can use the value when it is not possible to determine the image width automatically, like for instance when is reference a remote image. Set this variable to <tt>0</tt> to tell the class to not generate the <tt>width</tt> attribute.</p>
+<p><a href="#variables">Variables</a></p>
+<h3><a name="variable_HEIGHT"></a><li><a name="5.2.25">HEIGHT</a></li></h3>
+<h3>Type</h3>
+<p><tt><i>int</i></tt></p>
+<h3>Default value</h3>
+<p><tt>0</tt></p>
+<h3>Purpose</h3>
+<p>Pass the height of the image to be used when the class is not able to determine it automatically.</p>
+<h3>Usage</h3>
+<p>Set this variable with the number of pixels of height of the image so the class can use the value when it is not possible to determine the image height automatically, like for instance when is reference a remote image. Set this variable to <tt>0</tt> to tell the class to not generate the <tt>height</tt> attribute.</p>
+<p><a href="#variables">Variables</a></p>
+<h3><a name="variable_BORDER"></a><li><a name="5.2.26">BORDER</a></li></h3>
+<h3>Type</h3>
+<p><tt><i>string</i></tt></p>
+<h3>Default value</h3>
+<p><tt>''</tt></p>
+<h3>Purpose</h3>
+<p>Pass the width of the border around the image. When the image is used in an HTML link, the border is usually drawn with the link color.</p>
+<h3>Usage</h3>
+<p>Set this variable with a text string that contains the number of pixels of width of the image border. Leaving this variable default empty string will make the class not generate the <tt>border</tt> attribute, thus letting the browser assume the default border width. If you want to display the image without a border, set this variable to <tt>'0'</tt>.</p>
+<p><a href="#variables">Variables</a></p>
+<h3><a name="variable_STYLE"></a><li><a name="5.2.27">STYLE</a></li></h3>
+<h3>Type</h3>
+<p><tt><i>string</i></tt></p>
+<h3>Default value</h3>
+<p><tt>''</tt></p>
+<h3>Purpose</h3>
+<p>Pass the style attribute to render the image.</p>
+<h3>Usage</h3>
+<p>Set this variable with a text string that contains the style of the image. Leaving this variable default empty string will make the class not generate the <tt>style</tt> attribute.</p>
+<p><a href="#variables">Variables</a></p>
+<h3><a name="variable_CLASS"></a><li><a name="5.2.28">CLASS</a></li></h3>
+<h3>Type</h3>
+<p><tt><i>string</i></tt></p>
+<h3>Default value</h3>
+<p><tt>''</tt></p>
+<h3>Purpose</h3>
+<p>Pass the CSS class attribute to render the image.</p>
+<h3>Usage</h3>
+<p>Set this variable with a text string that contains the name of the CSS class of the image. Leaving this variable default empty string will make the class not generate the <tt>class</tt> attribute.</p>
+<p><a href="#variables">Variables</a></p>
+<h3><a name="variable_mime_type"></a><li><a name="5.2.29">mime_type</a></li></h3>
+<h3>Type</h3>
+<p><tt><i>string</i></tt></p>
+<h3>Default value</h3>
+<p><tt>''</tt></p>
+<h3>Purpose</h3>
+<p>Specify the MIME type of the image.</p>
+<h3>Usage</h3>
+<p>If you are generating an embedded image tag from data, set this variable to the corresponding MIME type for the given image.</p>
+<p> When the image has its size and type determined automatically by the class by analysing a locally accessible image file, the class sets this variable to the corresponding MIME type.</p>
+<h3>Example</h3>
+<p><tt>'image/gif'</tt></p>
+<p><a href="#variables">Variables</a></p>
+<h3><a name="variable_full_URI"></a><li><a name="5.2.30">full_URI</a></li></h3>
+<h3>Type</h3>
+<p><tt><i>bool</i></tt></p>
+<h3>Default value</h3>
+<p><tt>0</tt></p>
+<h3>Purpose</h3>
+<p>Indicate whether the image source needs to be expanded with a base URL prefix.</p>
+<h3>Usage</h3>
+<p>If you want the generated image tag to be expand by adding a base URL prefix, set this variable to <tt>1</tt> and the set the <tt><a href="#variable_base_url">base_url</a></tt> variable with the URL prefix that you want to prepend to the URL specified by the <tt><a href="#variable_SRC">SRC</a></tt> variable.</p>
+<p><a href="#variables">Variables</a></p>
+<h3><a name="variable_base_url"></a><li><a name="5.2.31">base_url</a></li></h3>
+<h3>Type</h3>
+<p><tt><i>string</i></tt></p>
+<h3>Default value</h3>
+<p><tt>''</tt></p>
+<h3>Purpose</h3>
+<p>Specify the URL that will serve as prefix to the image file specified by the <tt><a href="#variable_SRC">SRC</a></tt> variable.</p>
+<h3>Usage</h3>
+<p>If you want to generate an image tag with source URL set for a local image file, set the <tt><a href="#variable_SRC">SRC</a></tt> to the image local file path, set the <tt><a href="#variable_base_url">base_url</a></tt> to the prefix that you want to prepend to the image file path and set the <tt><a href="#variable_full_URI">full_URI</a></tt> to <tt>1</tt>.</p>
+<p><a href="#variables">Variables</a></p>
+<h3><a name="variable_remote_image"></a><li><a name="5.2.32">remote_image</a></li></h3>
+<h3>Type</h3>
+<p><tt><i>bool</i></tt></p>
+<h3>Default value</h3>
+<p><tt>0</tt></p>
+<h3>Purpose</h3>
+<p>Indicate whether the image file is locally accessible.</p>
+<h3>Usage</h3>
+<p>If the specified image is locally accessible, the class may examine it to retrieve its dimensions. Additionally, the actual image data can be embedded in the generated image HTML tag.</p>
+<p> If the image file is not locally accessible, this variable should be set to <tt>1</tt>. In this case, the class will use the values specified by the variables <tt><a href="#variable_WIDTH">WIDTH</a></tt> and <tt><a href="#variable_HEIGHT">HEIGHT</a></tt> as dimensions.</p>
+<p> Under some PHP versions with an appropriate configuration, it is possible to use remote images as locally acessible files by specifying the full URL in the <tt><a href="#variable_SRC">SRC</a></tt> variable.</p>
+<p><a href="#variables">Variables</a></p>
+<h3><a name="variable_embedded"></a><li><a name="5.2.33">embedded</a></li></h3>
+<h3>Type</h3>
+<p><tt><i>bool</i></tt></p>
+<h3>Default value</h3>
+<p><tt>0</tt></p>
+<h3>Purpose</h3>
+<p>Indicate whether the generated image tag should include the actual image data.</p>
+<h3>Usage</h3>
+<p>If the image specified by the <tt><a href="#variable_SRC">SRC</a></tt> is a locally accessible file, you can set the <tt><a href="#variable_embedded">embedded</a></tt> variable to <tt>1</tt> if you would like the image data to be included in the generated image tag.</p>
+<p><a href="#variables">Variables</a></p>
+<h3><a name="variable_from_data"></a><li><a name="5.2.34">from_data</a></li></h3>
+<h3>Type</h3>
+<p><tt><i>bool</i></tt></p>
+<h3>Default value</h3>
+<p><tt>0</tt></p>
+<h3>Purpose</h3>
+<p>Indicate whether the data for an embedded image is passed explicitly or it should be read from an image file.</p>
+<h3>Usage</h3>
+<p>To passed the data of an embedded image explicitly, set either this variable and <tt><a href="#variable_embedded">embedded</a></tt> variable to <tt>1</tt> and then set the <tt><a href="#variable_SRC">SRC</a></tt> variable to a string that contains the image binary data.</p>
+<p><a href="#variables">Variables</a></p>
+<h3><a name="variable_buffer_length"></a><li><a name="5.2.35">buffer_length</a></li></h3>
+<h3>Type</h3>
+<p><tt><i>int</i></tt></p>
+<h3>Default value</h3>
+<p><tt>10000</tt></p>
+<h3>Purpose</h3>
+<p>Specify the maximum length of the buffer to be used when examining locally accessible image files.</p>
+<h3>Usage</h3>
+<p>Usually the default value of this variable is appropriate to read any type of image files. Change this variable only if you have a special reason to use a different maximum buffer length.</p>
+<p><a href="#variables">Variables</a></p>
+<h3><a name="variable_error"></a><li><a name="5.2.36">error</a></li></h3>
+<h3>Type</h3>
+<p><tt><i>string</i></tt></p>
+<h3>Default value</h3>
+<p><tt>''</tt></p>
+<h3>Purpose</h3>
+<p>Store the message that is returned when an error occurs.</p>
+<h3>Usage</h3>
+<p>Check this variable to understand what happened when a call to any of the class functions has failed.</p>
+<p><a href="#variables">Variables</a></p>
+<h3><a name="variable_hidden"></a><li><a name="5.2.37">hidden</a></li></h3>
+<h3>Type</h3>
+<p><tt><i>bool</i></tt></p>
+<h3>Default value</h3>
+<p><tt>0</tt></p>
+<h3>Purpose</h3>
+<p>Make the generated image not be visible.</p>
+<h3>Usage</h3>
+<p>Set this flag when you want to make the image be loaded but not be visible.</p>
+<p><a href="#variables">Variables</a></p>
+<h3><a name="variable_xhtml"></a><li><a name="5.2.38">xhtml</a></li></h3>
+<h3>Type</h3>
+<p><tt><i>bool</i></tt></p>
+<h3>Default value</h3>
+<p><tt>0</tt></p>
+<h3>Purpose</h3>
+<p>Generate XHTML compliant HTML.</p>
+<h3>Usage</h3>
+<p>Set this flag when you want to make the generated HTML be compliant with XHTML.</p>
+<p><a href="#variables">Variables</a></p>
+<p><a href="#table_of_contents">Table of contents</a></p>
+</ul>
+</ul>
+<hr />
+<ul>
+<h2><li><a name="functions"></a><a name="6.1.1">Functions</a></li></h2>
+<ul>
+<li><tt><a href="#function_GetDataURL">GetDataURL</a></tt></li><br />
+<li><tt><a href="#function_GetFileDataURL">GetFileDataURL</a></tt></li><br />
+<li><tt><a href="#function_GetMarkup">GetMarkup</a></tt></li><br />
+<p><a href="#table_of_contents">Table of contents</a></p>
+<h3><a name="function_GetDataURL"></a><li><a name="7.2.4">GetDataURL</a></li></h3>
+<h3>Synopsis</h3>
+<p><tt><i>string</i> GetDataURL(</tt><ul>
+<tt><i>string</i> </tt><tt><a href="#argument_GetDataURL_data">data</a></tt><tt>,</tt><br />
+<tt><i>string</i> </tt><tt><a href="#argument_GetDataURL_mime_type">mime_type</a></tt></ul>
+<tt>)</tt></p>
+<h3>Purpose</h3>
+<p>Generate a data URL from from a binary data string.</p>
+<h3>Usage</h3>
+<p>Pass to the <tt><a href="#argument_GetDataURL_data">data</a></tt> argument a string that contains the binary data from which you want to generate the data URL. The <tt><a href="#argument_GetDataURL_mime_type">mime_type</a></tt> argument should specify the MIME type of the data.</p>
+<h3>Arguments</h3>
+<ul>
+<p><tt><b><a name="argument_GetDataURL_data">data</a></b></tt> - String that contains the binary data.</p>
+<p><tt><b><a name="argument_GetDataURL_mime_type">mime_type</a></b></tt> - MIME type of the binary data. It may be an empty string in case the MIME type of the data is unknown.</p>
+</ul>
+<h3>Return value</h3>
+<p>A text string that represents the data URL.</p>
+<p><a href="#functions">Functions</a></p>
+<h3><a name="function_GetFileDataURL"></a><li><a name="9.2.5">GetFileDataURL</a></li></h3>
+<h3>Synopsis</h3>
+<p><tt><i>string</i> GetFileDataURL(</tt><ul>
+<tt><i>string</i> </tt><tt><a href="#argument_GetFileDataURL_source">source</a></tt></ul>
+<tt>)</tt></p>
+<h3>Purpose</h3>
+<p>Generate a data URL of from locally accessible image file.</p>
+<h3>Usage</h3>
+<p>Pass to the <tt><a href="#argument_GetFileDataURL_source">source</a></tt> argument the local file path or an URL of the image source from which you want to generate the corresponding data URL.</p>
+<h3>Arguments</h3>
+<ul>
+<p><tt><b><a name="argument_GetFileDataURL_source">source</a></b></tt> - Local file path or URL of the image source.</p>
+</ul>
+<h3>Return value</h3>
+<p>A text string that represents the data URL of the specified image file.</p>
+<p> If this function fails for some reason, it returns an empty string and the <tt><a href="#variable_error">error</a></tt> variable is set to with an error message that explains the reason for the failure.</p>
+<p><a href="#functions">Functions</a></p>
+<h3><a name="function_GetMarkup"></a><li><a name="11.2.6">GetMarkup</a></li></h3>
+<h3>Synopsis</h3>
+<p><tt><i>string</i> GetMarkup(</tt><tt>)</tt></p>
+<h3>Purpose</h3>
+<p>Generate the HTML <tt>IMG</tt> tag that represents the image according to the values of the class variables.</p>
+<h3>Usage</h3>
+<p>Set the <tt><a href="#variable_SRC">SRC</a></tt> and other class variables to specify the image from which you want to generate the corresponding HTML <tt>IMG</tt> tag.</p>
+<h3>Return value</h3>
+<p>A text string that is the image HTML <tt>IMG</tt> tag.</p>
+<p> If this function fails for some reason, it returns an empty string and the <tt><a href="#variable_error">error</a></tt> variable is set to with an error message that explains the reason for the failure.</p>
+<p><a href="#functions">Functions</a></p>
+<p><a href="#table_of_contents">Table of contents</a></p>
+</ul>
+</ul>
+
+<hr />
+<address>Manuel Lemos (<a href="mailto:mlemos@acm.org">mlemos@acm.org</a>)</address>
+</body>
+</html>

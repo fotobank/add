@@ -1,0 +1,1 @@
+Put your truetype fonts here, if you use the optional watermark function.

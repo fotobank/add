@@ -1,0 +1,60 @@
+Let's assume we have following MySQL table:
+
+CREATE TABLE photos(
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  photo1 VARCHAR(100) NOT NULL,
+  photo2 VARCHAR(100) NOT NULL
+)
+
+
+First of all we need an active database connection:
+
+$link_id = mysql_connect($server, $username, $password) or die(mysql_error());
+mysql_select_db($db_name, $link_id) or die(mysql_error());
+
+
+Then, we should create the FileSyncDB object:
+
+require_once('filesyncdb.class.php');
+$fsyncdb = new FileSyncDB();
+$fsyncdb->link_id = $link_id;
+$fsyncdb->root_dir = 'db_images/photos/';
+
+
+Here is an example of extended INSERT query:
+
+$fields = array('name' => 'Richard Brown');
+$ext_fields = array(
+  'photo1' => array('uploads/richard1.jpg', 'richard1_' . mt_rand(1000, 9999) . '.jpg'),
+  'photo2' => array('uploads/richard2.jpg', 'richard2_' . mt_rand(1000, 9999) . '.jpg')
+);
+$fsyncdb->Insert('photos', $fields, $ext_fields) or die(mysql_error());
+
+The code above will execute query "INSERT INTO photos (name, photo1, photo2)
+VALUES ('Richard Brown', 'richard1_1254.jpg', 'richard1_7044.jpg')" and will
+copy "richard1.jpg" and "richard2.jpg" from "uploads/" to "db_images/photos/"
+as 'richard1_1254.jpg' and 'richard1_7044.jpg'.
+
+
+Here is an exmaple of extended DELETE query:
+
+$where = "name = 'Richard Brown'";
+$fsyncdb->Delete('photos', $where, array('photo1', 'photo2')) or die(mysql_error());
+
+The code above will execute query "DELETE FROM photos WHERE name = 'Richard Brown'"
+and will remove photos of Richard Brown from "db_images/photos/"
+
+
+Here is an example of extended UPDATE query:
+
+$where = "name = 'Richard Brown'";
+$fields = array('name' => 'Richard Green');
+$ext_fields = array(
+  'photo1' => array('uploads/richard3.jpg', 'richard3_' . mt_rand(1000, 9999) . '.jpg')
+);
+$fsyncdb->Insert('photos', $fields, $ext_fields) or die(mysql_error());
+
+The code above will execute query "UPDATE photos SET photo1 = 'richard3_2458.jpg',
+name = 'Richard Green' WHERE name = 'Richard Brown'", and will replace the file
+"richard1_1254.jpg" with the file "richard3_2458.jpg" from "uploads/richard3.jpg".
