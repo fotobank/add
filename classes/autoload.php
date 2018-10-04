@@ -63,13 +63,14 @@ class autoload {
 				$fileName  = str_replace('\\', DIRECTORY_SEPARATOR, $namespace).DIRECTORY_SEPARATOR;
 			}
 			$fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className).'.php';
+			/*if($fileName == 'dump_r\Type\String.php') {
+			       $fileName = 'dump_r/Type/StringType.php';
+      }*/
 			$file = site_path.'classes'.DIRSEP.$fileName;
 
 			try {
 	//	echo $file.'<br>';
-             if ($file == 'O:\domains\add.pr\classes\dump_r\Type\String.php'){
-                    echo $file.'<br>';
-             }
+
 				require_once $file;
 			} catch (Exception $e) {
 

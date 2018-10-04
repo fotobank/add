@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2c98a21d292812fee168f58afc3da357",
+    "content-hash": "f39dff4395c0f3bb063a9182a7bad757",
     "packages": [
         {
             "name": "psr/container",
@@ -1163,17 +1163,6 @@
         {
             "name": "roave/security-advisories",
             "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "67643fa62d521fb76855b0a4cc9a3de7ba38f85b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/67643fa62d521fb76855b0a4cc9a3de7ba38f85b",
-                "reference": "67643fa62d521fb76855b0a4cc9a3de7ba38f85b",
-                "shasum": ""
-            },
             "conflict": {
                 "3f/pygmentize": "<1.2",
                 "adodb/adodb-php": "<5.20.12",
@@ -2005,7 +1994,8 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.1.0"
+        "php": ">=7.1.0",
+        "ext-ftp": "*"
     },
     "platform-dev": []
 }

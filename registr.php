@@ -166,10 +166,6 @@ LTR;
 
     }
 
-    $test = new stdClass();
-    $test->bar = 'получилось';
-    $test->func();
-
     $regData    = array(
       'rLogin'      => $rLogin,
       'rPass'       => $rPass,
@@ -181,8 +177,7 @@ LTR;
       'err_msg'     => $err_msg,
       'ok_msg'      => $ok_msg,
       'rCity'       => $rCity,
-      'rSurName_us' => $rSurName_us,
-      'ob' => $test
+      'rSurName_us' => $rSurName_us
     );
     $renderData = array_merge($renderData, $regData);
 

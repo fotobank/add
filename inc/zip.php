@@ -14,7 +14,7 @@
                             }
                             foreach ($post['files'] as $file) {
                                    require_once __DIR__.'/downloadZip.php';
-                                   $zip->addFile($file_folder.$file); // Adding files into zip
+                                   $zip->addFile($file_folder.$file); // Добавление файлов в zip
                             }
                             $zip->close();
                             if (file_exists($zip_name)) {
@@ -27,10 +27,10 @@
                             }
 
                      } else {
-                            $error .= "* Выберите, пожалуйста, файлы `галочками`.<br/>";
+                            $error .= '* Выберите, пожалуйста, файлы `галочками`.<br/>';
                      }
               } else {
-                     $error .= "* У вас нет расширения ZIP<br/>";
+                     $error .= '* На данном сервере не установлено расширение PHP ZIP<br/>';
               }
               if (!empty($error)) {
                      ?>
@@ -51,8 +51,10 @@
                      WHERE id_user = ?i', array($_SESSION['userid']), 'assoc');
        if ($orders) {
               if (!empty($error)) {
-                     ?>
-				  <p style="border:#C10000 1px solid; background-color:#ffc6cc; color:#B00000;padding:8px; width:400px; margin:0 auto 10px;"><?php echo $error; ?></p> <?
+                     ?><p style="border:#C10000 1px solid; background-color:#ffc6cc; color:#B00000;padding:8px; width:400px; margin:0 auto 10px;"><?php echo $error; ?>
+	              </p>
+	                 <?php
+
               }
               foreach ($orders as $order) {
                      ?>

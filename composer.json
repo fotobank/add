@@ -5,7 +5,9 @@
     "require": {
         "php": ">=7.1.0",
         "psr/container": "^1.0",
-        "twig/twig": "^2.4"
+        "twig/twig": "^2.5",
+        "ext-ftp": "*",
+        "ext-zip": "*"
     },
     "require-dev": {
         "filp/whoops": "^2.2",
@@ -15,8 +17,7 @@
     "autoload": {
         "psr-4": {
             "Framework\\": "src/Framework/",
-            "Site\\": "src/Site/",
-            "Classes": "classes"
+            "Site\\": "src/Site/"
         }
     },
     "scripts": {

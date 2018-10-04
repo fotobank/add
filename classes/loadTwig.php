@@ -14,10 +14,10 @@
               function __construct() {
 
                      if ($_SERVER['PHP_SELF'] === '/gb/index.php') {
-                            $templates = ['../templates', '../src/Framework/View/Twig/Templates'];
+                            $templates = ['../src/Framework/View/Twig/Templates/Default', '../src/Site/View/Twig/Templates/Default'];
                             $cache     = '../cache';
                      } else {
-                            $templates = ['templates', 'src/Framework/View/Twig/Templates'];
+                            $templates = ['src/Framework/View/Twig/Templates/Default', 'src/Site/View/Twig/Templates/Default'];
                             $cache     = 'cache';
                      }
 

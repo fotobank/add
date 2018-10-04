@@ -129,8 +129,7 @@ function ok_exit($msg = 'Операция успешно завершена', $addr = '')
 function get_param($param_name,$param_index)
 {
 	$rs = go\DB\query('select `param_value` from `nastr` where `param_name` = (?string) AND `param_index` = ?i',array($param_name,$param_index), 'el');
-	$value = $rs ? $rs : false;
-	return $value;
+	return $rs ?? false;
 }
 
   /**

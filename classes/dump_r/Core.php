@@ -61,7 +61,7 @@
                      return 'Function0';
               }  // lang construct
               if (is_string($raw)) {
-                     return 'String';
+                     return 'StringType';
               }
               if (is_array($raw)) {
                      return 'Array0';
@@ -80,7 +80,7 @@
 
               return implode('\\', $class);
        });
-       Type::hook('String', function ($raw) {
+       Type::hook('StringType', function ($raw) {
 
               if ($raw === '') return;
               if (strlen($raw) > 5 && preg_match('#[:/-]#', $raw) && ($ts = strtotime($raw)) !== false) {
