@@ -1,89 +1,101 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: Jurii
- * Date: 20.06.13
- * Time: 21:57
- * To change this template use File | Settings | File Templates.
- */
+       /**
+        * Created by JetBrains PhpStorm.
+        * User: Jurii
+        * Date: 20.06.13
+        * Time: 21:57
+        * To change this template use File | Settings | File Templates.
+        */
+       /**
+        * Проверка активности сессии
+        * Example
+        * if (is_session_started() === false) session_start();
+        */
+       function is_session_started(): bool {
 
-  /**
-	* @param bool $isUserActivity
-	* @param null $prefix
-	* старт сессии
-	* @return bool
-	*/
-  function startSession($isUserActivity=true, $prefix=NULL) {
-	 $sessionLifetime = 300; // Таймаут отсутствия активности пользователя (в секундах)
-	 $idLifetime = 60;  // Время жизни идентификатора сессии
+              if (PHP_SAPI !== 'cli') {
+                     if (PHP_VERSION_ID >= 50400) {
+                            return session_status() === PHP_SESSION_ACTIVE;
+                     }
+                     return session_id() !== '';
+              }
+              return false;
+       }
 
-	 if ( session_id() ) return true;
-	 // Если в параметрах передан префикс пользователя,
-	 // устанавливаем уникальное имя сессии, включающее этот префикс,
-	 // иначе устанавливаем общее для всех пользователей имя (например, SID)
-	 session_name('SID'.($prefix ? '_'.$prefix : ''));
-	 // Устанавливаем время жизни куки до закрытия браузера (контролировать все будем на стороне сервера)
-	 ini_set('session.cookie_lifetime', 0);
-	 if (!session_start())
-		{
-		  session_regenerate_id(true);
-		}
-	 else
-		{
-		  return false;
-		}
 
-	 $t = time();
+       /**
+        * @param bool $isUserActivity
+        * @param null $prefix
+        * старт сессии
+        *
+        * @return bool
+        */
+       function startSession($isUserActivity = true, $prefix = NULL) {
 
-	 if ( $sessionLifetime ) {
-		// Если таймаут отсутствия активности пользователя задан,
-		// проверяем время, прошедшее с момента последней активности пользователя
-		// (время последнего запроса, когда была обновлена сессионная переменная lastactivity)
-		if ( isset($_SESSION['lastactivity']) && isset($_SESSION['logged']) && isset($_SESSION['logged']) == true && $t-$_SESSION['lastactivity'] >= $sessionLifetime ) {
-		  // Если время, прошедшее с момента последней активности пользователя,
-		  // больше таймаута отсутствия активности, значит сессия истекла, и нужно завершить сеанс
-		  destroySession();
-		  return false;
-		}
-		else {
-		  // Если таймаут еще не наступил,
-		  // и если запрос пришел как результат активности пользователя,
-		  // обновляем переменную lastactivity значением текущего времени,
-		  // продлевая тем самым время сеанса еще на sessionLifetime секунд
-		  if ( $isUserActivity ) $_SESSION['lastactivity'] = $t;
-		}
-	 }
+              $sessionLifetime = 300; // Таймаут отсутствия активности пользователя (в секундах)
+              $idLifetime      = 60;  // Время жизни идентификатора сессии
+              /*if (session_id()) {
+                     return true;
+              }*/
+              // Если в параметрах передан префикс пользователя,
+              // устанавливаем уникальное имя сессии, включающее этот префикс,
+              // иначе устанавливаем общее для всех пользователей имя (например, SID)
+              session_name('SID'.($prefix ? '_'.$prefix : ''));
+              // Устанавливаем время жизни куки до закрытия браузера (контролировать все будем на стороне сервера)
+              ini_set('session.cookie_lifetime', 0);
+              // стартуем сессию
+              if (is_session_started() === false) {
+                     session_start();
+              }
 
-	 if ( $idLifetime ) {
-		// Если время жизни идентификатора сессии задано,
-		// проверяем время, прошедшее с момента создания сессии или последней регенерации
-		// (время последнего запроса, когда была обновлена сессионная переменная starttime)
-		if ( isset($_SESSION['starttime']) ) {
-		  if ( $t-$_SESSION['starttime'] >= $idLifetime ) {
-			 // Время жизни идентификатора сессии истекло
-			 // Генерируем новый идентификатор
-		//	 session_write_close();
-			 session_regenerate_id(true);
-			 $_SESSION['starttime'] = $t;
-		  }
-		}
-		else {
-		  // Сюда мы попадаем, если сессия только что создана
-		  // Устанавливаем время генерации идентификатора сессии в текущее время
-		  $_SESSION['starttime'] = $t;
-		}
-	 }
+              $t = time();
+              if ($sessionLifetime) {
+                     // Если таймаут отсутствия активности пользователя задан,
+                     // проверяем время, прошедшее с момента последней активности пользователя
+                     // (время последнего запроса, когда была обновлена сессионная переменная lastactivity)
+                     if (isset($_SESSION['lastactivity'], $_SESSION['logged']) && isset($_SESSION['logged']) === true
+                         && $t - $_SESSION['lastactivity'] >= $sessionLifetime) {
+                            // Если время, прошедшее с момента последней активности пользователя,
+                            // больше таймаута отсутствия активности, значит сессия истекла, и нужно завершить сеанс
+                            destroySession();
+                            return false;
 
-	 return true;
-  }
+                     }
+                     if ($isUserActivity) {
+                            $_SESSION['lastactivity'] = $t;
+                     }
+              }
+              if ($idLifetime) {
+                     // Если время жизни идентификатора сессии задано,
+                     // проверяем время, прошедшее с момента создания сессии или последней регенерации
+                     // (время последнего запроса, когда была обновлена сессионная переменная starttime)
+                     if (isset($_SESSION['starttime'])) {
+                            if ($t - $_SESSION['starttime'] >= $idLifetime) {
+                                   // Время жизни идентификатора сессии истекло
+                                   // Генерируем новый идентификатор
+                                   //	 session_write_close();
+                                   session_regenerate_id(true);
+                                   $_SESSION['starttime'] = $t;
+                            }
+                     } else {
+                            // Сюда мы попадаем, если сессия только что создана
+                            // Устанавливаем время генерации идентификатора сессии в текущее время
+                            $_SESSION['starttime'] = $t;
+                     }
+              }
 
-  /**
-	* уничтожение сессии
-	*/
-  function destroySession() {
-	 if ( session_id() ) {
-		session_unset();
-		setcookie(session_name(), session_id(), time()-60*60*24);
-		session_destroy();
-	 }
-  }
+              return true;
+       }
+
+       /**
+        * уничтожение сессии
+        */
+       function destroySession() {
+
+              if (is_session_started()) {
+                     session_unset();
+                     /** @noinspection SummerTimeUnsafeTimeManipulationInspection */
+                     setcookie(session_name(), session_id(), time() - (60 * 60 * 24));
+                     session_destroy();
+              }
+       }

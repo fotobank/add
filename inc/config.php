@@ -1,7 +1,7 @@
 <?php
-       require_once (__DIR__.'/../classes/dump_r/dump_r.php');
+       require_once __DIR__.'/../classes/dump_r/dump_r.php';
        try {
-              require_once (__DIR__.'/../classes/autoload.php');
+              require_once __DIR__.'/../classes/autoload.php';
               autoload::getInstance();
        }
        catch (Exception $e) {
@@ -9,7 +9,7 @@
                      dump_r($e->getMessage());
               }
        }
-       require_once(__DIR__.'/secureSession.php');
+       require_once __DIR__.'/secureSession.php';
        $session = check_Session::getInstance();
        startSession();
        if (!$session->has('referralSeed')) {

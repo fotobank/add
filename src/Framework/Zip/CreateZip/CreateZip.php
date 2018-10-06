@@ -7,7 +7,8 @@
         */
 
        namespace Framework\Zip\CreateZip;
-       use function is_dir;
+       namespace Framework\Zip\CreateZipRuntimeException;
+       use function is_dir, count;
        use ZipArchive;
 
        /**
@@ -26,9 +27,9 @@
                      // Проверка расширения ZIP
                      if (\extension_loaded('zip')) {
                             // Проверка выбранных файлов
-                            if (isset($_POST['files'], $_POST['create_zip']) && \count($_POST['files']) > 0) {
+                            if (isset($_POST['files'], $_POST['create_zip']) && count($_POST['files']) > 0) {
                                    if(!is_dir($this->file_folder) && !mkdir($this->file_folder, 0777) && !is_dir($this->file_folder)) {
-                                          throw new \RuntimeException(sprintf('Directory "%s" was not created', $this->file_folder));
+                                          throw new CreateZipRuntimeException(sprintf('Directory "%s" was not created', $this->file_folder));
                                    }
                                    $this->downloadZip();
                             } else {
@@ -43,7 +44,7 @@
               /**
                *
                */
-              protected function downloadZip() {
+              protected function downloadZip() :void {
 
                      $zip      = new ZipArchive();
                      $zip_name = time().'.zip';
@@ -53,7 +54,7 @@
                             $this->error .= '* Ошибка при создании ZIP-архива<br/>';
                      }
                      foreach ($_POST['files'] as $file) {
-                            require_once __DIR__.'/downloadZip.php';
+                            require_once __DIR__.'/../../../../inc/downloadZip.php';
                             // Добавление файлов в zip
                             $zip->addFile($this->file_folder.$file);
                      }
@@ -63,7 +64,6 @@
                             header('Content-type: application/zip');
                             header('Content-Disposition: attachment; filename="'.$zip_name.'"');
                             readfile($zip_name);
-                            // удалить существующий zip-файл в temp-пути
                             unlink($zip_name);
                      }
               }

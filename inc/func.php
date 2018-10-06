@@ -32,9 +32,9 @@ function main_redir($addr = '', $close_conn = true, $code = 'HTTP/1.1 303 See Ot
   if(empty($addr))
 	 {
 		if (isset($_SERVER['HTTP_REFERER'])) {
-		  header ("location: ".$_SERVER['HTTP_REFERER']);
+		  header ('location: '.$_SERVER['HTTP_REFERER']);
 		}else{
-		  header ("location: index.php");
+		  header ('location: index.php');
 		}
 	 } else {
 	 header('location: '.$addr);
@@ -425,16 +425,16 @@ function digit_to_string($dig){
 				{
 					if ($format == '10x15' || $format == '13x18')
 						{
-							$rt = "ИТОГО: ".$print['pecat']." гривень (".$print['koll']." фото ".$format."см)";
+							$rt = 'ИТОГО: '.$print['pecat'].' гривень ('.$print['koll'].' фото '.$format.'см)';
 						}
 					elseif ($format == '20x30')
 						{
-							$rt = "ИТОГО: ".$print['pecat_A4']." гривень (".$print['koll']." фото ".$format."см)";
+							$rt = 'ИТОГО: '.$print['pecat_A4'].' гривень ('.$print['koll'].' фото '.$format.'см)';
 						}
 				}
 			 elseif ($session->get('print') == 0)
 				{
-					$rt = "ИТОГО: ".$print['price']." гривень (".$print['file']." фото 13x18см)";
+					$rt = 'ИТОГО: '.$print['price'].' гривень ('.$print['file'].' фото 13x18см)';
 				}
 
 			 return $rt;
@@ -507,8 +507,8 @@ function digit_to_string($dig){
 									'/%MONTH%/i',
 									'/%DAYWEEK%/i'
 									), array(
-										$months[date("m", $d) - 1],
-										$days[date("N", $d) - 1]
+										$months[date('m', $d) - 1],
+										$days[date('N', $d) - 1]
 										), $format);
 
 	 return date($format, $d);
@@ -522,9 +522,11 @@ function digit_to_string($dig){
 	*/
   function get_domain()
   {
-					if($_SERVER['HTTP_HOST'] != 'add.pr') {
-	      $domain = "http://www.aleks.od.ua/";
-					} else $domain = "http://add.pr/";
+					if($_SERVER['HTTP_HOST'] !== 'add.pr') {
+	      $domain = 'http://www.aleks.od.ua/';
+					} else {
+                 $domain = 'http://add.pr/';
+          }
 	 return $domain;
   }
 
@@ -569,7 +571,7 @@ function digit_to_string($dig){
 		}
 	 $data.= '>';
 	 $data .= $text;
-	 $data .= "</a>";
+	 $data .= '</a>';
 	 return $data;
   }
 
@@ -586,24 +588,23 @@ function digit_to_string($dig){
 	*/
   function parse_extras($rule)
   {
-	 if ($rule[0] == "#")
-		{
-		  $id = substr($rule,1,strlen($rule));
-		  $data = ' id="' . $id . '"';
-		  return $data;
-		}
-	 elseif ($rule[0] == ".")
-		{
-		  $class = substr($rule,1,strlen($rule));
-		  $data = ' class="' . $class . '"';
-		  return $data;
-		}
-	 elseif ($rule[0] == "_")
-		{
-		  $data = ' target="' . $rule . '"';
-		  return $data;
-		}
-	 return false;
+
+         if ($rule[0] === '#') {
+           $id = substr($rule,1,strlen($rule));
+           $data = ' id="' . $id . '"';
+           return $data;
+         }
+         if ($rule[0] === '.') {
+                   $class = substr($rule,1,strlen($rule));
+                   $data = ' class="' . $class . '"';
+                   return $data;
+                 }
+         if ($rule[0] === '_') {
+          $data = ' target="' . $rule . '"';
+          return $data;
+        }
+
+         return false;
   }
 
 
@@ -652,21 +653,28 @@ $data .= parse_extras($extras);
 }
 $data .= ">";
 $data .= $text;
-$data .= "</a>";
+$data .= '</a>';
 return $data;
 }
 
-  /**
-	*  Склонение слов
-	*   $n — число/количество
-	*  ehample :  padegi(2)
-	*  result: коментария
-	*  ehample : padegi(55,'страница','страницы','страниц')
-	*  result: страниц
-	*/
+       /**
+        *  Склонение слов
+        *   $n — число/количество
+        *  ehample :  padegi(2)
+        *  result: коментария
+        *  ehample : padegi(55,'страница','страницы','страниц')
+        *  result: страниц
+        *
+        * @param        $n
+        * @param string $var1
+        * @param string $var2
+        * @param string $var3
+        *
+        * @return string
+        */
  function padegi($n,$var1='комментарий',$var2='комментария',$var3='комментариев'){
 
-  return $n%10==1&&$n%100!=11?$var1:($n%10>=2&&$n%10<=4&&($n%100<10||$n%100>=20)?$var2:$var3);
+  return $n%10===1&&$n%100!==11?$var1:($n%10>=2&&$n%10<=4&&($n%100<10||$n%100>=20)?$var2:$var3);
 
   }
 
@@ -690,21 +698,20 @@ return $data;
   return '<img class="avatar photo" src="' . $gravatar . '" width="40" height="40"/>';
   }
 
-
-
-  /**
-	* Get either a Gravatar URL or complete image tag for a specified email address.
-	*
-	* @param string $email The email address
-	* @param string $s Size in pixels, defaults to 80px [ 1 - 2048 ]
-	* @param string $d Default imageset to use [ 404 | mm | identicon | monsterid | wavatar ]
-	* @param string $r Maximum rating (inclusive) [ g | pg | r | x ]
-	* @param boole $img True to return a complete IMG tag False for just the URL
-	* @param array $atts Optional, additional key/value attributes to include in the IMG tag
-	* @return String containing either just a URL or a complete image tag
-	* @source http://gravatar.com/site/implement/images/php/
-	*/
-  function get_gravatar( $email, $img = false, $atts = array("width"=>"40", "height"=>"40", "class"=>"avatar photo"), $s = 80, $d = 'mm', $r = 'g' ) {
+       /**
+        * Get either a Gravatar URL or complete image tag for a specified email address.
+        *
+        * @param string $email The email address
+        * @param bool   $img   True to return a complete IMG tag False for just the URL
+        * @param array  $atts  Optional, additional key/value attributes to include in the IMG tag
+        * @param int    $s     Size in pixels, defaults to 80px [ 1 - 2048 ]
+        * @param string $d     Default imageset to use [ 404 | mm | identicon | monsterid | wavatar ]
+        * @param string $r     Maximum rating (inclusive) [ g | pg | r | x ]
+        *
+        * @return String containing either just a URL or a complete image tag
+        * @source http://gravatar.com/site/implement/images/php/
+        */
+  function get_gravatar($email, $img = false, $atts = array('width' => '40', 'height' => '40', 'class' => 'avatar photo'), $s = 80, $d = 'mm', $r = 'g' ) {
 	 $url = 'http://www.gravatar.com/avatar/';
 	 $url .= md5( strtolower( trim( $email ) ) );
 	 $url .= "?s=$s&d=$d&r=$r";
@@ -742,7 +749,13 @@ return $data;
 		return $out[1];
 	}
 
-	/** Return first value of specified tag from XML-fragment */
+       /** Return first value of specified tag from XML-fragment
+        *
+        * @param $text
+        * @param $tag
+        *
+        * @return
+        */
 	function get_f($text,$tag)
 	{
 		$ret = get_fa($text,$tag);
@@ -759,10 +772,12 @@ return $data;
 	 */
 	function GetFormValue($in_Val, $trim_Val = 0, $u_Case = false, $trim_symbols=false) {
 		$ret = trim(addslashes(htmlspecialchars(strip_tags($in_Val))));
-		if ($trim_Val)
-			$ret = substr($ret, 0, $trim_Val);
-		if ($u_Case)
-			$ret = strtoupper($ret);
+		if ($trim_Val) {
+           $ret = substr($ret, 0, $trim_Val);
+    }
+		if ($u_Case) {
+           $ret = strtoupper($ret);
+    }
 
 		if ($trim_symbols) {
 			$my_len = strlen($ret);
