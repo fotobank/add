@@ -1,6 +1,7 @@
 <?php
        define('ROOT', __DIR__);
        define('LIST_ROOT', ROOT . '/list');
+       define('CHARSET', 'cp1251');
 	require_once (__DIR__.'/../classes/autoload.php');
 	autoload::getInstance();
 
@@ -771,14 +772,13 @@ return $data;
 	 * @return string
 	 */
 	function GetFormValue($in_Val, $trim_Val = 0, $u_Case = false, $trim_symbols=false) {
-		$ret = trim(addslashes(htmlspecialchars(strip_tags($in_Val))));
+		$ret = trim(htmlspecialchars(strip_tags($in_Val), ENT_HTML5, CHARSET));
 		if ($trim_Val) {
            $ret = substr($ret, 0, $trim_Val);
     }
 		if ($u_Case) {
            $ret = strtoupper($ret);
     }
-
 		if ($trim_symbols) {
 			$my_len = strlen($ret);
 			for ($pos = 0; $pos<$my_len;$pos++) {

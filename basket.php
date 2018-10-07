@@ -109,7 +109,7 @@
 if (isset($_POST['okei']) && is_array($session->get('basket')) && count($session->get('basket')) > 0 )
 		  {
 
-			 $id_user = intval($session->get('userid'));
+			 $id_user = (int)$session->get('userid');
 			 $name = $_POST['us_name'];
 			 $subname = $_POST['us_surname'];
 			 $phone = $_POST['phone'];

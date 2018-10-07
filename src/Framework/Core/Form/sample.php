@@ -3,6 +3,11 @@
        error_reporting(E_ALL | E_STRICT);
        /** -----------------------------------------------------------------------------------*/
        header('Content-type: text/html; charset=windows-1251');
+
+       use Framework\Core\Form\Formgenerator\Formgenerator;
+
+       //------include class
+       require __DIR__.'/Formgenerator/Formgenerator.php';
 ?>
 <!DOCTYPE HTML>
 <html lang="en">
@@ -177,11 +182,6 @@
 <h2>Пример &bdquo;Form&rdquo; генератора</h2>
 <?php
 
-       use Framework\Core\Form\Formgenerator\Formgenerator;
-
-       ini_set('display_errors', 1);
-       //------include class
-       require __DIR__.'/Formgenerator/Formgenerator.php';
        //------create first form
        $form = new Formgenerator();
        //setup form
@@ -284,12 +284,5 @@
        }
 ?>
 <hr/>
-<h3>ToDo</h3>
-<ul>
-	<li>Add better default validators</li>
-	<li>Captcha integration</li>
-	<li>Bughunt</li>
-</ul>
-
 </body>
 </html>

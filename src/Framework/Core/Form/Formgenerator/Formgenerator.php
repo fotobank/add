@@ -44,9 +44,9 @@ use Framework\Core\Form\Formvalidator\Formvalidator;
               /**
                * @brief validator object
                */
-              protected $validator = NULL;
+              protected $validator;
               /**
-               * @brief saved input data
+               * @brief fields array saved input data
                */
               protected $validInput = false;
               /**     *
@@ -88,7 +88,7 @@ use Framework\Core\Form\Formvalidator\Formvalidator;
                      $this->config['method']['allowed']        = ['get', 'post'];
                      $this->config['errorPosition']['allowed'] = ['before', 'after', 'in_before', 'in_after'];
                      //config defaults
-                     $this->config['validator']['value']         = 'src/Framework/Core/Form/Formvalidator/Formvalidator.php';
+                     $this->config['validator']['value']         = __DIR__.'/../Formvalidator/Formvalidator.php';
                      $this->config['validatorClass']['value']    = 'Formvalidator';
                      $this->config['method']['value']            = 'post';
                      $this->config['sanitize']['value']          = true;
@@ -96,7 +96,7 @@ use Framework\Core\Form\Formvalidator\Formvalidator;
                      $this->config['errorPosition']['value']     = 'in_before';
                      $this->config['errorTitle']['value']        = '(!) Error:';
                      $this->config['errorLabel']['value']        = '<span>(!)</span>';
-                     $this->config['linebreaks']['value']        = '<br />';
+                     $this->config['linebreaks']['value']        = '<br/>';
                      $this->config['showErrors']['value']        = true;
                      $this->config['showDebug']['value']         = false;
                      $this->config['showAfterSuccess']['value']  = true;
@@ -105,10 +105,11 @@ use Framework\Core\Form\Formvalidator\Formvalidator;
                      $this->config['submitField']['value']       = 'submit';
                      $this->config['html5']['value']             = false;
                      $this->config['placeholders']['value']      = false;
+
+
               }
 
-
-              protected function getConfig($item): bool {
+              protected function getConfig($item): string {
 
                      if (isset($this->config[$item]['value'])) {
                             return $this->config[$item]['value'];
@@ -122,6 +123,7 @@ use Framework\Core\Form\Formvalidator\Formvalidator;
                */
               /**
                * @param $msg
+               *
                */
               protected function debug($msg): void {
 
@@ -140,12 +142,12 @@ use Framework\Core\Form\Formvalidator\Formvalidator;
                *
                * title <str> название формы
                              * name <str> имя и идентификатор формы
-                             * действие <str> действие attr формы
-                             * метод <enum> метод attr формы (post) [get | после]
-                             * класс <str> класс attr формы
+                             * act <str> действие attr формы
+                             * method <enum> метод attr формы (post) [get | после]
+                             * the class <str> класс attr формы
                              * validator <str> имя файла класса валидатора (Formvalidator.php)
                              * validatorClass <str> имя класса валидатора (валидатор)
-                             * санировать <bool> дезинфицировать ввод (true)
+                             * sanitize <bool> дезинфицировать ввод (true)
                              * submitMessage <str> сообщение, отображаемое при успешной отправке (форма успешно отправлена!)
                              * submitField <str> идентификатор кнопки отправки
                              * showDebug <bool> показывать сообщения об исключениях
@@ -171,7 +173,7 @@ use Framework\Core\Form\Formvalidator\Formvalidator;
                                                  $this->config[$option]['value'] = $value;
                                                  break;
                                           case 'enum':
-                                                 if (in_array($value, $this->config[$option]['allowed'], true)) {
+                                                 if (\in_array($value, $this->config[$option]['allowed'], true)) {
                                                         $this->config[$option]['value'] = $value;
                                                  } else {
                                                         throw new \RuntimeException('Value &quot;'.$value.'&quot; is not allowed for &quot;'.$option.'&quot;.');
@@ -274,7 +276,7 @@ use Framework\Core\Form\Formvalidator\Formvalidator;
                      $this->getFileInput();
                      $this->validateFields();
                      $this->writeErrors();
-                     if ($this->getConfig("title")) {
+                     if ($this->getConfig('title')) {
                             $this->form .= '<fieldset><legend>'.$this->getConfig('title').'</legend>';
                      }
                      if ($this->getConfig('errorPosition') === 'in_before') {
@@ -332,26 +334,26 @@ use Framework\Core\Form\Formvalidator\Formvalidator;
                * @param      $type
                * @param      $id
                * @param      $label
-               * @param bool $mandatory
-               * @param bool $init_value
-               * @param bool $aux
+               * @param bool $mandatory  обязательное
+               * @param bool $init_value начальные данные
+               * @param bool $aux дополнительные атрибуты
                */
               public function addField($type, $id, $label, $mandatory = false, $init_value = false, $aux = false): void {
 
                      $allowed = Array(
                             'text', 'textarea', 'radio', 'checkbox', 'select', 'file',
-                            'hidden', 'password', 'submit', 'reset', 'button', 'image', 'text',
+                            'hidden', 'password', 'submit', 'reset', 'button', 'image',
                             'number', 'date', 'month', 'week', 'time', 'datetime', 'datetime-local',
                             'email', 'url', 'range', 'color', 'search', 'time', 'tel',
                      );
                      if ($type === 'submit' || 'image') {
                             $this->config['submitField']['value'] = $id;
                      }
-                     if ((!$init_value) && isset($this->input[$id])) {
+                     if (!$init_value && isset($this->input[$id])) {
                             $init_value = $this->input[$id];
                      }
-                     if (in_array($type, $allowed, true)) {
-                            $this->fields[$id] = Array('type' => $type, 'label' => $label, 'mandatory' => $mandatory, 'init_value' => $init_value, 'aux' => $aux);
+                     if (\in_array($type, $allowed, true)) {
+                            $this->fields[$id] = ['type' => $type, 'label' => $label, 'mandatory' => $mandatory, 'init_value' => $init_value, 'aux' => $aux];
                      }
                      if ($type === 'file') {
                             $this->config['enctype']['value'] = 'multipart/form-data';
@@ -406,18 +408,18 @@ use Framework\Core\Form\Formvalidator\Formvalidator;
                                    $this->validator = false;
                                    if ($this->getConfig('validator') && file_exists($this->getConfig('validator'))) {
                                           require_once $this->getConfig('validator');
-                                          if (class_exists($this->getConfig('validatorClass'))) {
+//                                          if (class_exists($this->getConfig('validatorClass'))) {
                                                  $this->validator = new Formvalidator();
-                                          } else {
+                                          /*} else {
                                                  throw new \RuntimeException('Validator class &quot;'.$this->getConfig('validatorClass').'&quot; не найден.');
-                                          }
+                                          }*/
                                    } else {
                                           throw new \RuntimeException('Файл не найден: &quot;'.$this->getConfig('validatorClass').'&quot;');
                                    }
                             }
                             if ($function !== NULL && method_exists($this->validator, $function)) {
                                    $this->fields[$field]['validator'] = $function;
-                                   $this->fields[$field]['args']      = func_get_args();
+                                   $this->fields[$field]['args']      = \func_get_args();
                                    if (isset($this->input['pass'], $this->fields['pass']['args']['2'])) {
                                           $this->fields['pass']['args']['2'] =
                                                  $this->input['pass'];
@@ -503,7 +505,7 @@ use Framework\Core\Form\Formvalidator\Formvalidator;
               /**
                * @brief получить массив входных данных
                */
-              public function getData(): bool {
+              public function getData() {
 
                      $values = $this->validInput;
                      unset($values[$this->protectionField], $values[$this->getConfig('submitField')]);
@@ -537,8 +539,9 @@ use Framework\Core\Form\Formvalidator\Formvalidator;
                                           $args = [];
                                    }
                                    if (isset($this->input[$this->getConfig('submitField')])) {
+                                          //  $mandatory - обязательная проверка на недопустимость пустого поля
                                           if ( $mandatory && isset($this->input[$id]) && $this->input[$id] === '') {
-                                                 $this->error($id);
+                                                 $this->errorRegistration($id);
                                           }
                                           if ($validatorFunc) {
                                                  if (isset($this->input[$id])) {
@@ -546,7 +549,7 @@ use Framework\Core\Form\Formvalidator\Formvalidator;
                                                  } else {
                                                         $value = false;
                                                  }
-                                                 $this->error($id, $this->validator->{$validatorFunc}($value, array_slice($args, 2)), $this->input);
+                                                 $this->errorRegistration($id, $this->validator->{$validatorFunc}($value, \array_slice($args, 2)));
                                           }
                                    }
                             }
@@ -561,7 +564,7 @@ use Framework\Core\Form\Formvalidator\Formvalidator;
 
                      $type = $content = $grouped = $label = $acceskey = $mandatory = $init_value = $aux = NULL;
                      if ($this->fields) {
-                            $props = array('type', 'label', 'content', 'acceskey', 'mandatory', 'init_value', 'aux', 'validator', 'args', 'grouped');
+                            $props = ['type', 'label', 'content', 'acceskey', 'mandatory', 'init_value', 'aux', 'validator', 'args', 'grouped'];
                             foreach ($this->fields as $id => $field) {
                                    foreach ($props as $prop) {
                                           if (isset($field[$prop])) {
@@ -781,7 +784,7 @@ use Framework\Core\Form\Formvalidator\Formvalidator;
                             $this->form .= $init_value;
                      }
                      $this->form .= '</textarea>';
-                     if (!isset($this->fields[$id]['grouped']) || !isset($this->fields[$id]['grouped']) || (!$this->fields[$id]['grouped'])
+                     if (!isset($this->fields[$id]['grouped'], $this->fields[$id]['grouped']) || (!$this->fields[$id]['grouped'])
                          || ($this->fields[$id]['grouped'] === 3)) {
                             $this->form .= $this->getConfig('linebreaks');
                      }
@@ -945,12 +948,42 @@ use Framework\Core\Form\Formvalidator\Formvalidator;
                */
               protected function sanitize($str): string {
 
-                     if (is_string($str) && ($this->getConfig('sanitize') === true)) {
-                            //     $str=htmlspecialchars($str,ENT_QUOTES, 'utf-8');
-                            $str = GetFormValue($str);
+                     if (\is_string($str) && ($this->getConfig('sanitize') === true)) {
+                            $str = $this->getFormValue($str);
                      }
 
                      return $str;
+              }
+
+
+              /**
+               * @param      $in_Val
+               * @param int  $trim_Val
+               * @param bool $u_Case
+               * @param bool $trim_symbols
+               *
+               * @return bool|string
+               */
+              protected function getFormValue($in_Val, $trim_Val = 0, $u_Case = false, $trim_symbols=false): string {
+                     $ret = trim(htmlspecialchars(strip_tags($in_Val), ENT_HTML5, CHARSET));
+                     if ($trim_Val) {
+                            $ret = substr($ret, 0, $trim_Val);
+                     }
+                     if ($u_Case) {
+                            $ret = strtoupper($ret);
+                     }
+                     // обрезка строки чисел до первых символов
+                     // пример: $ret = 12345test; на выходе 12345
+                     if ($trim_symbols) {
+                            $my_len = \strlen($ret);
+                            for ($pos = 0; $pos < $my_len; $pos++) {
+                                   if (!is_numeric($ret[$pos])) {
+                                          $ret = substr($ret,0,$pos);
+                                          break;
+                                   }
+                            }
+                     }
+                     return $ret;
               }
 
 
@@ -959,11 +992,10 @@ use Framework\Core\Form\Formvalidator\Formvalidator;
                * @param string $msg
                * @param string $input
                */
-              protected function error($field, $msg = 'пустое поле', $input = ''): void {
+              protected function errorRegistration($field, $msg = 'пустое поле') {
 
                      if ($msg !== false && $msg !== NULL) {
                             $this->error[$field]['msg']  = $this->fields[$field]['label'].': '.$msg;
-                            $this->error[$field]['input']  = $this->fields[$field]['input'].': '.$input;
                             $this->error[$field]['link'] = $field;
                      }
               }
@@ -972,7 +1004,7 @@ use Framework\Core\Form\Formvalidator\Formvalidator;
               /**
                * @brief display error list
                */
-              protected function writeErrors(): void {
+              protected function writeErrors() {
 
                      if ($this->error && $this->config['showErrors']['value']) {
                             $this->errorBox = '<div class="errorbox">';
@@ -994,10 +1026,10 @@ use Framework\Core\Form\Formvalidator\Formvalidator;
               /**
                *
                */
-              public function join(): void {
+              public function join() {
 
                      $this->has_groups = true;
-                     $args             = func_get_args();
+                     $args             = \func_get_args();
                      foreach ($args as $arg) {
                             $this->fields[$arg]['grouped'] = true;
                      }
@@ -1009,7 +1041,7 @@ use Framework\Core\Form\Formvalidator\Formvalidator;
                *
                * field['grouped']:   0: nogroup, 1:start, 2:middle, 3:end
                */
-              protected function groupClean(): void {
+              protected function groupClean() {
 
                      $prev = NULL;
                      if ($this->has_groups) {

@@ -11,11 +11,7 @@
 			include_once BASEPATH.'inc/func.php';
 			include_once BASEPATH.'src/Framework/Core/Form/Formgenerator/Formgenerator.php';
 
-
 			use Framework\Core\Form\Formgenerator\Formgenerator;
-
-
-
 
 //      dump_r($link->referralSeed);
 //			dump_r("<br>actual referral Seed:{$_SESSION['referralSeed']}<br />\n");
@@ -56,18 +52,13 @@
 									$form->set('showAfterSuccess', true); // показывать форму после правильного ввода
 									$form->set('cleanAfterSuccess', false); // очищать поля после правильного ввода
 									$form->JSprotection('36CxgD');
-									$loader = go\DB\query('SELECT `login`, `email`,  `skype`,  `phone`,  `block`,  `mail_me`, `us_name`,  `us_surname`, `city` FROM `users` WHERE `id` = ?i',
-																														array($session->get('userid')), 'row');
-									$block = ($loader['block'] === 1) ? 'Для правильной работы почтовых служб, пожалуйста, указывайте свои точные данные.
-																																															Ваши контактные данные будут использоваться только в пределах данного
-																																															сайта и уничтожаются после удаления аккаунта.' : 'Аккаунт заблокирован!';
+									$loader = go\DB\query('SELECT `login`, `email`,  `skype`,  `phone`,  `block`,  `mail_me`, `us_name`,  `us_surname`, `city`, `balans` FROM `users` WHERE `id` = ?i', [$session->get('userid')], 'row');
+									$block = ($loader['block'] === '1') ? 'Для правильной работы почтовых служб, пожалуйста, указывайте свои точные данные. Ваши контактные данные будут использоваться только в пределах данного сайта и уничтожаются после удаления Вами данного аккаунта.' : 'Аккаунт заблокирован!';
 									unset($loader['block']);
 									$form->loadData($loader);
-									//mapped data loading (To hide eg. DB field names)
-									// отображенных загрузки данных (например, чтобы скрыть. имена поля БД)
-									$loader = Array('dbmessage' => 'Загрузка');
-									$map    = Array('dbmessage' => 'message');
-									$form->loadData($loader, $map);
+									// mapped data loading (To hide eg. DB field names)
+									// сопоставленная загрузка данных (например, чтобы скрыть. имена поля БД)
+									$form->loadData(['dbmessage' => 'Загрузка'], ['dbmessage' => 'message']);
 
 									//добавить поля
 									$form->addText($block);
@@ -81,27 +72,21 @@
 									$form->addField('text', 'skype', 'Skype', false, '', 'class = "formUser"');
 									$form->addField('text', 'email', 'E-mail', true, '', 'class = "formUser"');
 									$form->addField('text', 'city', 'Город проживания', false, '', 'class = "formUser"');
+									$form->addField('text', 'balans', 'На вашем счету', false, $loader['balans'].' грн.', 'class = "formUser" readonly');
 									$form->addField('checkbox', 'mail_me', 'Разрешить администрации', false, '', ' посылать Вам уведомления?');
 									$form->addField('checkbox', 'delUser', 'Удалить пользователя', false, false, ' Удаление аккаунта из базы данных.');
 									$form->addField('checkbox', 'terms', 'Заполнено верно', true, false, ' Внимательно проверьте введенные данные.');
 									/**
 										* валидация данных
 										*/
-									$form->validator('login', 'loginValidator', 3, 20, '/[?a-zA-Zа-яА-Я0-9_-]{3,20}$/', 'Логин может состоять из букв, цифр, дефисов и подчёркиваний.
-		 																																																																																					Длина от 3 до 20 символов.');
-									$form->validator('pass', 'passValidator', 'pass', 'pass2', 8, 20, "/^[0-9a-z\_\-\!\~\*\:\<\>\+\.]+$/i", 'В поле `Пароль` введены недопустимые символы<br>
-		 																																							или длина меньше 8 символов.<br> Допускаются только английские символы, цифры и знаки<br>  . - _ ! ~ * : < > + ');
-									$form->validator('us_name', 'regExpValidator', 2, 20, '/[?a-zA-Zа-яА-Я0-9_-]{2,20}$/', 'Имя может состоять из букв, цифр, дефисов и подчёркиваний.
-		 																																																																																							Длина от 2 до 20 символов.');
-									$form->validator('us_surname', 'regExpValidator', 2, 20, '/[?a-zA-Zа-яА-Я0-9_-]{2,20}$/', 'Фамилия может состоять из букв, цифр, дефисов и подчёркиваний.
-		                                                                            							        Длина от 2 до 20 символов.');
-									$form->validator('phone', 'phoneValidator', 6, 20, "/[%a-z_@.,^=:;а-я\"*()&$#№!?<>\~`|[{}\]]/i", 'неправильный ввод.<br> Пример правильного формата:
-																																																																																								 +380-12-34-56-789 или 8-076-77-56-567 или 777-56-56 или 7775656');
-									$form->validator('skype', 'regExpValidator', 3, 20, '/[?a-zA-Zа-яА-Я0-9_-]{0,20}$/', 'skype может состоять из букв, цифр, дефисов и подчёркиваний.
-																																																																																								 Длина от 3 до 20 символов.');
+									$form->validator('login', 'loginValidator', 3, 20, '/[?a-zA-Zа-яА-Я0-9_-]{3,20}$/', 'Логин может состоять из букв, цифр, дефисов и подчёркиваний. Длина от 3 до 20 символов.');
+									$form->validator('pass', 'passValidator', 'pass', 'pass2', 8, 20, "/^[0-9a-z\_\-\!\~\*\:\<\>\+\.]+$/i", 'В поле `Пароль` введены недопустимые символы<br>или длина меньше 8 символов.<br>Допускаются только английские символы, цифры и знаки<br>  . - _ ! ~ * : < > + ');
+									$form->validator('us_name', 'regExpValidator', 2, 20, '/[?a-zA-Zа-яА-Я0-9_-]{2,20}$/', 'Имя может состоять из букв, цифр, дефисов и подчёркиваний. Длина от 2 до 20 символов.');
+									$form->validator('us_surname', 'regExpValidator', 2, 20, '/[?a-zA-Zа-яА-Я0-9_-]{2,20}$/', 'Фамилия может состоять из букв, цифр, дефисов и подчёркиваний. Длина от 2 до 20 символов.');
+									$form->validator('phone', 'phoneValidator', 6, 20, "/[%a-z_@.,^=:;а-я\"*()&$#№!?<>\~`|[{}\]]/i", 'неправильный ввод.<br> Пример правильного формата: +380-12-34-56-789 или 8-076-77-56-567 или 777-56-56 или 7775656');
+									$form->validator('skype', 'regExpValidator', 3, 20, '/[?a-zA-Zа-яА-Я0-9_-]{0,20}$/', 'skype может состоять из букв, цифр, дефисов и подчёркиваний. Длина от 3 до 20 символов.');
 									$form->validator('email', 'regExpValidator', 4, 20, "/[0-9a-z_]+@[0-9a-z_^\.-]+\.[a-z]{2,3}/i", 'не действительный адрес электронной почты');
-									$form->validator('city', 'regExpValidator', 3, 20, '/[?a-zA-Zа-яА-Я0-9_-]{0,20}$/', 'название города может состоять из букв, цифр, дефисов и подчёркиваний.
-		                                                        																														Длина от 3 до 20 символов.');
+									$form->validator('city', 'regExpValidator', 3, 20, '/[?a-zA-Zа-яА-Я0-9_-]{0,20}$/', 'название города может состоять из букв, цифр, дефисов и подчёркиваний. Длина от 3 до 20 символов.');
 
 									/** рендер страницы */
 									//	$renderData['dataDB' ] =  go\DB\query('select txt from content where id = ?i', array(1), 'el');

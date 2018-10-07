@@ -135,10 +135,10 @@
                      if (!preg_match($args[2], $value)) {
                             return $args[3];
                      }
-                     $rs = \go\DB\query('SELECT `id` FROM `users` WHERE `login`=?string', array($value), 'el');
-                     if ($rs && $rs !== $_SESSION['userid']) {
+                     //  $rs = \go\DB\query('SELECT `id` FROM `users` WHERE `login`=?string', array($value), 'el');
+                     /*if ($rs && $rs !== $_SESSION['userid']) {
                             return 'ѕользователь с таким логином уже существует, выберите, пожалуйста, другой.';
-                     }
+                     }*/
 
                      return false;
               }

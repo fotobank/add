@@ -18,7 +18,7 @@
              $udata = NULL;
              foreach($array_logins as $login){
                     foreach($array_passwords as $password) {
-                           $udata = (go\DB\query('select * from users where login = ? and pass = md5(?)', array(cp1251($login), cp1251($password)), 'row'))?:NULL;
+                           $udata = go\DB\query('select * from users where login = ? and pass = md5(?)', array(cp1251($login), cp1251($password)), 'row') ?:NULL;
                            if($udata) {
                                   break;
                            }
@@ -31,22 +31,20 @@
 
 						if (!$udata)	{
 									err_exit('Неправильный логин или пароль!');
-						}	else {
-									if ($udata['status'] == 0)	{
-												err_exit('Login не активирован! Активируйте свой профиль с помощью письма, пришедшего на Ваш E-mail!');
-									}	elseif ($udata['block'] == 0)	{
-												err_exit('Аккаунт заблокирован!');
-									}	else	{
-												startSession("", intval($udata['id']));
-												$session->set('logged', true);
-												$session->set('userid', intval($udata['id']));
-												$session->set('user', $udata['login']);
-												$session->set('us_name', $udata['us_name']);
-												go\DB\query('INSERT INTO `actions`(`ip`, `user_event`, `id_user`,`brauzer`) VALUES (?string ,?i,?i,?string)',
-																							array(Get_IP(), 1, $udata['id'], $_SERVER['HTTP_USER_AGENT']));
-												ok_exit('Вы успешно вошли на сайт!');
-									}
-						}
+						}	else if ($udata['status'] === 0)	{
+              err_exit('Login не активирован! Активируйте свой профиль с помощью письма, пришедшего на Ваш E-mail!');
+       }	elseif ($udata['block'] === 0)	{
+              err_exit('Аккаунт заблокирован!');
+       }	else	{
+              startSession('', (int)$udata['id']);
+              $session->set('logged', true);
+              $session->set('userid', (int)$udata['id']);
+              $session->set('user', $udata['login']);
+              $session->set('us_name', $udata['us_name']);
+              go\DB\query('INSERT INTO `actions`(`ip`, `user_event`, `id_user`,`brauzer`) VALUES (?string ,?i,?i,?string)',
+                                   array(Get_IP(), 1, $udata['id'], $_SERVER['HTTP_USER_AGENT']));
+              ok_exit('Вы успешно вошли на сайт!');
+       }
 
 
 			} elseif (isset($_POST['login'])) {
