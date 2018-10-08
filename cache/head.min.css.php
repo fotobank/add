@@ -9,7 +9,7 @@ else
 }
 header( 'Content-Encoding: gzip' );
 header( 'Cache-Control: max-age=2678400' );
-header( 'Expires: Mon, 05 Nov 2018 11:18:28 GMT' );
+header( 'Expires: Wed, 07 Nov 2018 11:44:30 GMT' );
 header( 'Last-Modified: Thu, 05 Sep 2013 23:49:54 GMT' );
 header( 'Content-type: text/css; charset: UTF-8' );
 ?>
@@ -26,7 +26,7 @@ header( 'Content-type: text/css; charset: UTF-8' );
  * visuallightbox.css
  * prettyPhoto.css
  * badger.css
- * Generated: 2018-10-05 02:18:28
+ * Generated: 2018-10-07 02:44:30
  */
 
 

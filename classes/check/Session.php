@@ -102,9 +102,9 @@
                * @param $key
                * @param $value
                *
-               * @return bool
+               * @return bool | array
                */
-              public function set($key, $value): bool {
+              public function set($key, $value) {
 
                      $arg   = $this->arrKey($key);
                      $total = count($arg);

@@ -8,7 +8,8 @@
  */
 
   ignore_user_abort(1);
-  include (__DIR__.'/../head.php');
+  chdir(__DIR__.'/../../');
+  include __DIR__.'/../head.php';
 
 
   if (!isset($_SESSION['logged']))
@@ -41,12 +42,12 @@
 						Транзакция прошла успешно.
 					 </div>
 					 <?
-					 $user_balans += floatval($xmlArray['amount']);
+					 $user_balans += (float)$xmlArray['amount'];
 					 go\DB\query('update users set balans = ?f where id = ?i',array($user_balans, $_SESSION['userid']));
 					 echo   "<script type='text/javascript'>
 					 $('#balans').empty().append($user_balans);
 					 </script>";
-				  } elseif($xmlArray['status'] == "wait_secure")
+				  } elseif($xmlArray['status'] == 'wait_secure')
 				  {
 					 ?>
 					 <div class="drop-shadow lifted" style="margin: 150px 0 0 420px;">

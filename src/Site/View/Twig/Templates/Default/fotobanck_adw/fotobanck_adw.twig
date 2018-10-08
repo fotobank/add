@@ -229,7 +229,7 @@
 				</div>
 
 			{% if JS %}
-				{% if event == 'on' %}
+				{% if disable_photo_display == 'on' %}
 					{# Вывод фото в шапку альбома #}
 					{{ top5 }}
 					{# верхний пагитнатор#}
@@ -253,7 +253,7 @@
 					{{ renderBottom }}
 				{% else %}
 
-					{% include '/fotobanck_adw/_podpiska.twig' %}
+					{% include '/fotobanck_adw/fotobanck_adw_podpiska.twig' %}
 
 				{% endif %}
 			{% else %}

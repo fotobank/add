@@ -24,7 +24,7 @@ use Framework\Core\Form\Formvalidator\Formvalidator;
               /**
                * @brief fields array
                */
-              protected $fields = Array();
+              protected $fields = array();
               /**
                * @brief sent data holder
                */
@@ -36,24 +36,24 @@ use Framework\Core\Form\Formvalidator\Formvalidator;
               /**
                * @brief error content
                */
-              protected $errorBox;
+              protected $error_box;
               /**
                * @brief protection field
                */
-              protected $protectionField;
+              protected $protection_field;
               /**
                * @brief validator object
                */
-              protected $validator;
+              protected $form_validator;
               /**
                * @brief fields array saved input data
                */
-              protected $validInput = false;
+              protected $valid_input = false;
               /**     *
                * @brief have groups been defined
                */
               protected $has_groups = false;
-              private $protectionCode;
+              private $protection_code;
 
 
               /**
@@ -89,7 +89,7 @@ use Framework\Core\Form\Formvalidator\Formvalidator;
                      $this->config['errorPosition']['allowed'] = ['before', 'after', 'in_before', 'in_after'];
                      //config defaults
                      $this->config['validator']['value']         = __DIR__.'/../Formvalidator/Formvalidator.php';
-                     $this->config['validatorClass']['value']    = 'Formvalidator';
+                     $this->config['validatorClass']['value']    = 'Framework\Core\Form\Formvalidator\Formvalidator';
                      $this->config['method']['value']            = 'post';
                      $this->config['sanitize']['value']          = true;
                      $this->config['submitMessage']['value']     = 'Form successfully submitted!';
@@ -195,7 +195,7 @@ use Framework\Core\Form\Formvalidator\Formvalidator;
                */
               protected function saveValidInput(): void {
 
-                     $this->validInput = $this->input;
+                     $this->valid_input = $this->input;
               }
 
 
@@ -265,13 +265,13 @@ use Framework\Core\Form\Formvalidator\Formvalidator;
                             $field = $this->sanitize($field);
                      }
                      unset($field);
-                     if ($this->protectionField) {
-                            if (isset($this->input[$this->protectionField])) {
-                                   $sent_code = $this->input[$this->protectionField];
+                     if ($this->protection_field) {
+                            if (isset($this->input[$this->protection_field])) {
+                                   $sent_code = $this->input[$this->protection_field];
                             } else {
                                    $sent_code = false;
                             }
-                            $this->validator($this->protectionField, 'jsProtector', $sent_code, $this->protectionCode);
+                            $this->validator($this->protection_field, 'jsProtector', $sent_code, $this->protection_code);
                      }
                      $this->getFileInput();
                      $this->validateFields();
@@ -280,7 +280,7 @@ use Framework\Core\Form\Formvalidator\Formvalidator;
                             $this->form .= '<fieldset><legend>'.$this->getConfig('title').'</legend>';
                      }
                      if ($this->getConfig('errorPosition') === 'in_before') {
-                            $this->form .= $this->errorBox;
+                            $this->form .= $this->error_box;
                      }
                      if ($this->error === NULL && isset($this->input[$this->getConfig('submitField')])) {
                             $this->saveValidInput();
@@ -293,26 +293,26 @@ use Framework\Core\Form\Formvalidator\Formvalidator;
                      if ($this->error !== NULL || $this->getConfig('showAfterSuccess') || !isset($this->input[$this->getConfig('submitField')])) {
                             $this->groupClean();
                             $this->createFields();
-                            if ($this->protectionCode !== NULL) {
-                                   $this->form .= "<input type='hidden' name='".$this->protectionField."' id='".$this->protectionField."' />";
-                                   $this->form .= "<script type='text/javascript'>document.getElementById('".$this->protectionField."').value='"
-                                                  .$this->protectionCode."'</script>";
+                            if ($this->protection_code !== NULL) {
+                                   $this->form .= "<input type='hidden' name='".$this->protection_field."' id='".$this->protection_field."' />";
+                                   $this->form .= "<script type='text/javascript'>document.getElementById('".$this->protection_field."').value='"
+                                                  .$this->protection_code."'</script>";
                             }
                             if ($id) {
                                    $this->form .= "<input type='submit' name='$id' value='$label' $aux />\n";
                             }
                             if ($this->getConfig('errorPosition') === 'in_after') {
-                                   $this->form .= $this->errorBox;
+                                   $this->form .= $this->error_box;
                             }
                             if ($this->getConfig('title')) {
                                    $this->form .= '</fieldset>';
                             }
                             $this->form .= "</form>\n";
                             if ($this->getConfig('errorPosition') === 'before') {
-                                   $this->form = $this->errorBox.$this->form;
+                                   $this->form = $this->error_box.$this->form;
                             }
                             if ($this->getConfig('errorPosition') === 'after') {
-                                   $this->form .= $this->errorBox;
+                                   $this->form .= $this->error_box;
                             }
                             echo $this->form;
                      }
@@ -404,20 +404,15 @@ use Framework\Core\Form\Formvalidator\Formvalidator;
               public function validator($field, $function): void {
 
                      try {
-                            if ($this->validator === NULL) {
-                                   $this->validator = false;
-                                   if ($this->getConfig('validator') && file_exists($this->getConfig('validator'))) {
-                                          require_once $this->getConfig('validator');
-//                                          if (class_exists($this->getConfig('validatorClass'))) {
-                                                 $this->validator = new Formvalidator();
-                                          /*} else {
-                                                 throw new \RuntimeException('Validator class &quot;'.$this->getConfig('validatorClass').'&quot; не найден.');
-                                          }*/
+                            if ($this->form_validator === NULL) {
+                                   $this->form_validator = false;
+                                   if (class_exists($this->getConfig('validatorClass'), false)) {
+                                          $this->form_validator = new Formvalidator();
                                    } else {
-                                          throw new \RuntimeException('Файл не найден: &quot;'.$this->getConfig('validatorClass').'&quot;');
+                                          throw new \RuntimeException('Validator class &quot;'.$this->getConfig('validatorClass').'&quot; не найден.');
                                    }
                             }
-                            if ($function !== NULL && method_exists($this->validator, $function)) {
+                            if ($function !== NULL && method_exists($this->form_validator, $function)) {
                                    $this->fields[$field]['validator'] = $function;
                                    $this->fields[$field]['args']      = \func_get_args();
                                    if (isset($this->input['pass'], $this->fields['pass']['args']['2'])) {
@@ -486,8 +481,8 @@ use Framework\Core\Form\Formvalidator\Formvalidator;
               public function JSprotection($code, $field = 'prtcode'): void {
 
                      if ($code) {
-                            $this->protectionCode          = ' '.$code;
-                            $this->protectionField         = $field;
+                            $this->protection_code         = ' '.$code;
+                            $this->protection_field        = $field;
                             $this->fields[$field]['label'] = 'JS Protection';
                      }
               }
@@ -504,11 +499,12 @@ use Framework\Core\Form\Formvalidator\Formvalidator;
 
               /**
                * @brief получить массив входных данных
+               * @return bool | array
                */
               public function getData() {
 
-                     $values = $this->validInput;
-                     unset($values[$this->protectionField], $values[$this->getConfig('submitField')]);
+                     $values = $this->valid_input;
+                     unset($values[$this->protection_field], $values[$this->getConfig('submitField')]);
 
                      return $values;
               }
@@ -549,7 +545,7 @@ use Framework\Core\Form\Formvalidator\Formvalidator;
                                                  } else {
                                                         $value = false;
                                                  }
-                                                 $this->errorRegistration($id, $this->validator->{$validatorFunc}($value, \array_slice($args, 2)));
+                                                 $this->errorRegistration($id, $this->form_validator->{$validatorFunc}($value, \array_slice($args, 2)));
                                           }
                                    }
                             }
@@ -714,7 +710,7 @@ use Framework\Core\Form\Formvalidator\Formvalidator;
                      if ($mandatory && $this->getConfig('html5')) {
                             $this->form .= 'required ';
                      }
-                     if ($this->getConfig('html5') && $this->getConfig('placeholders') && in_array($type, $has_placeholder, true)) {
+                     if ($this->getConfig('html5') && $this->getConfig('placeholders') && \in_array($type, $has_placeholder, true)) {
                             $this->form .= "placeholder='".$label."' ";
                      }
                      $this->form .= '/>';
@@ -1007,16 +1003,16 @@ use Framework\Core\Form\Formvalidator\Formvalidator;
               protected function writeErrors() {
 
                      if ($this->error && $this->config['showErrors']['value']) {
-                            $this->errorBox = '<div class="errorbox">';
+                            $this->error_box = '<div class="errorbox">';
                             if ($this->config['errorTitle']['value']) {
-                                   $this->errorBox .= '<h4 style="color: #c95030; text-shadow: none;">'.$this->config['errorTitle']['value']."</h4>\n";
+                                   $this->error_box .= '<h4 style="color: #c95030; text-shadow: none;">'.$this->config['errorTitle']['value']."</h4>\n";
 
                             }
-                            $this->errorBox .= "<ul id='errorList'>\n";
+                            $this->error_box .= "<ul id='errorList'>\n";
                             foreach ($this->error as $error) {
-                                   $this->errorBox .= "<li><label for='".$error['link']."'>".$error['msg']."</label></li>\n";
+                                   $this->error_box .= "<li><label for='".$error['link']."'>".$error['msg']."</label></li>\n";
                             }
-                            $this->errorBox .= "</ul></div>\n";
+                            $this->error_box .= "</ul></div>\n";
                      }
               }
               /*

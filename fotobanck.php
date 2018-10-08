@@ -608,9 +608,9 @@
 	if ($may_view && isset($_SESSION['current_album'])):
 
 
-	$event = go\DB\query('select `event` from `albums` where `id` =?i', array($_SESSION['current_album']), 'el');
+	$disable_photo_display = go\DB\query('select `disable_photo_display` from `albums` where `id` =?i', array($_SESSION['current_album']), 'el');
 	//		отключение аккордеона если фотографии не показываются
-	if ($event == 'on')
+	if ($disable_photo_display === 'on')
 	{
 	$acc[1] = go\DB\query('SELECT * FROM accordions WHERE `id_album` = ?i ',array('1'), 'assoc:collapse_numer');
 	$acc[$_SESSION['current_album']] = go\DB\query('SELECT * FROM accordions WHERE `id_album` = ?i ',array($_SESSION['current_album']), 'assoc:collapse_numer');
@@ -704,9 +704,9 @@
 
   if(isset($_SESSION['current_album']))
 	 {
-  $event = go\DB\query('select `event` from `albums` where `id` =?i', array($_SESSION['current_album']), 'el');
+  $disable_photo_display = go\DB\query('select `disable_photo_display` from `albums` where `id` =?i', array($_SESSION['current_album']), 'el');
 //		отключение показа фотографий в альбоме
-  if ($event == 'on')
+  if ($disable_photo_display === 'on')
 	 {
 
 //		<!-- вывод топ 5  -->

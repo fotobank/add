@@ -3,16 +3,16 @@
        error_reporting(E_ALL | E_STRICT);
        /** -----------------------------------------------------------------------------------*/
        header('Content-type: text/html; charset=windows-1251');
-       header("X-Frame-Options: SAMEORIGIN");
+       header('X-Frame-Options: SAMEORIGIN');
        /** -----------------------------------------------------------------------------------*/
-       require_once (__DIR__.'/config.php');
-       require_once (__DIR__.'/func.php');
+       require_once __DIR__.'/config.php';
+       require_once __DIR__.'/func.php';
        /** -----------------------------------------------------------------------------------*/
        // seo
-       require_once (__DIR__.'/title.php');
+       require_once __DIR__.'/title.php';
        /** -----------------------------------------------------------------------------------*/
        // îáğàáîòêà îøèáîê
-       require_once (__DIR__.'/errorDump.php');
+       require_once __DIR__.'/errorDump.php';
        /** -----------------------------------------------------------------------------------*/
        $session = check_Session::getInstance();
        /** -----------------------------------------------------------------------------------*/
@@ -23,7 +23,7 @@
        /** -----------------------------------------------------------------------------------*/
        // êàï÷à
        $cryptinstall = '/classes/dsp/cryptographp.fct.php';
-       require_once  (__DIR__.'/../classes/dsp/cryptographp.fct.php');
+       require_once __DIR__.'/../classes/dsp/cryptographp.fct.php';
        /** -----------------------------------------------------------------------------------*/
        $include_CSS = array(
               // êíîïêà ââåğõ
@@ -65,16 +65,6 @@
               'js/bootstrap-modalmanager.js',
               'js/bootstrap-modal.js'
        );
-       /** ----------------------------------------------------------------------------------*/
-       try {
-              require_once (__DIR__.'/../vendor/autoload.php');
-              $loadTwig = new loadTwig();
-       }
-       catch (Exception $e) {
-              if (check_Session::getInstance()->has('DUMP_R')) {
-                     dump_r($e->getMessage());
-              }
-       }
        /** ----------------------------------------------------------------------------------*/
        $user_balans         = $session->has('userid') ? go\DB\query('select `balans` from `users` where `id` = ?f', array($session->get('userid')), 'el'):NULL;
        $_SESSION['userVer'] = $session->has('userVer') ? $session->get('userVer') : genpass(10, 2);

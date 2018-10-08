@@ -10,19 +10,20 @@
 
   header('Content-type: text/html; charset=windows-1251');
   set_time_limit(0);
-  ini_set("display_errors","1");
+  ini_set('display_errors',"1");
   ignore_user_abort(1);
-  require_once (__DIR__.'/../config.php');
+  chdir(__DIR__.'/../../');
+  require_once __DIR__.'/../config.php';
 
 
   // парсинг xml
   function XMLfilter($rs, $tag) {
-	 $rs = str_replace("\n", "", str_replace("\r", "", $rs));
+	 $rs = str_replace(array("\r", "\n"), '', $rs);
 	 $tags = '<'.$tag.'>';
 	 $tage = '|</'.$tag;
 	 $start = strpos($rs, $tags)+strlen($tags);
 	 $end = strpos($rs, $tage);
-	 return substr($rs, $start, ($end-$start));
+	 return substr($rs, $start, $end - $start);
   }
 
 
@@ -89,16 +90,16 @@
 		if ($status == "success" && $rs[1]['status'] != "success")
 		  {
 			 $user_balans = go\DB\query('select balans from users where id = ?i',array($_SESSION['userid']),'el');
-			 $user_balans += floatval($rs[1]['amount']);
+			 $user_balans += (float)$rs[1]['amount'];
 			 go\DB\query('update `users` set `balans` = ?f where `id` = ?i',array($user_balans, $_SESSION['userid']));
 			 go\DB\query('update `account_inv` set `status` = ?string where `id` = ?i',array($status, $rs[1]['id']));
 			 echo   "<script type='text/javascript'>
 					 $('#balans').empty().append($user_balans);
 					 </script>";
-			 echo "Транзакция прошла успешно!<br> На ваш счет зачислено ".$rs[1]['amount']."гр.";
+			 echo 'Транзакция прошла успешно!<br> На ваш счет зачислено '.$rs[1]['amount']."гр.";
 		  }elseif($status != "success" && $rs[1]['status'] != "success"){
 		  echo $response_description;
 		}else{
-		  echo "Предыдущая транзакция прошла успешно!";
+		  echo 'Предыдущая транзакция прошла успешно!';
 		}
 	 }

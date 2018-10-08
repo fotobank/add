@@ -121,6 +121,11 @@ abstract class DB
         $implementation = $this->connector->getImplementation();
         $connection     = $this->connector->getConnection();
         $duration       = \microtime(true);
+           /* проверим, жив ли сервер */
+           if (!$connection->ping()) {
+             // $this->connector->isConnected();
+             $connection = $this->connector->connect();
+           }
         $cursor         = $implementation->query($connection, $query);
         $duration       = \microtime(true) - $duration;
         if (!$cursor) {

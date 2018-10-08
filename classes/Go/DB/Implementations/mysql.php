@@ -52,7 +52,7 @@ final class mysql extends Base
         $password = $params['password'];
         $dbname   = $params['dbname'];
         $socket   = $params['socket'];
-        $connection = @(new \mysqli($host, $user, $password, $dbname, $port, $socket));
+        $connection = (new \mysqli($host, $user, $password, $dbname, $port, $socket));
         if ($connection->connect_error) {
             $this->errorInfo = $connection->connect_error;
             $this->errorCode = $connection->connect_errno;
@@ -86,7 +86,7 @@ final class mysql extends Base
      * @return mixed
      */
     public function query($connection, $query) {
-        return $connection->query($query, \MYSQLI_STORE_RESULT);
+           return $connection->query($query, \MYSQLI_STORE_RESULT);
     }
 
     /**

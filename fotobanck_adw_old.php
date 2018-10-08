@@ -600,9 +600,9 @@
        if ($may_view) {
 
        $current_album = $session->get('current_album');
-       $event = go\DB\query('select `event` from `albums` where `id` =?i', array($current_album), 'el');
+       $disable_photo_display = go\DB\query('select `disable_photo_display` from `albums` where `id` =?i', array($current_album), 'el');
        //		отключение аккордеона если фотографии не показываются
-       if ($event == 'on' && JS) {
+       if ($disable_photo_display === 'on' && JS) {
               $acc[1]              = go\DB\query('SELECT * FROM accordions WHERE `id_album` = ?i ', array('1'), 'assoc:collapse_numer');
               $acc[$current_album] = go\DB\query('SELECT * FROM accordions WHERE `id_album` = ?i ', array($current_album), 'assoc:collapse_numer');
               if ($acc[$current_album]) {
@@ -705,9 +705,9 @@
 
        // выдавать контент только c включенным JS в браузере
        if (JS) {
-              $event = go\DB\query('select `event` from `albums` where `id` =?i', array($current_album), 'el');
+              $disable_photo_display = go\DB\query('select `disable_photo_display` from `albums` where `id` =?i', array($current_album), 'el');
               //		отключение показа фотографий в альбоме
-              if ($event == 'on') {
+              if ($disable_photo_display === 'on') {
                      //		<!-- вывод топ 5  -->
                      top5Modern($may_view, $rs, $ln, $source, $sz, $sz_string);
                      if (!$session->has('record_count/'.$current_album)) {
@@ -729,7 +729,7 @@
                      <div id="modern">
                             <?
                             $width = 170; // ширина горизонтальной превью в px
-                            $current_page = isset($_GET[$page]) ? intval($_GET[$page]) : 0;
+                            $current_page = isset($_GET[$page]) ? (int)$_GET[$page] : 0;
                             fotoPageModern($may_view, $current_page, $width);
                             ?>
                      </div>

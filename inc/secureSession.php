@@ -5,13 +5,25 @@
         * Date: 20.06.13
         * Time: 21:57
         * To change this template use File | Settings | File Templates.
+        *
+        * Защита сессии от фиксации
+        * Простейшим способом защиты от фиксации сессии в PHP является установка параметра session.use_only_cookies
+        * конфигурационного файла php.ini в значение on.
+        * Это запретит передачу идентификатора сессии в URL-адресе запроса.
+        * С помощью специальной сессионной переменной $_SESSION['starttime'] проверяется статус активности.
+        * Если переменная не задана, мы регенерируем идентификатор.
+        * Это позволяет создать для злоумышленника новую сессию с его идентификатором, затем изменить его.
+        * Смысл заключается в том, что идентификатор взломщика устареет после первого запроса.
+        * Сессии обычных пользователей будут создаваться нормальным способом
+        * вместе с установкой статусной переменной. Поэтому идентификаторы обычных пользователей никогда не перезапишутся.
+        *
         */
        /**
         * Проверка активности сессии
         * Example
         * if (is_session_started() === false) session_start();
         */
-       function is_session_started(): bool {
+       function isSessionStarted(): bool {
 
               if (PHP_SAPI !== 'cli') {
                      if (PHP_VERSION_ID >= 50400) {
@@ -24,16 +36,16 @@
 
 
        /**
-        * @param bool $isUserActivity
+        * @param bool $is_user_activity
         * @param null $prefix
         * старт сессии
         *
         * @return bool
         */
-       function startSession($isUserActivity = true, $prefix = NULL) {
+       function startSession($is_user_activity = true, $prefix = NULL) {
 
-              $sessionLifetime = 300; // Таймаут отсутствия активности пользователя (в секундах)
-              $idLifetime      = 60;  // Время жизни идентификатора сессии
+              $session_lifetime = 300; // Таймаут отсутствия активности пользователя (в секундах)
+              $id_lifetime      = 60;  // Время жизни идентификатора сессии
               /*if (session_id()) {
                      return true;
               }*/
@@ -44,7 +56,7 @@
               // Устанавливаем время жизни куки до закрытия браузера (контролировать все будем на стороне сервера)
               ini_set('session.cookie_lifetime', 0);
               // стартуем сессию
-              if (is_session_started() === false) {
+              if (isSessionStarted() === false) {
                      session_start();
               }
 
@@ -52,28 +64,28 @@
               return true;
 
               $t = time();
-              if ($sessionLifetime) {
+              if ($session_lifetime) {
                      // Если таймаут отсутствия активности пользователя задан,
                      // проверяем время, прошедшее с момента последней активности пользователя
                      // (время последнего запроса, когда была обновлена сессионная переменная lastactivity)
                      if (isset($_SESSION['lastactivity'], $_SESSION['logged']) && isset($_SESSION['logged']) === true
-                         && $t - $_SESSION['lastactivity'] >= $sessionLifetime) {
+                         && $t - $_SESSION['lastactivity'] >= $session_lifetime) {
                             // Если время, прошедшее с момента последней активности пользователя,
                             // больше таймаута отсутствия активности, значит сессия истекла, и нужно завершить сеанс
                             destroySession();
                             return false;
 
                      }
-                     if ($isUserActivity) {
+                     if ($is_user_activity) {
                             $_SESSION['lastactivity'] = $t;
                      }
               }
-              if ($idLifetime) {
+              if ($id_lifetime) {
                      // Если время жизни идентификатора сессии задано,
                      // проверяем время, прошедшее с момента создания сессии или последней регенерации
                      // (время последнего запроса, когда была обновлена сессионная переменная starttime)
                      if (isset($_SESSION['starttime'])) {
-                            if ($t - $_SESSION['starttime'] >= $idLifetime) {
+                            if ($t - $_SESSION['starttime'] >= $id_lifetime) {
                                    // Время жизни идентификатора сессии истекло
                                    // Генерируем новый идентификатор
                                    //	 session_write_close();
@@ -95,7 +107,7 @@
         */
        function destroySession() {
 
-              if (is_session_started()) {
+              if (isSessionStarted()) {
                      session_unset();
                      /** @noinspection SummerTimeUnsafeTimeManipulationInspection */
                      setcookie(session_name(), session_id(), time() - (60 * 60 * 24));

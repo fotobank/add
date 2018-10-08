@@ -143,7 +143,7 @@
               $vote_price   = $_POST['vote_price'];
               $vote_time    = $_POST['vote_time'];
               $vote_time_on = isset($_REQUEST['vote_time_on']);
-              $event        = (isset($_POST['event']) == 'on') ? 'on' : 'off';
+              $disable_photo_display        = (isset($_POST['disable_photo_display']) == 'on') ? 'on' : 'off';
               $on_off       = (isset($_POST['on_off']) == 'on') ? 'on' : 'off';
               go\DB\query('update albums set
 		price = ?f,
@@ -178,7 +178,7 @@
                           $vote_price,
                           $vote_time,
                           $vote_time_on,
-                          $event,
+                          $disable_photo_display,
                           $on_off,
                           $id
                      ));
@@ -200,7 +200,7 @@
                            "vote_price"   => $vote_price,
                            "vote_time"    => $vote_time,
                            "vote_time_on" => $vote_time_on,
-                           "event"        => $event,
+                           "disable_photo_display"        => $disable_photo_display,
                            "on_off"       => $on_off,
                            "id"           => $id
                       ), 'Сохранить', '/canon68452/album.php');

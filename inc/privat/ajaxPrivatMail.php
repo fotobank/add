@@ -9,21 +9,22 @@
 
   header('Content-type: text/html; charset=windows-1251');
   set_time_limit(0);
-  ini_set("display_errors","1");
+  ini_set('display_errors', '1');
   ignore_user_abort(1);
+  chdir(__DIR__.'/../../');
 
-	require_once (__DIR__.'/../../classes/autoload.php');
+	require_once __DIR__.'/../../classes/autoload.php';
 	autoload::getInstance();
 
-   require_once (__DIR__.'/../config.php');
+   require_once __DIR__.'/../config.php';
 
 
 
   if(isset($_POST['prMail']))
 	 {
 		$user_data = go\DB\query('SELECT * FROM `users` WHERE id = ?i', array($_SESSION['userid']), 'row');
-		$letter = "Здравствуйте, ".iconv('utf-8', 'windows-1251', $user_data['us_name'])."!\r\n";
-		$letter .= "Кто-то (возможно, Вы) запросил реквизиты пополнения счета для сайта  http://".$_SERVER['HTTP_HOST']."\r\n";
+		$letter = 'Здравствуйте, '.iconv('utf-8', 'windows-1251', $user_data['us_name'])."!\r\n";
+		$letter .= 'Кто-то (возможно, Вы) запросил реквизиты пополнения счета для сайта  http://'.$_SERVER['HTTP_HOST']."\r\n";
 		$letter .= "Если вы не запрашивали реквизиты, пожалуйста, просто удалите это письмо.\r\n\n";
 
 		$letter .= "Небольшая инструкция:\r\n";
@@ -37,7 +38,7 @@
 		$letter .= "\t\t\t\tРеквизиты для пополнения счета:\r\n";
 		$letter .= "\t\t\t\tПолучатель: Алексеев Юрий Викторович\r\n";
 		$letter .= "\t\t\t\tНаименование банка: 'ПриватБанк'\r\n";
-		$letter .= "\t\t\t\tНомер Visa карты:  4731 1855 0554 6074 \r\n";
+		$letter .= "\t\t\t\tНомер Visa карты:  5168-7555-3255-0619 \r\n";
 		$letter .= "\t\t\t\t---------------------------------------------------\r\n\n";
 		$letter .= "Перевести деньги на данную карту возможно любым доступным Вам способом,\r\n";
 		$letter .= "например через автомат в холле ПриватБанка или через систему Приват24.\r\n\n";
@@ -47,7 +48,7 @@
 		$letter .= "Дату и время перевода,\r\n";
 		$letter .= "Место перевода,\r\n";
 		$letter .= "Сумму перевода,\r\n";
-		$letter .= "Ваш Е-mail и Login на сайте http://".$_SERVER['HTTP_HOST']." ,\r\n";
+		$letter .= 'Ваш Е-mail и Login на сайте http://'.$_SERVER['HTTP_HOST']." ,\r\n";
 		$letter .= "После перечисления денег банком ваш счет на сайте пополнится на сумму перевода\r\n";
 		$letter .= "и Вы сможете скачивать, голосовать или заказывать печать любимых фотографий.\r\n\n ";
 		$letter .= "Возникшие вопросы Вы можете задать через E-mail mailto:aleksjurii@gmail.com ,\r\n";
@@ -56,10 +57,10 @@
 
 
 		$mail            =  new Mail_sender;
-		$mail->from_addr = "aleksjurii@gmail.com";
-		$mail->from_name = "Фотобанк ".$_SERVER['HTTP_HOST'];
+		$mail->from_addr = 'aleksjurii@gmail.com';
+		$mail->from_name = 'Фотобанк '.$_SERVER['HTTP_HOST'];
 		$mail->to        =  $user_data['email'];
-		$mail->subj      = "Реквизиты пополнения счета сайта http://".$_SERVER['HTTP_HOST'];
+		$mail->subj      = 'Реквизиты пополнения счета сайта http://'.$_SERVER['HTTP_HOST'];
 		$mail->body_type = 'text/plain';
 		$mail->body      =  $letter;
 		$mail->priority  = 1;

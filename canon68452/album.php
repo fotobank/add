@@ -360,9 +360,9 @@ if (isset($_SESSION['current_cat'])) {
                                                                                            <div class="slideThree">
                                                                                                   <input id="slideThree3"
                                                                                                          type='checkbox'
-                                                                                                         NAME='event'
+                                                                                                         NAME='disable_photo_display'
                                                                                                          VALUE='on'
-                                                                                                         <?if ($ln['event'] == 'on') {
+                                                                                                         <?if ($ln['disable_photo_display'] == 'on') {
                                                                                                          echo 'checked="checked"';
                                                                                                   } ?> /> <label for="slideThree3"></label>
                                                                                            </div>

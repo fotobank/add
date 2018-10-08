@@ -10,7 +10,8 @@
 
 
   ignore_user_abort(1);
-  include (__DIR__.'/../head.php');
+  chdir(__DIR__.'/../../');
+  include __DIR__.'/../head.php';
 
 
   if (!isset($_SESSION['logged']))
@@ -38,7 +39,7 @@
 		$url="https://www.liqpay.com/?do=clickNbuy";
 		$method='';
 		$phone='';
-		$uah = floatval(GetFormValue($_POST['LiqPay']));
+		$uah = (float)GetFormValue($_POST['LiqPay']);
 		$Description = 'photo';  // счет
 		$userOrder = GetFormValue($_POST['userId'],'','',true);
 
@@ -73,5 +74,5 @@
   <div class="end_content"></div>
     </div>
 <?php
-    include (__DIR__.'/../footer.php');
+    include __DIR__.'/../footer.php';
 ?>

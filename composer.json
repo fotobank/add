@@ -4,6 +4,7 @@
     },
     "require": {
         "php": ">=7.1.0",
+        "liqpay/liqpay": "v1.2.3",
         "psr/container": "^1.0",
         "twig/twig": "^2.5"
     },
@@ -13,14 +14,15 @@
         "roave/security-advisories": "dev-master"
     },
     "autoload": {
-        "psr-4": {
-            "Framework\\": "src/Framework/",
-            "Site\\": "src/Site/",
-            "inc\\": "inc",
-            "core\\": "core",
-            "classes\\": "classes"
-        }
+        "psr4": {
+            "Framework\\": "src/Framework"
+        },
+      "classmap": [
+        "inc/",
+        "classes"
+      ]
     },
+
     "scripts": {
         "test": "phpunit --colors=always"
     }

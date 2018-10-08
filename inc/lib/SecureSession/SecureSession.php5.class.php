@@ -60,7 +60,7 @@ class SecureSession {
 
 		$this->__SecureWord = (strlen($SecureWord) >= 4) ? str_replace(" ", "_", $SecureWord) : "SALT_";
 		$this->__UserAgent = ($UserAgent == true) ? true : false;
-		$this->__IPBlocks = (($IPBlocks = abs(intval($IPBlocks))) > 4) ? 4 : $IPBlocks;
+		$this->__IPBlocks = (($IPBlocks = abs((int)$IPBlocks)) > 4) ? 4 : $IPBlocks;
 		$this->__Algorithm = (function_exists("hash") && in_array($Algorithm, hash_algos())) ? $Algorithm : null;
 
 	}
