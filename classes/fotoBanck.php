@@ -5,7 +5,7 @@
         * Date: 02.11.13
         * Time: 12:55
         */
-
+       use Framework\Core\MailSender\MailSender;
 
 
        class fotoBanck {
@@ -223,7 +223,7 @@
                      $mail_mes = 'Внимание - '.dateToRus(time(), '%DAYWEEK%, j %MONTH% Y, G:i').' - зафиксированн подбор пароля для альбома "'.
                                  $this->current_album.'", пользователь - "'.$this->us_name.'" c Ip:'.$this->ip.
                                  ' забанен на '.$this->timeout.' минут!';
-                     $mail            = new Mail_sender;
+                     $mail            = new MailSender;
                      $mail->from_addr = 'webmaster@aleks.od.ua';
                      $mail->from_name = 'aleks.od.ua';
                      $mail->to        = 'aleksjurii@gmail.com';

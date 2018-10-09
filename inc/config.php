@@ -5,9 +5,8 @@
               require_once __DIR__.'/../vendor/autoload.php';
               $loadTwig = new loadTwig();
        }
-       catch (Exception $e) {
+       catch (RuntimeException $e) {
               if (check_Session::getInstance()->has('DUMP_R')) {
-                     var_dump($e);
                      dump_r($e->getMessage());
               }
        }
@@ -15,7 +14,7 @@
               require_once __DIR__.'/../classes/autoload.php';
               autoload::getInstance();
        }
-       catch (Exception $e) {
+       catch (RuntimeException $e) {
               if (check_Session::getInstance()->has('DUMP_R')) {
                      dump_r($e->getMessage());
               }

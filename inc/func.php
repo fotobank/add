@@ -2,8 +2,14 @@
        define('ROOT', __DIR__);
        define('LIST_ROOT', ROOT . '/list');
        define('CHARSET', 'cp1251');
-	require_once (__DIR__.'/../classes/autoload.php');
-	autoload::getInstance();
+       try {
+              require_once __DIR__.'/../vendor/autoload.php';
+       }
+       catch (RuntimeException $e) {
+              if (check_Session::getInstance()->has('DUMP_R')) {
+                     dump_r($e->getMessage());
+              }
+       }
 
 	
 	function downloadFile($file){

@@ -29,7 +29,7 @@ function bsize($s) {
 // retrieve an cache and a cache-sweeper.
 try {
   list($cache, $sweeper) = factory($config);
-} catch (Exception $e) {
+} catch (RuntimeException $e) {
   die($e->getMessage());
 }
 

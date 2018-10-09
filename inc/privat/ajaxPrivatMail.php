@@ -13,12 +13,8 @@
   ignore_user_abort(1);
   chdir(__DIR__.'/../../');
 
-	require_once __DIR__.'/../../classes/autoload.php';
-	autoload::getInstance();
-
-   require_once __DIR__.'/../config.php';
-
-
+  require_once __DIR__.'/../config.php';
+  use Framework\Core\MailSender\MailSender;
 
   if(isset($_POST['prMail']))
 	 {
@@ -55,8 +51,8 @@
 		$letter .= "Оn-line через Skype: jurii.od.ua, или по телефону +380-94-94-77-070 .\r\n\n\n\n";
 		$letter .= "\t\t\t\tС уважением, Администрация Creative line studio \r\n";
 
+		$mail =  new MailSender;
 
-		$mail            =  new Mail_sender;
 		$mail->from_addr = 'aleksjurii@gmail.com';
 		$mail->from_name = 'Фотобанк '.$_SERVER['HTTP_HOST'];
 		$mail->to        =  $user_data['email'];
@@ -65,7 +61,9 @@
 		$mail->body      =  $letter;
 		$mail->priority  = 1;
 		$mail->prepare_letter();
-		$mail->send_letter();
-
-		echo ('Реквизиты карты с инструкцией высланы на Ваш E-mail.');
+		if($mail->send_letter() === true) {
+           echo('Реквизиты карты с инструкцией высланы на Ваш E-mail.');
+    } else {
+           echo('Реквизиты не высланы.');
+    }
 	 }

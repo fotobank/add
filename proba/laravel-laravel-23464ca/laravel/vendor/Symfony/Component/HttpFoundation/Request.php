@@ -1604,7 +1604,7 @@ class Request
             if (class_exists('Locale', false)) {
                 \Locale::setDefault($locale);
             }
-        } catch (\Exception $e) {
+        } catch (\RuntimeException $e) {
         }
     }
 

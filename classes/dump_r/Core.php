@@ -2,13 +2,9 @@
 
        namespace dump_r;
 
-
-
-
        use dump_r\Type, dump_r\Rend;
 
        class Core {
-
 
               public static function dump_r($raw, $ret = false, $html = true, $depth = 1e3, $expand = 1e3) {
 
@@ -36,41 +32,39 @@
               }
        }
 
-
-
        // typenode classification
        Type::hook('*', function ($raw) {
 
-              if (is_null($raw)) {
+              if ($raw === NULL) {
                      return 'Null';
               }
-              if (is_bool($raw)) {
+              if (\is_bool($raw)) {
                      return 'Boolean';
               }
-              if (is_int($raw)) {
+              if (\is_int($raw)) {
                      return 'Integer';
               }
-              if (is_float($raw)) {
+              if (\is_float($raw)) {
                      return 'Float';
               }
-              if (is_resource($raw)) {
+              if (\is_resource($raw)) {
                      return 'Resource';
               }
               // avoid detecting strings with names of global functions and __invoke-able objects as callbacks
-              if (is_callable($raw) && !(is_object($raw) && !($raw instanceof \Closure)) && !(is_string($raw) && function_exists($raw))) {
+              if (\is_callable($raw) && !(\is_object($raw) && !($raw instanceof \Closure)) && !(\is_string($raw) && function_exists($raw))) {
                      return 'Function0';
               }  // lang construct
-              if (is_string($raw)) {
+              if (\is_string($raw)) {
                      return 'StringType';
               }
-              if (is_array($raw)) {
+              if (\is_array($raw)) {
                      return 'Array0';
               }  // lang construct
-              if (is_object($raw)) {
+              if (\is_object($raw)) {
                      return 'Object';
               }
 
-              return gettype($raw);
+              return \gettype($raw);
        });
        // renderer classification
        Rend::hook('*', function ($node) {

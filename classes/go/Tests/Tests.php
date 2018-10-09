@@ -15,5 +15,12 @@ $PATH_TO_GODB = __DIR__.'/../../../classes/Go/DB';
 require_once(__DIR__.'/Base.php');
 require_once(__DIR__.'/Config.php');
 
-require_once($PATH_TO_GODB.'/autoload.php');
+try {
+       require_once __DIR__.'/../../../vendor/autoload.php';
+}
+catch (\RuntimeException $e) {
+       if (\check_Session::getInstance()->has('DUMP_R')) {
+              dump_r($e->getMessage());
+       }
+}
 \go\DB\autoloadRegister();

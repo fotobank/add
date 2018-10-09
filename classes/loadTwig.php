@@ -14,10 +14,10 @@
               function __construct() {
 
                      if ($_SERVER['PHP_SELF'] === '/gb/index.php') {
-                            $templates = ['../src/Framework/View/Twig/Templates/Default', '../src/Site/View/Twig/Templates/Default'];
+                            $templates = ['../alex/Framework/View/Twig/Templates/Default', '../alex/Site/View/Twig/Templates/Default'];
                             $cache     = '../cache';
                      } else {
-                            $templates = ['src/Framework/View/Twig/Templates/Default', 'src/Site/View/Twig/Templates/Default'];
+                            $templates = ['alex/Framework/View/Twig/Templates/Default', 'alex/Site/View/Twig/Templates/Default'];
                             $cache     = 'cache';
                      }
 
@@ -68,7 +68,7 @@
                      try {
                             echo  self::$twig->render($twigName, $renderData);
                      }
-                     catch (Exception $e) {
+                     catch (RuntimeException $e) {
                             if (check_Session::getInstance()->has('DUMP_R')) {
                                    dump_r($e->getMessage());
                             } else {

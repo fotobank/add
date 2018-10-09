@@ -43,7 +43,7 @@ final class sqlite extends Base
         $flags = \is_null($params['flags']) ? (\SQLITE3_OPEN_CREATE | \SQLITE3_OPEN_READWRITE) : $params['flags'];
         try {
             $connection = new \SQLite3($params['filename'], $flags, $params['encryption_key']);
-        } catch (\Exception $e) {
+        } catch (\RuntimeException $e) {
             $this->errorInfo = $e->getMessage();
             $this->errorCode = $e->getCode();
             return false;

@@ -4,7 +4,7 @@
        /** -----------------------------------------------------------------------------------*/
        header('Content-type: text/html; charset=windows-1251');
 
-       use Framework\Core\Form\Formgenerator\Formgenerator;
+       use Framework\Core\Form\src\Generator;
 
        //------include class
        require __DIR__.'/Formgenerator/Formgenerator.php';
@@ -183,7 +183,7 @@
 <?php
 
        //------create first form
-       $form = new Formgenerator();
+       $form = new Generator();
        //setup form
        $form->set('title', 'Example form');
        $form->set('name', 'form_example');
@@ -240,7 +240,7 @@
        // it is advised to unset the form after saving the data
        unset($form);
        //------create second form
-       $form2 = new Formgenerator();
+       $form2 = new Generator();
        $form2->set('showDebug', true);
        $form2->set('title', 'Second example form');
        $form2->set('name', 'secondform');

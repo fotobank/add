@@ -104,7 +104,7 @@ class Application
 
         try {
             $statusCode = $this->doRun($input, $output);
-        } catch (\Exception $e) {
+        } catch (\RuntimeException $e) {
             if (!$this->catchExceptions) {
                 throw $e;
             }

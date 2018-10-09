@@ -41,7 +41,7 @@ try
 {
 	Command::run(array_slice($arguments, 1));
 }
-catch (\Exception $e)
+catch (\RuntimeException $e)
 {
 	echo $e->getMessage().PHP_EOL;
 	exit(1);

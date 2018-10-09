@@ -208,11 +208,12 @@ if (!isset($_SESSION['logged']))
 	 <td></td>
 	 <td><p style="padding-left: 10px; margin-top: 10px;"> Выслать реквизиты:</p></td>
 	 <td style="text-align:right;">
-		<input type="image" value="Выслать" src="http://privatbank.ua/img/logo.png?v=1912"
+		<input type="image" value="Выслать" src="/img/rekvizity-privat-kart.jpg"
 		 onClick="ajaxPostQ('/inc/privat/ajaxPrivatMail.php','#rekMail','prMail='+true)"
 		style="width: 100px; margin-left: 20px;">
 	 </td>
-	 <td><p id='rekMail' style="padding-left: 24px; font-size: 12px">Для получения счета нажмите на значек "ПриватБанк". Если в течении 10 минут Вы не получите письмо, проверьте ящик спама.</p></td>
+	 <td><p id='rekMail' style="padding-left: 24px; font-size: 12px">Для получения счета нажмите на значек визитной карточки. Если в течении 10 минут Вы не получите
+	                                                                 письмо, проверьте ящик спама.</p></td>
   </tr>
   </tbody></table>
 

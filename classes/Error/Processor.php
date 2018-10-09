@@ -2,11 +2,12 @@
 			 set_time_limit(0);
 			 require_once (__DIR__.'/../../inc/config.php');
 			 require_once (__DIR__.'/../../inc/func.php');
-			 require_once (__DIR__.'/../../classes/autoload.php');
-			 autoload::getInstance();
+		//	 require_once (__DIR__.'/../../classes/autoload.php');
+		//	 autoload::getInstance();
 			 if (check_Session::getInstance()->has('Debug_HC')) {
 							$Debug_HackerConsole_Main = Debug_HackerConsole_Main::getInstance(true);
 			 }
+			 use Framework\Core\MailSender\MailSender;
 			 // проверка работы консоли
 //			 	if (function_exists('debugHC'))  debugHC("test");
 			 /**
@@ -317,7 +318,7 @@
 																					while (list($I, $val) = each($_POST)) {
 																								 $mail_mes .= " $I=$val<br>";
 																					}
-																					$mail            = new Mail_sender;
+																					$mail            = new MailSender;
 																					$mail->from_addr = $this->EP_from_addr;
 																					$mail->from_name = $this->EP_from_name;
 																					$mail->to        = $this->EP_to_addr;
@@ -401,7 +402,7 @@
 											This message was sent automatically by robot, please don\'t reply!
 											</p>
 											</body></html>';
-														$mail            = new Mail_sender;
+														$mail            = new MailSender;
 														$mail->from_addr = $this->EP_from_addr;
 														$mail->from_name = $this->EP_from_name;
 														$mail->to        = $this->EP_to_addr;

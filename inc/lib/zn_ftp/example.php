@@ -56,8 +56,7 @@ try
 	$ftp->zip($dirs_and_files, "main.zip");										// Скачать файлы и папки zip-архивом (окно загрузки)
 	$ftp->zip("/log", null, "/arhiv/" . date("Y-m-d", time()) . ".zip");		// Скачать логи в zip-архив
 }
-catch (Exception $e)
+catch (RuntimeException $e)
 {
 	echo $e->getMessage();
 }
-?>

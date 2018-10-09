@@ -6,8 +6,7 @@
 				* Time: 17:35
 				* To change this template use File | Settings | File Templates.
 				*/
-			require_once (__DIR__.'/classes/autoload.php');
-			autoload::getInstance();
+
 			error_reporting(E_ALL);
 			ini_set('display_errors', 1);
 			// error_reporting(0);

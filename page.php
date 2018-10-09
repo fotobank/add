@@ -9,9 +9,9 @@
 			define ('BASEPATH', realpath(__DIR__).'/', true);
 			include_once BASEPATH.'inc/config.php';
 			include_once BASEPATH.'inc/func.php';
-			include_once BASEPATH.'src/Framework/Core/Form/Formgenerator/Formgenerator.php';
 
-			use Framework\Core\Form\Formgenerator\Formgenerator;
+
+			use Framework\Core\Form\Generator;
 
 //      dump_r($link->referralSeed);
 //			dump_r("<br>actual referral Seed:{$_SESSION['referralSeed']}<br />\n");
@@ -31,7 +31,7 @@
 									$session = check_Session::getInstance();
 									$session->set('userForm', genpass(20, 2));
 									$link = '/page.php?user='.$session->get('userForm');
-									$form = new Formgenerator();
+									$form = new Generator();
 									$ok   = '<div class="drop-shadow lifted" style="margin: 20px 0 0 440px;">
 			    		<div style="font-size: 24px;">Изменения записаны!</div></div>';
 

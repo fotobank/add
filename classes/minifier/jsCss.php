@@ -1,7 +1,4 @@
 <?php
-  require_once (__DIR__.'/../../classes/autoload.php');
-  autoload::getInstance();
-
 
   require (__DIR__.'/../dump_r/dump_r.php');
   require_once (__DIR__.'/../../inc/config.php');

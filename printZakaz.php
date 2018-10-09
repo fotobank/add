@@ -11,6 +11,8 @@
   ignore_user_abort(1);
   include (BASEPATH.'inc/head.php');
 
+  use Framework\Core\MailSender\MailSender;
+
 
 
   if ($link->referralSeed) {
@@ -136,7 +138,7 @@ else
 		  $letter .= '</body></html>';
 
 
-		  $mail            = new Mail_sender;
+		  $mail            = new MailSender;
 		  $mail->from_addr = $data['email'];
 		  $mail->from_name = $data['name'];
 		  $mail->to        = 'aleksjurii@gmail.com';

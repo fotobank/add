@@ -8,16 +8,23 @@
 	 */
 
   // обработка ошибок
-	require_once (__DIR__.'/../classes/autoload.php');
-	autoload::getInstance();
+       try {
+              require_once __DIR__.'/../vendor/autoload.php';
+       }
+       catch (RuntimeException $e) {
+              if (check_Session::getInstance()->has('DUMP_R')) {
+                     dump_r($e->getMessage());
+              }
+       }
 
+  use Framework\Core\MailSender\MailSender;
 
 	// бан
 	function record($ipLog='ipLogFile.txt', $timeout='30') // запись бана
 		{
 		   $session = check_Session::getInstance();
 			$log = fopen("$ipLog", "a+");
-			fputs($log, Get_IP()."][".time()."][".$session->get('current_album')."\n");
+			fwrite($log, Get_IP()."][".time()."][".$session->get('current_album')."\n");
 			fclose($log);
 
 
@@ -28,11 +35,11 @@
 		  $error_processor = Error_Processor::getInstance();
 		  $error_processor->log_evuent($mail_mes,"");
 
-		  $mail            = new Mail_sender;
-		  $mail->from_addr = "webmaster@aleks.od.ua";
-		  $mail->from_name = "aleks.od.ua";
-		  $mail->to        = "aleksjurii@gmail.com";
-		  $mail->subj      = "Подбор пароля";
+		  $mail            = new MailSender;
+		  $mail->from_addr = 'webmaster@aleks.od.ua';
+		  $mail->from_name = 'aleks.od.ua';
+		  $mail->to        = 'aleksjurii@gmail.com';
+		  $mail->subj      = 'Подбор пароля';
 		  $mail->body_type = 'text/html';
 		  $mail->body      = $mail_mes;
 		  $mail->priority  = 1;

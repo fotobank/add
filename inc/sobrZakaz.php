@@ -17,15 +17,8 @@
   include (__DIR__.'/config.php');
   include (__DIR__.'/func.php');
 
-  require_once (__DIR__.'/../classes/autoload.php');
-  autoload::getInstance();
-
-
-
   $error_processor = Error_Processor::getInstance();
   include (__DIR__.'/lib/zn_ftp/zn_ftp.php');
-
-
 
 
 if ($link->referralSeed) {

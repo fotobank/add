@@ -238,7 +238,7 @@ try {
   $this->transactionsql=parent::commit();
   unset($this->__sqltrans);
   return $this->transactionsql;
-   } catch (Exception $e) {
+   } catch (RuntimeException $e) {
   parent::rollBack();
   return $e->getMessage();
    }

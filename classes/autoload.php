@@ -72,7 +72,7 @@ class autoload {
 	//	echo $file.'<br>';
 
 				require_once $file;
-			} catch (Exception $e) {
+			} catch (RuntimeException $e) {
 
 						 if (check_Session::getInstance()->has('DUMP_R')) {
 							//			dump_r($e->getMessage());

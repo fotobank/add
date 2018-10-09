@@ -114,7 +114,7 @@ echo 'Широта : '.$info[Lat].'<BR>';
 echo 'Долгота : '.$info[Lon].'<BR>';
 echo 'Город : '.$info[Town].'<BR>';
 }
-catch (Exception $e)
+catch (RuntimeException $e)
 {
 echo $e->getMessage();
 }

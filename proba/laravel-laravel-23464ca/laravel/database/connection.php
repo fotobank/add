@@ -115,7 +115,7 @@ class Connection {
 		{
 			call_user_func($callback);
 		}
-		catch (\Exception $e)
+		catch (\RuntimeException $e)
 		{
 			$this->pdo->rollBack();
 

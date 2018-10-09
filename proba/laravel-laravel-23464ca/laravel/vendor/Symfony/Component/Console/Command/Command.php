@@ -216,7 +216,7 @@ class Command
         // bind the input against the command specific arguments/options
         try {
             $input->bind($this->definition);
-        } catch (\Exception $e) {
+        } catch (\RuntimeException $e) {
             if (!$this->ignoreValidationErrors) {
                 throw $e;
             }

@@ -1,7 +1,14 @@
 <?php
        require_once (__DIR__.'/../../inc/func.php');
-       require_once (__DIR__.'/../../classes/autoload.php');
-       autoload::getInstance();
+       try {
+              require_once __DIR__.'/../../vendor/autoload.php';
+       }
+       catch (RuntimeException $e) {
+              if (check_Session::getInstance()->has('DUMP_R')) {
+                     dump_r($e->getMessage());
+              }
+       }
+       use Framework\Core\MailSender\MailSender;
        /*if (check_Session::getInstance()->has('Debug_HC')) {
                $Debug_HackerConsole_Main = Debug_HackerConsole_Main::getInstance(true);
        }*/
@@ -641,7 +648,7 @@
                                    $styleErr        = file_get_contents(__DIR__.'/../../classes/debugger/css/default.dat');
                                    $mail_mes        = $styleErr."<u><b>Error:</b></u><br><span style='color: #900000; font-size: 12px; font-weight: bold;'>
 																											 <b>\$_SERVER_NAME</b> = ".$_SERVER['SERVER_NAME']."</span>".$this->showAll();
-                                   $mail            = new Mail_sender;
+                                   $mail            = new MailSender;
                                    $mail->from_Addr = $this->mailOptions['from_Addr'];
                                    $mail->from_Name = $this->mailOptions['from_Name'];
                                    $mail->to        = $this->mailOptions['to_Addr'];
@@ -1004,7 +1011,7 @@
                             $mail_mes      = $styleErr."<html><body><h1>Report of errors log</h1><br>".$this->showAll()."<br>";
                             $mail_mes .= '<p>This letter was created and a log on server was cleared at '.date('Y-m-d').'.<br>
 																					    This message was sent automatically by robot, please don\'t reply!</p></body></html>';
-                            $mail            = new Mail_sender;
+                            $mail            = new MailSender;
                             $mail->from_Addr = $this->mailOptions['from_Addr'];
                             $mail->from_Name = $this->mailOptions['from_Name'];
                             $mail->to        = $this->mailOptions['to_Addr'];

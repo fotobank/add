@@ -68,7 +68,7 @@ class CacheTest extends PHPUnit_Framework_TestCase
   {
     try {
       $this->_cache->put($identifier, $object);
-    } catch (Exception $e) {
+    } catch (RuntimeException $e) {
       $this->fail(
         $e->getMessage()
       );
@@ -87,7 +87,7 @@ class CacheTest extends PHPUnit_Framework_TestCase
       $getObject = $this->_cache->get($identifier);
 
       $this->assertEquals($expectedObject, $getObject);
-    } catch (Exception $e) {
+    } catch (RuntimeException $e) {
       $this->fail(
         $e->getMessage()
       );

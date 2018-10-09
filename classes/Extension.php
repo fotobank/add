@@ -96,7 +96,7 @@
                             return $min->merge($a, $b, $c, $e, $f);
 
                      }
-                     catch (Exception $e) {
+                     catch (RuntimeException $e) {
                             if (check_Session::getInstance()->has('DUMP_R')) {
                                    dump_r($e->getMessage());
                             }
@@ -117,7 +117,7 @@
                      try {
                             dsp_crypt($crypt, $num);
                      }
-                     catch (Exception $e) {
+                     catch (RuntimeException $e) {
                             if (check_Session::getInstance()->has('DUMP_R')) {
                                    dump_r($e->getMessage());
                             }

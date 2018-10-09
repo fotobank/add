@@ -116,7 +116,8 @@
                      if ($bgclear) imagecolortransparent($img, $bg);
               }
        }
-       catch (Exception $e) {
+       catch (RuntimeException $e) {
+              throw $e;
        }
        /**
         *
@@ -168,7 +169,8 @@
                             $x += $charspace;
                      }
               }
-              catch (Exception $e) {
+              catch (RuntimeException $e) {
+                     throw $e;
               }
        }
 
@@ -188,7 +190,8 @@
                             try {
                                    $noisecol = imagecolorallocate($img, random_int(0, 255), random_int(0, 255), random_int(0, 255));
                             }
-                            catch (Exception $e) {
+                            catch (RuntimeException $e) {
+                                   throw $e;
                             }
                             break;
               }
@@ -221,7 +224,8 @@
                                    noisecolor());
                      }
               }
-              catch (Exception $e) {
+              catch (RuntimeException $e) {
+                     throw $e;
               }
        }
 

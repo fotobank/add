@@ -9,13 +9,9 @@
 
   header('Content-type: text/html; charset=windows-1251');
 	// обработка ошибок
-	require_once (__DIR__.'/../classes/autoload.php');
-	autoload::getInstance();
 
-
-
-			require_once (dirname(__FILE__).'/config.php');
-			require_once (dirname(__FILE__).'/func.php');
+			require_once __DIR__.'/config.php';
+			require_once __DIR__.'/func.php';
 
 
 if(isset($_POST['goZakazDel'])) // кнопка удаления фотографий из корзины

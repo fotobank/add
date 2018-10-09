@@ -1,6 +1,12 @@
 <?php
-require_once (__DIR__.'/../../classes/autoload.php');
-	autoload::getInstance();
+       try {
+              require_once __DIR__.'/../../../vendor/autoload.php';
+       }
+       catch (\RuntimeException $e) {
+              if (\check_Session::getInstance()->has('DUMP_R')) {
+                     dump_r($e->getMessage());
+              }
+       }
 
 check_Session::getInstance()->set('value', 'test');
 $hasBefore = check_Session::getInstance()->has('value');

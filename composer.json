@@ -15,11 +15,12 @@
     },
     "autoload": {
         "psr4": {
-            "Framework\\": "src/Framework"
+            "Framework\\": "/src/Framework/"
         },
       "classmap": [
-        "inc/",
-        "classes"
+        "inc",
+        "classes",
+        "alex"
       ]
     },
 

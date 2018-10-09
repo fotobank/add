@@ -81,7 +81,7 @@ class Database extends Driver {
 		{
 			$this->table()->insert(compact('key', 'value', 'expiration'));
 		}
-		catch (\Exception $e)
+		catch (\RuntimeException $e)
 		{
 			$this->table()->where('key', '=', $key)->update(compact('value', 'expiration'));
 		}

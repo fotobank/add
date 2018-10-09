@@ -87,7 +87,7 @@
 								//			$body = preg_replace('/^([ \t\r]*\n)+/s', '', $body);
                 //      $body = self::_compressHtml($body);
 												$body = "<span class=\"contextValeur\" id=\"$id\" style=\"display: none;\">$body</span>";
-												$body = iconv('windows-1251', 'utf-8', $body);
+												$body = iconv('windows-1251', 'utf-8//IGNORE', $body);
 												$name = "<span class=\"contextTitre\"
 								onclick=\"document.getElementById('$id').style.display=(document.getElementById('$id').style.display == 'block')?'none':'block';\"
 								>$name</span>:";
