@@ -11,7 +11,7 @@
   ignore_user_abort(1);
   include (BASEPATH.'inc/head.php');
 
-  use Framework\Core\MailSender\MailSender;
+  use Framework\Core\MailSender\Sender;
 
 
 
@@ -138,7 +138,7 @@ else
 		  $letter .= '</body></html>';
 
 
-		  $mail            = new MailSender;
+		  $mail            = new Sender;
 		  $mail->from_addr = $data['email'];
 		  $mail->from_name = $data['name'];
 		  $mail->to        = 'aleksjurii@gmail.com';

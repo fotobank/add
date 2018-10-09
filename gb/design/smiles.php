@@ -1,5 +1,6 @@
 <?
 define('SR_DENIED', true);
+header('Content-type: text/html; charset=windows-1251');
 include ("../config.inc.php");
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -7,9 +8,6 @@ include ("../config.inc.php");
 <head>
 <title>Смайлики</title>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
-<?
-header('Content-type: text/html; charset=windows-1251');
-?>
 <script language="javascript" type="text/javascript">
 <!--
 function smile(text) {

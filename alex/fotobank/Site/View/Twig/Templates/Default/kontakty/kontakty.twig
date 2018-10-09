@@ -1,0 +1,178 @@
+{% extends "base.twig" %}
+
+    {% block content_header %}
+	    {{ parent() }}
+    {% endblock %}
+
+{% block top %}
+    <div class="center"><div class="centered">
+		<div class="drop-shadow lifted" >
+			<h2 ><span style="color: #00146e;" > Раздел КОНТАКТЫ</span ></h2 >
+		</div >
+	</div ></div >
+	<div class="clear" ></div >
+{% endblock top %}
+
+ {% block l_colonka %}
+	 {{ parent() }}
+ {% endblock %}
+
+   {% block c_colonka %}
+
+<div class="block lifted">
+	<h2>Форма обратной связи</h2>
+	<div class="post">
+		<h1>
+			<a title="Ссылка на запись Немного о нас" rel="bookmark" href="javascript:void(0)" onclick="$('#oNas').toggle(200);">Раздел контакты</a>
+		</h1>
+
+		<div class="center">
+			<div class="centered">
+				<div class="tagged" style="width: 550px;">
+					<ul>
+						<li>
+							<b>
+								Поля не отмеченные * можно не заполнять. Эта информация понадобится
+								только при заказе фотографий и её можно будет ввести потом.
+								Ваши данные сохраняются конфиденциально и нигде не афишируются.
+
+							</b>
+						</li>
+					</ul>
+				</div>
+				<div class="clear"></div>
+
+			</div>
+		</div>
+		<div class="clear"></div>
+
+			   <!--[if IE]>
+			   <script type='text/javascript'>
+				   $(document).ready(function () {
+
+					   $("#form_wrap").css({
+						   height: '900px',
+						   top: '-150px' });
+
+					   $(".label").css({
+						   background: '#f1ece3',
+						   color: 'red' });
+
+					   $(".inp_f_kont").css({
+						   background: '#e8e3da' });
+
+					   $('form').css({
+						   height: '680px'
+					   }, function () {
+
+						   $(' #form_wrap input[type=submit] ').css({'z-index': '1', 'opacity': '1'})
+					   })
+				   })
+			   </script ><![endif]-->
+
+	   <link rel="stylesheet" type="text/css" href="/css/kontakty.css" media="all"/>
+
+	   {#<NOSCRIPT >#}
+	   {% if kontakt_Msg is defined %}
+	    <div class="center"><div class="centered">
+			   <div class="drop-shadow lifted">
+				   <div style="font-size: 22px;">{{ kontakt_Msg }}</div>
+			   </div>
+		</div></div>
+	   <div class="clear"></div>
+	   {% endif %}
+	   {#</NOSCRIPT >#}
+
+			   <table style="position: relative; margin: 0 auto;" >
+				   <tr >
+					   <td >
+						   <div id="wrap" >
+							   <div id='form_wrap' >
+								   <table width="100%" >
+									   <tr >
+										   <td width="750" >
+											   <form id="form_ob" action="/kontakty.php" method="post" name="send_form" >
+												   <h3 style="color:#000;" >Пишите нам:</h3 >
+												   <table style="font-weight:bold" >
+													   <tr >
+														   <td class="td_formL" style="width: 100px;" >Ваше имя*:</td >
+														   <td class="td_formR" ><input rel="tooltip" data-placement="top"
+																	   data-original-title="Имя или ник на сайте. Длина от 3 до 16 символов." class="inp_f_kont"
+																	   type="text" name="uname" style="margin-bottom: 5px; margin-left: 0; width: 200px;"
+																	   id="td_name"
+																	   maxlength="20" value="{{ uname }}" autofocus /></td >
+														   <td ><span id="valid_form_name" class="label label-important"
+														              style="margin-left: 10px;" >{{ e1 }}</span ></td >
+													   </tr >
+													   <tr >
+														   <td class="td_formL" style="width: 100px;" >Телефон*:</td >
+														   <td class="td_formR" ><input rel="tooltip" data-placement="right" data-original-title="Не меньше 6 цифр."
+																	   class="inp_f_kont" type="text" name="uphone"  id="td_phone"
+																	   style="margin-bottom: 4px; margin-left: 0; width: 200px;" maxlength="20"
+																	   value="{{ uphone }}" onkeyup="parseField(this.name)" /></td >
+														   <td ><span id="valid_form_phone" class="label label-important"
+														              style=" margin-left: 10px;" >{{ e4 }}</span ></td >
+													   </tr >
+													   <tr >
+														   <td class="td_formL" style="width: 100px;" >Skype:</td >
+														   <td class="td_formR" ><input rel="tooltip" data-placement="right" data-original-title="Для быстрой связи."
+																	   class="inp_f_kont" type="text" name="skype" id="td_skype"
+																	   style="margin-bottom: 5px; margin-left: 0; width: 200px;" maxlength="20"
+																	   value="{{ skype }}" /></td >
+														   <td ><span id="valid_form_skype" class="label label-important"
+														              style=" margin-left: 10px;" ></span ></td >
+													   </tr >
+													   <tr >
+														   <td class="td_formL" style="width: 100px;" >Ваш E-mail*:</td >
+														   <td class="td_formR" ><input rel="tooltip" data-placement="bottom" id="td_email"
+																	   data-original-title="Указывайте реально существующий почтовый ящик. На него Вам прийдет ответ."
+																	   class="inp_f_kont" type="text" name="umail"
+																	   style="margin-bottom: 15px; margin-left: 0; width: 200px;" maxlength="50"
+																	   value="{{ umail }}" /></td >
+														   <td style="padding-bottom: 17px;" ><span id="valid_form_email" class="label label-important"
+																	   style="margin-top: 7px; margin-left: 10px;" >{{ e3 }}</span ></td >
+													   </tr >
+												   </table >
+
+												   <table class="tb_m_form" >
+													   <tr >
+														   <td class="td_formL2" >Текст сообщения:</td >
+														   <td class="td_formR2" ><textarea style="margin-top: -5px; margin-bottom: 10px; width: 350px; "
+																	   rel="tooltip" data-placement="top" data-original-title="Краткость - сестра таланта! :)"
+																	   name="utext" >{{ utext }}</textarea ></td >
+														   <span class="label label-important"
+																   style="margin-top: -13px; margin-left: 180px; position:absolute" >{{ e2 }}</span >
+													   </tr >
+													   <tr >
+														   <td class="td_formL" style="width: 100px;" >
+										<div style="position: absolute; margin-top: 1px; margin-left: 200px;" >{{ captcha('kontakti.cfg.php', 1) }}</div >
+														   </td >
+														   <td class="td_formR2" >
+															   <input rel="tooltip" data-placement="top" data-original-title="Защита от спама." class="inp_f_kont"
+																	   type="text" name="umath" value="" style="margin-left: -8px; width: 100px;" /> <span
+																	   class="label label-important"
+																	   style="position: relative; padding-top: 2px; bottom: 40px;" >{{ e5 }}</span > <input
+																	   type="hidden" name="go" value="5" /><br > <input class="inp_f_kont" type="submit"
+																	   name="submit" value="Готово. Отправить!" data-original-title=""
+																	   style="margin-top: 3px; margin-left: -8px; width: 300px;" > <br >
+															   {{ dataDB|raw }}
+														   </td >
+													   </tr >
+												   </table >
+											   </form >
+										   </td >
+									   </tr >
+								   </table >
+							   </div >
+						   </div >
+					   </td >
+				   </tr >
+			   </table >
+
+	   <script type="text/javascript" src="/js/valdator_kontakty.js"></script>
+	</div ></div >
+   {% endblock c_colonka %}
+
+ {% block r_colonka %}
+	 {{ parent() }}
+ {% endblock %}

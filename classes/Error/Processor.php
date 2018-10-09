@@ -7,7 +7,7 @@
 			 if (check_Session::getInstance()->has('Debug_HC')) {
 							$Debug_HackerConsole_Main = Debug_HackerConsole_Main::getInstance(true);
 			 }
-			 use Framework\Core\MailSender\MailSender;
+			 use Framework\Core\MailSender\Sender;
 			 // проверка работы консоли
 //			 	if (function_exists('debugHC'))  debugHC("test");
 			 /**
@@ -318,7 +318,7 @@
 																					while (list($I, $val) = each($_POST)) {
 																								 $mail_mes .= " $I=$val<br>";
 																					}
-																					$mail            = new MailSender;
+																					$mail            = new Sender;
 																					$mail->from_addr = $this->EP_from_addr;
 																					$mail->from_name = $this->EP_from_name;
 																					$mail->to        = $this->EP_to_addr;
@@ -402,7 +402,7 @@
 											This message was sent automatically by robot, please don\'t reply!
 											</p>
 											</body></html>';
-														$mail            = new MailSender;
+														$mail            = new Sender;
 														$mail->from_addr = $this->EP_from_addr;
 														$mail->from_name = $this->EP_from_name;
 														$mail->to        = $this->EP_to_addr;

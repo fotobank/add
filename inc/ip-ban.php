@@ -17,7 +17,7 @@
               }
        }
 
-  use Framework\Core\MailSender\MailSender;
+  use Framework\Core\MailSender\Sender;
 
 	// бан
 	function record($ipLog='ipLogFile.txt', $timeout='30') // запись бана
@@ -35,7 +35,7 @@
 		  $error_processor = Error_Processor::getInstance();
 		  $error_processor->log_evuent($mail_mes,"");
 
-		  $mail            = new MailSender;
+		  $mail            = new Sender;
 		  $mail->from_addr = 'webmaster@aleks.od.ua';
 		  $mail->from_name = 'aleks.od.ua';
 		  $mail->to        = 'aleksjurii@gmail.com';

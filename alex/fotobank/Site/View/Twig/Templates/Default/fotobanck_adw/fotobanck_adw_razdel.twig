@@ -1,0 +1,83 @@
+{#/** разделы */#}
+<div class="cont-list" style="margin: 20px 10px 30px 0;" >
+	<div class="drop-shadow lifted" >
+		<h2 ><span style="color: #00146e;" >Раздел фотобанка - "{{ categories.0.razdel }}"</span >
+			{#{{ dump_r(categories) }}#}
+		</h2 >
+	</div >
+</div >
+
+
+{#<!-- Кнопки назад -->#}
+
+<div class="page" >
+	{#<a class="next" href="/fotobanck_adw.php?unchenge_cat" >« назад</a > #}
+	<a class="next" href="/fotobanck_adw.php?unchenge_cat" >« категории </a >
+	<a class="next" >« {{ categories.0.razdel }}</a >
+</div >
+<div style="clear: both" ></div >
+
+{#<!-- Подготовка вывода альбомов на страницы разделов   -->#}
+
+{% if albums|length > 0 %}
+
+	{% set i = 0 %}
+	{% set h = 0 %}
+
+	{% for album in albums %}
+		{% if album.on_off != 'off' and album.id is not null %}
+			{#{{ dump_r(album) }}#}
+				{% set top  = h * 1 + 20 %}
+				{% set left = i * 250 %}
+
+				<div class="div_tab" >
+					<div class="div_t" >
+						<div class="div_fb3" style="top:{{ top }}px; left:{{ left }}px;" >
+							<a href="/fotobanck_adw.php?id={{- album.id -}}" >
+								{#тест#}
+					{#{{ dump_r(album.img|substr(2, -4)) }}#}
+								<img src="/album_id.php?num={{- album.img|slice( 2, -4) -}}" id="album_{{- album.id -}}_2"
+								     alt="раздел {{ categories.0.razdel }} альбом {{ album.nm }}"
+								     title="раздел {{ categories.0.razdel }} альбом {{ album.nm }}" class="img3" />
+							</a >
+							<br >
+							<span class="prev_name" >{{- album.nm -}}</span >
+						</div >
+					</div >
+				</div >
+
+				{% set i = i + 1 %}
+			{% if i > 4 %}
+				{% set h = h + 1 %}
+				{% set i = 0 %}
+
+					<table border="0" width="100%" HEIGHT="250" >
+						<tr >
+							<td >
+								<HR SIZE=2 >
+								<br ><br ><br >
+								<HR SIZE=2 WIDTH=100% >
+								<br >
+							</td >
+						</tr >
+					</table >
+
+			{% endif %}
+		{% endif %}
+	{% endfor %}
+			{% if  i != 0 %}
+
+				<table border="0" width="100%" HEIGHT="250" >
+					<tr >
+						<td >
+							<HR SIZE=2 >
+							<br ><br ><br >
+							<HR SIZE=2 WIDTH=100% >
+							{#<!--линии альбомов -->#}
+							<br >
+						</td >
+					</tr >
+				</table >
+
+			{% endif %}
+{% endif %}

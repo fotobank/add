@@ -14,7 +14,7 @@
   chdir(__DIR__.'/../../');
 
   require_once __DIR__.'/../config.php';
-  use Framework\Core\MailSender\MailSender;
+  use Framework\Core\Mail\Sender;
 
   if(isset($_POST['prMail']))
 	 {
@@ -51,7 +51,7 @@
 		$letter .= "Оn-line через Skype: jurii.od.ua, или по телефону +380-94-94-77-070 .\r\n\n\n\n";
 		$letter .= "\t\t\t\tС уважением, Администрация Creative line studio \r\n";
 
-		$mail =  new MailSender;
+		$mail =  new Sender();
 
 		$mail->from_addr = 'aleksjurii@gmail.com';
 		$mail->from_name = 'Фотобанк '.$_SERVER['HTTP_HOST'];

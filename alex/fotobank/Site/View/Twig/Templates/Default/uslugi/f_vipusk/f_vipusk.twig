@@ -1,0 +1,70 @@
+{% extends "uslugi/uslugi.twig" %}
+
+    {% block content_header %}
+	    {{ parent() }}
+	    <script type="text/JavaScript" src="{{ merge_files( '/f_svadbi.min.js', 'js',  include_Js_f_svadbi , '',  include_Js_f_svadbi ) }}"></script>
+    {% endblock %}
+
+{% block top %}
+
+		{#<div class="center">
+			<div class="centered">
+				<div class="drop-shadow lifted">
+					<div style="font-size: 22px;"><h2><span style="color: #00146e;">Школа и выпускники</span></h2></div>
+				</div>
+			</div>
+		</div>
+		<div class="clear"></div>#}
+
+
+	{% include 'rubriki.twig' %}
+
+	<!-- вывод описания-->
+<div class="block lifted" style="width: 930px; float: right;">
+	<h2>Альбомы</h2>
+	<div class="post">
+		<h1>
+			<a title="Ссылка на запись Немного о нас" rel="bookmark" href="javascript:void(0)" >Школа и выпускники</a>
+		</h1>
+	</div>
+		{{ txt }}
+	<a class="small button full blue" href="/uslugi.php"><span>Назад к категориям</span></a>
+</div>
+	<div class="clear"></div>
+
+
+	{#вывод альбомов#}
+	{{ autoPrev.printAlbum('/reklama/photo/vipuskniki/', 250, true) }}
+	<div class="clear"></div>
+
+	{#вывод фотографий из первого альбома при загрузке#}
+	{{ autoPrev.printStart }}
+	{#пустышка для вывода фотографий#}
+	<div id='thumb' style="min-height: 600px; margin-top: 50px;"></div>
+
+
+{% endblock top %}
+
+
+ {% block l_colonka %}
+	 {#{{ parent() }}#}
+ {% endblock %}
+
+
+
+   {% block c_colonka %}
+
+		    {#{{ dump(txt) }}#}
+		    {#{{ dump_r(txt) }}#}
+
+   {% endblock c_colonka %}
+
+
+
+
+{% block r_colonka %}
+{% endblock r_colonka %}
+
+
+ {% block bottom %}
+ {% endblock bottom %}

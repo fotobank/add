@@ -52,9 +52,9 @@
       <option name="ELSE_IF_STYLE" value="COMBINE" />
       <option name="FIELDS_DEFAULT_VISIBILITY" value="protected" />
       <option name="VARIABLE_NAMING_STYLE" value="SNAKE_CASE" />
-      <option name="BLANK_LINES_BEFORE_RETURN_STATEMENT" value="1" />
       <option name="KEEP_RPAREN_AND_LBRACE_ON_ONE_LINE" value="true" />
-      <option name="KEEP_BLANK_LINES_AFTER_LBRACE" value="1" />
+      <option name="ALIGN_CLASS_CONSTANTS" value="true" />
+      <option name="KEEP_BLANK_LINES_AFTER_LBRACE" value="0" />
       <option name="FORCE_SHORT_DECLARATION_ARRAY_STYLE" value="true" />
       <option name="NAMESPACE_BRACE_STYLE" value="2" />
     </PHPCodeStyleSettings>
@@ -100,7 +100,6 @@
       <option name="KEEP_BLANK_LINES_IN_CODE" value="0" />
       <option name="KEEP_BLANK_LINES_BEFORE_RBRACE" value="0" />
       <option name="BLANK_LINES_AFTER_PACKAGE" value="1" />
-      <option name="BLANK_LINES_BEFORE_METHOD_BODY" value="1" />
       <option name="BLANK_LINES_AFTER_CLASS_HEADER" value="1" />
       <option name="CATCH_ON_NEW_LINE" value="true" />
       <option name="SPECIAL_ELSE_IF_TREATMENT" value="true" />
@@ -128,7 +127,6 @@
       <option name="ARRAY_INITIALIZER_WRAP" value="1" />
       <option name="ARRAY_INITIALIZER_LBRACE_ON_NEXT_LINE" value="true" />
       <option name="ARRAY_INITIALIZER_RBRACE_ON_NEXT_LINE" value="true" />
-      <option name="ASSIGNMENT_WRAP" value="1" />
       <option name="IF_BRACE_FORCE" value="1" />
       <option name="WRAP_ON_TYPING" value="0" />
       <option name="SOFT_MARGINS" value="1" />

@@ -10,6 +10,9 @@
 			error_reporting(E_ALL);
 			ini_set('display_errors', 1);
 			// error_reporting(0);
+       if ($_SERVER['PHP_SELF'] === '/gb/index.php') {
+              chdir('../');
+       }
 			require_once (__DIR__.'/inc/config.php');
 			require_once (__DIR__.'/inc/func.php');
 			$session = check_Session::getInstance();

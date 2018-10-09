@@ -1,9 +1,12 @@
 <?php
+
+       use Site\View\Twig\LoadTwig;
+
        require_once __DIR__.'/../classes/dump_r/dump_r.php';
        /** ----------------------------------------------------------------------------------*/
        try {
               require_once __DIR__.'/../vendor/autoload.php';
-              $loadTwig = new loadTwig();
+              $loadTwig = new LoadTwig();
        }
        catch (RuntimeException $e) {
               if (check_Session::getInstance()->has('DUMP_R')) {

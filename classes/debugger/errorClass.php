@@ -8,7 +8,7 @@
                      dump_r($e->getMessage());
               }
        }
-       use Framework\Core\MailSender\MailSender;
+       use Framework\Core\MailSender\Sender;
        /*if (check_Session::getInstance()->has('Debug_HC')) {
                $Debug_HackerConsole_Main = Debug_HackerConsole_Main::getInstance(true);
        }*/
@@ -648,7 +648,7 @@
                                    $styleErr        = file_get_contents(__DIR__.'/../../classes/debugger/css/default.dat');
                                    $mail_mes        = $styleErr."<u><b>Error:</b></u><br><span style='color: #900000; font-size: 12px; font-weight: bold;'>
 																											 <b>\$_SERVER_NAME</b> = ".$_SERVER['SERVER_NAME']."</span>".$this->showAll();
-                                   $mail            = new MailSender;
+                                   $mail            = new Sender;
                                    $mail->from_Addr = $this->mailOptions['from_Addr'];
                                    $mail->from_Name = $this->mailOptions['from_Name'];
                                    $mail->to        = $this->mailOptions['to_Addr'];
@@ -1011,7 +1011,7 @@
                             $mail_mes      = $styleErr."<html><body><h1>Report of errors log</h1><br>".$this->showAll()."<br>";
                             $mail_mes .= '<p>This letter was created and a log on server was cleared at '.date('Y-m-d').'.<br>
 																					    This message was sent automatically by robot, please don\'t reply!</p></body></html>';
-                            $mail            = new MailSender;
+                            $mail            = new Sender;
                             $mail->from_Addr = $this->mailOptions['from_Addr'];
                             $mail->from_Name = $this->mailOptions['from_Name'];
                             $mail->to        = $this->mailOptions['to_Addr'];

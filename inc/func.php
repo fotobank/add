@@ -7,7 +7,7 @@
        }
        catch (RuntimeException $e) {
               if (check_Session::getInstance()->has('DUMP_R')) {
-                     dump_r($e->getMessage());
+                     throw $e;
               }
        }
 
