@@ -14,8 +14,8 @@
 
 	if (isset($_GET['album_id']))
 		{			
-			$_SESSION['current_album'] = intval($_GET['album_id']);
-			DirPatc::$current_album = intval($_GET['album_id']);
+			$_SESSION['current_album'] = (int)$_GET['album_id'];
+			DirPatc::$current_album = (int)$_GET['album_id'];
 		}
 	if (isset($_GET['back_to_albums']))
 		{
@@ -25,9 +25,9 @@
 	if (isset($_GET['chenge_cat']))
 		{
 			unset($_SESSION['current_album']);
-			$_SESSION['current_cat'] = intval($_GET['chenge_cat']);
+			$_SESSION['current_cat'] = (int)$_GET['chenge_cat'];
 			$Dir->destory('current_album');
-			DirPatc::$current_cat = intval($_GET['chenge_cat']);
+			DirPatc::$current_cat = (int)$_GET['chenge_cat'];
 		}
 	if (isset($_GET['unchenge_cat']))
 		{
@@ -269,17 +269,17 @@
 									$source = ($_SERVER['DOCUMENT_ROOT'].fotoFolder().$ln['id_album'].'/'.$ln['img']);
 									$sz     = @getimagesize($source);
 									/* размер превьюшек */
-									if (intval($sz[0]) > intval($sz[1]))
+									if ((int)$sz[0] > (int)$sz[1])
 										{
 										  $sz_string = 'width="155px"';
-										  $ImgWidth = intval($sz[1]);
-										  $ImgHeight = intval($sz[0]);
+										  $ImgWidth = (int)$sz[1];
+										  $ImgHeight = (int)$sz[0];
 										}
 									else
 										{
 										  $sz_string = 'height="170px"';
-										  $ImgWidth = intval($sz[0]);
-										  $ImgHeight = intval($sz[1]);
+										  $ImgWidth = (int)$sz[0];
+										  $ImgHeight = (int)$sz[1];
 										}
 									?>
 									<div class="podlogka">

@@ -24,7 +24,7 @@ if (isset($_GET['num'])) {
 		imageresize($file_out,$file_in,600,450,$quality,$watermark,$ip_marker,$sharping);
 
 		 if (is_file($file_out)) {
-			  header("Content-type: image/jpg");
+			  header('Content-type: image/jpg');
 			  readfile($file_out);
 			  unlink($file_out);
 			}

@@ -1,4 +1,7 @@
 <?php
+
+       use Site\View\Twig\LoadTwig;
+
        ini_set('display_errors', 1);
        error_reporting(E_ALL | E_STRICT);
        /** -----------------------------------------------------------------------------------*/
@@ -7,6 +10,7 @@
        /** -----------------------------------------------------------------------------------*/
        require_once __DIR__.'/config.php';
        require_once __DIR__.'/func.php';
+       $loadTwig = new LoadTwig();
        /** -----------------------------------------------------------------------------------*/
        // seo
        require_once __DIR__.'/title.php';
@@ -36,9 +40,9 @@
               'js/jsmessage/codebase/themes/message_default.css',
               // сообщения
               'js/humane/themes/jackedup.css',
-              //		  'js/humane/themes/libnotify.css',
-              //		  'js/humane/themes/bigbox.css',
-              //		  'css/main.css',
+//              		  'js/humane/themes/libnotify.css',
+//              		  'js/humane/themes/bigbox.css',
+//              		  'css/main.css',
               'js/visLightBox/data/vlboxCustom.css',
               'js/visLightBox/data/visuallightbox.css',
               'js/prettyPhoto/css/prettyPhoto.css',

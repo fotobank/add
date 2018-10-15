@@ -34,8 +34,8 @@
 
        go::call('md5_loader', $ini);
        $imgData = array(
-              "referer" => $_SERVER['HTTP_REFERER'],
-              "query"   => $_SERVER['QUERY_STRING']
+              'referer' => $_SERVER['HTTP_REFERER'],
+              'query'   => $_SERVER['QUERY_STRING']
        );
 
        if($session->get('JS') == true) {

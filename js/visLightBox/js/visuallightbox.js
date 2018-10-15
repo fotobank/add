@@ -486,7 +486,7 @@
 
                         success: function (html) {
                             $(this).outDebug(html,"/js/visLightBox/js/visuallightbox.js","goParam");
-//                            alert (html);
+                            // alert (html);
                             var ans = $.parseJSON(html);
                             var reiting = str_repeat("<img src='/img/reyt.png' style='margin-top: -10px;'/>", Math.round(ans.votes/5).toFixed(0));
                             var retingTxt = ((Math.round(ans.votes/5).toFixed(0)) == 0)?'':'Рейтинг:';

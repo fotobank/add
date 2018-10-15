@@ -236,6 +236,31 @@
 					{{ renderTop }}
 					{# Вывод фото в альбом #}
 					<div id="modern">
+
+
+						<a class="modern"
+						   height="195px"
+						   href="/js/visLightBox/test_files/images/01_.jpg"
+						   title="01_Настя">
+							<img src="/js/visLightBox/test_files/thumb/01_.jpg" alt="01_Настя"/>
+							01_Настя
+						</a>
+
+						<a class="modern" style="position: relative; float: left; margin-right: 38px;"
+						   href="/js/visLightBox/test_files/images/01_.jpg"
+						   title="Фото № 0">
+							<img id="6661" class="lazy" width="170px" height="129px" src="/thumb.php?num=6661" data-original="/thumb.php?num=6661" alt="№ 0" data-original-title="" title="" style="display: block;">
+							№ 0
+						</a>
+
+						<a class="modern" style="position: relative; float: left; margin-right: 38px;"
+						   href="loader.php?ON8/70hycKXqWYXfFOHLrFn8wnYmxfB++vn/0+9DbXrg5n1aTwcYbh2WQR4s2T1gLuNQ5Q7Yx4tdqIliayUPyAwl5/yCU5Pj"
+						   title="Фото № 0">
+							<img id="6661" class="lazy" width="170px" height="129px" src="/thumb.php?num=6661" data-original="/thumb.php?num=6661" alt="№ 0" data-original-title="" title="" style="display: block;">
+							№ 0
+						</a>
+
+
 						<hr class='style-one' style='margin-top: 10px; margin-bottom: -20px;'/> <div style= 'clear: both;'>
 							{{ fotoPageModern }}
 						</div>
@@ -310,6 +335,7 @@
 
 			{% block content %}
 				<script src="{{ merge_files('/fotobank.min.js', 'js', include_Js_banck, '',  include_Js_banck) }}" ></script >
+				{#<script type="text/javascript" src="/js/visLightBox/js/visuallightbox.js"></script>#}
 			{% endblock content %}
 			<div class="clear"></div>
 

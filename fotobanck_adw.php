@@ -1,4 +1,7 @@
 <?php
+
+       use Site\View\Twig\LoadTwig;
+
        error_reporting(E_ALL | E_STRICT);
        ini_set('display_errors', 1);
        require_once(__DIR__.'/inc/config.php');
@@ -113,6 +116,7 @@
 
 
        $renderData['include_Js_banck'] = array('js/visLightBox/js/visuallightbox.js', 'js/photo-prev.js', 'js/visLightBox/js/vlbdata.js');
+//       $renderData['include_Js_banck'] = array('js/photo-prev.js', 'js/visLightBox/js/vlbdata.js');
        $loadTwig('.twig', $renderData);
-    //   $loadTwig('_footer.twig', $renderData);
-    //   include (BASEPATH.'inc/footer.php');
+//       $loadTwig('_footer.twig', $renderData);
+//       include (BASEPATH.'inc/footer.php');

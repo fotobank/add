@@ -27,10 +27,6 @@
 
               public function __construct()
               {
-                     if ($_SERVER['PHP_SELF'] === '/gb/index.php') {
-                            chdir('../');
-                     }
-
                      $templates = [
                             'alex/fotobank/Framework/View/Twig/Templates/Default',
                             'alex/fotobank/Site/View/Twig/Templates/Default'

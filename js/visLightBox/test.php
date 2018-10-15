@@ -1,6 +1,7 @@
 <?
-include  (dirname(__FILE__).'/../../inc/head.php');
-include  (dirname(__FILE__).'/../../inc/ip-ban.php');
+
+include __DIR__.'/../../inc/head.php';
+include __DIR__.'/../../inc/ip-ban.php';
 
 ?>
 		<link rel="stylesheet" href="/js/visLightBox/data/vlboxCustom.css" type="text/css" />
@@ -48,5 +49,5 @@ include  (dirname(__FILE__).'/../../inc/ip-ban.php');
 </div>
 
 <?php
-include (dirname(__FILE__).'/../../inc/footer.php');
+include __DIR__.'/../../inc/footer.php';
 ?>

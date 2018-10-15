@@ -85,7 +85,8 @@
                */
               public function merge_files($out_file, $b, $c, $e, $f)
               {
-                     $out_file = 'alex/fotobank/Site/View/TwigCache'.$out_file;
+                 $out_file = '/alex/fotobank/Site/View/TwigCache'.$out_file;
+
                      try {
                             $vars = [
                                    'encode' => true,

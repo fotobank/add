@@ -2,26 +2,12 @@
 
        use Site\View\Twig\LoadTwig;
 
+       if ($_SERVER['PHP_SELF'] === '/gb/index.php') {
+              chdir('../');
+       }
        require_once __DIR__.'/../classes/dump_r/dump_r.php';
-       /** ----------------------------------------------------------------------------------*/
-       try {
-              require_once __DIR__.'/../vendor/autoload.php';
-              $loadTwig = new LoadTwig();
-       }
-       catch (RuntimeException $e) {
-              if (check_Session::getInstance()->has('DUMP_R')) {
-                     dump_r($e->getMessage());
-              }
-       }
-       /*try {
-              require_once __DIR__.'/../classes/autoload.php';
-              autoload::getInstance();
-       }
-       catch (RuntimeException $e) {
-              if (check_Session::getInstance()->has('DUMP_R')) {
-                     dump_r($e->getMessage());
-              }
-       }*/
+       require_once __DIR__.'/../vendor/autoload.php';
+
      //  require_once __DIR__.'/secureSession.php';
        $session = check_Session::getInstance();
        startSession();

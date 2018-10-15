@@ -75,7 +75,7 @@
 	<title><?= $gname ?></title>
 	<meta http-equiv="Pragma" content="no-cache">
 	<meta http-equiv="content-type" content="text/html; charset = windows-1251">
-<!--	<META http-equiv="refresh" content="3; url=--><?//= $ref_url ?><!--">-->
+	<META http-equiv="refresh" content="3; url=<?= $ref_url ?>">
        <?php
               require 'design/css.inc.php';
        ?>

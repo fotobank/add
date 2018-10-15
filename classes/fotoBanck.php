@@ -1,15 +1,16 @@
 <?php
+
+       use Framework\Core\Mail\Sender;
+
        /**
         * Created by PhpStorm.
         * User: Jurii
         * Date: 02.11.13
         * Time: 12:55
         */
-
-       use Framework\Core\MailSender\Sender;
-
        class fotoBanck
        {
+
               private $current_album;
               private $current_cat;
               // попытки входа
@@ -701,7 +702,7 @@
                                         .' - зафиксированн подбор пароля для альбома "'.
                                         $this->current_album.'", пользователь - "'.$this->us_name.'" c Ip:'.$this->ip.
                                         ' забанен на '.$this->timeout.' минут!';
-                     $mail            = new Sender;
+                     $mail            = new Sender();
                      $mail->from_addr = 'webmaster@aleks.od.ua';
                      $mail->from_name = 'aleks.od.ua';
                      $mail->to        = 'aleksjurii@gmail.com';

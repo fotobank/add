@@ -21,20 +21,24 @@ class go {
               return self::$vars[$id];
        }
 
-       public static function has($id) { //проверка существовани€ класса
+       /**
+        * @param $id
+        * @return bool
+        * проверка существовани€ класса
+        */
+       public static function has($id): bool
+       {
               if (isset(self::$vars[$id])) {
                      return true;
-              } else {
-                     return false;
               }
+              return false;
        }
 
        public static function call($id, $ini = NULL) { //вызов класса(при отсутствии готового экземпл€ра - создание нового и вызов)
               if (self::has($id)) {
                      return self::$vars[$id];
-              } else {
-                     return self::build($id, $ini);
               }
+              return self::build($id, $ini);
        }
 
 

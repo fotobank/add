@@ -201,40 +201,40 @@
 #vlb1outerImageContainer td.tl{
 	background-image:url(borderTopLeft.png);
 	_background-image:none;
-	_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='3_files/vlb_files1/borderTopLeft.png', sizingMethod='scale');
+	_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='js/visLightBox/data/borderTopLeft.png', sizingMethod='scale');
 }
 #vlb1outerImageContainer td.tc{
 	background-image:url(borderTopCenter.png);
 	_background-image:none;
-	_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='3_files/vlb_files1/borderTopCenter.png', sizingMethod='scale');
+	_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='js/visLightBox/databorderTopCenter.png', sizingMethod='scale');
 }
 #vlb1outerImageContainer td.tr{
 	background-image:url(borderTopRight.png);
 	_background-image:none;
-	_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='3_files/vlb_files1/borderTopRight.png', sizingMethod='scale');
+	_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='js/visLightBox/databorderTopRight.png', sizingMethod='scale');
 }
 #vlb1outerImageContainer td.ml{
 	background-image:url(borderMiddleLeft.png);
 	_background-image:none;
-	_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='3_files/vlb_files1/borderMiddleLeft.png', sizingMethod='scale');
+	_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='js/visLightBox/databorderMiddleLeft.png', sizingMethod='scale');
 }
 #vlb1outerImageContainer td.mr{
 	background-image:url(borderMiddleRight.png);
 	_background-image:none;
-	_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='3_files/vlb_files1/borderMiddleRight.png', sizingMethod='scale');
+	_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='js/visLightBox/databorderMiddleRight.png', sizingMethod='scale');
 }
 #vlb1outerImageContainer td.bl{
 	background-image:url(borderBottomLeft.png);
 	_background-image:none;
-	_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='3_files/vlb_files1/borderBottomLeft.png', sizingMethod='scale');
+	_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='js/visLightBox/databorderBottomLeft.png', sizingMethod='scale');
 }
 #vlb1outerImageContainer td.bc{
 	background-image:url(borderBottomCenter.png);
 	_background-image:none;
-	_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='3_files/vlb_files1/borderBottomCenter.png', sizingMethod='scale');
+	_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='js/visLightBox/databorderBottomCenter.png', sizingMethod='scale');
 }
 #vlb1outerImageContainer td.br{
 	background-image:url(borderBottomRight.png);
 	_background-image:none;
-	_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='3_files/vlb_files1/borderBottomRight.png', sizingMethod='scale');
+	_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='js/visLightBox/databorderBottomRight.png', sizingMethod='scale');
 }
