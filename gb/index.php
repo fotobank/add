@@ -1,5 +1,5 @@
 <?php
-       define('BASEPATH', realpath(__DIR__).'/', true);
+       define('ROOT_PATH', dirname(__DIR__, 1) . DIRECTORY_SEPARATOR , true);
        error_reporting(E_ALL);
        ini_set('display_errors', 1);
        define('SR_DENIED', true);
@@ -14,9 +14,9 @@
        include __DIR__.'/function.php';
 
        ///////////   устанавливаем в кукисы данные пользователя, вынимаем переменные из POST   ////////////
-       if (isset($_POST["name"]) and $_POST["name"] != "") {
-              $name = $_POST["name"];
-              setcookie("cookname", cutty($name), time() + 15552000);
+       if (isset($_POST['name']) && $_POST['name'] !== '') {
+              $name = $_POST['name'];
+              setcookie('cookname', cutty($name), time() + 15552000);
        }
        if (isset($_POST["mail"])) {
               $mail = $_POST["mail"];

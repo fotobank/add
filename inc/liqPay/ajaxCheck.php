@@ -9,11 +9,8 @@
  */
 
   header('Content-type: text/html; charset=windows-1251');
-  set_time_limit(0);
-  ini_set('display_errors',"1");
-  ignore_user_abort(1);
   chdir(__DIR__.'/../../');
-  require_once __DIR__.'/../config.php';
+  require_once __DIR__.'/../../alex/fotobank/Framework/Boot/config.php';
 
 
   // парсинг xml
@@ -32,11 +29,11 @@
 
 		$rs = go\DB\query('SELECT `transaction_id`,`id`,`status`,`amount` FROM `account_inv` WHERE `id_user` = ?i  ORDER BY `id` DESC LIMIT 2',array($_SESSION['userid']),'assoc');
 
-		$transaction_id = $rs[1]['transaction_id'];
-		$transaction_order_id = $rs[1]['id'];
+		$transaction_id = $rs[0]['transaction_id'];
+		$transaction_order_id = $rs[0]['id'];
 		$merchant_id='i3213059147';
-		$signature="JiKgSHyWrT7ljCbKeAXHbGK6RgAHTvaTvA";
-		$url="https://www.liqpay.com/?do=api_xml";
+		$signature= 'JiKgSHyWrT7ljCbKeAXHbGK6RgAHTvaTvA';
+		$url= 'https://www.liqpay.com/?do=api_xml';
 
 		// Просмотр последней транзакции:
 		// transaction_id - более приоритетное поле
@@ -87,17 +84,17 @@
 		$status = XMLfilter($xmlin, 'status');
 		$response_description = iconv('utf-8', 'windows-1251', XMLfilter($xmlin, 'response_description'));
 
-		if ($status == "success" && $rs[1]['status'] != "success")
+		if ($status == 'success' && $rs[0]['status'] != 'success')
 		  {
 			 $user_balans = go\DB\query('select balans from users where id = ?i',array($_SESSION['userid']),'el');
-			 $user_balans += (float)$rs[1]['amount'];
+			 $user_balans += (float)$rs[0]['amount'];
 			 go\DB\query('update `users` set `balans` = ?f where `id` = ?i',array($user_balans, $_SESSION['userid']));
-			 go\DB\query('update `account_inv` set `status` = ?string where `id` = ?i',array($status, $rs[1]['id']));
+			 go\DB\query('update `account_inv` set `status` = ?string where `id` = ?i',array($status, $rs[0]['id']));
 			 echo   "<script type='text/javascript'>
 					 $('#balans').empty().append($user_balans);
 					 </script>";
-			 echo 'Транзакция прошла успешно!<br> На ваш счет зачислено '.$rs[1]['amount']."гр.";
-		  }elseif($status != "success" && $rs[1]['status'] != "success"){
+			 echo 'Транзакция прошла успешно!<br> На ваш счет зачислено '.$rs[0]['amount']."гр.";
+		  }elseif($status != "success" && $rs[0]['status'] != "success"){
 		  echo $response_description;
 		}else{
 		  echo 'Предыдущая транзакция прошла успешно!';

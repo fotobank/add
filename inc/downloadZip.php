@@ -6,8 +6,9 @@
         * Time: 15:35
         * To change this template use File | Settings | File Templates.
         */
-       require_once(__DIR__.'/config.php');
-       require_once(__DIR__.'/func.php');
+
+       require_once __DIR__.'/../alex/fotobank/Framework/Boot/config.php';
+
        if (!isset($_SESSION['logged'])) {
               err_exit('Для скачивания фото необходимо залогиниться на сайте!');
        }

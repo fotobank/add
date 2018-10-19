@@ -8,11 +8,9 @@
  */
   header('Content-type: text/html; charset=windows-1251');
 
-  require_once (__DIR__.'/config.php');
+  require_once __DIR__.'/../alex/fotobank/Framework/Boot/config.php';
 		 // обработка ошибок
 		 $error_processor = Error_Processor::getInstance();
-  require_once (__DIR__.'/func.php');
-
 
   if(isset($_POST['album']))  //подписка на сообщение о готовности альбома
 	 {

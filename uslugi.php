@@ -1,6 +1,6 @@
 <?php
-			define ( 'BASEPATH' , realpath ( __DIR__ ) . '/' , TRUE );
-			require_once (BASEPATH.'inc/head.php');
+			define ( 'ROOT_PATH' , realpath ( __DIR__ ) . '/' , TRUE );
+			require_once (ROOT_PATH.'inc/head.php');
 
 
 				$renderData['dataDB_top' ] =  go\DB\query('select txt from content where id = ?i', array(17), 'el');
@@ -10,4 +10,4 @@
 
 
 
-				require_once (BASEPATH.'inc/footer.php');
+				require_once (ROOT_PATH.'inc/footer.php');

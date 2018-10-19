@@ -1,8 +1,8 @@
 <?php
 
-  define ('BASEPATH', realpath(__DIR__).'/', true);
+  define ('ROOT_PATH', realpath(__DIR__).'/', true);
 
-  include (BASEPATH.'inc/head.php');
+  include (ROOT_PATH.'inc/head.php');
   if (!isset($_SESSION['logged'])) {
     $rLogin      = 'Имя для входа (Login)';
     $rPass       = '';
@@ -189,4 +189,4 @@ LTR;
   } else {
     echo "<script type='text/javascript'>window.document.location.href='/index.php'</script>";
   }
-  include (BASEPATH.'inc/footer.php');
+  include (ROOT_PATH.'inc/footer.php');

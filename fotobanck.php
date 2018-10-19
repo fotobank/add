@@ -1,7 +1,7 @@
 <?php
-	define ( 'BASEPATH' , realpath ( __DIR__ ) . '/' , TRUE );
-	include  (BASEPATH.'inc/head.php');
-	include  (BASEPATH.'inc/ip-ban.php');
+	define ( 'ROOT_PATH' , realpath ( __DIR__ ) . '/' , TRUE );
+	include  (ROOT_PATH.'inc/head.php');
+	include  (ROOT_PATH.'inc/ip-ban.php');
 
 //	 include  (dirname(__FILE__).'/inc/lib/dtimediff/diftimer_class.php'); // подсчет времени между двумя событиями
 
@@ -931,5 +931,5 @@ endif;
 	</div></div>
 
 <?php
-  include (BASEPATH.'inc/footer.php');
+  include (ROOT_PATH.'inc/footer.php');
 ?>

@@ -6,11 +6,10 @@
         * Time: 18:02
         * To change this template use File | Settings | File Templates.
         */
-       include(dirname(__FILE__).'/inc/config.php');
-       include(dirname(__FILE__).'/inc/func.php');
+       include __DIR__.'/alex/fotobank/Framework/Boot/config.php';
        header('Content-type: text/html; charset=windows-1251');
-       $js_redirect = $session->has("JS_REDIRECT")?$session->get("JS_REDIRECT") + 1:1;
-       $session->set("JS_REDIRECT" , $js_redirect);
+       $js_redirect = $session->has('JS_REDIRECT')? $session->get('JS_REDIRECT') + 1:1;
+       $session->set('JS_REDIRECT', $js_redirect);
 
        //для проверки на включенный js
 ?>

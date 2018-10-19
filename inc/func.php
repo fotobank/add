@@ -1,17 +1,6 @@
 <?php
-       define('ROOT', __DIR__);
-       define('LIST_ROOT', ROOT . '/list');
-       define('CHARSET', 'cp1251');
-       try {
-              require_once __DIR__.'/../vendor/autoload.php';
-       }
-       catch (RuntimeException $e) {
-              if (check_Session::getInstance()->has('DUMP_R')) {
-                     throw $e;
-              }
-       }
 
-	
+
 	function downloadFile($file){
         $file_name = $file;
         $mime = 'application/force-download';
@@ -148,7 +137,7 @@ function get_param($param_name,$param_index)
   function get_user($kolonka,$user_id)
   {
 	 $rs = go\DB\query('select ?c from `users` where `id` = ?i',array($kolonka,$user_id), 'el');
-	 $value = $rs ? $rs : false;
+	 $value = $rs ?: false;
 	 return $value;
   }
 
@@ -176,16 +165,18 @@ function getPassword($password,$id){
 	return false;
 }
 
-/**
- * @param     $number
- * @param int $param
- *
- * @return string
- * пароль с регулируемым уровнем сложности
- * genpass(10, 1); // генерирует пароль из 10 символов содержащий буквы в верхнем и нижнем регистре
- * genpass(10, 2); // генерирует пароль из 10 символов содержащий буквы в верхнем и нижнем регистре, а также цифры от 0 до 9
- * genpass(10, 3); // генерирует пароль из 10 символов содержащий буквы в верхнем и нижнем регистре, цифры от 0 до 9 и все спец. символы. Пароль получится реально сложным))
- */
+       /**
+        * @param     $number
+        * @param int $param
+        *
+        * @return string
+        * пароль с регулируемым уровнем сложности
+        * genpass(10, 1); // генерирует пароль из 10 символов содержащий буквы в верхнем и нижнем регистре
+        * genpass(10, 2); // генерирует пароль из 10 символов содержащий буквы в верхнем и нижнем регистре, а также
+        *        цифры от 0 до 9 genpass(10, 3); // генерирует пароль из 10 символов содержащий буквы в верхнем и
+        *        нижнем регистре, цифры от 0 до 9 и все спец. символы. Пароль получится реально сложным))
+        * @throws Exception
+        */
 function genpass($number, $param = 1)
 	{
 		$arr = array('a','b','c','d','e','f',
@@ -203,7 +194,7 @@ function genpass($number, $param = 1)
 		             '<','>','/','|','+','-',
 		             '{','}','`','~');
 		// Генерируем пароль
-		$pass = "";
+		$pass = '';
 		for($i = 0; $i < $number; $i++)
 			{
 				if ($param>count($arr)-1)$param=count($arr) - 1;
@@ -211,18 +202,19 @@ function genpass($number, $param = 1)
 				if ($param==2) $param=58;
 				if ($param==3) $param=count($arr) - 1;
 				// Вычисляем случайный индекс массива
-				$index = rand(0, $param);
+				$index = random_int(0, $param);
 				$pass .= $arr[$index];
 			}
 		return $pass;
 	}
 
-/**
- * @param int $size
- *
- * @return string
- * легкозапоминающийся пароль
- */
+       /**
+        * @param int $size
+        *
+        * @return string
+        * легкозапоминающийся пароль
+        * @throws Exception
+        */
 function genPassword($size = 8){
 	$a = array('e','y','u','i','o','a','E','Y','U','I','O','A');
 	$b = array('q','w','r','t','p','s','d','f','g','h','j','k','l','z','x','c','v','b','n','m');
@@ -234,16 +226,16 @@ function genPassword($size = 8){
 	do {
 		$lastChar = $password[ strlen($password)-1 ];
 		@$predLastChar = $password[ strlen($password)-2 ];
-		if( in_array($lastChar,$b)  ) {//последняя буква была согласной
-			if( in_array($predLastChar,$a) ) { // две последние буквы были согласными
-				$r = rand(0,2);
+		if(in_array($lastChar, $b, true)) {//последняя буква была согласной
+			if(in_array($predLastChar, $a, true)) { // две последние буквы были согласными
+				$r = random_int(0, 2);
 				if( $r  ) $password .= $a[array_rand($a)];
 				else $password .= $b[array_rand($b)];
 			}
 			else $password .= $a[array_rand($a)];
 
-		} elseif( !in_array($lastChar,$c) AND !in_array($lastChar,$e) ) {
-			$r = rand(0,2);
+		} elseif(!in_array($lastChar, $c, true) AND !in_array($lastChar, $e, true)) {
+			$r = random_int(0, 2);
 			if($r == 2)$password .= $b[array_rand($b)];
 			elseif(($r == 1)) $password .= $e[array_rand($e)];
 			else $password .= $c[array_rand($c)];
@@ -260,9 +252,9 @@ function genPassword($size = 8){
 // сумма прописью string str_digit_str(integer)
 function str_digit_str($summ){
     $tmp_num = (integer)$summ;  // текущий
-    $str = "";
+    $str = '';
     $i = 1;            // счетчик триад
-    $th = array("");
+    $th = array('');
 
     // откусываем по три цифры с конца и обрабатываем функцией
     while(strlen($tmp_num) > 0)
@@ -276,14 +268,14 @@ function str_digit_str($summ){
         else
         {
             $dig = $tmp_num;
-            $tmp_num = "";
+            $tmp_num = '';
         }
-       if ($i == 1) $th = " ";
-       else if ($i == 2) $th = " тысяч ";
-       else if ($i == 3) $th = " миллионов ";
-       else if ($i == 4) $th = " миллиардов ";
-       else if ($i == 5) $th = " биллионов ";
-       else if ($i == 6) $th = " триллионов ";
+       if ($i == 1) $th = ' ';
+       else if ($i == 2) $th = ' тысяч ';
+       else if ($i == 3) $th = ' миллионов ';
+       else if ($i == 4) $th = ' миллиардов ';
+       else if ($i == 5) $th = ' биллионов ';
+       else if ($i == 6) $th = ' триллионов ';
        
         // вызываем функцию "сумма прописью" для нашей триады и присоединяем название разряда
         $str = digit_to_string($dig).$th.$str;
@@ -292,34 +284,39 @@ function str_digit_str($summ){
     
     // а теперь заменим неправильные падежи - их не так много, поэтому обойдемся массивом замен
     $tr_arr = array(
-        "один тысяч" => "одна тысяча",
-        "два тысяч" => "две тысячи",
-        "три тысяч" => "три тысячи",
-        "четыре тысяч" => "четыре тысячи",
-        "один миллионов" => "один миллион",
-        "два миллионов" => "два миллиона",
-        "три миллионов" => "три миллиона",
-        "четыре миллионов" => "четыре миллиона",
-        "один миллиардов" => "один миллиард",
-        "два миллиардов" => "два миллиарда",
-        "три миллиардов" => "три миллиарда",
-        "четыре миллиардов" => "четыре миллиарда", );
+           'один тысяч'        => 'одна тысяча',
+           'два тысяч'         => 'две тысячи',
+           'три тысяч'         => 'три тысячи',
+           'четыре тысяч'      => 'четыре тысячи',
+           'один миллионов'    => 'один миллион',
+           'два миллионов'     => "два миллиона",
+           'три миллионов'     => 'три миллиона',
+           'четыре миллионов'  => "четыре миллиона",
+           'один миллиардов'   => 'один миллиард',
+           'два миллиардов'    => 'два миллиарда',
+           'три миллиардов'    => 'три миллиарда',
+           'четыре миллиардов' => 'четыре миллиарда', );
 
     // заменяем падежи
     $str = strtr($str, $tr_arr);
-    return($str);
+    return $str;
 }
 
 // сумма прописью до 999
 function digit_to_string($dig){
-    $str = "";
+    $str = '';
     
     // определяем массивы единиц, десятков и сотен
-    $ed = array("","один","два","три","четыре","пять","шесть","семь","восемь","девять","десять",
-        "одиннадцать","двенадцать","тринадцать","четырнадцать","пятнадцать","шестнадцать",
-        "семнадцать","восемнадцать","девятнадцать","двадцать");
-    $des = array("","десять","двадцать","тридцать","сорок","пятьдесят","шестьдесят","семьдесят","восемьдесят","девяносто");
-    $sot = array("","сто","двести","триста","четыреста","пятьсот","шестьсот","семьсот","восемьсот","девятьсот");
+    $ed = [
+           '', 'один', 'два', 'три', 'четыре', 'пять', 'шесть', 'семь', 'восемь', 'девять', 'десять',
+           'одиннадцать', 'двенадцать', 'тринадцать', 'четырнадцать', 'пятнадцать', 'шестнадцать',
+           'семнадцать', 'восемнадцать', 'девятнадцать', 'двадцать'
+    ];
+    $des = [
+           '', 'десять', 'двадцать', 'тридцать', 'сорок', 'пятьдесят', 'шестьдесят', 'семьдесят', 'восемьдесят',
+           'девяносто'
+    ];
+    $sot = ['', 'сто', 'двести', 'триста', 'четыреста', 'пятьсот', 'шестьсот', 'семьсот', 'восемьсот', 'девятьсот'];
 
     $dig = (int)$dig;
     if ($dig > 0 && $dig <= 20)
@@ -330,7 +327,7 @@ function digit_to_string($dig){
     {
         $tmp1 = substr($dig,0,1);
         $tmp2 = substr($dig,1,1);
-        $str = $des[$tmp1]." ".$ed[$tmp2];
+        $str = $des[$tmp1].' '.$ed[$tmp2];
     }
     else if ($dig > 99 && $dig < 1000)
    {
@@ -339,9 +336,9 @@ function digit_to_string($dig){
         {
             $tmp2 = substr($dig,1,1);
             $tmp3 = substr($dig,2,1);
-            $str = $sot[$tmp1]." ".$des[$tmp2]." ".$ed[$tmp3];
+            $str = $sot[$tmp1].' '.$des[$tmp2].' '.$ed[$tmp3];
         }
-        else $str = $sot[$tmp1]." ".digit_to_string(substr($dig,1,2));
+        else $str = $sot[$tmp1].' '.digit_to_string(substr($dig, 1, 2));
     }
   return $str;
 }
@@ -389,15 +386,15 @@ function digit_to_string($dig){
 							foreach ($rs as $key => $val)
 								{
 									$sum['file']   = $key+1; // кол-во заказанных файлов
-									$sum['price'] += floatval($rs[$key]['price']); // цена за все скачанные файлы
-									$sum['pecat'] += floatval($rs[$key]['pecat']) * intval($koll[$key]);  // цена за печать 13x18
-									$sum['pecat_A4'] += floatval($rs[$key]['pecat_A4']) * intval($koll[$key]); // цена за печать A4
-									$sum['koll'] += intval($koll[$key]); // кол-во фото для печати
-									$sum['arr13'][$val['id']] = (floatval($rs[$key]['pecat']) * intval($koll[$key])); // массив фото 13x18 - цена * кол-во
-									$sum['arrA4'][$val['id']] = floatval($rs[$key]['pecat_A4']) * intval($koll[$key]); // массив фото 20x30 - цена * кол-во
-									$sum['13'][$val['id']] = floatval($rs[$key]['pecat']); // массив фото 13x18 - цена
-									$sum['A4'][$val['id']] = floatval($rs[$key]['pecat_A4']); // массив фото 20x30 - цена
-									$sum['cena_file'][$val['id']] = floatval($rs[$key]['price']); // массив цен на файлы
+									$sum['price'] += (float)$rs[$key]['price']; // цена за все скачанные файлы
+									$sum['pecat'] += (float)$rs[$key]['pecat'] * (int)$koll[$key];  // цена за печать 13x18
+									$sum['pecat_A4'] += (float)$rs[$key]['pecat_A4'] * (int)$koll[$key]; // цена за печать A4
+									$sum['koll'] += (int)$koll[$key]; // кол-во фото для печати
+									$sum['arr13'][$val['id']] = ((float)$rs[$key]['pecat'] * (int)$koll[$key]); // массив фото 13x18 - цена * кол-во
+									$sum['arrA4'][$val['id']] = (float)$rs[$key]['pecat_A4'] * (int)$koll[$key]; // массив фото 20x30 - цена * кол-во
+									$sum['13'][$val['id']] = (float)$rs[$key]['pecat']; // массив фото 13x18 - цена
+									$sum['A4'][$val['id']] = (float)$rs[$key]['pecat_A4']; // массив фото 20x30 - цена
+									$sum['cena_file'][$val['id']] = (float)$rs[$key]['price']; // массив цен на файлы
 									$sum['id'][$val['id']] = $val['id'];
 									$sum['nm'][$val['id']] = $val['nm'];
 								}
@@ -408,11 +405,8 @@ function digit_to_string($dig){
 				  $session->del('basket');
 					return false;
 				}
-			else
-				{
-					return false;
-				}
-		}
+           return false;
+    }
 
 	/**
 	 * @return null|string
@@ -943,11 +937,11 @@ return $data;
 	{
 		$res = '';
 		if (empty($address)) return 'No search key specified';
-		$socket = fsockopen ("whois.ripe.net", 43, $errno, $errstr);
+		$socket = fsockopen ('whois.ripe.net', 43, $errno, $errstr);
 		if (!$socket) {
 			return $errstr($errno);
 		} else {
-			fputs ($socket, $address."\r\n");
+			fwrite ($socket, $address."\r\n");
 			while (!feof($socket)) {
 				$res .= fgets($socket, 128);
 			}
@@ -1064,30 +1058,30 @@ return $data;
               $al = array();
               // crypt/uncrypt pairs of symbols
               for ($ii= 0; $ii<$m; $ii+=2) {
-                     $symb1 = $symbn1 = strval($input[$ii]);
-                     $symb2 = $symbn2 = strval($input[$ii+1]);
+                     $symb1 = $symbn1 = (string)$input[$ii];
+                     $symb2 = $symbn2 = (string)$input[$ii + 1];
                      $a1 = $a2 = array();
                      for($i= 0;$i<$dimension;$i++) { // search symbols in Squares
                             for($j= 0;$j<$dimension;$j++) {
                                    if ($decrypt) {
-                                          if ($symb1===strval($s2[$i][$j]) ) $a1=array($i,$j);
-                                          if ($symb2===strval($s1[$i][$j]) ) $a2=array($i,$j);
-                                          if (!empty($symbl) && $symbl===strval($s2[$i][$j])) $al=array($i,$j);
+                                          if ($symb1 === (string)$s2[$i][$j]) $a1 =array($i, $j);
+                                          if ($symb2 === (string)$s1[$i][$j]) $a2 =array($i, $j);
+                                          if (!empty($symbl) && $symbl === (string)$s2[$i][$j]) $al =array($i, $j);
                                    }
                                    else {
-                                          if ($symb1===strval($s1[$i][$j]) ) $a1=array($i,$j);
-                                          if ($symb2===strval($s2[$i][$j]) ) $a2=array($i,$j);
-                                          if (!empty($symbl) && $symbl===strval($s1[$i][$j])) $al=array($i,$j);
+                                          if ($symb1 === (string)$s1[$i][$j]) $a1 =array($i, $j);
+                                          if ($symb2 === (string)$s2[$i][$j]) $a2 =array($i, $j);
+                                          if (!empty($symbl) && $symbl === (string)$s1[$i][$j]) $al =array($i, $j);
                                    }
                             }
                      }
-                     if (sizeof($a1) && sizeof($a2)) {
+                     if (count($a1) && count($a2)) {
                             $symbn1 = $decrypt ? $s1[$a1[ 0]][$a2[1]] : $s2[$a1[ 0]][$a2[1]];
                             $symbn2 = $decrypt ? $s2[$a2[ 0]][$a1[1]] : $s1[$a2[ 0]][$a1[1]];
                      }
                      $o[] = $symbn1.$symbn2;
               }
-              if (!empty($symbl) && sizeof($al)) // last symbol
+              if (!empty($symbl) && count($al)) // last symbol
                      $o[] = $decrypt ? $s1[$al[1]][$al[ 0]] : $s2[$al[1]][$al[ 0]];
               return implode('',$o);
        }
@@ -1145,8 +1139,12 @@ return $data;
               $header = curl_getinfo($ch);
               curl_close($ch);
 
-              if($err) trigger_error($errmsg, E_USER_WARNING);
-              else return $content;
+              if($err) {
+                     trigger_error($errmsg, E_USER_WARNING);
+              }
+              else {
+                     return $content;
+              }
        }
 
 /** ----------------------------------------------------------------------------------------------------------------------- */
@@ -1156,7 +1154,7 @@ return $data;
               $int = md5(microtime(true));
               $int = preg_replace('/[^0-9]/', '', $int);
               $int = substr($int, 0, strlen(mt_getrandmax() . '') - 1);
-              return intval($int);
+              return (int)$int;
        }
 
        // Разбить по строкам
@@ -1181,7 +1179,7 @@ return $data;
        @setlocale(LC_ALL, array ('ru_RU.CP1251', 'rus_RUS.1251'));
        $pattern = "/\w{0,5}[хx]([хx\s\!@#\$%\^&*+-\|\/]{0,6})[уy]([уy\s\!@#\$%\^&*+-\|\/]{0,6})[ёiлeеюийя]\w{0,7}|\w{0,6}[пp]([пp\s\!@#\$%\^&*+-\|\/]{0,6})[iие]([iие\s\!@#\$%\^&*+-\|\/]{0,6})[3зс]([3зс\s\!@#\$%\^&*+-\|\/]{0,6})[дd]\w{0,10}|[сcs][уy]([уy\!@#\$%\^&*+-\|\/]{0,6})[4чkк]\w{1,3}|\w{0,4}[bб]([bб\s\!@#\$%\^&*+-\|\/]{0,6})[lл]([lл\s\!@#\$%\^&*+-\|\/]{0,6})[yя]\w{0,10}|\w{0,8}[её][bб][лске@eыиаa][наи@йвл]\w{0,8}|\w{0,4}[еe]([еe\s\!@#\$%\^&*+-\|\/]{0,6})[бb]([бb\s\!@#\$%\^&*+-\|\/]{0,6})[uу]([uу\s\!@#\$%\^&*+-\|\/]{0,6})[н4ч]\w{0,4}|\w{0,4}[еeё]([еeё\s\!@#\$%\^&*+-\|\/]{0,6})[бb]([бb\s\!@#\$%\^&*+-\|\/]{0,6})[нn]([нn\s\!@#\$%\^&*+-\|\/]{0,6})[уy]\w{0,4}|\w{0,4}[еe]([еe\s\!@#\$%\^&*+-\|\/]{0,6})[бb]([бb\s\!@#\$%\^&*+-\|\/]{0,6})[оoаa@]([оoаa@\s\!@#\$%\^&*+-\|\/]{0,6})[тnнt]\w{0,4}|\w{0,10}[ё]([ё\!@#\$%\^&*+-\|\/]{0,6})[б]\w{0,6}|\w{0,4}[pп]([pп\s\!@#\$%\^&*+-\|\/]{0,6})[иeеi]([иeеi\s\!@#\$%\^&*+-\|\/]{0,6})[дd]([дd\s\!@#\$%\^&*+-\|\/]{0,6})[oоаa@еeиi]([oоаa@еeиi\s\!@#\$%\^&*+-\|\/]{0,6})[рr]\w{0,12}/i";
 
-       $replacement = "Цензура";
+       $replacement = 'Цензура';
        $ret_text = preg_replace($pattern, $replacement, $text);
               return $ret_text;
        }

@@ -6,9 +6,8 @@
  * Time: 19:16
  * To change this template use File | Settings | File Templates.
  */
-  include (dirname(__FILE__).'/../inc/config.php');
-  include (dirname(__FILE__).'/../inc/func.php');
-  header("Content-type: image/jpg");
+  include __DIR__.'/../alex/fotobank/Framework/Boot/config.php';
+  header('Content-type: image/jpg');
   if (isset($_POST['go_turn']))
 	 {
 		$id          = $_POST['go_turn'];

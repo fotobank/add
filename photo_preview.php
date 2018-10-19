@@ -1,10 +1,6 @@
 <?php
-// error_reporting(E_ALL);
-// ini_set('display_errors', 1);
 
-error_reporting(0);
-include (dirname(__FILE__).'/inc/config.php');
-include (dirname(__FILE__).'/inc/func.php');
+include __DIR__.'/alex/fotobank/Framework/Boot/config.php';
 header('Content-type: text/html; charset=windows-1251');
 
 

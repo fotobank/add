@@ -2,14 +2,17 @@
 
        use Site\View\Twig\LoadTwig;
 
-       ini_set('display_errors', 1);
-       error_reporting(E_ALL | E_STRICT);
        /** -----------------------------------------------------------------------------------*/
        header('Content-type: text/html; charset=windows-1251');
        header('X-Frame-Options: SAMEORIGIN');
+       //не кэшировать
+       header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+       header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+       header('Cache-Control: no-cache, no-store, must-revalidate'); // HTTP/1.1
+       header('Pragma: no-cache'); // HTTP/1.0'
+       header('Expires: 0'); // Proxies.
        /** -----------------------------------------------------------------------------------*/
-       require_once __DIR__.'/config.php';
-       require_once __DIR__.'/func.php';
+       require_once __DIR__.'/../alex/fotobank/Framework/Boot/config.php';
        $loadTwig = new LoadTwig();
        /** -----------------------------------------------------------------------------------*/
        // seo

@@ -8,16 +8,16 @@ date_default_timezone_set('UTC');
 ini_set('display_errors', 'On');
 
 set_include_path(
-    dirname(dirname(__FILE__))
+    dirname(__FILE__, 2)
     .DIRECTORY_SEPARATOR
     .'php-dba-cache'
     .PATH_SEPARATOR
-    .dirname(__FILE__)
+    .__DIR__
     .PATH_SEPARATOR
     .get_include_path()
 );
 
-$root = dirname(__FILE__) . DIRECTORY_SEPARATOR;
+$root = __DIR__. DIRECTORY_SEPARATOR;
 require_once $root . 'app'.DIRECTORY_SEPARATOR .'config.php';
 require_once $root . 'src'. DIRECTORY_SEPARATOR .'Cache.php';
 require_once $root . 'src'. DIRECTORY_SEPARATOR .'Serializer.php';

@@ -1,5 +1,5 @@
-<?
-error_reporting(E_ALL);
+<?php
+
 define("METHOD_PAGE_NUM",0);
 define("METHOD_RECORD_COUNT",1);
 

@@ -1,6 +1,4 @@
 <?php
-  error_reporting(E_ALL);
-  ini_set('display_errors', 1);
 
 			if(isset($_COOKIE['js']) && $_COOKIE['js'] == 1){
 						define ( 'JS' , true );
@@ -8,8 +6,8 @@
 			} else define ( 'JS' , false );
 			setcookie('js', '', time()-1, '/');
 
-		define ( 'BASEPATH' , realpath ( __DIR__ ) . '/' , TRUE );
-  include_once (BASEPATH.'inc/head.php');
+		define ( 'ROOT_PATH' , realpath ( __DIR__ ) . '/' , TRUE );
+  include_once (ROOT_PATH.'inc/head.php');
 
 			$loadTwig('.twig', $renderData);
 
@@ -763,4 +761,4 @@ $_SESSION['print'] = 0;
   </div>
 <?
 			$loadTwig('_footer.twig', $renderData);
-			include (BASEPATH.'inc/footer.php');
+			include (ROOT_PATH.'inc/footer.php');

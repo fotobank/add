@@ -28,14 +28,13 @@
        ::                                             ::
        :::::::::::::::::::::::::::::::::::::::::::::::::
        */
-       require_once(__DIR__.'/inc/config.php');
-       require_once(__DIR__.'/inc/func.php');
-       include(__DIR__.'/classes/md5/md5_ini.php');
+       require_once __DIR__.'/alex/fotobank/Framework/Boot/config.php';
+       $ini = include __DIR__.'/classes/md5/md5_ini.php';
 
        go::call('md5_loader', $ini);
        $imgData = array(
-              'referer' => $_SERVER['HTTP_REFERER'],
-              'query'   => $_SERVER['QUERY_STRING']
+              'referer' => $_SERVER['HTTP_REFERER'] ?? null,
+              'query'   => $_SERVER['QUERY_STRING'] ?? null
        );
 
        if($session->get('JS') == true) {

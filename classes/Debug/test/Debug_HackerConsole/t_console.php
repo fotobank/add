@@ -1,7 +1,7 @@
 <?php
 // Include library code.
-require_once (__DIR__.'/../../lib/config.php');
-require_once (__DIR__.'/../../lib/Debug/HackerConsole/Main.php');
+require_once __DIR__.'/../../lib/config.php';
+require_once __DIR__.'/../../lib/Debug/HackerConsole/Main.php';
 
 // Create & attach hacker conole to HTML output.
 new Debug_HackerConsole_Main(true);

@@ -1,8 +1,6 @@
 <?php
 
-  require (__DIR__.'/../dump_r/dump_r.php');
-  require_once (__DIR__.'/../../inc/config.php');
-  require_once (__DIR__.'/../../inc/func.php');
+  require_once __DIR__.'/../../alex/fotobank/Framework/Boot/config.php';
 
 
 /*------------------------------------------------------------------------------

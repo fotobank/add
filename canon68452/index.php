@@ -1,14 +1,14 @@
 <?php
 	set_time_limit(0);
-	include (__DIR__.'/../inc/config.php');
-	include (__DIR__.'/../inc/func.php');
+	include __DIR__.'/../alex/fotobank/Framework/Boot/config.php';
 
   ini_set('output_buffering', 0);
   ini_set('zlib.output_compression', 0);
 
   header('Content-type: text/html; charset=windows-1251');
   header("X-Frame-Options: SAMEORIGIN");
-  error_reporting(1);
+
+  error_reporting(-1);
   ini_set('display_errors', 1);
 
 

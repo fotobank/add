@@ -1,6 +1,6 @@
 <?php
-			define ( 'BASEPATH' , realpath ( __DIR__ ) . '/' , TRUE );
-			include (BASEPATH.'inc/head.php');
+			define ( 'ROOT_PATH' , realpath ( __DIR__ ) . '/' , TRUE );
+			include (ROOT_PATH.'inc/head.php');
 ?>
 <div id="main">
 	<div class="cont-list" style="margin: 20px 10px 20px 38%;"><div class="drop-shadow lifted">
@@ -14,5 +14,5 @@
 </div>
 <div class="end_content"></div>
 </div>
-<?php include (BASEPATH.'inc/footer.php');
+<?php include (ROOT_PATH.'inc/footer.php');
 ?>

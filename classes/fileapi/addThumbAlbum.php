@@ -9,8 +9,7 @@
  */
 
 
-       include (__DIR__.'/../../inc/config.php');
-       include (__DIR__.'/../../inc/func.php');
+       include __DIR__.'/../../alex/fotobank/Framework/Boot/config.php';
 
        error_reporting(1);
        ini_set('display_errors', 1);

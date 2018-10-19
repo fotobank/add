@@ -4,8 +4,6 @@
        /** -----------------------------------------------------------------------------------*/
        header('Content-type: text/html; charset=windows-1251');
 
-       use Framework\Core\Form\src\Generator;
-
        //------include class
        require __DIR__.'/Formgenerator/Formgenerator.php';
 ?>
@@ -183,7 +181,7 @@
 <?php
 
        //------create first form
-       $form = new Generator();
+       $form = new \Framework\Core\Form\Generator();
        //setup form
        $form->set('title', 'Example form');
        $form->set('name', 'form_example');

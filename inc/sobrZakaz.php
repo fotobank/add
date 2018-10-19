@@ -9,16 +9,10 @@
 	* To change this template use File | Settings | File Templates.
 	*/
 
-  set_time_limit(0);
- // error_reporting(E_ALL);
- // ini_set('display_errors', 1);
-  error_reporting(0);
-  ignore_user_abort(1);
-  include (__DIR__.'/config.php');
-  include (__DIR__.'/func.php');
+  include __DIR__.'/../alex/fotobank/Framework/Boot/config.php';
 
   $error_processor = Error_Processor::getInstance();
-  include (__DIR__.'/lib/zn_ftp/zn_ftp.php');
+  include __DIR__.'/lib/zn_ftp/zn_ftp.php';
 
 
 if ($link->referralSeed) {

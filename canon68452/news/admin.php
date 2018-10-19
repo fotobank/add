@@ -1,7 +1,7 @@
 <?
-define ( 'BASEPATH' , realpath ( __DIR__ ) . '/' , TRUE );
+define ( 'ROOT_PATH' , realpath ( __DIR__ ) . '/' , TRUE );
 include 'sys/func.php';
-if(intval(@$_COOKIE['admnewswar'])>2){
+if((int)@$_COOKIE['admnewswar'] > 2){
 	echo '<div class="title">Вы превысили количество попыток вхoда,повторите через час</div>';exit;}
 
   $mp = go\DB\query('SELECT * FROM `config` WHERE id=?i',array(1),'row');
@@ -30,12 +30,12 @@ switch(@$_GET['act']){
 		echo '<div class="title2">Вы вошли как администратор</div>
 		<div class="content2"><a href="?act=index">Админка</a></div>';
 		} else{
-			if(intval($_COOKIE['admnewswar'])>0){
+			if((int)$_COOKIE['admnewswar'] >0){
 			setcookie('admnewswar',$_COOKIE['admnewswar']+1,time()+3600);
 			} else{
 				setcookie('admnewswar',1,time()+3600);}
 
-			echo '<div class="title2">Не правельный логин или пароль</div>
+			echo '<div class="title2">Неправильный логин или пароль</div>
 			<div class="content2"><a href="?">Авторизация</a></div>';exit;}
 			break;
 
@@ -77,10 +77,10 @@ switch(@$_GET['act']){
 	admin_only();
 
 	echo '<div class="title2">Ностройки новостей</div>';
-	$_POST['nop']=abs(intval($_POST['nop']));
-	$_POST['kolsm']=abs(intval($_POST['kolsm']));
-	$_POST['kop']=abs(intval($_POST['kop']));
-	$_POST['dlk']=abs(intval($_POST['dlk']));
+	$_POST['nop']=abs((int)$_POST['nop']);
+	$_POST['kolsm']=abs((int)$_POST['kolsm']);
+	$_POST['kop']=abs((int)$_POST['kop']);
+	$_POST['dlk']=abs((int)$_POST['dlk']);
 	if(empty($_POST['nop']) || empty($_POST['kop']) || empty($_POST['kolsm']) || empty($_POST['dlk'])){
 		echo '<div class="title2">Пожалуста заполните все поля</div>
 		<div class="content2"><a href="?act=set">Назад</a></div>';exit;}

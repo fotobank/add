@@ -10,8 +10,7 @@
   header('Content-type: text/html; charset=windows-1251');
 	// обработка ошибок
 
-			require_once __DIR__.'/config.php';
-			require_once __DIR__.'/func.php';
+			require_once __DIR__.'/../alex/fotobank/Framework/Boot/config.php';
 
 
 if(isset($_POST['goZakazDel'])) // кнопка удаления фотографий из корзины

@@ -1,8 +1,7 @@
 <?php
        header('Content-type: text/html; charset=windows-1251');
-include (__DIR__.'/inc/config.php');
-include (__DIR__.'/inc/func.php');
-require (__DIR__.'/inc/i_resize.php');
+       require __DIR__.'/alex/fotobank/Framework/Boot/config.php';
+       require __DIR__.'/inc/i_resize.php';
 
 
 

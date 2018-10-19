@@ -1,5 +1,5 @@
 <?php
-			define ( 'BASEPATH' , realpath ( __DIR__ ) . '/' , TRUE );
+			define ( 'ROOT_PATH' , realpath ( __DIR__ ) . '/' , TRUE );
 			include (dirname(__FILE__).'/inc/head.php');
 ?>
 

@@ -33,6 +33,6 @@
 // IMAGINE_CONSTANT2; IMAGINE_CONSTANT3; IMAGINE_CONSTANT4;
 /** PHP set_exception_handler TEST */
 // trigger_error ('Сообщение пользователя', E_USER_WARNING);
-// throw new Exception( 'Imagine Exception' );
+// throw new RuntimeException( 'Test RuntimeException' );
 /** PHP register_shutdown_function TEST ( IF YOU WANT TEST THIS, DELETE PREVIOUS LINE ) */
 // _TEST_FATAL_ERROR_();

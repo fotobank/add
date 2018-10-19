@@ -7,8 +7,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-	include (dirname(__FILE__).'/../../inc/config.php');
-	include (dirname(__FILE__).'/../../inc/func.php');
+	include __DIR__.'/../../alex/fotobank/Framework/Boot/config.php';
 
 	if (isset($_POST['go_delete']))
 		{

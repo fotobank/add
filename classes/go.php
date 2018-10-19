@@ -7,7 +7,7 @@
  * класс синглтон для классов
  */
 
-       require_once (__DIR__.'/../inc/config.php');
+       require_once __DIR__.'/../alex/fotobank/Framework/Boot/config.php';
 
 class go {
        private static $vars = array();

@@ -27,8 +27,7 @@
        ::                                             ::
        :::::::::::::::::::::::::::::::::::::::::::::::::
        */
-       require_once __DIR__.'/../../inc/config.php';
-       require_once __DIR__.'/../../inc/func.php';
+       require_once __DIR__.'/../../alex/fotobank/Framework/Boot/config.php';
 
        class md5_loader
        {
@@ -79,15 +78,20 @@
               {
                      $decrypted   = explode('][', $this->md5_decrypt());
                      $this->idImg = substr(trim(end($decrypted)), 2, -4);
-                     // передать через сессию
-                     check_Session::getInstance()->set('idImg', $this->idImg);
-                     $img = substr($decrypted[0].$decrypted[1], 1).'/'.end($decrypted);
-                     if (!filter_var($img, FILTER_SANITIZE_URL)) {
-                            $this->str_img = 'The provided url is invalid';
+                     if($this->idImg) {
+                            // передать через сессию
+                            check_Session::getInstance()->set('idImg', $this->idImg);
+                            $img = substr($decrypted[0].$decrypted[1], 1).'/'.end($decrypted);
+                            if (!filter_var($img, FILTER_SANITIZE_URL)) {
+                                   $this->str_img = 'The provided url is invalid';
+                            }
+                            else {
+                                   $this->str_img = trim(addslashes(htmlspecialchars(strip_tags($img))));
+                                   $this->watermark = $decrypted[2] === null ? true : $decrypted[2] == '1';
+                                   $this->ip_marker = $decrypted[3] === null ? true : $decrypted[3] == '1';
+                            }
                      } else {
-                            $this->str_img   = trim(addslashes(htmlspecialchars(strip_tags($img))));
-                            $this->watermark = $decrypted[2] === null ? true : $decrypted[2] == '1';
-                            $this->ip_marker = $decrypted[3] === null ? true : $decrypted[3] == '1';
+                            throw new LogicException('id img is invalid');
                      }
               }
 

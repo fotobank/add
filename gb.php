@@ -1,9 +1,9 @@
 <?php
-			define ( 'BASEPATH' , realpath ( __DIR__ ) . '/' , TRUE );
-			include (BASEPATH.'inc/head.php');
+			define ( 'ROOT_PATH' , realpath ( __DIR__ ) . '/' , TRUE );
+			include (ROOT_PATH.'inc/head.php');
 ?>
 <div id="main">
 
 </div>
-<?php include (BASEPATH.'inc/footer.php');
+<?php include (ROOT_PATH.'inc/footer.php');
 ?>

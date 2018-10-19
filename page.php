@@ -6,10 +6,8 @@
 				* Time: 11:25
 				* To change this template use File | Settings | File Templates.
 				*/
-			define ('BASEPATH', realpath(__DIR__).'/', true);
-			include_once BASEPATH.'inc/config.php';
-			include_once BASEPATH.'inc/func.php';
-
+			define ('ROOT_PATH', realpath(__DIR__).'/', true);
+			include_once ROOT_PATH.'alex/fotobank/Framework/Boot/config.php';
 
 			use Framework\Core\Form\Generator;
 
@@ -22,7 +20,7 @@
 						if ((isset($_GET['user']) && $_GET['user'] === $_SESSION['userForm']) || $link->check($_SERVER['SCRIPT_NAME'].'?go='.trim($_GET['go'] ?? ''))
 						) {
 
-									include_once BASEPATH.'inc/head.php';
+									include_once ROOT_PATH.'inc/head.php';
 
 //									print "<br>actual referral Seed:".$_SESSION['referralSeed']."<br />\n";
 //									print "checked link: {$_SERVER['REQUEST_URI']}<br />\n";
@@ -133,4 +131,4 @@
 			} else {
 						err_exit ('Доступ на страницу пользователя без авторизации невозможен. ', '/error.php');
 			}
-			include_once BASEPATH.'inc/footer.php';
+			include_once ROOT_PATH.'inc/footer.php';

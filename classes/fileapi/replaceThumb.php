@@ -8,15 +8,8 @@
  * скрипт замены картинки в превью альбома (админка)
  */
  
-       include (__DIR__.'/../../inc/config.php');
-       include (__DIR__.'/../../inc/func.php');
-
-       error_reporting(1);
-       ini_set('display_errors', 1);
-
-
+       include __DIR__.'/../../alex/fotobank/Framework/Boot/config.php';
        if (isset($_SESSION['admin_logged'])) {
-
 
        if (isset($_POST['_filedata'])) {
               if (isset($_FILES['filedata']) && $_FILES['filedata']['size'] != 0) {

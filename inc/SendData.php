@@ -10,9 +10,8 @@
         *  ajax скрипт восстановления пароля
         */
        header('Content-type: text/html; charset=windows-1251');
-       require_once(__DIR__.'/config.php');
+       require_once __DIR__.'/../alex/fotobank/Framework/Boot/config.php';
        $error_processor = Error_Processor::getInstance();
-       require_once(__DIR__.'/func.php');
        $session = check_Session::getInstance();
        // капча
        $cryptinstall = '/classes/dsp/cryptographp.fct.php';

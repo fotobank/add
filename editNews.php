@@ -1,12 +1,12 @@
 <?
-define ( 'BASEPATH' , realpath ( __DIR__ ) . '/' , TRUE );
+define ( 'ROOT_PATH' , realpath ( __DIR__ ) . '/' , TRUE );
 if (!isset($_SESSION['admin_logged'])) die();
-//include 'news/sys/func.php';
+
 ?>
  <div id ="newscontent">
 
 <?
-include (BASEPATH.'/canon68452/news/news.php');
+include (ROOT_PATH.'/canon68452/news/news.php');
 
 //Навигация
 @$page = abs(intval($_GET['page']));
@@ -26,7 +26,7 @@ $str = '<div class="title"><a href="index.php">Админка</a></div>'; echo if_adm($
   echo '<div class="content">';
 
   $n = go\DB\query('SELECT * FROM `news` ORDER BY `id` DESC LIMIT ?i,?i',array(intval($page*$cfg['nop']-$cfg['nop']),$cfg['nop']),'assoc');
-		require_once (BASEPATH.'/canon68452/news/sys/bb.php');
+		require_once (ROOT_PATH.'/canon68452/news/sys/bb.php');
 
   foreach ($n as $na)
 	 {

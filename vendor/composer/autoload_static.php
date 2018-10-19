@@ -7,8 +7,8 @@ namespace Composer\Autoload;
 class ComposerStaticInit8049e9a1a0bd8e52a1ed1058fdb26e3a
 {
     public static $files = array (
-        '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
+        '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
     );
 
@@ -30,6 +30,7 @@ class ComposerStaticInit8049e9a1a0bd8e52a1ed1058fdb26e3a
         array (
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Polyfill\\Ctype\\' => 23,
+            'Symfony\\Component\\Yaml\\' => 23,
         ),
         'P' => 
         array (
@@ -69,6 +70,10 @@ class ComposerStaticInit8049e9a1a0bd8e52a1ed1058fdb26e3a
         'Symfony\\Polyfill\\Ctype\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
+        ),
+        'Symfony\\Component\\Yaml\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/yaml',
         ),
         'Psr\\Log\\' => 
         array (
@@ -146,9 +151,14 @@ class ComposerStaticInit8049e9a1a0bd8e52a1ed1058fdb26e3a
         'File_Iterator_Facade' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Facade.php',
         'File_Iterator_Factory' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Factory.php',
         'Formitable' => __DIR__ . '/../..' . '/inc/lib/formitable/Formitable.class.php',
+        'Framework\\Core\\Config\\Config' => __DIR__ . '/../..' . '/alex/fotobank/Framework/Core/Config/Config.php',
+        'Framework\\Core\\Config\\ConfigException' => __DIR__ . '/../..' . '/alex/fotobank/Framework/Core/Config/ConfigException.php',
+        'Framework\\Core\\Config\\InterfaceConfig' => __DIR__ . '/../..' . '/alex/fotobank/Framework/Core/Config/InterfaceConfig.php',
         'Framework\\Core\\Form\\Generator' => __DIR__ . '/../..' . '/alex/fotobank/Framework/Core/Form/Generator.php',
         'Framework\\Core\\Form\\Validator' => __DIR__ . '/../..' . '/alex/fotobank/Framework/Core/Form/Validator.php',
         'Framework\\Core\\Mail\\Sender' => __DIR__ . '/../..' . '/alex/fotobank/Framework/Core/Mail/Sender.php',
+        'Framework\\Core\\Yaml\\Yaml' => __DIR__ . '/../..' . '/alex/fotobank/Framework/Core/Yaml/Yaml.php',
+        'Framework\\Core\\Yaml\\YamlException' => __DIR__ . '/../..' . '/alex/fotobank/Framework/Core/Yaml/YamlException.php',
         'Framework\\Ftp\\FtpUpload\\FtpUpload' => __DIR__ . '/../..' . '/alex/fotobank/Framework/Ftp/FtpUpload/FtpUpload.php',
         'Framework\\Ftp\\UploadProgress\\UploadProgress' => __DIR__ . '/../..' . '/alex/fotobank/Framework/Ftp/UploadProgress/UploadProgress.php',
         'Framework\\View\\Twig\\Extension' => __DIR__ . '/../..' . '/alex/fotobank/Framework/View/Twig/Extension.php',
@@ -806,6 +816,18 @@ class ComposerStaticInit8049e9a1a0bd8e52a1ed1058fdb26e3a
         'Site\\View\\Twig\\LoadTwig' => __DIR__ . '/../..' . '/alex/fotobank/Site/View/Twig/LoadTwig.php',
         'SitemapGenerator' => __DIR__ . '/../..' . '/classes/sitemap-generator/SitemapGenerator.php',
         'SmartSessionTest' => __DIR__ . '/../..' . '/classes/check/test/test.php',
+        'Symfony\\Component\\Yaml\\Command\\LintCommand' => __DIR__ . '/..' . '/symfony/yaml/Command/LintCommand.php',
+        'Symfony\\Component\\Yaml\\Dumper' => __DIR__ . '/..' . '/symfony/yaml/Dumper.php',
+        'Symfony\\Component\\Yaml\\Escaper' => __DIR__ . '/..' . '/symfony/yaml/Escaper.php',
+        'Symfony\\Component\\Yaml\\Exception\\DumpException' => __DIR__ . '/..' . '/symfony/yaml/Exception/DumpException.php',
+        'Symfony\\Component\\Yaml\\Exception\\ExceptionInterface' => __DIR__ . '/..' . '/symfony/yaml/Exception/ExceptionInterface.php',
+        'Symfony\\Component\\Yaml\\Exception\\ParseException' => __DIR__ . '/..' . '/symfony/yaml/Exception/ParseException.php',
+        'Symfony\\Component\\Yaml\\Exception\\RuntimeException' => __DIR__ . '/..' . '/symfony/yaml/Exception/RuntimeException.php',
+        'Symfony\\Component\\Yaml\\Inline' => __DIR__ . '/..' . '/symfony/yaml/Inline.php',
+        'Symfony\\Component\\Yaml\\Parser' => __DIR__ . '/..' . '/symfony/yaml/Parser.php',
+        'Symfony\\Component\\Yaml\\Tag\\TaggedValue' => __DIR__ . '/..' . '/symfony/yaml/Tag/TaggedValue.php',
+        'Symfony\\Component\\Yaml\\Unescaper' => __DIR__ . '/..' . '/symfony/yaml/Unescaper.php',
+        'Symfony\\Component\\Yaml\\Yaml' => __DIR__ . '/..' . '/symfony/yaml/Yaml.php',
         'Symfony\\Polyfill\\Ctype\\Ctype' => __DIR__ . '/..' . '/symfony/polyfill-ctype/Ctype.php',
         'Symfony\\Polyfill\\Mbstring\\Mbstring' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/Mbstring.php',
         'Text_Template' => __DIR__ . '/..' . '/phpunit/php-text-template/src/Template.php',
@@ -1190,6 +1212,21 @@ class ComposerStaticInit8049e9a1a0bd8e52a1ed1058fdb26e3a
         'ZendY_JQuery_Controller_Action_Helper_Jquery' => __DIR__ . '/../..' . '/inc/lib/jquery.php/library/ZendY/JQuery/Controller/Action/Helper/Jquery.php',
         'ZendY_JQuery_View_Helper_Ajax' => __DIR__ . '/../..' . '/inc/lib/jquery.php/library/ZendY/JQuery/View/Helper/Ajax.php',
         'Zip' => __DIR__ . '/../..' . '/classes/Zip/Zip.php',
+        '__TwigTemplate_1c7cf0bafdebde02827e6e7caee31178d90947ea725d0ea658514b4661a9984f' => __DIR__ . '/../..' . '/alex/fotobank/Site/View/TwigCache/46/466bff5055c22cf219c9ca374b79c4f550df7cb47466d066d3edc812f75ddfd1.php',
+        '__TwigTemplate_5f5b57e7b4a5d92356bd80c61490a39f02a74c93014c2622653ee71f990798fd' => __DIR__ . '/../..' . '/alex/fotobank/Site/View/TwigCache/89/89ee360c67578d12ff3c437d66f7435eeaaf4e0dae7f214ff69f1c28ccbe7d70.php',
+        '__TwigTemplate_6e34610d810ac84e288bd438e6ce79c409fb48264762285cbf7b2954646729fc' => __DIR__ . '/../..' . '/alex/fotobank/Site/View/TwigCache/9e/9e98b6d10333e49a85fd52d63cd3308c47d2ecb13eff2319c80e33efd9cf537f.php',
+        '__TwigTemplate_7174431a9fb17aa7b7f16d7f316262d0b2074da43d9d4ca9b704a680ff00fd51' => __DIR__ . '/../..' . '/alex/fotobank/Site/View/TwigCache/b4/b4fa5148c9bcd30535e30658a5108c7a598609c9b9936b071f90a1c12cd87e7c.php',
+        '__TwigTemplate_79a4edef3c9829599a1001a28ce7a87ce6914ae89d8b2d355c230deb8207ae2c' => __DIR__ . '/../..' . '/alex/fotobank/Site/View/TwigCache/b4/b46e27af7d5792394d7374189e9d5cd1195f56f060f8204a653758158d5d5fab.php',
+        '__TwigTemplate_877631aef0e0c87ec3cc8699c0031ed581744abdd451a0a39c55b3ac3d012d30' => __DIR__ . '/../..' . '/alex/fotobank/Site/View/TwigCache/18/185b911d017edfd9ce409f38a8df9b4b892b5fd138d5ddadf3c9ab65b50d76b9.php',
+        '__TwigTemplate_8dec8cefadfc448998f7ef9d5c5df95f859df0d157d7c1c1835b87f24f110aaa' => __DIR__ . '/../..' . '/alex/fotobank/Site/View/TwigCache/ad/ad173829f3bd3051b26afb2466e38e12eca7991408f89334e919712270e70198.php',
+        '__TwigTemplate_967d82a49840e420c1675ebd182cfdae43affedfaca77855ed1dd90d30ee569b' => __DIR__ . '/../..' . '/alex/fotobank/Site/View/TwigCache/38/38b0ae5b9632ec0f5c8784d0d89375eeea43490e0bac9f2ea2b050b4f0fcbbf9.php',
+        '__TwigTemplate_968926f8c959f630de45096c24a78e531ebb2a0a5c283414ca710282b86bc372' => __DIR__ . '/../..' . '/alex/fotobank/Site/View/TwigCache/eb/ebaf901ceade947bb694b3f722292c0f5af71a5b8171a6fd56e4d33d42fb4959.php',
+        '__TwigTemplate_a0d37ed4ba7dc5af217d05e44fedf2468c3c79440e9a63fce8ab430b91eac782' => __DIR__ . '/../..' . '/alex/fotobank/Site/View/TwigCache/d9/d9959f9f8c4c637975411fccdb24697edb841d396224bdd53d7c4d36f464a020.php',
+        '__TwigTemplate_b72751c7b644b8938c57b6ab25000c8942b6210a73d41d55f59cb60af7be7b34' => __DIR__ . '/../..' . '/alex/fotobank/Site/View/TwigCache/06/064eadc4c8ef1e1b0ba1348f52967e09a6f77829a2d03f5d37cf5f0392895a99.php',
+        '__TwigTemplate_b965d648ab2fd0a191e3b536a034ba323f6e4c2e879d98fae26ace4206f8757f' => __DIR__ . '/../..' . '/alex/fotobank/Site/View/TwigCache/de/dee23002db47228b8695fc138f779d3525fc580ba118877fe54b408e2c8cbe3c.php',
+        '__TwigTemplate_c06eeac8361cfb9f5d17f6cf9166f24c9e84cfc65de7bd9ee8fa85dc8d0640e7' => __DIR__ . '/../..' . '/alex/fotobank/Site/View/TwigCache/fc/fcc4796bde8d7adbd4bfeaaa0e784d06f223ef45ba80a9168cc7c65fda386641.php',
+        '__TwigTemplate_e2a59626c43f8e5fafaddfc50695e3f35b9f96207f6ea038e8321e7e98f25060' => __DIR__ . '/../..' . '/alex/fotobank/Site/View/TwigCache/10/10c34ed89008e758490d614ea477e66fa8c1625ea6665578a8595661391ef46d.php',
+        '__TwigTemplate_f1aedd55113a35b7512fc75dd757bb2da59219e6e1c9d62f10f7713484e455bf' => __DIR__ . '/../..' . '/alex/fotobank/Site/View/TwigCache/fb/fbbd605669ac6983df89e898275463be938536fdde186a35de6cf9cb08908afe.php',
         'autoPrev' => __DIR__ . '/../..' . '/classes/autoPrev.php',
         'auto_form' => __DIR__ . '/../..' . '/inc/auto_form/auto_form.php',
         'autokeyword' => __DIR__ . '/../..' . '/inc/lib/SeO/SEOautokeyword/class.autokeyword.php',

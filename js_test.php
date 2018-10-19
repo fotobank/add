@@ -7,10 +7,9 @@
  *  проверка включения JS при потере сессии
  */
 
-       require_once(__DIR__.'/inc/config.php');
-       require_once(__DIR__.'/inc/func.php');
+       require_once __DIR__.'/alex/fotobank/Framework/Boot/config.php';
 
        if(isset($_POST['js'])) {
         $session->set('JS', true);
-       echo 'js:'.($session->get('JS'));
+       echo 'js:'.$session->get('JS');
        }

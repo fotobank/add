@@ -1,7 +1,6 @@
 <?php
-			define ( 'BASEPATH' , realpath ( __DIR__ ) . '/' , TRUE );
-			require_once (BASEPATH.'/inc/config.php');
-			require_once (BASEPATH.'/inc/func.php');
+			define ( 'ROOT_PATH' , realpath ( __DIR__ ) . '/' , TRUE );
+			require_once ROOT_PATH.'alex/fotobank/Framework/Boot/config.php';
 			$session = check_Session::getInstance();
 
               function utf8($string){

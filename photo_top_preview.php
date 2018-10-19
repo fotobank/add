@@ -1,13 +1,10 @@
 <?php
-// error_reporting(E_ALL);
-// ini_set('display_errors', 1);
-error_reporting(0);
-include (__DIR__.'/inc/config.php');
-include (__DIR__.'/inc/func.php');
+
+require __DIR__.'/alex/fotobank/Framework/Boot/config.php';
 
 header('Content-type: text/html; charset=windows-1251');
 
-		$id = intval($_GET['id']);
+		$id = (int)$_GET['id'];
 		if ($id > 0)
 			{
 				$rs = go\DB\query('select * from `photos` where `id` = ?i',array($id),'row');
@@ -23,19 +20,19 @@ header('Content-type: text/html; charset=windows-1251');
 								$left_id = 0;
 								foreach ($id_foto as $key => $val)
 									{
-										if ($id == intval($val))
+										if ($id == (int)$val)
 											{
-												$right_id = intval($id_foto[$key + 1]);
-												$left_id = intval($id_foto[$key - 1]);
+												$right_id = (int)$id_foto[$key + 1];
+												$left_id = (int)$id_foto[$key - 1];
 											}
 									}
 								if ($id == $id_foto[0])
 									{
-										$left_id = intval($id_foto[4]);
+										$left_id = (int)$id_foto[4];
 									}
 								if ($id == $id_foto[4])
 									{
-										$right_id = intval($id_foto[0]);
+										$right_id = (int)$id_foto[0];
 									}
 								$source = $_SERVER['DOCUMENT_ROOT'].fotoFolder().$photo_data['id_album'].'/'.$photo_data['img'];
 								$sz = @getimagesize($source);
@@ -79,13 +76,14 @@ header('Content-type: text/html; charset=windows-1251');
 												<td valign="top" width="33%" align="left">
 													<input type="button" value="В корзину" style="cursor: pointer;" onClick="basketAdd(<?= $photo_data['id'] ?>);"/><br/>
 													Цена: <?=(
-													floatval($photo_data['price']) > 0 ? $photo_data['price'].'грн.' : 'бесплатно')?>
+                                                       (float)$photo_data['price'] > 0 ? $photo_data['price'].'грн.' : 'бесплатно')?>
 												</td>
 												<td valign="top" width="33%" align="right">
 													<?
-													$id_album = isset($_SESSION['current_album']) ? $_SESSION['current_album'] : null;
-													$vote_price = floatval(go\DB\query('select vote_price from albums where id = ?i', array($id_album), 'el'));
-												   $user_balans = go\DB\query('select balans from users where id = ?i',array($_SESSION['userid']),'el');
+													$id_album           = isset($_SESSION['current_album']) ? $_SESSION['current_album'] : null;
+													$vote_price         = (float)go\DB\query('select vote_price from albums where id = ?i',
+                                                                                             [$id_album], 'el');
+                                                           $user_balans = go\DB\query('select balans from users where id = ?i', array($_SESSION['userid']), 'el');
 												  ?>
 												  <input type="button" value="Голосовать" style="cursor: pointer;" onClick="goVote('<?=$user_balans?>','<?=$vote_price?>','<?=$photo_data['id']?>');"/><br/>
 													Голосов: (<?=$photo_data['votes']?>)

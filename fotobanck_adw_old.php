@@ -1,9 +1,7 @@
 <?php
-       error_reporting(E_ALL | E_STRICT);
-       ini_set('display_errors', 1);
-       require_once(__DIR__.'/inc/config.php');
+	   require_once __DIR__.'/alex/fotobank/Framework/Boot/config.php';
        // обработка ошибок
-       require_once (__DIR__.'/inc/errorDump.php');
+       require_once __DIR__.'/inc/errorDump.php';
        // вызов ошибки
        // ERROR_CONSTANT;
        if (isset($_COOKIE['js']) &&$_COOKIE['js'] == 1) {
@@ -16,12 +14,12 @@
        $session->set("JS_REDIRECT" , 0);
        setcookie('js', '', time() - 1, '/');   // удал€ем куки JS из браузера
 
-       define ('BASEPATH', realpath(__DIR__).'/', true);
+       define ('ROOT_PATH', realpath(__DIR__).'/', true);
        define('PHOTOS_ON_PAGE', 70);  // оличество фоток на странице
-       require_once  (BASEPATH.'inc/head.php');
+       require_once  (ROOT_PATH.'inc/head.php');
        /*$renderData['dataDB'] = go\DB\query('select txt from content where id = ?i', array(1), 'el');
        $loadTwig('.twig', $renderData);*/
-       require_once  (BASEPATH.'inc/ip-ban.php');
+       require_once  (ROOT_PATH.'inc/ip-ban.php');
        set_time_limit(0);
 
        // include  (dirname(__FILE__).'/inc/lib/dtimediff/diftimer_class.php'); // подсчет времени между двум€ событи€ми
@@ -817,5 +815,5 @@
 }
        $renderData['include_Js_banck'] = array('js/visLightBox/js/visuallightbox.js', 'js/photo-prev.js', 'js/visLightBox/js/vlbdata.js');
        $loadTwig('_footer.twig', $renderData);
-       include (BASEPATH.'inc/footer.php');
+       include (ROOT_PATH.'inc/footer.php');
 ?>

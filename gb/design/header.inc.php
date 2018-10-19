@@ -1,4 +1,4 @@
-<?
+<?php
 require_once (__DIR__.'/../../inc/head.php');
 
 if($razdel == '/gb/index.php') { $loadTwig('.twig', $renderData); }

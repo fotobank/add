@@ -12,7 +12,7 @@
 	*
 	*/
 	
-	define ( 'BASEPATH' , realpath ( dirname ( __FILE__ ) ) . '/' , TRUE ) ;
+	define ( 'ROOT_PATH' , realpath ( dirname ( __FILE__ ) ) . '/' , TRUE ) ;
 	
 	class DealingFiles
 	
@@ -56,7 +56,7 @@
 
 			$FileName = strtolower ( $FileName ) ;
 		
-			self::$File = fopen ( BASEPATH.$FileName , self::$_Method ['ADD'] ) ;
+			self::$File = fopen ( ROOT_PATH.$FileName , self::$_Method ['ADD'] ) ;
 			
 			if ( self::$File )
 			
@@ -82,7 +82,7 @@
 		
 			$FileName = strtolower ( $FileName ) ;
 			
-			self::$File = fopen ( BASEPATH.$FileName , self::$_Method ['WRITE'] ) ;
+			self::$File = fopen ( ROOT_PATH.$FileName , self::$_Method ['WRITE'] ) ;
 			
 			if ( self::$File )
 			
@@ -116,7 +116,7 @@
 
 			$FileName = strtolower ( $FileName ) ;
 			
-			self::$File = fopen ( BASEPATH.$FileName , self::$_Method ['READ'] ) ;
+			self::$File = fopen ( ROOT_PATH.$FileName , self::$_Method ['READ'] ) ;
 			
 			if ( self::$File )
 			
@@ -220,7 +220,7 @@
 			
 			{
 			
-				unlink ( BASEPATH.$FileName ) ;
+				unlink ( ROOT_PATH.$FileName ) ;
 				
 				return ;
 			
@@ -240,7 +240,7 @@
 		
 			$FileName = strtolower ( $FileName ) ;
 		
-			return ( boolean ) file_exists ( BASEPATH.$FileName ) ? TRUE : FALSE ;
+			return ( boolean ) file_exists ( ROOT_PATH.$FileName ) ? TRUE : FALSE ;
 
 		}
 	

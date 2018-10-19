@@ -8,13 +8,10 @@
  */
 
 header('Content-type: text/html; charset=windows-1251');
-set_time_limit(0);
- error_reporting(E_ALL);
- ini_set('display_errors', 1);
- //  error_reporting(0);
-ignore_user_abort(1);
+//set_time_limit(0);
+
        chdir(__DIR__.'/../');
-require_once (__DIR__.'/config.php');
+require_once __DIR__.'/../alex/fotobank/Framework/Boot/config.php';
 
 
 if ($link->referralSeed) {
@@ -206,7 +203,10 @@ if (!isset($_SESSION['logged']))
   </tr>
   <tr>
 	 <td></td>
-	 <td><p style="padding-left: 10px; margin-top: 10px;"> Выслать реквизиты:</p></td>
+	 <td>
+		 <p style="padding-left: 10px; margin-top: 10px;">Выслать реквизиты:</p>
+		 <p style="padding-left: 10px; margin-top: 10px;"><i>нажмите на рисунок карточки --></i></p>
+	 </td>
 	 <td style="text-align:right;">
 		<input type="image" value="Выслать" src="/img/rekvizity-privat-kart.jpg"
 		 onClick="ajaxPostQ('/inc/privat/ajaxPrivatMail.php','#rekMail','prMail='+true)"

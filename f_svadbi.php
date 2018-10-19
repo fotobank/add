@@ -1,6 +1,6 @@
 <?php
-			 define ( 'BASEPATH' , realpath ( __DIR__ ) . '/' , TRUE );
-			 require_once (BASEPATH.'inc/head.php');
+			 define ( 'ROOT_PATH' , realpath ( __DIR__ ) . '/' , TRUE );
+			 require_once (ROOT_PATH.'inc/head.php');
 
 
 			 $renderData['autoPrev']            = new autoPrev();
@@ -9,4 +9,4 @@
 			 $loadTwig('.twig', $renderData);
 
 
-			 require_once (BASEPATH.'inc/footer.php');
+			 require_once (ROOT_PATH.'inc/footer.php');

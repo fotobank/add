@@ -7,6 +7,7 @@
     <file url="file://$PROJECT_DIR$/activation.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/add_basket.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/album_id.php" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/alex/fotobank/Framework/Boot/config.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/basket.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/ceny.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/chmod.php" dialect="GenericSQL" />
@@ -37,7 +38,6 @@
     <file url="file://$PROJECT_DIR$/inc/ajaxPodpiska.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/inc/ajaxUslugi.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/inc/ajaxZakazDel.php" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/inc/config.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/inc/delete_dir.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/inc/downloadZip.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/inc/errorDump.php" dialect="GenericSQL" />

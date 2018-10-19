@@ -1,7 +1,6 @@
 <?php
    set_time_limit(0);
-   include (dirname(__FILE__).'/../inc/config.php');
-   include (dirname(__FILE__).'/../inc/func.php');
+   include __DIR__.'/../alex/fotobank/Framework/Boot/config.php';
 
   // Удаление непустых директорий:
 function deleteDir($dir)

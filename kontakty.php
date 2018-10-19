@@ -1,6 +1,6 @@
 <?php
-       define('BASEPATH', realpath(__DIR__).'/', true);
-       include_once(BASEPATH.'inc/head.php');
+       define('ROOT_PATH', realpath(__DIR__).'/', true);
+       include_once(ROOT_PATH.'inc/head.php');
        $uname  = "";
        $uphone = "";
        $skype  = "";
@@ -96,4 +96,4 @@
        $renderData = array_merge($renderData, $dataKontakty);
        // рендер страницы
        $loadTwig('.twig', $renderData);
-       include_once(BASEPATH.'inc/footer.php');
+       include_once(ROOT_PATH.'inc/footer.php');

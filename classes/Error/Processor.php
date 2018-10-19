@@ -1,13 +1,14 @@
 <?php
-			 set_time_limit(0);
-			 require_once (__DIR__.'/../../inc/config.php');
-			 require_once (__DIR__.'/../../inc/func.php');
-		//	 require_once (__DIR__.'/../../classes/autoload.php');
-		//	 autoload::getInstance();
+
+       use Framework\Core\Mail\Sender;
+
+
+			 require_once __DIR__.'/../../alex/fotobank/Framework/Boot/config.php';
+
 			 if (check_Session::getInstance()->has('Debug_HC')) {
 							$Debug_HackerConsole_Main = Debug_HackerConsole_Main::getInstance(true);
 			 }
-			 use Framework\Core\MailSender\Sender;
+
 			 // проверка работы консоли
 //			 	if (function_exists('debugHC'))  debugHC("test");
 			 /**
@@ -49,11 +50,6 @@
 							 */
 							protected function __construct() {
 
-										 // определяем режим вывода ошибок
-										 ini_set('display_errors', 'On');
-											error_reporting(0);
-										 // определеяем уровень протоколирования ошибок
-										 error_reporting(E_ALL | E_STRICT);
 										 set_error_handler(array('Error_Processor', 'userErrorHandler'));
 										 set_exception_handler(array('Error_Processor', 'captureException'));
 										 register_shutdown_function(array('Error_Processor', 'captureShutdown'));
@@ -318,7 +314,7 @@
 																					while (list($I, $val) = each($_POST)) {
 																								 $mail_mes .= " $I=$val<br>";
 																					}
-																					$mail            = new Sender;
+																					$mail            = new Sender();
 																					$mail->from_addr = $this->EP_from_addr;
 																					$mail->from_name = $this->EP_from_name;
 																					$mail->to        = $this->EP_to_addr;

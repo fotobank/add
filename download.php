@@ -1,7 +1,7 @@
 <?php
-       define('BASEPATH', realpath(__DIR__).'/', true);
-       include(BASEPATH.'/inc/config.php');
-       include(BASEPATH.'/inc/func.php');
+       define('ROOT_PATH', realpath(__DIR__).'/', true);
+       include ROOT_PATH.'alex/fotobank/Framework/Boot/config.php';
+
        /**
         * @param        $filepath
         * @param string $mimetype

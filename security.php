@@ -7,14 +7,10 @@
 				* To change this template use File | Settings | File Templates.
 				*/
 
-			error_reporting(E_ALL);
-			ini_set('display_errors', 1);
-			// error_reporting(0);
        if ($_SERVER['PHP_SELF'] === '/gb/index.php') {
               chdir('../');
        }
-			require_once (__DIR__.'/inc/config.php');
-			require_once (__DIR__.'/inc/func.php');
+			require_once __DIR__.'/alex/fotobank/Framework/Boot/config.php';
 			$session = check_Session::getInstance();
 
 			$link    = new link_Obfuscator($session->get('referralSeed'));

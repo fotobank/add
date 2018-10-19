@@ -11,7 +11,7 @@ if (isset($_GET['cfgProgDir']) || isset($_POST['cfgProgDir']) || isset($_GET['la
         }
 
 // include configuration
-require($cfgProgDir . 'config.php');
+require $cfgProgDir . 'config.php';
 
 // https support
 if (getenv('HTTPS') == 'on') {

@@ -5,7 +5,7 @@
  * Date: 12.04.14
  * Time: 11:41
  */
-       $ini = go::has('md5_loader') ? NULL : array(
+       return go::has('md5_loader') ? NULL : array(
               'pws'          => 'Protected_Site_Sec', // секретная строка
               //    "text_string"  => "ТЕСТ", // текст водяного знака
               'vz'           => 'img/vz.png', // картинка водяного знака
